@@ -1,0 +1,36 @@
+/* Settings Modal */
+.modal-style .modal-content {
+    border: none;
+    border-radius: 6px;
+}
+
+.modal-style .modal-header {
+    color: white;
+    height: 55px;
+    display: block;
+    font-weight: 600;
+    background-color: #6A74C9;
+}
+
+.modal-style .modal-header #close-icon-modal {
+    top: 2px;
+    cursor: pointer;
+    font-size: 20px;
+    position: relative;
+}
+
+.modal-style .modal-body {
+    padding: 30px 20px 5px 20px;
+}
+
+.modal-style .modal-body .bg-white {
+    width: 100%;
+    padding: 20px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    border: 2px solid rgba(200, 200, 200);
+}
+
+.modal-style .modal-body .bg-white:hover {
+    border: 2px solid #6A74C9;
+}

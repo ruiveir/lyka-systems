@@ -1,0 +1,97 @@
+.report-card {
+    width: 100%;
+    padding: 20px 20px;
+    border-radius: 10px;
+    background-color: white;
+}
+
+.report-card p {
+    font-weight: 600;
+    margin: 0 !important;
+    display: inline-block;
+}
+
+div.panel-body{
+    padding-left:20px ;
+}
+
+input, textarea, select {
+    color: #747474;
+    font-weight: 600;
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+}
+
+label {
+    color: #747474;
+    font-weight: 700;
+    text-align: center !important;
+}
+
+input, select, textarea {
+    width: 100%;
+    border: none;
+    resize: none;
+    padding: 7px 12px;
+    border-radius: 5px;
+    background-color: #EAEAEA;
+}
+
+
+.search-bar-helper {
+    width: 100%;
+    height: 30px;
+    border-radius: 30px;
+    background-color: white;
+    position: relative;
+    top: 4%;
+}
+
+#searchHelper {
+    font-weight: 800;
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    display: inline-block;
+    padding: 8px 15px;
+    color: #BBBBBB;
+    border-radius: 30px;
+    background-color: white;
+}
+
+.search-icon-helper {
+    color: white;
+    position: relative;
+    left: 30%;
+    top: 50%;
+    transform: translate(-50%, -55%);
+    --ionicon-stroke-width: 60px;
+}
+
+.search-button-helper {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #6A74C9;
+    position: relative;
+    float: right;
+    bottom: 100%;
+}
+
+.card-header h5 {
+    border: 0;
+    color: gray;
+    font-weight: bold;
+}
+
+.card-header{
+    border-bottom:none!important;
+}
+
+
+.btn-link {
+    font-weight: 400;
+    color: #007bff;
+    text-decoration: none;
+    font-size: 1rem;
+}

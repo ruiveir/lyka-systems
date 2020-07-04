@@ -1,0 +1,314 @@
+/* General Style */
+* {
+    outline: none;
+}
+
+html, body {
+    height: 100%;
+    min-width: 750px;
+    scroll-behavior: smooth;
+    transition: all 0.3 ease;
+    background-color: #EAEAEA;
+    font-family: 'Lato', sans-serif;
+}
+
+label {
+    color: black !important;
+}
+
+/* Layout Style -> Main Menu */
+.main-menu {
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 230px;
+    position: fixed;
+    overflow-x: hidden;
+    background-color: white;
+}
+
+.user-image {
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+.user-info p:first-child {
+    font-weight: 700;
+    margin-bottom: 0px !important;
+}
+
+.user-info p:last-child {
+    color: #919191;
+    font-size: 12px;
+}
+
+.menu-list {
+    width: 100%;
+    font-size: 16px;
+    padding-top: 25px;
+    padding-left: 0px;
+    list-style-type: none;
+}
+
+.menu-option {
+    padding-top: 12px;
+    padding-left: 8px;
+    padding-bottom: 8px;
+}
+
+.menu-icon .iconify {
+    color: #454545;
+}
+
+.menu-list .active {
+    color: #5E9DF5;
+    font-weight: 800;
+}
+
+.menu-list a span {
+    color: #454545;
+    font-weight: 500;
+    position: relative;
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: 0.3s ease-in-out;
+}
+
+.menu-icon {
+    width: 18px;
+    color: #454545;
+    text-align: center;
+    margin-right: 10px;
+    display: inline-block;
+}
+
+.content {
+    margin-left: 250px;
+}
+
+/* FIM ESPAÇO PARA CSS DE ESTRUTURA */
+/* ESTILO DOS LINKS */
+a {
+    color: black;
+}
+
+a:hover {
+    text-decoration: none;
+    color: #6A74C9;
+}
+
+.active {
+    color: #6A74C9;
+    font-weight: bold;
+}
+
+/* ESTILO DOS LINKS */
+/* Buttons */
+.top-button {
+    border: none;
+    color: white;
+    font-weight: 800;
+    padding: 8px 18px;
+    font-size: 0.6rem;
+    border-radius: 25px;
+    text-transform: uppercase;
+    background-color: #6A74C9;
+    box-shadow: 0 .3rem 1rem rgba(0, 0, 0, .15);
+}
+
+.top-button:hover {
+    color: white;
+    text-decoration: none;
+}
+
+.top-button:focus {
+    outline: none;
+}
+
+.cancel-button {
+    color: #A9A9A9;
+    font-weight: 800;
+    padding: 7px 17px;
+    font-size: 0.6rem;
+    cursor: pointer;
+    border-radius: 25px;
+    border: 2px solid #A9A9A9;
+    text-transform: uppercase;
+    background-color: #EAEAEA;
+    transition: 0.3s ease-in-out;
+}
+
+.cancel-button:hover {
+    color: white;
+    text-decoration: none;
+    background-color: #A9A9A9;
+}
+
+.buttons a {
+    outline: none;
+}
+
+.buttons a:hover {
+    text-decoration: none;
+}
+
+.button-back {
+    width: 20px;
+    height: 20px;
+    padding: 5px;
+    border-radius: 50%;
+    color: gray !important;
+    background-color: white;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.button-foward {
+    width: 20px;
+    height: 20px;
+    padding: 5px;
+    outline: none;
+    margin-left: 10px;
+    border-radius: 50%;
+    color: gray !important;
+    background-color: transparent;
+}
+
+/* Cards Navigation Style */
+/* Title */
+.cards-navigation {
+    margin-top: 19px;
+}
+
+.title h6 {
+    color: #252525;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+/* Cards */
+.cards-group {
+    margin-top: 10px;
+}
+
+.card-navigation {
+    width: 85%;
+    height: 110px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 5px;
+    background-color: white;
+    transition: 0.3s ease-in-out;
+    box-shadow: 0 .2rem 1rem rgba(0, 0, 0, .10);
+}
+
+.card-navigation .help-button {
+    top: 7px;
+    right: 8px;
+    width: 20px;
+    height: 20px;
+    float: right;
+    cursor: default;
+    position: relative;
+    border-radius: 50%;
+    background-color: #DFDFDF;
+}
+
+.card-navigation .help-button span {
+    top: -10%;
+    left: 32%;
+    color: white;
+    font-weight: 800;
+    font-size: 0.9rem;
+    position: relative;
+    transform: translate(-50%, -50%);
+}
+
+.card-navigation .info {
+    padding-top: 5px;
+    padding-left: 15px;
+    display: inline-block;
+}
+
+.card-navigation .info .number {
+    color: #575757;
+    font-weight: 700;
+    font-size: 2.6rem;
+    margin: 0 !important;
+}
+
+.card-navigation .info .word {
+    bottom: 7px;
+    color: #C8C8C8;
+    font-weight: 800;
+    font-size: .72rem;
+    position: relative;
+    margin: 0 !important;
+    text-transform: uppercase;
+}
+
+.close_btn {
+    position: absolute;
+    right: -5px;
+    top: -7px;
+    height: 20px;
+    width: 20px;
+    background-color: white;
+    padding-top: -3px;
+    border-radius: 50%;
+}
+
+.close_btn a {
+    color: gray;
+}
+
+.close_btn a:hover {
+    color: blue;
+}
+
+.search-bar {
+    width: 100%;
+    height: 30px;
+    border-radius: 30px;
+    background-color: #EAEAEA;
+    position: relative;
+    top: 4%;
+}
+
+.search-bar p {
+    font-weight: 800;
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    display: inline-block;
+    padding: 8px 15px;
+    color: #BBBBBB;
+}
+
+.search-icon {
+    color: white;
+    position: relative;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -55%);
+    --ionicon-stroke-width: 60px;
+}
+
+.search-button {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #6A74C9;
+    position: relative;
+    float: right;
+}
+
+.page-item.active .page-link {
+    background-color: #6A74C9;
+    border-color: #6A74C9;
+}
+
+.table-striped>tbody>tr:nth-child(odd)>td,
+.table-striped>tbody>tr:nth-child(odd)>th {
+    background-color: rgba(255, 255, 255, 0.8);
+}
