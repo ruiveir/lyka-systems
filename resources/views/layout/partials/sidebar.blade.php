@@ -1,101 +1,112 @@
-<div class="container-fluid " style="font-size:14px; height:70%">
+<!-- Sidebar -->
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
-    <div class="text-center" style="margin-top:26px;">
-        <a href="#" class="top-button-contact">procurar contacto</a>
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{route("dashboard")}}">
+        <div class="sidebar-brand-icon">
+            Lyka
+        </div>
+        <div class="sidebar-brand-text ml-1">Systems</div>
+    </a>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
+
+    <!-- Nav Item - Dashboard -->
+    <li class="nav-item {{Route::is('dashboard') ? 'active' : ''}}">
+        <a class="nav-link" href="{{route('dashboard')}}">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Dashboard</span></a>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Heading -->
+    <div class="sidebar-heading">
+        Recursos Humanos
     </div>
 
-    <div class="mt-4 mx-auto mb-4 pt-3 font-weight-bold" style="font-size:18px; padding-left:5px;">
-        Notificações
+    <li class="nav-item {{Route::is('clients.*') ? 'active' : ''}}">
+        <a class="nav-link" href="{{route('clients.index')}}">
+            <i class="fas fa-fw fa-user"></i>
+            <span>Estudantes</span></a>
+    </li>
+
+    <li class="nav-item {{Route::is('agents.*') ? 'active' : ''}}">
+        <a class="nav-link" href="{{route('agents.index')}}">
+            <i class="fas fa-fw fa-users"></i>
+            <span>Agentes</span></a>
+    </li>
+
+    <li class="nav-item {{Route::is('universities.*') ? 'active' : ''}}">
+        <a class="nav-link" href="{{route('universities.index')}}">
+            <i class="fas fa-fw fa-university"></i>
+            <span>Universidades</span></a>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Heading -->
+    <div class="sidebar-heading">
+        Ferramentas admin.
     </div>
-    @if($Notificacoes)
-    <div class="text-muted text-center m-2" style="font-size:12px"> {{(new DateTime())->format('d/m/Y')}} </div>
-    @php
-    $data = $Notificacoes[0]->data['dataComeco'];
-    @endphp
-    @foreach($Notificacoes as $Notificacao)
-    @if($Notificacao->data['dataComeco']
-        < $data) @php
-        $data = (new DateTime($Notificacao->data['dataComeco']))->format('d/m/Y');
-        @endphp
-        <div class="text-muted text-center m-2" style="font-size:12px"> {{(new DateTime($Notificacao->data['dataComeco']))->format('d/m/Y')}} </div>
-        @endif
-        @if($Notificacao->data['dataComeco'] <= (new DateTime())) @if($Notificacao->type == 'App\Notifications\Aniversario')
-                <div class="alert-dismissible row p-1 mx-1 alert alert-info fade show">
-                    @elseif($Notificacao->type == 'App\Notifications\Abertura')
-                        <div class="alert-dismissible row p-1 mx-1 alert alert-success fade show">
-                            @elseif(($Notificacao->type == 'App\Notifications\Atraso' || $Notificacao->type == 'App\Notifications\AtrasoCliente') && $Notificacao->data['urgencia'])
-                                <div class="alert-dismissible row p-1 mx-1 alert alert-danger fade show">
-                                    @elseif(($Notificacao->type == 'App\Notifications\Atraso' || $Notificacao->type == 'App\Notifications\AtrasoCliente') && !$Notificacao->data['urgencia'])
-                                        <div class="alert-dismissible row p-1 mx-1 alert alert-warning fade show">
-                                            @else
-                                            <div class="alert-dismissible row p-1 mx-1 alert alert-secondary fade show">
-                                                @endif
-                                                <div class="close_btn text-center" style="font-size:14px;"><a href="#" data-dismiss="alert"><i title="Marcar como lido" class="far fa-check-circle"></i></a></div>
 
-                                                <div class="col col-2 text-center mr-1 p-2 align-self-center" style="font-size:16px">
-                                                    @if($Notificacao->type == 'App\Notifications\Aniversario')
-                                                        <i class="fas fa-birthday-cake"></i>
-                                                        @elseif($Notificacao->type == 'App\Notifications\Abertura')
-                                                            <i class="fas fa-university"></i>
-                                                            @elseif($Notificacao->type == 'App\Notifications\Atraso' || $Notificacao->type == 'App\Notifications\AtrasoCliente')
-                                                                <i class="fas fa-exclamation-triangle"></i>
-                                                                @else
-                                                                <i class="fas fa-info-circle"></i>
-                                                                @endif
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item <?php if (Route::is('payments.*') || Route::is('charges.*') || Route::is('conta.*')) { echo 'active'; } ?>">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFinance" aria-expanded="true" aria-controls="collapseFinance">
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>Finanças</span>
+        </a>
+        <div id="collapseFinance" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Páginas principais:</h6>
+                <a class="collapse-item {{Route::is('payments.*') ? 'active' : ''}}" href="{{route('payments.index')}}">Pagamentos</a>
+                <a class="collapse-item {{Route::is('charges.*') ? 'active' : ''}}" href="{{route('charges.index')}}">Cobranças</a>
+                <a class="collapse-item" href="#">Relatório e Contas</a>
+                <div class="collapse-divider"></div>
+                <h6 class="collapse-header">Outras Páginas:</h6>
+                <a class="collapse-item {{Route::is('conta.*') ? 'active' : ''}}" href="{{route("conta.index")}}">Conta bancária</a>
+            </div>
+        </div>
+    </li>
 
-                                                </div>
-                                                <div class="info-not">
-                                                    <div class="col p-2 assunto">
-                                                        <b>{{$Notificacao->data['assunto']}}</b>
-                                                        <br>
-                                                        <a class="mostra" href="#" onClick="show($(this).closest('.info-not'))">Ler Tudo</a>
-                                                    </div>
-                                                    <div class="col p-2 descricao" style="display: none;">
-                                                        @php
-                                                        $descricoes = explode('*',str_replace(array("\\r\\n", "\\r", "\\n"), "*", $Notificacao->data['descricao']));
-                                                        @endphp
-                                                        @foreach($descricoes as $descricao)
-                                                        {{$descricao}}
-                                                        <br>
-                                                        @endforeach
-                                                        <a href="#" onClick="hide($(this).closest('.info-not'))">Diminuir</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            @endif
-                                            @endforeach
-                                            @else
-                                            <div class="text-muted text-center m-2" style="font-size:12px"> Não tem notificações </div>
-                                            @endif
+    <li class="nav-item <?php if (Route::is('libraries.*') || Route::is('contacts.*') || Route::is('agenda.*') || Route::is('produtostock.*') || Route::is('users.*') || Route::is('listagens.*') || Route::is('provider.*')) { echo 'active'; } ?>">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseDiversos" aria-expanded="true" aria-controls="collapseDiversos">
+            <i class="fas fa-fw fa-folder"></i>
+            <span>Diversos</span>
+        </a>
+        <div id="collapseDiversos" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Páginas principais:</h6>
+                <a class="collapse-item {{Route::is('produtostock.*') ? 'active' : ''}}" href="{{route('produtostock.index')}}">Produtos Stock</a>
+                <a class="collapse-item {{Route::is('listagens.*') ? 'active' : ''}}" href="{{route('listagens.index')}}">Listagens</a>
+                <a class="collapse-item {{Route::is('libraries.*') ? 'active' : ''}}" href="{{route('libraries.index')}}">Biblioteca</a>
+                <a class="collapse-item {{Route::is('users.*') ? 'active' : ''}}" href="{{route('users.index')}}">Administradores</a>
+                <div class="collapse-divider"></div>
+                <h6 class="collapse-header">Outras Páginas:</h6>
+                <a class="collapse-item {{Route::is('provider.*') ? 'active' : ''}}" href="{{route('provider.index')}}">Fornecedores</a>
+                <a class="collapse-item {{Route::is('agenda.*') ? 'active' : ''}}" href="{{route('agenda.index')}}">Agenda</a>
+                <a class="collapse-item {{Route::is('contacts.*') ? 'active' : ''}}" href="{{route('contacts.index')}}">Lista telefónica</a>
+                <a class="collapse-item {{Route::is('bugreport.*') ? 'active' : ''}}" href="{{route('bugreport.index')}}">Relatório de problemas</a>
+            </div>
+        </div>
+    </li>
 
-                                            {{-- FIM DAS NOTIFICAÇÕES --}}
+    <li class="nav-item">
+        <a class="nav-link" href="#">
+            <i class="fas fa-fw fa-table"></i>
+            <span>Notificações</span></a>
+    </li>
 
-                                            <!-- <div class="mx-auto mb-3 pt-3 font-weight-bold text-center" style="color:#6A74C9;font-size:18px">
-        <div class="text-muted" style="font-size:12px"><a href="#">Ver tudo</a></div>
-    </div> -->
-                                        </div>
-                                </div>
-                        </div>
-                </div>
+    <!-- Divider -->
+    <hr class="sidebar-divider d-none d-md-block">
 
-                @section('scripts')
-                <script type="text/javascript">
-                    function show(div) {
-                        div.find('.descricao').first().css({
-                            "display": "block"
-                        });
-                        div.find('.mostra').first().css({
-                            "display": "none"
-                        });
-                    }
+    <!-- Sidebar Toggler (Sidebar) -->
+    <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+    </div>
 
-                    function hide(div) {
-                        div.find('.descricao').first().css({
-                            "display": "none"
-                        });
-                        div.find('.mostra').first().css({
-                            "display": "block"
-                        });
-                    }
-                </script>
-                @endsection
+</ul>
+<!-- End of Sidebar -->

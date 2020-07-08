@@ -31,7 +31,7 @@
 
         <div class="row mt-4">
             <div class="col">
-        <form method="POST" action="{{route('conta.update', $conta)}}" method="post" enctype="multipart/form-data">
+        <form method="POST" action="{{route('conta.update', $conta)}}" enctype="multipart/form-data">
             @csrf
             @method("PUT")
             @include('conta.partials.add-edit')

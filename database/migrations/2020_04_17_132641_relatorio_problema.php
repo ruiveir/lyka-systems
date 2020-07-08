@@ -17,6 +17,7 @@ class RelatorioProblema extends Migration
             $table->integer('telemovel')->nullable();
             $table->string('screenshot')->nullable();
             $table->text('relatorio');
+            $table->enum('estado', ['Pendente', 'Em curso', 'Resolvido'])->default('Pendente');
             $table->timestamps();
         });
     }

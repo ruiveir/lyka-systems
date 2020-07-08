@@ -17,6 +17,20 @@ Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
     Route::get('/reportar-problema', 'ExtraFunctionsController@report')->name('report');
     Route::post('/reportar-problema/email', 'ExtraFunctionsController@reportmail')->name('report.send');
 
+    Route::resource('/relatorio-problema', 'BugReportController')->parameters([
+        'relatorio-problema' => 'bugreport'
+    ])->only([
+        'index',
+        'show',
+        'update',
+        'destroy'
+    ])->names([
+        'index' => 'bugreport.index',
+        'show' => 'bugreport.show',
+        'update' => 'bugreport.update',
+        'destroy' => 'bugreport.destroy'
+    ]);
+
     /* Procura de contactos */
     Route::post('/procurar-contacto', 'ExtraFunctionsController@searchcontact')->name('search.contact');
 

@@ -11,6 +11,11 @@ class RelatorioProblema extends Model
   protected $primaryKey = 'idRelatorioProblema';
 
   protected $fillable = [
-      'nome', 'email', 'telemovel', 'screenshot', 'relatorio'
+      'nome',
+      'email',
+      'telemovel',
+      'screenshot',
+      'relatorio',
+      'estado'
   ];
 }

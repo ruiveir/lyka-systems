@@ -1,23 +1,19 @@
-<div class="modal fade modal-style" id="modalLogout" tabindex="-1" role="dialog" aria-labelledby="Modal" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<!-- Modal Logout -->
+<div class="modal fade" id="modalLogout" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header" style="background-color:#dc3545;">
-                <div class="row">
-                    <div class="ml-3">
-                        Terminar sessão
-                    </div>
-                    <div class="ml-auto mr-3">
-                        <ion-icon name="close" id="close-icon-modal" data-dismiss="modal"></ion-icon>
-                    </div>
-                </div>
+            <div class="modal-header pl-4 pb-1 pt-4">
+                <h5 class="modal-title text-gray-800 font-weight-bold">Já se vai embora?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close-button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <div class="modal-body">
-                <span>Tem a certeza que deseja terminar sessão?<br><strong>Todos os dados que não foram gravados, serão perdidos.</strong></span><br><br>
+            <div class="modal-body text-gray-800 pl-4 pr-5">
+                Pretende mesmo sair? Ao terminar a sua sessão todos os dados que não foram gravados podem ser perdidos. Vale a pena pensar duas vezes!
             </div>
-            <div class="modal-footer">
-                <a href="{{ route('logout') }}" class="top-button btn_submit bg-danger">Sim, terminar sessão
-                </a>
-                <button type="button" class="top-button bg-secondary mr-2" data-dismiss="modal">Cancelar</button>
+            <div class="modal-footer mt-3">
+                <a data-dismiss="modal" class="mr-4 font-weight-bold" id="close-option">Cancelar</a>
+                <a href="{{route('logout')}}" type="button" class="btn btn-danger font-weight-bold mr-2">Terminar sessão</a>
             </div>
         </div>
     </div>

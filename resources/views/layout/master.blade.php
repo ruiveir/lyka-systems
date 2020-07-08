@@ -3,83 +3,85 @@
 
 <head>
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
     <title> @yield('title') - Lyka Systems</title>
+
     <!-- Favicon -->
     <link rel="shortcut icon" href="{{asset('/media/favicon.png')}}" type="image/x-icon">
+
     <!-- Bootstrap core CSS -->
     <link href="{{asset('/vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
-    {{-- DataTables --}}
-    <link type="text/css" href="{{asset('/vendor/datatables/datatables.min.css')}} " rel="stylesheet">
+
+    <!-- DataTables -->
+    <link type="text/css" href="{{asset('/vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
+
     <!-- Fontawesome core CSS -->
     <link href="{{asset('/vendor/fontawesome-free/css/all.min.css')}}" rel=" stylesheet" type="text/css">
+
     <!-- Lyka Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
     <!-- CSS Link -->
-    <link href="{{asset('/css/master.css')}}" rel="stylesheet">
-    <link href="{{asset('/css/modal.css')}}" rel="stylesheet">
+    <link href="{{asset("/css/sb-admin-2.min.css")}}" rel="stylesheet">
+    <link href="{{asset("/css/modal.css")}}" rel="stylesheet">
 
-    @yield('styleLinks')
+    @yield('style-links')
 
-    {{-- Notificações --}}
+    <!-- Notificações -->
     @php
     $Notificacoes = Auth()->user()->getNotifications();
     @endphp
 </head>
 
-<body>
+<body id="page-top">
     {{-- Modal de contactos --}}
     @include('layout.partials.modal-contactos')
-
     {{-- Modal para terminar a sessão --}}
     @include('layout.partials.modal-logout')
 
-    {{-- Mensagem de carregamento / processamento --}}
-    <div id="wait_screen" style="display:none; position:fixed; top:0; left:0; width:100% ; height:100%; background-color:black; opacity:0.7;z-index:999;">
-        <div class="row" style="width: 100%; height:100%">
-            <div class="col my-auto mx-auto text-center text-white">
-                <div class="spinner-grow" style="width: 3rem; height: 3rem;" role="status">
-                    <span class="sr-only">Loading...</span>
-                </div>
-                <div style="font-size:30px">Aguarde por favor...</div>
-            </div>
-        </div>
-    </div>
+    <div id="wrapper">
+        <!-- Sidebar -->
+        @include('layout.partials.sidebar')
 
-    {{-- Estrutura e navegação --}}
-    <div class="container-fluid text-black ">
-        <div class="row" style="min-height:100vh">
-            {{-- Menu lateral --}}
-            <div class="col main-menu shadow-sm" id="side-menu">
-                @include('layout.partials.main-menu')
-            </div>
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+          <!-- Main Content -->
+          <div id="content">
+            <!-- Topbar -->
+            @include('layout.partials.topbar')
+
+            <!-- Success message on forms -->
+            @if (!empty(session('success')))
+            @include('layout.msg-error-message.partials.success')
+            @endif
+
             <!-- Content -->
-            <div class="col pb-5 content">
-                <!-- Error and Success Message -->
-                @if ($errors->any())
-                <div class="row mx-1">
-                    <div class="col">
-                        @include ('layout.msg-error-message.partials.errors')
-                    </div>
-                </div>
-                @endif
-                @if (!empty(session('success')))
-                <div class="row mx-1">
-                    <div class="col">
-                        @include ('layout.msg-error-message.partials.success')
-                    </div>
-                </div>
-                @endif
-                <!-- Content -->
-                @yield('content')
+            @yield('content')
+
+          </div>
+          <!-- End of Main Content -->
+
+          <!-- Footer -->
+          <footer class="sticky-footer bg-white">
+            <div class="container my-auto">
+              <div class="copyright text-center my-auto">
+                <span>Copyright &copy; Estudar Portugal {{date("Y")}}</span>
+              </div>
             </div>
+          </footer>
+          <!-- End of Footer -->
+
         </div>
+        <!-- End of Content Wrapper -->
     </div>
 
     <!-- Scripts -->
     @include('layout.partials.footer')
 
-    <script type="text/javascript">
+    <script>
         $("#procurar-contactos-icon").click(function(event) {
             event.preventDefault();
             $('#modalContacts').modal('show');
@@ -235,4 +237,5 @@
         });
     </script>
 </body>
+
 </html>
