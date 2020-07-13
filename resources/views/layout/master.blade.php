@@ -31,7 +31,9 @@
 
     <!-- Notificações -->
     @php
-    $Notificacoes = Auth()->user()->getNotifications();
+    // $Notificacoes = Auth()->user()->getNotifications();
+    $allNotifications = Auth()->user()->unreadNotifications;
+    $notifications = Auth()->user()->unreadNotifications()->orderBy('created_at', 'DESC')->take(3)->get();
     @endphp
 </head>
 

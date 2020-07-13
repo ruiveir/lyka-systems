@@ -9,7 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.2.5",
-        "aws/aws-sdk-php": "^3.137",
+        "aws/aws-sdk-php": "^3.145",
         "barryvdh/laravel-dompdf": "^0.8.6",
         "cviebrock/eloquent-sluggable": "^7.0",
         "dompdf/dompdf": "^0.8.5",

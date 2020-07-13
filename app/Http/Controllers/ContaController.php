@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Conta;
@@ -15,7 +14,7 @@ class ContaController extends Controller
         $contas = Conta::all();
         return view('conta.list', compact('contas'));
       }else{
-          abort(401);
+          abort(403);
       }
     }
 
@@ -25,7 +24,7 @@ class ContaController extends Controller
         $conta = new Conta;
         return view('conta.add', compact('conta'));
       }else{
-          abort(401);
+          abort(403);
       }
     }
 
@@ -38,7 +37,7 @@ class ContaController extends Controller
         $conta->save();
         return redirect()->route('conta.index')->with('success', 'Conta bancária adicionada com sucesso.');
       }else{
-          abort(401);
+          abort(403);
       }
     }
 
@@ -47,7 +46,7 @@ class ContaController extends Controller
       if (Auth()->user()->tipo == "admin" && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
         return view('conta.show', compact('conta'));
       }else{
-          abort(401);
+          abort(403);
       }
     }
 
@@ -56,7 +55,7 @@ class ContaController extends Controller
       if (Auth()->user()->tipo == "admin" && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
         return view('conta.edit', compact('conta'));
       }else{
-          abort(401);
+          abort(403);
       }
     }
 
@@ -69,7 +68,7 @@ class ContaController extends Controller
         $conta->save();
         return redirect()->route('conta.index')->with('success', 'Conta bancária editada com sucesso.');
       }else{
-          abort(401);
+          abort(403);
       }
     }
 
@@ -79,7 +78,7 @@ class ContaController extends Controller
         $conta->delete();
         return redirect()->route('conta.index')->with('success', 'Conta bancária eliminada com sucesso.');
       }else{
-          abort(401);
+          abort(403);
       }
     }
 }

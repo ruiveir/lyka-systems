@@ -30,6 +30,7 @@ Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
         'update' => 'bugreport.update',
         'destroy' => 'bugreport.destroy'
     ]);
+    Route::get('/relatorio-problema/{bugreport}/download', 'BugReportController@download')->name('bugreport.download');
 
     /* Procura de contactos */
     Route::post('/procurar-contacto', 'ExtraFunctionsController@searchcontact')->name('search.contact');

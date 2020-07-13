@@ -9,7 +9,8 @@ use App\Fornecedor;
 use App\Universidade;
 use App\RelatorioProblema;
 use Illuminate\Http\Request;
-use App\Mail\ReportProblemMail;
+use App\Jobs\SendReportMail;
+use App\Notifications\BugReportSend;
 use Illuminate\Support\Facades\Storage;
 
 class ExtraFunctionsController extends Controller
@@ -55,12 +56,14 @@ class ExtraFunctionsController extends Controller
         $email = $report->email;
         $phone = $report->telemovel;
         $text = $report->relatorio;
+        $idReport = $report->idRelatorioProblema;
 
         if (isset($errorfile)) {
-            Mail::to('lykasystems@mail.com')->send(new ReportProblemMail($name, $email, $phone, $text, $errorfile));
+            dispatch(new SendReportMail($name, $email, $phone, $text, $errorfile));
         }else {
             $errorfile = null;
-            Mail::to('lykasystems@mail.com')->send(new ReportProblemMail($name, $email, $phone, $text, $errorfile));
+            dispatch(new SendReportMail($name, $email, $phone, $text, $errorfile));
+            Auth()->user()->notify(new BugReportSend($name, $idReport));
         }
 
         return redirect()->route('report')->with('success', 'Relatório enviado com sucesso. Obrigado pela sua contribuição!');

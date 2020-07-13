@@ -7,13 +7,13 @@
 <div class="container-fluid">
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800 font-weight-bold">Relatório de problemas</h1>
-        <a data-toggle="modal" data-target="#infoModal" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm" title="Informações"><i class="fas fa-info-circle text-white-50"></i></a>
+        <h1 class="h3 mb-0 text-gray-800 font-weight-bold">Relatório de erros</h1>
+        <a data-toggle="modal" data-target="#infoModal" class="d-none d-sm-inline-block btn btn-sm btn-secondary shadow-sm" title="Informações"><i class="fas fa-info-circle text-white-50"></i></a>
     </div>
     <!-- Approach -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Listagem - Relatórios de problemas</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Listagem - Relatórios de erros</h6>
         </div>
         <div class="card-body">
             <div class="table-responsive p-1">
@@ -24,6 +24,7 @@
                             <th>E-mail</th>
                             <th style="max-width:350px; min-width:350px;">Relatório</th>
                             <th>Estado</th>
+                            <th>Data de recção</th>
                             <th style="max-width:100px; min-width:100px;">Opções</th>
                         </tr>
                     </thead>
@@ -38,8 +39,9 @@
                             </td>
                             <td @if($bugreport->estado == "Pendente") class="text-danger font-weight-bold" @elseif($bugreport->estado == "Resolvido") class="text-success font-weight-bold"
                                     @else class="text-warning font-weight-bold" @endif>{{$bugreport->estado}}</td>
+                            <td>{{date('d/m/Y', strtotime($bugreport->created_at))}}</td>
                             <td class="text-center align-middle">
-                                <a href="#" class="btn btn-sm btn-outline-primary" title="Relatório completo"><i class="far fa-eye"></i></a>
+                                <a href="{{route("bugreport.show", $bugreport)}}" class="btn btn-sm btn-outline-primary" title="Relatório completo"><i class="far fa-eye"></i></a>
                                 <button data-toggle="modal" data-target="#editModal" data-id="{{$bugreport->idRelatorioProblema}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></button>
                                 <button data-toggle="modal" data-target="#deleteModal" data-id="{{$bugreport->idRelatorioProblema}}" class="btn btn-sm btn-outline-danger" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
                             </td>
@@ -111,7 +113,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form class="needs-validation" novalidate>
+            <form method="post" class="needs-validation" novalidate>
                 @csrf
                 @method('PUT')
                 <div class="modal-body text-gray-800 pl-4 pr-5">
@@ -166,16 +168,19 @@
             }
         });
 
+        // Delete report modal
         $('#deleteModal').on('show.bs.modal', function(event) {
             var button = $(event.relatedTarget);
             var modal = $(this);
             modal.find("form").attr('action', '/relatorio-problema/' + button.data('id'));
         });
 
+        // Edit report modal
         $('#editModal').on('show.bs.modal', function(event) {
             var button = $(event.relatedTarget);
             var modal = $(this);
-            modal.find("form").attr('action', '{{route("bugreport.update", + button.data("id"))}}');
+            var id = button.data('id');
+            modal.find("form").attr('action', '/relatorio-problema/' + button.data('id'));
 
             $(".needs-validation").submit(function(event) {
                 if (this.checkValidity() === false) {

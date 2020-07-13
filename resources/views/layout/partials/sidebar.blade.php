@@ -89,7 +89,7 @@
                 <a class="collapse-item {{Route::is('provider.*') ? 'active' : ''}}" href="{{route('provider.index')}}">Fornecedores</a>
                 <a class="collapse-item {{Route::is('agenda.*') ? 'active' : ''}}" href="{{route('agenda.index')}}">Agenda</a>
                 <a class="collapse-item {{Route::is('contacts.*') ? 'active' : ''}}" href="{{route('contacts.index')}}">Lista telefónica</a>
-                <a class="collapse-item {{Route::is('bugreport.*') ? 'active' : ''}}" href="{{route('bugreport.index')}}">Relatório de problemas</a>
+                <a class="collapse-item {{Route::is('bugreport.*') ? 'active' : ''}}" href="{{route('bugreport.index')}}">Relatório de erros</a>
             </div>
         </div>
     </li>

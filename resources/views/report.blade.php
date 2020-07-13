@@ -7,8 +7,13 @@
 <div class="container-fluid">
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800 font-weight-bold">Reportar problema</h1>
-        <a data-toggle="modal" data-target="#infoModal" class="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm" title="Informações"><i class="fas fa-info-circle text-white-50"></i></a>
+        <h1 class="h4 mb-0 text-gray-800">Reportar problema</h1>
+        <a href="#" data-toggle="modal" data-target="#infoModal" class="btn btn-secondary btn-icon-split btn-sm" title="Informações">
+            <span class="icon text-white-50">
+                <i class="fas fa-info-circle"></i>
+            </span>
+            <span class="text">Informações</span>
+        </a>
     </div>
     <!-- Approach -->
     <div class="card shadow mb-4">
@@ -52,7 +57,7 @@
                     <div class="form-row">
                         <div class="col mb-3">
                             <label for="relatorio" class="text-gray-900">Descrição do problema <sup class="text-danger small">&#10033;</sup></label>
-                            <textarea class="form-control" name="relatorio" id="relatorio" rows="3" required placeholder="Qual é o problema?"></textarea>
+                            <textarea class="form-control" name="relatorio" id="relatorio" rows="5" required placeholder="Qual é o problema?"></textarea>
                             <div class="invalid-feedback">
                                 Oops, parece que algo não está bem...
                             </div>
