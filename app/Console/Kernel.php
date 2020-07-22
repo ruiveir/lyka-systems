@@ -15,7 +15,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('payment:update')
-        ->hourly();
+        ->everyMinute();
 
         $schedule->command('account:verification')
         ->hourly();

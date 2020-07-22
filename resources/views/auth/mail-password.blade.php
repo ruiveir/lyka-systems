@@ -1,151 +1,101 @@
 @extends('layout.auth')
-
 @section('title', 'Restaurar password')
-
 @section('content')
-<div class="master-form">
-    <div>
-        <p>Restaurar palavra-chave</p>
-        <p id="last-p">Após inserir o seu endereço-eletrónico e clicar no botão "Restaurar", aceda ao seu e-mail para mais informações.</p>
-        <div>
-            <form id="form" method="post">
-                <div id="div-separador">
-                    <div>
-                        <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" autofocus required placeholder="Endereço eletrónico">
-                    </div>
-                </div>
-                <br id="separador">
-                <div>
-                    <div>
-                        <button type="submit" class="btn submit-button" id="submit-button">
-                            {{ __('Confirmar') }}
-                        </button>
-                    </div>
-                </div>
-            </form>
-            <div class="collapse" id="collapse">
-                <div class="card card-body" id="collapse-card">
-                    <p id="collapse-p">Para efeitos de confirmação, insira, por favor, os três últimos dígitos do seu número de telemóvel.</p>
-                    <div id="js-form">
-                        <form id="form-code" method="post">
-                            <input id="emailcode" type="text" name="emailcode" hidden>
-                            <input id="phonecode" type="text" name="phonecode" hidden>
-                        </form>
+<!-- Begin of page content -->
+<div class="container">
+    <!-- Outer Row -->
+    <div class="row justify-content-center">
+        <div class="col-xl-10 col-lg-12 col-md-9">
+            <div class="card o-hidden border-0 shadow-lg my-5">
+                <div class="card-body p-0">
+                    <!-- Nested Row within Card Body -->
+                    <div class="row">
+                        <div class="col-lg-6 d-none d-lg-block bg-password-image"></div>
+                        <div class="col-lg-6">
+                            <div class="p-5">
+                                <div class="text-center">
+                                    <h1 class="h4 text-gray-900 mb-2">Esqueceu-se da password?</h1>
+                                    <p class="mb-4">Nós compreendos, as coisas acontecem. Insira o seu e-mail e nós enviamos um link para poder refeinir a sua password!</p>
+                                </div>
+                                <form class="user needs-validation" novalidate id="form" method="POST">
+                                    @csrf
+                                    <div class="form-group">
+                                        <input type="email" class="form-control form-control-user" id="email" aria-describedby="emailHelp" placeholder="Insira o seu e-mail..." required>
+                                        <div class="invalid-feedback">
+                                            Oops, parece que algo não está bem...
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-user btn-block">Redefinir Password</button>
+                                </form>
+                                <br>
+                                <div class="text-center">
+                                    <a class="small" href="{{route("login")}}">Já têm uma conta? Faça login!</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<div class="modal fade" id="modal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<!-- End of page content -->
+<!-- Modal Info -->
+<div class="modal fade" id="infoModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Atualização da palavra-chave.</h5>
+            <div class="modal-header pl-4 pb-1 pt-4">
+                <h5 class="modal-title text-gray-800 font-weight-bold">Estamos a sua espera... 🙂</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close-button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <div class="modal-body">
-                A Lyka Systems informa que acabou de receber um e-mail com informções importantes que deve seguir para recuperar a sua palavra-chave.
+            <div class="modal-body text-gray-800 pl-4 pr-5">
+                Acabou mesmo de sair um e-mail para que possa restaurar a sua password! Aconselhamos a verificar o seu e-mail...
             </div>
-            <div class="modal-footer">
-                <a href="{{route('login')}}" id="submit-button-modal" type="button" class="text-center">Entendido!</a>
+            <div class="modal-footer mt-3">
+                <a data-dismiss="modal" class="mr-4 font-weight-bold" id="close-option">Fechar</a>
+                <a data-dismiss="modal" type="button" class="btn btn-primary font-weight-bold mr-2">Entendido!</a>
             </div>
         </div>
     </div>
 </div>
-
+<!-- End of Modal Info -->
 @section('scripts')
-<script type="text/javascript">
+<script>
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': "{{csrf_token()}}"
         }
     });
 
-    $('#form').submit(function(event) {
-        event.preventDefault();
-        info = {
-            email: $("#email").val()
-        };
-        $.ajax({
-            type: "post",
-            url: "{{route('check.email')}}",
-            context: this,
-            data: info,
-            success: function(data) {
-                if ($('#error').text() != '') {
-                    $('#error').remove();
-                }
-                user = JSON.parse(data);
-
-                phone = user.telefone1,
-                    completeNumber = [],
-                    phoneNumber = phone.toString();
-
-                for (var i = 0, len = phoneNumber.length; i < len; i += 1) {
-                    completeNumber.push(+phoneNumber.charAt(i));
-                }
-
-                for (var i = 0; i < 3; i++) {
-                    completeNumber.pop();
-                }
-
-                $('#separador').remove();
-                form = "<label id='label-code'></label> <div id='code' class='form-control' style='width:100%;'><input name='code' type=text id='code-input' maxlength='3' autocomplete='off' required> </div> <button type='submit' class='submit-button' id='submit-button2'>Restaurar</button>";
-                $('#form-code').append(form);
-                $('#form-code').css("display", "block");
-                $('#emailcode').attr("value", user.email);
-                $('#phonecode').attr("value", user.telefone1);
-                $('#label-code').append(completeNumber.join(''));
-                $('#code').after("<br>");
-                $('#collapse').show();
-                $('#submit-button').css("display", "none");
-            },
-            error: function() {
-                if ($('#error').text() != '') {
-                    $('#error').remove();
-                }
-
-                if ($('#separador').length == 0) {
-                    $('#div-separador').after("<br id='separador'>");
-                }
-
-                $('#collapse').hide();
-                $('#form-code').css("display", "none");
-                $('#submit-button').css("display", "block");
-                error = "<strong id='error'>O e-mail que introduziu não está registado no sistema, ou não está ativo.</strong>";
-                $('#last-p').after(error);
-            }
-        });
+    $("#email").change(function() {
+        $("#email").removeClass("is-invalid");
     });
 
-    $('#form-code').submit(function(event) {
+    $('#form').submit(function(event) {
         event.preventDefault();
-        info = {
-            code: $("#code-input").val(),
-            email: $("#emailcode").val(),
-            phone: $("#phonecode").val()
-        }
-        console.log(info.code);
-        $.ajax({
-            type: "post",
-            url: "{{route('check.phone')}}",
-            context: this,
-            data: info,
-            success: function(data) {
-                if ($('#error').text() != '') {
-                    $('#error').remove();
+        if ($("#email").val() == "") {
+            $("#email").addClass("is-invalid");
+        } else {
+            info = {
+                email: $("#email").val()
+            };
+            $.ajax({
+                type: "post",
+                url: "{{route('check.email')}}",
+                context: this,
+                data: info,
+                success: function(data) {
+                    $("#form").addClass("was-validated");
+                    $("#infoModal").modal("show");
+                },
+                error: function() {
+                    $("#email").addClass("is-invalid");
+                    $(".invalid-feedback").text("Oops, não conseguimos encontrar esse e-mail...");
                 }
-                $('#modal').modal('show');
-            },
-            error: function() {
-              if ($('#error').text() != '') {
-                  $('#error').remove();
-              }
-              error = "<strong id='error' style='margin-top: 0px; margin-bottom: 0px;'>O número que inseriu não corresponde ao seu e-mail.</strong>";
-              $('#collapse-p').after(error);
-            }
-        });
+            });
+        }
     });
 </script>
 @endsection

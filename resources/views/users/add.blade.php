@@ -4,7 +4,7 @@
 @section('title', 'Adicionar administrador')
 
 {{-- CSS Style Link --}}
-@section('styleLinks')
+@section('style-links')
 <link href="{{asset('/css/users.css')}}" rel="stylesheet">
 @endsection
 

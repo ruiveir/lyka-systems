@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App;
@@ -157,8 +156,7 @@ class PaymentController extends Controller
         }
         return view('payments.list', compact('responsabilidades', 'valorTotalPendente', 'valorTotalPago', 'valorTotalDivida', 'estudantes', 'agentes', 'subagentes', 'universidades', 'fornecedores', 'currentdate'));
       }else{
-          /* não tem permissões */
-          abort (401);
+          abort (403);
       }
     }
 
@@ -310,8 +308,7 @@ class PaymentController extends Controller
             return response()->json('NOK', 404);
         }
       }else{
-          /* não tem permissões */
-          abort (401);
+          abort (403);
       }
     }
 
@@ -322,8 +319,7 @@ class PaymentController extends Controller
         $fase = Fase::where('idFase', $fase->idFase)->with(["produto", "produto.universidade1", "produto.agente"])->first();
         return view('payments.add', compact('cliente', 'fase', 'responsabilidade', 'contas'));
       }else{
-          /* não tem permissões */
-          abort (401);
+          abort (403);
       }
     }
 
@@ -334,8 +330,7 @@ class PaymentController extends Controller
         $fase = Fase::where('idFase', $fase->idFase)->with(["produto", "produto.universidade1", "produto.cliente"])->first();
         return view('payments.add', compact('agente', 'fase', 'responsabilidade', 'contas'));
       }else{
-          /* não tem permissões */
-          abort (401);
+          abort (403);
       }
     }
 
@@ -346,8 +341,7 @@ class PaymentController extends Controller
         $fase = Fase::where('idFase', $fase->idFase)->with(["produto", "produto.universidade1", "produto.cliente"])->first();
         return view('payments.add', compact('subagente', 'fase', 'responsabilidade', 'contas'));
       }else{
-          /* não tem permissões */
-          abort (401);
+          abort (403);
       }
     }
 

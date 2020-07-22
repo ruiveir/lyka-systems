@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Jobs;
 
 use Mail;
@@ -17,15 +16,17 @@ class RestorePassword implements ShouldQueue
 
     protected $email;
     protected $name;
+    protected $auth_key;
 
-    public function __construct(string $email, string $name)
+    public function __construct($email, $name, $auth_key)
     {
         $this->email = $email;
         $this->name = $name;
+        $this->auth_key = $auth_key;
     }
 
     public function handle()
     {
-        Mail::to($this->email)->send(new RestorePasswordMail($this->name));
+        Mail::to($this->email)->send(new RestorePasswordMail($this->name, $this->auth_key));
     }
 }

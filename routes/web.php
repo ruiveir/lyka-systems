@@ -236,7 +236,7 @@ Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
 
 /* Account Confirmation */
 Route::get('/ativacao-conta/{user}', 'AccountConfirmationController@index')->name('confirmation.index');
-Route::get('/ativacao-conta/{user}/confirmar-chave', 'AccountConfirmationController@keyconfirmation')->name('confirmation.key');
+Route::post('/ativacao-conta/{user}/confirmar-chave', 'AccountConfirmationController@keyconfirmation')->name('confirmation.key');
 Route::put('/ativacao-conta/{user}/confirmar-password', 'AccountConfirmationController@password')->name('confirmation.password');
 Route::get('/ativacao-conta/{user}/restaurar-conta', 'AccountConfirmationController@restore')->name('confirmation.restore');
 Route::get('/login-verification/{user}', 'AccountConfirmationController@loginVerificationView')->name('confirmation.loginVerificationView');
@@ -245,10 +245,9 @@ Route::get('/verify/{user}', 'AccountConfirmationController@loginVerification')-
 /* Restore password */
 Route::get('/restaurar-password', 'AccountConfirmationController@mailrestorepassword')->name('mailrestore.password');
 Route::post('/restaurar-passwords/confirmacao-email', 'AccountConfirmationController@checkemail')->name('check.email');
-Route::post('/restaurar-passwords/confirmacao-telemovel', 'AccountConfirmationController@checkphone')->name('check.phone');
 Route::get('/restaurar-password/{user}', 'AccountConfirmationController@restorepassword');
-Route::post('/restaurar-password/confirmacao-utilizador', 'AccountConfirmationController@checkuser')->name('check.user');
-Route::post('/restaurar-password/confirmacao-password', 'AccountConfirmationController@checkpassword')->name('check.password');
+Route::post('/restaurar-password/{user}/check-key', 'AccountConfirmationController@checkkey')->name('check.key');
+Route::put('/restaurar-password/{user}/nova-password', 'AccountConfirmationController@newpassword')->name('new.password');
 
 /* Listagens */
 Route::resource('/listagens', 'ListagemController');

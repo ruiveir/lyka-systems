@@ -1,5 +1,5 @@
 @extends('layout.auth')
-@section('title', 'Restaurar palavra-chave')
+@section('title', 'Ativação de conta')
 @section('style')
 <style media="screen">
     #code {
@@ -25,22 +25,21 @@
                 <div class="card-body p-0">
                     <!-- Nested Row within Card Body -->
                     <div class="row">
-                        <div class="col-lg-6 d-none d-lg-block bg-password-image"></div>
+                        <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
                         <div class="col-lg-6">
                             <div class="p-5">
                                 <div id="title" class="text-center">
-                                    <h1 class="h4 text-gray-900 mb-2">Pretende uma password nova?</h1>
-                                    <p class="mb-4">Basta colocar a chave de segurança fornecida e estará muito perto da sua nova password.</p>
+                                    <h1 class="h4 text-gray-900 mb-2">Vamos ativar a sua conta!</h1>
+                                    <p class="mb-4">Introduza o código de autenticação que lhe foi fornecido para dar continuidade à ativação da sua conta.</p>
                                 </div>
-                                <form class="user needs-validation" novalidate id="form" method="POST">
-                                    @csrf
+                                <form id="form" class="user needs-validation" novalidate method="POST">
                                     <div class="form-group">
-                                        <input type="text" class="form-control form-control-user" id="code" maxlength="5" placeholder="Insira a chave de segurança..." required>
+                                        <input id="code" type="text" class="form-control form-control-user" maxlength="5" autocomplete="off" placeholder="Inserir o código de autenticação..." autofocus>
                                         <div class="invalid-feedback">
                                             Oops, parece que algo não está bem...
                                         </div>
                                     </div>
-                                    <button type="submit" class="btn btn-primary btn-user btn-block">Confirmar</button>
+                                    <button class="btn btn-primary btn-user btn-block" type="submit" name="button">Confirmar</button>
                                 </form>
                                 <form id="passform" class="user needs-validation" novalidate method="POST">
                                     <div class="form-group">
@@ -55,7 +54,7 @@
                                             Oops, parece que as passwords não são iguais...
                                         </div>
                                     </div>
-                                    <button class="btn btn-primary btn-user btn-block" type="submit" name="button">Quero esta password!</button>
+                                    <button class="btn btn-primary btn-user btn-block" type="submit" name="button">Ativar conta!</button>
                                 </form>
                             </div>
                         </div>
@@ -71,13 +70,13 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header pl-4 pb-1 pt-4">
-                <h5 class="modal-title text-gray-800 font-weight-bold">Hurray, password restaurada! 🎉🎉</h5>
+                <h5 class="modal-title text-gray-800 font-weight-bold">Aeee, conta ativada 🎉🎉</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close-button">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body text-gray-800 pl-4 pr-5">
-                Agora que já têm a sua nova password, pode continuar o seu trabalho na aplicação Lyka! Mas primeiro tem que inicar sessão...
+                Agora que a sua conta já está ativada, pode começar a explorar a aplicação Lyka! Mas primeiro temos que iniciar sessão...
             </div>
             <div class="modal-footer mt-3">
                 <a data-dismiss="modal" class="mr-4 font-weight-bold" id="close-option">Fechar</a>
@@ -95,34 +94,31 @@
         }
     });
 
-    $("#code").change(function() {
+    $("#code").change(function(){
         $("#code").removeClass("is-invalid");
     });
 
+    // Auth Key Form
     $('#form').submit(function(event) {
         event.preventDefault();
-        if ($("#code").val() == "") {
-            $("#code").addClass("is-invalid");
-        } else {
-            info = {
-                code: $("#code").val()
-            };
-            $.ajax({
-                type: "post",
-                url: "{{route('check.key', $user)}}",
-                context: this,
-                data: info,
-                success: function(data) {
-                    $("#form").addClass("was-validated");
-                    $("#title > p").text("Apenas necessita de inserir uma password segura e de seguida confirmar a sua escolha.");
-                    $("#form").remove();
-                    $("#passform").css("display", "block");
-                },
-                error: function() {
-                    $("#code").addClass("is-invalid");
-                }
-            });
+        info = {
+            code: $("#code").val()
         }
+        $.ajax({
+            type: "post",
+            url: "{{route('confirmation.key', $user)}}",
+            context: this,
+            data: info,
+            success: function(data) {
+                $("#form").addClass("was-validated");
+                $("#title > p").text("Insira uma password segura e de seguida confirme a mesma para ativar a sua conta.");
+                $("#form").remove();
+                $("#passform").css("display", "block");
+            },
+            error: function() {
+                $("#code").addClass("is-invalid");
+            }
+        });
     });
 
     $("#password").change(function(){
@@ -168,7 +164,7 @@
             $("#passform").addClass("was-validated");
             $.ajax({
                 type: "PUT",
-                url: "{{route('new.password', $user)}}",
+                url: "{{route('confirmation.password', $user)}}",
                 context: this,
                 data: info,
                 success: function(data) {

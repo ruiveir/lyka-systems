@@ -12,10 +12,12 @@ class RestorePasswordMail extends Mailable
     use Queueable, SerializesModels;
 
     public $name;
+    public $auth_key;
 
-    public function __construct(string $name)
+    public function __construct($name, $auth_key)
     {
         $this->name = $name;
+        $this->auth_key = $auth_key;
     }
 
     public function build()
@@ -25,6 +27,7 @@ class RestorePasswordMail extends Mailable
           ->markdown('mails.restore-password')
           ->with([
               'name' => $this->name,
+              'key' => $this->auth_key,
               'link' => url('/').'/restaurar-password/'.post_slug($this->name)
           ]);
     }

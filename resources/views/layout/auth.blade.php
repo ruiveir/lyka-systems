@@ -1,37 +1,39 @@
 <!DOCTYPE html>
-<html lang="pt" dir="ltr">
+<html lang="pt">
 
 <head>
+
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <title>@yield('title') - Lyka Systems</title>
 
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Favicon -->
     <link rel="shortcut icon" href="{{ asset('/media/favicon.png') }}" type="image/x-icon">
-    <!-- Scripts -->
-    <script src="https://unpkg.com/feather-icons"></script>
-    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-    <!-- Bootstrap core CSS -->
-    <link href="{{ asset('/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-    <!-- Styles -->
-    <link href="{{ asset('/css/auth.css') }}" rel="stylesheet">
+    <!-- Fontawesome core CSS -->
+    <link href="{{asset('/vendor/fontawesome-free/css/all.min.css')}}" rel=" stylesheet" type="text/css">
+    <!-- Lyka Font -->
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <!-- CSS Link -->
+    <link href="{{asset("/css/sb-admin-2.css")}}" rel="stylesheet">
+    <link href="{{asset("/css/modal.css")}}" rel="stylesheet">
+    @yield('style')
 </head>
 
-<body>
-    <div class="background">
-        @yield('content')
-        <div class="copyright">
-            <p class="text-center">© {{ date('Y') }} Direitos de autor. Lyka Systems todos os direitos reservados.</p>
-        </div>
-    </div>
+<body class="bg-gradient-primary">
+    <!-- Begin of content-->
+    @yield('content')
+
     @hasSection('scripts')
-        <script src="{{asset('/vendor/jquery/jquery.min.js')}}"></script>
-        <script src="{{asset('/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
-        @yield('scripts')
+    <!-- Bootstrap core JavaScript-->
+    <script src="{{asset('/vendor/jquery/jquery.min.js')}}"></script>
+    <script src="{{asset('/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+    <script src="{{asset('/vendor/jquery-easing/jquery.easing.min.js')}}"></script>
+    <!-- SBAdmin JavaScript-->
+    <script src="{{asset('/js/sb-admin-2.min.js')}}"></script>
+    @yield('scripts')
     @endif
 </body>
 

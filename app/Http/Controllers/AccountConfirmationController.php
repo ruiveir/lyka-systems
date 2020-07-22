@@ -20,40 +20,35 @@ class AccountConfirmationController extends Controller
       }elseif($user->auth_key == null) {
           return view('auth.account-inactive', compact('user'));
       }else {
-          return view('auth.confirmation-key', compact('user'));
+          return view('auth.activate-account', compact('user'));
       }
     }
 
     public function keyconfirmation(Request $request, User $user)
     {
-      $auth_key = $request->only('key');
+      $auth_key = $request->input('code');
 
-      if ($user->auth_key == $auth_key['key']) {
-          return view('auth.confirmation-password', compact('user'));
+      if ($user->auth_key == $auth_key) {
+          return response()->json('OK', 200);
       }else {
-          $error = "O código de autenticação que introduziu é inválido.";
-          return view('auth.confirmation-key', compact('user', 'error'));
+          return response()->json('NOK', 500);
       }
     }
 
     public function password(Request $request, User $user)
     {
       $password = $request->input('password');
-      $passwordConf = $request->input('password-confirmation');
 
-      if ($password == $passwordConf) {
-          $hashed = Hash::make($password);
-          $user->password = $hashed;
-          $user->estado = true;
-          $user->save();
-          if (Auth::check()) {
-              Auth::logout();
-          }
-          return view('auth.accountactive', compact('user'));
-      }else {
-          $error = "As palavras-chaves não coincidem. Verifique a sua inserção.";
-          return view('auth.confirmation-password', compact('user', 'error'));
+      $hashed = Hash::make($password);
+      $user->password = $hashed;
+      $user->estado = true;
+      $user->save();
+
+      if (Auth::check()) {
+          Auth::logout();
       }
+
+      return response()->json('OK', 200);
     }
 
     public function restore(Request $request, User $user)
@@ -87,76 +82,22 @@ class AccountConfirmationController extends Controller
     public function checkemail(Request $request)
     {
         $email = $request->input('email');
-        $users = User::where('email', $email)
-        ->where(function($users){
-            $users->where('auth_key', '!=', null)
-            ->where('estado', 1);
-        })->first();
+        $user = User::where('email', $email)->with("admin", "agente", "cliente")->first();
+        $auth_key = $user->auth_key;
 
-        if ($users == null) {
-            return response()->json('NOK', 500);
-        }
-
-        switch ($users->tipo) {
-            case 'admin':
-                $user = Administrador::where('idAdmin', $users->idAdmin)
-                ->select('nome', 'apelido', 'telefone1', 'email')
-                ->first();
-            break;
-
-            case 'agente':
-                $user = Agente::where('idAgente', $users->idAgente)
-                ->select('nome', 'apelido', 'telefone1', 'email')
-                ->first();
-            break;
-
-            case 'cliente':
-                $user = Cliente::where('idCliente', $users->idCliente)
-                ->select('nome', 'apelido', 'telefone1', 'email')
-                ->first();
-            break;
-        }
-
-        return $user->toJson();
-    }
-
-    public function checkphone(Request $request)
-    {
-        $codephone = $request->input('code');
-        $email = $request->input('email');
-        $phone = $request->input('phone');
-
-        $phone = str_split($phone);
-
-        for ($i=0; $i < 3; $i++) {
-            array_pop($phone);
-        }
-
-        $phone = implode('', $phone);
-        $phoneNumber = $phone.$codephone;
-
-        $users = User::where('email', $email)->first();
-
-        switch ($users->tipo) {
-            case 'admin':
-                $user = Administrador::where('idAdmin', $users->idAdmin)->first();
-            break;
-
-            case 'agente':
-                $user = Agente::where('idAgente', $users->idAgente)->first();
-            break;
-
-            case 'cliente':
-                $user = Cliente::where('idCliente', $users->idCliente)->first();
-            break;
-        }
-
-        $email = $user->email;
-        $name = $user->nome.' '.$user->apelido;
-
-        if ($user->telefone1 == $phoneNumber) {
-            $users->update(['password' => null]);
-            dispatch(new RestorePassword($email, $name));
+        if ($user != null) {
+            switch ($user->tipo) {
+                case 'admin':
+                    $name = $user->admin->nome.' '.$user->admin->apelido;
+                    break;
+                case 'agente':
+                    $name = $user->agente->nome.' '.$user->agente->apelido;
+                    break;
+                case 'cliente':
+                    $name = $user->cliente->nome.' '.$user->cliente->apelido;
+                    break;
+            }
+            dispatch(new RestorePassword($email, $name, $auth_key));
             return response()->json('OK', 200);
         }else {
             return response()->json('NOK', 500);
@@ -165,13 +106,34 @@ class AccountConfirmationController extends Controller
 
     public function restorepassword(User $user)
     {
-        $password = User::where('idUser', $user->idUser)->select('password')->first();
         $user = User::where('idUser', $user->idUser)->select('idUser', 'email', 'slug')->first();
-        if ($password->password == null) {
-            return view('auth.restore-password', compact('user'));
+        return view('auth.restore-password', compact('user'));
+    }
+
+    public function checkkey(Request $request, User $user)
+    {
+        $code = $request->input('code');
+
+        if ($user->auth_key == $code) {
+            return response()->json("OK", 200);
         }else {
-            abort(403);
+            return response()->json("NOK", 500);
         }
+    }
+
+    public function newpassword(Request $request, User $user)
+    {
+        $password = $request->input("password");
+        $hashed = Hash::make($password);
+        $user->password = $hashed;
+        $user->estado = true;
+        $user->save();
+
+        if (Auth::check()) {
+            Auth::logout();
+        }
+
+        return response()->json("OK", 200);
     }
 
     public function checkuser(Request $request)

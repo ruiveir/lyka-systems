@@ -3,8 +3,13 @@
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800 font-weight-bold">Dashboard</h1>
-        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Gerar Relatório</a>
+        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+        <a href="#" class="btn btn-primary btn-icon-split btn-sm shadow-sm">
+            <span class="icon text-white-50">
+                <i class="fas fa-download fa-sm"></i>
+            </span>
+            <span class="text">Gerar Relatório</span>
+        </a>
     </div>
 
     <!-- Content Row -->
