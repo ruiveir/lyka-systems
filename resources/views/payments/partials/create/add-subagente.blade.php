@@ -1,45 +1,3 @@
-<div class="cards-navigation">
-    <div class="title">
-        <h6>Secção de pagamento: {{$subagente->nome.' '.$subagente->apelido.' ('.$fase->descricao.')'}}</h6>
-    </div>
-    <br>
-    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        <p style="font-weight:500;">
-            Este pagamento está associado à fase <strong>{{$fase->descricao}}</strong> do produto <strong>{{$fase->produto->descricao}}</strong>, que têm como cliente
-            <strong>{{$fase->produto->cliente->nome.' '.$fase->produto->cliente->apelido}}</strong> e universidade <strong>{{$fase->produto->universidade1->nome}}</strong>.
-        </p>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    <div class="payment-card shadow-sm">
-        <div id="loader-background">
-            <div id="loader"></div>
-        </div>
-        <p style="margin-left: 0px !important; font-weight:600;">Valor a pagar:</p>
-        <p style="margin-left: 0px !important;">{{number_format((float)$responsabilidade->valorSubAgente, 2, ',', '').'€'}}</p>
-        <hr>
-        <form id="registar-pagamento-form" class="mt-4">
-            <input type="text" id="idResp" name="idResp" value="{{$responsabilidade->idResponsabilidade}}" hidden="true">
-            <div class="row">
-                <div class="col-md-4">
-                    <label for="valorPagoSubAgente">Valor pago ao subagente</label>
-                    <br>
-                    <input type="text" name="valorPagoSubAgente" id="valorPagoSubAgente" value="{{number_format((float)$responsabilidade->valorSubAgente, 2, ',', '').'€'}}">
-                </div>
-                <div class="col-md-4" oncontextmenu="return showContextMenu();">
-                    <label for="comprovativoPagamentoSubAgente">Comp. de pagamento</label>
-                    <br>
-                    <input type="file" name="comprovativoPagamentoSubAgente" id="upfileCliente" onchange="sub(this)">
-                    <div class="input-file-div text-truncate" id="addFileButtonCliente" onclick="getFileCliente()">Adicionar um ficheiro</div>
-                </div>
-                <div class="col-md-4">
-                    <label for="dataSubAgente">Data de pagamento</label>
-                    <br>
-                    <input name="dataSubAgente" id="dataSubAgente" type="date">
-                </div>
-            </div>
-            <br>
             <div class="row">
                 <div class="col-md-4">
                     <label for="contaSubAgente">Associar conta bancária</label>
@@ -79,4 +37,57 @@
     </div>
     </form>
     <br>
-</div>
+</div> --}}
+
+
+<form class="form-group needs-validation" id="registar-pagamento-form" novalidate action="{{route('report.send')}}" method="POST" enctype="multipart/form-data">
+    @csrf
+    <input type="text" id="idResp" name="idResp" value="{{$responsabilidade->idResponsabilidade}}" hidden="true">
+    <div class="container-fluid">
+        <div class="form-row">
+            <div class="col-md-6 mb-3">
+                <label for="valorPagoSubAgente" class="text-gray-900">Valor pago ao subagente <sup class="text-danger small">&#10033;</sup> </label>
+                <input type="text" class="form-control" name="valorPagoSubAgente" id="valorPagoSubAgente" value="{{number_format((float)$responsabilidade->valorSubAgente, 2, ',', '').'€'}}" required>
+                <div class="invalid-feedback">
+                    Oops, parece que algo não está bem...
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="comprovativoPagamentoSubAgente" class="text-gray-900">Comprovativo de pagamento</label>
+                <div class="custom-file mb-3">
+                    <input type="file" class="custom-file-input" name="comprovativoPagamentoSubAgente" id="comprovativoPagamentoSubAgente">
+                    <small class="form-text text-muted">O comprovativo não deve ultrupassar 2MB.</small>
+                    <label class="custom-file-label" for="screenshot" data-browse="Escolher">Escolher ficheiro...</label>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-6 mb-3">
+                <label for="dataSubAgente" class="text-gray-900">Data de pagamento</label>
+                <input type="date" class="form-control" name="dataSubAgente" id="dataSubAgente">
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="screenshot" class="text-gray-900">Conta bancária</label>
+                <select class="custom-select" name="contaSubAgente" id="contaSubAgente">
+                    @foreach ($contas as $conta)
+                    <option value="{{$conta->idConta}}">{{$conta->descricao}}</option>
+                    @endforeach
+                    <option selected disabled hidden>Escolher conta bancária</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col mb-3">
+                <label for="relatorio" class="text-gray-900">Descrição do problema <sup class="text-danger small">&#10033;</sup></label>
+                <textarea class="form-control" name="relatorio" id="relatorio" rows="5" required placeholder="Qual é o problema?"></textarea>
+                <div class="invalid-feedback">
+                    Oops, parece que algo não está bem...
+                </div>
+            </div>
+        </div>
+        <div class="text-right mt-3" id="groupBtn">
+            <span class="mr-4 font-weight-bold" onclick="window.history.back();" id="cancelBtn" style="cursor:pointer;">Cancelar</span>
+            <button type="submit" name="button" class="btn btn-primary text-white font-weight-bold" id="submitbtn">Enviar relatório</button>
+        </div>
+    </div>
+</form>

@@ -78,7 +78,7 @@
                             @endif
                             </td>
                             <td class="text-center align-middle">
-                                <a href="{{route('payments.cliente', [$responsabilidade->agente, $responsabilidade->fase, $responsabilidade])}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                <a href="{{route('payments.agente', [$responsabilidade->agente, $responsabilidade->fase, $responsabilidade])}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
                                 <button data-toggle="modal" data-target="#deleteModal" data-id="{{$responsabilidade->idResponsabilidade}}" class="btn btn-sm btn-outline-danger" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
                             </td>
                         </tr>
@@ -102,7 +102,7 @@
                             @endif
                             </td>
                             <td class="text-center align-middle">
-                                <a href="{{route('payments.cliente', [$responsabilidade->subAgente, $responsabilidade->fase, $responsabilidade])}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                <a href="{{route('payments.subagente', [$responsabilidade->subAgente, $responsabilidade->fase, $responsabilidade])}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
                                 <button data-toggle="modal" data-target="#deleteModal" data-id="{{$responsabilidade->idResponsabilidade}}" class="btn btn-sm btn-outline-danger" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
                             </td>
                         </tr>
@@ -126,7 +126,7 @@
                             @endif
                             </td>
                             <td class="text-center align-middle">
-                                <a href="{{route('payments.cliente', [$responsabilidade->universidade1, $responsabilidade->fase, $responsabilidade])}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                <a href="{{route('payments.uni1', [$responsabilidade->universidade1, $responsabilidade->fase, $responsabilidade])}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
                                 <button data-toggle="modal" data-target="#deleteModal" data-id="{{$responsabilidade->idResponsabilidade}}" class="btn btn-sm btn-outline-danger" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
                             </td>
                         </tr>
@@ -150,7 +150,7 @@
                             @endif
                             </td>
                             <td class="text-center align-middle">
-                                <a href="{{route('payments.cliente', [$responsabilidade->universidade2, $responsabilidade->fase, $responsabilidade])}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                <a href="{{route('payments.uni2', [$responsabilidade->universidade2, $responsabilidade->fase, $responsabilidade])}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
                                 <button data-toggle="modal" data-target="#deleteModal" data-id="{{$responsabilidade->idResponsabilidade}}" class="btn btn-sm btn-outline-danger" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
                             </td>
                         </tr>
