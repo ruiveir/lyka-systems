@@ -26,7 +26,7 @@
             <h6>Adicionar produto</h6>
         </div>
         <br>
-        <form method="POST" action="{{route('produtos.store', 'null')}}" class="form-group needs-validation pt-3" id="form_produto"
+        <form method="POST" action="{{route('produtos.store', $produtoStock)}}" class="form-group needs-validation pt-3" id="form_produto"
             enctype="multipart/form-data" novalidate>
             @csrf<div class="tab-content p-2 mt-3" id="myTabContent">
 
@@ -46,7 +46,7 @@
                         </div>
                     </div>
                     <br>
-                    <div class="row">
+                    {{--<div class="row">
                         <div class="col">
                             <label for="nome">Escolha o produto: <span class="text-danger">*</span></label>
                             <select class="form-control" id="produto" onchange="AtualizaProduto(this.value, $(this).closest('#form_produto'))" required>
@@ -59,7 +59,7 @@
                                 @endforeach
                             </select><br><br>
                         </div>
-                    </div>
+                    </div>--}}
                     <div class="row" id="formulario-produto">
                         <div class="col">
                             <div><span><b>Produto</b></span></div><br>
@@ -269,10 +269,26 @@
     <script>
         var clones = $('#clonar').clone();
         $('.fornecedor').html('');
-        $("#formulario-produto").css("display", "none");
+        /*$("#formulario-produto").css("display", "none");
         $("#formulario-fases").css("display", "none");
 
 
+        /*$(document).ready(function() {
+            bsCustomFileInput.init();
+            $(".needs-validation").submit(function(event) {
+                if (this.checkValidity() === false) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }/* else {
+                    $("#cancelBtn").removeAttr("onclick");
+                    button =
+                        "<button class='btn btn-primary' type='submit' disabled><span class='spinner-border spinner-border-sm' role='status' aria-hidden='true' style='position:relative; bottom:4px; right:3px;'></span>A enviar...</button>";
+                    $("#groupBtn").append(button);
+                    $("#submitbtn").remove();
+                }*//*
+                $(".needs-validation").addClass("was-validated");
+            });
+        });/**/
         function addFornecedor(idFase, closest){
 	        var numF = parseInt(closest.find('.numF').first().text());
 			var clone = clones.clone();
@@ -301,7 +317,7 @@
             fornecedor.css("display", "none");
         }
 
-        function AtualizaProduto(idproduto, form){
+        /*function AtualizaProduto(idproduto, form){
             if(idproduto>0){
                 AjaxProdutos(idproduto[0]);
                 form.attr('action','/produtos/store/'+idproduto[0]);
@@ -343,7 +359,7 @@
                     }
                 }
             })
-        }
+        }*/
     </script>
 
 @endsection

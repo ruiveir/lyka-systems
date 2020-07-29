@@ -237,7 +237,7 @@
                     <div class="row mt-2 pl-2">
                         {{-- Botão para adicionar novo produto --}}
                         @if (Auth::user()->tipo == "admin")
-                        <a class="name_link text-center m-2" href="{{route('produtos.create',$client)}}">
+                        <a class="name_link text-center m-2" href="{{route('produtos.list',$client)}}">
                             <div class="col bg-light border border-info rounded shadow-sm p-4"
                                 style="height:143px; min-width: 160px">
                                 <div style="font-size:80px; line-height:60px "><strong>+</strong></div>

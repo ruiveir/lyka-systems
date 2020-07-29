@@ -22,20 +22,38 @@ use App\Http\Requests\StoreProdutoRequest;
 class ProdutoController extends Controller
 {
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function list($client)
+    {
 
+        /* Permissões */
+        if (Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
+            $produtosStock = ProdutoStock::all();
+        }else{
+            abort (401);
+        }
+        return view('produtos.list', compact('produtosStock','client'));
+
+    }
     /**
     * Display the specified resource.
     *
     * @param  \App\Cliente  $client
     * @return \Illuminate\Http\Response
     */
-    public function create(Cliente $client)
+    public function create(Cliente $client, ProdutoStock $produtoStock)
     {
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
             $cliente = $client;
             $produto = new Produto;
             $produto->idCLiente = $cliente->idCliente;
-            $produtoStock = ProdutoStock::all();
+            $produto->tipo = $produtoStock->tipoProduto;
+            $produto->descricao = $produtoStock->descricao;
+            $produto->anoAcademico = $produtoStock->anoAcademico;
             $Agentes = Agente::where('tipo','=','Agente')->orderBy('nome')->get();
             $SubAgentes = Agente::where('tipo','=','Subagente')->orderBy('nome')->get();
             $Universidades = Universidade::all();
@@ -44,8 +62,10 @@ class ProdutoController extends Controller
             $Responsabilidades = null;
             $relacao = new RelFornResp;
 
-            for($i=0;$i<20;$i++){
+            $fasesStock = $produtoStock->faseStock;
+            foreach($fasesStock as $faseStock){
                 $fase = new Fase;
+                $fase->descricao = $faseStock->descricao;
                 $Fases[] = $fase;
                 $responsabilidade = new Responsabilidade;
                 $Responsabilidades[] = $responsabilidade;
@@ -68,7 +88,7 @@ class ProdutoController extends Controller
     */
     public function store(StoreProdutoRequest $request, ProdutoStock $produtoStock){
 
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
             $fields = $request->all();
             //dd($fields);
 
@@ -105,7 +125,8 @@ class ProdutoController extends Controller
             $valorTSubAgente = 0;
 
             $fasesStock = $produtoStock->faseStock;
-            for($i=1;$i<=20;$i++){
+            
+            for($i=1;$i<=count($fasesStock->toArray());$i++){
                 if($fields['descricao-fase'.$i]!=null){
 
 
@@ -272,7 +293,7 @@ class ProdutoController extends Controller
             $permissao = true;
         }
 
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)|| $permissao){
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)|| $permissao && Auth()->user()->email != "admin@test.com"){
             $Fases = $produto->fase;
             $Today = (new DateTime)->format('Y-m-d');
             return view('produtos.show',compact("produto",'Fases','Today'));
@@ -318,7 +339,7 @@ class ProdutoController extends Controller
             $permissao = true;
         }
 
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)|| $permissao){
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)|| $permissao && Auth()->user()->email != "admin@test.com"){
             $Fornecedores = Fornecedor::all();
             $Agentes = Agente::where('tipo','=','Agente')->orderBy('nome')->get();
             $SubAgentes = Agente::where('tipo','=','Subagente')->orderBy('nome')->get();
@@ -355,7 +376,7 @@ class ProdutoController extends Controller
             $permissao = true;
         }
 
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)|| $permissao){
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)|| $permissao && Auth()->user()->email != "admin@test.com"){
             
             $fases = $produto->fase;
             $fields = $request->all();
@@ -586,7 +607,7 @@ class ProdutoController extends Controller
 
     public function destroy(Produto $produto)
     {
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
             $produto->delete();
             $fases = $produto->fase;
             foreach($fases as $fase){
