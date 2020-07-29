@@ -76,7 +76,7 @@ class ClientController extends Controller
     public function index(){
 
         /* Permissões */
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||
         (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)){
 
 
@@ -151,7 +151,7 @@ class ClientController extends Controller
     */
     public function create(){
 
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
             $client = new Cliente;
             $agents = Agente::all();
 
@@ -180,7 +180,7 @@ class ClientController extends Controller
     */
     public function store(StoreClientRequest $requestClient){
 
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
             $t=time(); /*  data atual */
 
             /* obtem os dados para criar o cliente */
@@ -310,7 +310,7 @@ class ClientController extends Controller
             $permissao = true;
         }
 
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||
             (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null &&
             $client->idAgente == Auth()->user()->idAgente) || $permissao){
 
@@ -430,8 +430,7 @@ class ClientController extends Controller
             $permissao = true;
         }
 
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
-            (Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||
             (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null &&
             $client->idAgente == Auth()->user()->idAgente) || $permissao){
 
@@ -487,7 +486,7 @@ class ClientController extends Controller
             $permissao = true;
         }
 
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||
             (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null &&
             $client->idAgente == Auth()->user()->idAgente && $client->editavel) || $permissao){
 
@@ -558,7 +557,7 @@ class ClientController extends Controller
 
     public function update(UpdateClienteRequest $request, Cliente $client){
 
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||
             (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null &&
             $client->idAgente == Auth()->user()->idAgente && $client->editavel) || $permissao){
 

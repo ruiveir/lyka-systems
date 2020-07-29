@@ -20,7 +20,7 @@ class LibraryController extends Controller
     public function index()
     {
 
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||
             (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)){
             /* Ficheiros para os agentes */
             if (Auth::user()->tipo != "admin" ){
@@ -83,7 +83,7 @@ class LibraryController extends Controller
      */
     public function create()
     {
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
             $library = new Biblioteca;
             return view('libraries.add' , compact('library'));
         }else{
@@ -100,7 +100,7 @@ class LibraryController extends Controller
      */
     public function store(StoreLibraryRequest $request)
     {
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
             $file = new Biblioteca;
             $fields = $request->validated();
             $file->fill($fields);
@@ -144,7 +144,7 @@ class LibraryController extends Controller
      */
     public function edit(Biblioteca $library)
     {
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
             /* Permissões */
             if (Auth::user()->tipo != "admin" ){
                 abort (401);
@@ -167,7 +167,7 @@ class LibraryController extends Controller
      */
     public function update(UpdateLibraryRequest $request, Biblioteca $library)
     {
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
             $fields = $request->validated();
             $library->fill($fields);
 
@@ -213,7 +213,7 @@ class LibraryController extends Controller
      */
     public function destroy(Biblioteca $library)
     {
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
 
 
 

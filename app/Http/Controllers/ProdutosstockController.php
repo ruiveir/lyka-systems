@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 class ProdutosstockController extends Controller
 {
     public function index(){
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
             $produtoStocks = ProdutoStock::all();
             $totalfasestock = FaseStock::all()->count();
             $totaldocstock = DocStock::all()->count();
@@ -24,7 +24,7 @@ class ProdutosstockController extends Controller
     }
 
     public function create(){
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
             $produtostock = new ProdutoStock();
 
             return view('produtostock.add', compact('produtostock'));
@@ -35,7 +35,7 @@ class ProdutosstockController extends Controller
     }
 
     public function store(StoreProdutosstockRequest $requestProduto){
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
             $produtoFields = $requestProduto->validated();
 
             $produtoStock = new ProdutoStock();
@@ -52,7 +52,7 @@ class ProdutosstockController extends Controller
 
     public function edit(ProdutoStock $produtostock)
     {
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
             return view('produtostock.edit', compact('produtostock'));
         }else{
             /* não tem permissões */
@@ -62,7 +62,7 @@ class ProdutosstockController extends Controller
 
     public function update(StoreProdutosstockRequest $request, ProdutoStock $produtostock)
     {
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
             $fields = $request->validated();
             $produtostock->fill($fields);
 
@@ -80,7 +80,7 @@ class ProdutosstockController extends Controller
 
     public function show(FaseStock $faseStocks,ProdutoStock $produtostock)
     {
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
             $nrfases = 1;
             $faseStocks = FaseStock::where('idProdutoStock', '=', $produtostock->idProdutoStock)->get();
             return view('produtostock.show', compact('produtostock', 'faseStocks', 'nrfases'));
@@ -91,7 +91,7 @@ class ProdutosstockController extends Controller
     }
 
     public function destroy(ProdutoStock $produtostock){
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
             $produtostock->delete();
 
             return redirect()->route('produtostock.index')->with('success', 'Produto stock eliminado com sucesso');

@@ -20,7 +20,7 @@ class ContactoController extends Controller
      */
     public function index()
     {
-        if (Auth::user()->tipo == "admin" && Auth()->user()->idAdmin != null){
+        if (Auth::user()->tipo == "admin" && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
             $contacts = Contacto::all();
 /*             where('Contacto.idUser', '=', Auth::user()->idUser)
             ->get(); */
@@ -38,7 +38,7 @@ class ContactoController extends Controller
      */
     public function create(Universidade $university=null)
     {
-        if (Auth::user()->tipo == "admin" && Auth()->user()->idAdmin != null){
+        if (Auth::user()->tipo == "admin" && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
             $contact = new Contacto;
 
             return view('contacts.add',compact('contact','university'));
@@ -55,7 +55,7 @@ class ContactoController extends Controller
      */
     public function store(StoreContactoRequest $request)
     {
-        if (Auth::user()->tipo == "admin" && Auth()->user()->idAdmin != null){
+        if (Auth::user()->tipo == "admin" && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
             $fields = $request->validated();
             $contact = new Contacto;
             $contact->fill($fields);
@@ -109,7 +109,7 @@ class ContactoController extends Controller
     public function show(contacto $contact, Universidade $university=null)
     {
 
-        if (Auth::user()->tipo == "admin" && Auth()->user()->idAdmin != null){
+        if (Auth::user()->tipo == "admin" && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
 
             /* Se tiver universidade, identifica-a */
             $university=Universidade::where("idUniversidade","=",$contact->idUniversidade)->first();
@@ -129,7 +129,7 @@ class ContactoController extends Controller
      */
     public function edit(contacto $contact, Universidade $university=null)
     {
-        if (Auth::user()->tipo == "admin" && Auth()->user()->idAdmin != null){
+        if (Auth::user()->tipo == "admin" && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
             return view('contacts.edit', compact('contact','university'));
         }else{
             abort(401);
@@ -145,7 +145,7 @@ class ContactoController extends Controller
      */
     public function update(UpdateContactoRequest $request, contacto $contact)
     {
-        if (Auth::user()->tipo == "admin" && Auth()->user()->idAdmin != null){
+        if (Auth::user()->tipo == "admin" && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
             $fields = $request->validated();
             $contact->fill($fields);
 
@@ -201,7 +201,7 @@ class ContactoController extends Controller
      */
     public function destroy(contacto $contact)
     {
-        if (Auth::user()->tipo == "admin" && Auth()->user()->idAdmin != null){
+        if (Auth::user()->tipo == "admin" && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
             $contact->delete();
             return back()->with('success', 'Contacto eliminado com sucesso');
         }else{

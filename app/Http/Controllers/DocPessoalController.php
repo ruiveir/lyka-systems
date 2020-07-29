@@ -33,8 +33,8 @@ class DocPessoalController extends Controller
             $permissao = true;
         }
 
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
-            (Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)|| $permissao){
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||
+            (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)|| $permissao){
 
             $documento = new DocPessoal;
             $tipoPAT = $docnecessario->tipo;
@@ -75,8 +75,8 @@ class DocPessoalController extends Controller
             $permissao = true;
         }
 
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
-            (Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)|| $permissao){
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||
+            (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)|| $permissao){
 
             $documento = new DocPessoal;
             $tipoPAT = $docnecessario->tipo;
@@ -113,8 +113,8 @@ class DocPessoalController extends Controller
             $permissao = true;
         }
 
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
-            (Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)|| $permissao){
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||
+            (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)|| $permissao){
 
             $fields = $request->all();
             //dd($fields);
@@ -147,7 +147,7 @@ class DocPessoalController extends Controller
             if(array_key_exists('dataValidade', $fields)){
                 $documento->dataValidade = date("Y-m-d",strtotime($fields['dataValidade'].'-1'));
             }
-            if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
+            if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
                 $documento->verificacao = true;
             }else{
                 $documento->verificacao = false;
@@ -204,8 +204,8 @@ class DocPessoalController extends Controller
             $permissao = true;
         }
 
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
-            (Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)|| $permissao){
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||
+            (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)|| $permissao){
 
             $fields = $request->all();
             //dd($fields);
@@ -238,7 +238,7 @@ class DocPessoalController extends Controller
             if(array_key_exists('dataValidade', $fields)){
                 $documento->dataValidade = date("Y-m-d",strtotime($fields['dataValidade'].'-1'));
             }
-            if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
+            if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
                 $documento->verificacao = true;
             }else{
                 $documento->verificacao = false;
@@ -271,7 +271,7 @@ class DocPessoalController extends Controller
 
     public function verify(DocPessoal $documento)
     {
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)){
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")){
             $infoDoc = (array)json_decode($documento->info);
             $infoKeys = array_keys($infoDoc);
             $tipoPAT = 'Pessoal';
@@ -286,7 +286,7 @@ class DocPessoalController extends Controller
 
     public function verifica(DocPessoal $documento)
     {
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)){
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")){
             $documento->verificacao = true;
             $documento->save();
             return redirect()->route('produtos.show',$documento->fase->produto);
@@ -317,8 +317,8 @@ class DocPessoalController extends Controller
             $permissao = true;
         }
 
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
-            (Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)|| $permissao){
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||
+            (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)|| $permissao){
             $infoDoc = (array)json_decode($documento->info);
             $infoKeys = array_keys($infoDoc);
             $tipoPAT = 'Pessoal';
@@ -353,8 +353,8 @@ class DocPessoalController extends Controller
             $permissao = true;
         }
 
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
-            (Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)|| $permissao){
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||
+            (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)|| $permissao){
 
             $fields = $request->all();
             //dd($documento);
@@ -386,7 +386,7 @@ class DocPessoalController extends Controller
             if(array_key_exists('dataValidade', $fields)){
                 $documento->dataValidade = date("Y-m-d",strtotime($fields['dataValidade'].'-1'));
             }
-            if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
+            if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
                 $documento->verificacao = true;
             }else{
                 $documento->verificacao = false;
@@ -425,7 +425,7 @@ class DocPessoalController extends Controller
 
     public function destroy(DocPessoal $documento)
     {
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
 
             $documento->delete();
 

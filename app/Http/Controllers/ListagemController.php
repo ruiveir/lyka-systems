@@ -12,7 +12,7 @@ class ListagemController extends Controller
 {
     public function index()
     {
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
             $administradores = Administrador::all();
             $agentes = Agente::all();
             $clientes = Cliente::all();

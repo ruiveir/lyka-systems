@@ -36,7 +36,7 @@ class AgenteController extends Controller
     {
 
         /* Permissões */
-        if ((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||(Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)){
+        if ((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||(Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)){
             $agents =null;
             if(Auth()->user()->tipo == 'admin'){
                 $agents = Agente::all();
@@ -68,7 +68,7 @@ class AgenteController extends Controller
     public function create()
     {
 
-        if (Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
+        if (Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
             $agent = new Agente;
 
             /* lista dos agentes principais */
@@ -94,7 +94,7 @@ class AgenteController extends Controller
      */
     public function store(StoreAgenteRequest $requestAgent, StoreUserRequest $requestUser)
     {
-        if (Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
+        if (Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
 
             /* obtem os dados para criar o agente */
             $agent = new Agente;
@@ -180,7 +180,7 @@ class AgenteController extends Controller
     public function show(Agente $agent)
     {
         /* Permissões */
-        if ((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
+        if ((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||
             (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null &&
             (Auth()->user()->idAgente == $agent->idAgenteAssociado||Auth()->user()->idAgente == $agent->idAgente))){
 
@@ -252,7 +252,7 @@ class AgenteController extends Controller
 
             return view('agents.show',compact("agent" ,'listagents','mainAgent','telefone2','IBAN','clients','comissoes'));
         }else{
-            abord(401);
+            abort(401);
         }
 
     }
@@ -267,12 +267,12 @@ class AgenteController extends Controller
     public function print(Agente $agent)
     {
         /* Permissões */
-        if ((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
+        if ((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||
             (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null &&
             (Auth()->user()->idAgente == $agent->idAgenteAssociado||Auth()->user()->idAgente == $agent->idAgente))){
             return view('agents.print',compact("agent"));
         }else{
-            abord(401);
+            abort(401);
         }
     }
 
@@ -284,7 +284,7 @@ class AgenteController extends Controller
      */
     public function edit(Agente $agent)
     {
-        if (Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
+        if (Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
             /* lista dos agentes principais */
             $listagents = Agente::
             whereNull('idAgenteAssociado')
@@ -310,7 +310,7 @@ class AgenteController extends Controller
      */
     public function update(UpdateAgenteRequest $request, Agente $agent)
     {
-        if (Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
+        if (Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
 
             $fields = $request->validated();
 
@@ -401,7 +401,7 @@ class AgenteController extends Controller
      */
     public function destroy(Agente $agent)
     {
-        if (Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
+        if (Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
         
             /* "Apaga" dos agentes */
             $agent->delete();

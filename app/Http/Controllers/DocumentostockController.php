@@ -17,7 +17,7 @@ class DocumentostockController extends Controller
     }
 
     public function store(StoreDocstockRequest $requestDoc, FaseStock $fasestock){
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
             $docFields = $requestDoc->validated();
 
             $docStock = new DocStock();
@@ -35,7 +35,7 @@ class DocumentostockController extends Controller
     }
 
     public function show(DocStock $documentostock){
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
             // $documentostock = DocStock::where('idFaseStock', '=', $fasestock->idFaseStock)->get();
 
             return view('documentostock.show', compact('documentostock'));
@@ -47,7 +47,7 @@ class DocumentostockController extends Controller
 
     public function edit(DocStock $documentostock)
     {
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
 
             return view('documentostock.edit', compact('documentostock'));
         }else{
@@ -58,7 +58,7 @@ class DocumentostockController extends Controller
 
     public function update(StoreDocstockRequest $request, DocStock $documentostock)
     {
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
             $fields = $request->validated();
             $documentostock->fill($fields);
 
@@ -75,7 +75,7 @@ class DocumentostockController extends Controller
     }
 
     public function destroy(DocStock $documentostock){
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
             $documentostock->delete();
 
             return redirect()->back()->with('success', 'Documento stock eliminado com sucesso');

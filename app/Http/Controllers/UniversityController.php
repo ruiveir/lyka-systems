@@ -18,7 +18,7 @@ class UniversityController extends Controller
     public function index()
     {
         /* Permissões */
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||
         (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)){
 
             $universities = Universidade::all();
@@ -30,7 +30,7 @@ class UniversityController extends Controller
 
             return view('universities.list', compact('universities'));
         }else{
-            abord(401);
+            abort(401);
         }
 
 
@@ -39,20 +39,20 @@ class UniversityController extends Controller
     public function create()
     {
         /* Permissões */
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
 
             $university = new Universidade;
 
             return view('universities.add', compact('university'));
         }else{
-            abord(401);
+            abort(401);
         }
     }
 
     public function store(StoreUniversidadeRequest $request)
     {
         /* Permissões */
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
             $fields = $request->validated();
 
             $university = new Universidade;
@@ -64,7 +64,7 @@ class UniversityController extends Controller
             $university->save();
             return redirect()->route('universities.show',$university)->with('success', 'Universidade Adicionada com Sucesso!');
         }else{
-            abord(401);
+            abort(401);
         }
 
     }
@@ -72,7 +72,7 @@ class UniversityController extends Controller
     public function show(Universidade $university)
     {
         /* Permissões */
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||
         (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)){
 
             /* Obtem os eventos da universidade */
@@ -115,7 +115,7 @@ class UniversityController extends Controller
 
             return view('universities.show', compact('university','eventos','clients','contacts'));
         }else{
-            abord(401);
+            abort(401);
         }
     }
 
@@ -125,11 +125,11 @@ class UniversityController extends Controller
     public function edit(Universidade $university)
     {
         /* Permissões */
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
 
             return view('universities.edit', compact('university'));
         }else{
-            abord(401);
+            abort(401);
         }
     }
 
@@ -138,7 +138,7 @@ class UniversityController extends Controller
     public function update(UpdateUniversidadeRequest $request, Universidade $university)
     {
         /* Permissões */
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
             $fields = $request->validated();
             $university->fill($fields);
 
@@ -153,7 +153,7 @@ class UniversityController extends Controller
 
             return redirect()->route('universities.show',$university)->with('success', 'Universidade Editada com Sucesso!');
         }else{
-            abord(401);
+            abort(401);
         }
 
     }
@@ -161,11 +161,11 @@ class UniversityController extends Controller
     public function destroy(Universidade $university)
     {
         /* Permissões */
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
             $university->delete();
             return redirect()->route('universities.index')->with('success', 'Universidade Eliminada com Sucesso!');
         }else{
-            abord(401);
+            abort(401);
         }
     }
 }

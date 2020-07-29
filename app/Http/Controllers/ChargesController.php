@@ -16,7 +16,7 @@ class ChargesController extends Controller
 {
     public function index()
     {
-      if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
+      if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||
         (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)||
         (Auth()->user()->tipo == 'cliente' && Auth()->user()->idCliente != null)){
         $products = null;
@@ -73,7 +73,7 @@ class ChargesController extends Controller
 
     public function show(DocTransacao $docTrasancao, Fase $fase, Produto $product)
     {
-      if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
+      if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||
         (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)||
         (Auth()->user()->tipo == 'cliente' && Auth()->user()->idCliente != null)){
         $docTrasancao = DocTransacao::all();
@@ -89,7 +89,7 @@ class ChargesController extends Controller
 
     public function showcharge(Produto $product, Fase $fase, Conta $contas)
     {
-      if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
+      if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
         $contas = Conta::all();
         $docTrasancao = DocTransacao::where('idFase', '=', $fase->idFase)->get();
         return view('charges.showcharge', compact('product', 'fase', 'docTrasancao', 'contas'));
@@ -100,7 +100,7 @@ class ChargesController extends Controller
 
     public function store(Request $request, StoreChargeRequest $requestCharge, Produto $product, Fase $fase)
     {
-      if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
+      if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
         $docTrasancao = new DocTransacao;
         $fields = $requestCharge->validated();
         $docTrasancao->fill($fields);
@@ -155,7 +155,7 @@ class ChargesController extends Controller
 
     public function edit(Produto $product, Fase $fase, DocTransacao $document, Conta $contas)
     {
-      if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
+      if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
         $contas = Conta::all();
         return view('charges.edit', compact('product', 'fase', 'document', 'contas'));
       }else{
@@ -165,7 +165,7 @@ class ChargesController extends Controller
 
     public function update(UpdateChargeRequest $requestCharge, Produto $product, DocTransacao $document)
     {
-      if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
+      if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
         $fields = $requestCharge->validated();
         $document->fill($fields);
 
@@ -198,7 +198,7 @@ class ChargesController extends Controller
 
     public function download(DocTransacao $document)
     {
-      if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
+      if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
         return Storage::disk('public')->download('comprovativos-pagamento/'.$document->comprovativoPagamento);
       }else{
         abort(401);

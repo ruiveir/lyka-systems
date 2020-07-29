@@ -19,7 +19,7 @@ class FasestockController extends Controller
     }
 
     public function store(StoreFasestockRequest $requestFase, ProdutoStock $produtostock){
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
             $faseFields = $requestFase->validated();
 
             $faseStock = new FaseStock();
@@ -38,7 +38,7 @@ class FasestockController extends Controller
     }
 
     public function show(DocStock $docstocks, FaseStock $fasestock){
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
             $nrDocs = 1;
             $docstocks = DocStock::where('idFaseStock', '=', $fasestock->idFaseStock)->get();
             return view('fasestock.show', compact('fasestock', 'docstocks', 'nrDocs'));
@@ -50,7 +50,7 @@ class FasestockController extends Controller
 
     public function edit(FaseStock $fasestock)
     {
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
             return view('fasestock.edit', compact('fasestock'));
         }else{
             /* não tem permissões */
@@ -60,7 +60,7 @@ class FasestockController extends Controller
 
     public function update(StoreFasestockRequest $request, FaseStock $fasestock)
     {
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
             $fields = $request->validated();
             $fasestock->fill($fields);
 
@@ -77,7 +77,7 @@ class FasestockController extends Controller
     }
 
     public function destroy(FaseStock $fasestock){
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
             $fasestock->delete();
 
             return redirect()->back()->with('success', 'Fase stock eliminada com sucesso');

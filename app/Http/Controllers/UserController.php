@@ -66,7 +66,7 @@ class UserController extends Controller
             $Admins = User::all();
             $countAdmin = count($Admins);
         }
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin)||
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com")||
             (Auth()->user()->tipo == 'admin' && $countAdmin == 1)){
             $fieldsUser = $requestUser->validated();
             $fieldsAdmin = $requestAdmin->validated();
@@ -78,7 +78,7 @@ class UserController extends Controller
             $admin = new Administrador;
             $admin->fill($fieldsAdmin);
 
-            if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin == null){
+            if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email == "admin@test.com"){
                 $admin->superAdmin = true;
             }
 

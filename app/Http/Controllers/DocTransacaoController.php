@@ -21,7 +21,7 @@ class DocTransacaoController extends Controller
     */
     public function create(Fase $fase)
     {
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)/* || (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)*/){
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")/* || (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)*/){
 
             $documento = new DocTransacao;
             $tipoPAT = 'Transacao';
@@ -45,7 +45,7 @@ class DocTransacaoController extends Controller
     */
     public function store(StoreDocumentoRequest $request,Fase $fase){
 
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
 
             $documento = new DocTransacao;
 
@@ -97,7 +97,7 @@ class DocTransacaoController extends Controller
     */
     public function edit(DocTransacao $documento)
     {
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)/* || (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)*/){
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")/* || (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)*/){
 
             $tipoPAT = 'Transacao';
             $tipo = 'Transacao';
@@ -121,7 +121,7 @@ class DocTransacaoController extends Controller
 
     public function update(UpdateDocumentoRequest $request, DocTransacao $documento)
     {
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)/* || (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)*/){
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")/* || (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)*/){
 
             $fields = $request->all();
             $documento->descricao=$fields['descricao'];
@@ -137,7 +137,7 @@ class DocTransacaoController extends Controller
             $documento->observacoes=$fields['observacoes'];
             $documento->idConta=$fields['idConta'];
 
-            if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
+            if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
                 $documento->verificacao = true;
             }else{
                 $documento->verificacao = false;
@@ -175,7 +175,7 @@ class DocTransacaoController extends Controller
 
     public function destroy(DocTransacao $documento)
     {
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
             $documento->delete();
             return redirect()->route('produtos.show',$documento->fase->produto)->with('success', 'Transação eliminada com sucesso');
         }else{

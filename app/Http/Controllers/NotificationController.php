@@ -24,7 +24,7 @@ class NotificationController extends Controller
         }
         $Assunto = null;
         $dataNasc = null;
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
             $Admin = Auth()->user()->admin;
             $dataNasc = new DateTime($Admin->dataNasc);
             $Assunto = 'PARABÉNS '.Auth()->user()->admin->nome.' '.Auth()->user()->admin->apelido;

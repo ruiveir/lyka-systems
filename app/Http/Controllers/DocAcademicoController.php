@@ -33,8 +33,8 @@ class DocAcademicoController extends Controller
             $permissao = true;
         }
 
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
-            (Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)|| $permissao){
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||
+            (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)|| $permissao){
 
             $documento = new DocAcademico;
             $tipoPAT = $docnecessario->tipo;
@@ -68,8 +68,8 @@ class DocAcademicoController extends Controller
             $permissao = true;
         }
 
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
-            (Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)|| $permissao){
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||
+            (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)|| $permissao){
 
             $fields = $request->all();
             $infoDoc = null;
@@ -94,7 +94,7 @@ class DocAcademicoController extends Controller
 
 
             $documento->tipo=$docnecessario->tipoDocumento;
-            if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
+            if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
                 $documento->verificacao = true;
             }else{
                 $documento->verificacao = false;
@@ -143,8 +143,8 @@ class DocAcademicoController extends Controller
             $permissao = true;
         }
 
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
-            (Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)|| $permissao){
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||
+            (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)|| $permissao){
 
             $documento = new DocAcademico;
             $tipoPAT = $docnecessario->tipo;
@@ -179,8 +179,8 @@ class DocAcademicoController extends Controller
             $permissao = true;
         }
 
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
-            (Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)|| $permissao){
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||
+            (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)|| $permissao){
 
             $fields = $request->all();
             $infoDoc = null;
@@ -205,7 +205,7 @@ class DocAcademicoController extends Controller
 
 
             $documento->tipo=$docnecessario->tipoDocumento;
-            if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
+            if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
                 $documento->verificacao = true;
             }else{
                 $documento->verificacao = false;
@@ -235,7 +235,7 @@ class DocAcademicoController extends Controller
 
     public function verify(DocAcademico $documento)
     {
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)){
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")){
             $infoDoc = (array)json_decode($documento->info);
             $infoKeys = array_keys($infoDoc);
             $tipoPAT = 'Academico';
@@ -250,7 +250,7 @@ class DocAcademicoController extends Controller
 
     public function verifica(DocAcademico $documento)
     {
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)){
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")){
             $documento->verificacao = true;
             $documento->save();
             return redirect()->route('produtos.show',$documento->fase->produto);
@@ -282,8 +282,8 @@ class DocAcademicoController extends Controller
             $permissao = true;
         }
 
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
-            (Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)|| $permissao){
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||
+            (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)|| $permissao){
 
             $infoDoc = (array)json_decode($documento->info);
             $infoKeys = array_keys($infoDoc);
@@ -319,8 +319,8 @@ class DocAcademicoController extends Controller
             $permissao = true;
         }
 
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
-            (Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)|| $permissao){
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||
+            (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)|| $permissao){
 
             $fields = $request->all();
             $infoDoc = null;
@@ -342,7 +342,7 @@ class DocAcademicoController extends Controller
                 return redirect()->back()->withErrors(['message'=>$documento->tipo.' tem de conter no minimo 1 campo']);
             }
 
-            if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
+            if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
                 $documento->verificacao = true;
             }else{
                 $documento->verificacao = false;
@@ -383,7 +383,7 @@ class DocAcademicoController extends Controller
 
     public function destroy(DocAcademico $documento)
     {
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
             $tipo = $documento->tipo;
             $documento->delete();
 
