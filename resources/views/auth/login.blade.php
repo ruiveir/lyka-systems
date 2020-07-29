@@ -19,7 +19,7 @@
                                 <form class="user needs-validation" novalidate method="POST" action="{{route("login")}}">
                                     @csrf
                                     <div class="form-group">
-                                        <input id="email" type="email" class="form-control form-control-user {{$errors->has('email') ? ' is-invalid' : ''}} {{ $errors->has('password') ? ' is-invalid' : '' }}" name="email" id="email" aria-describedby="emailHelp" placeholder="Endereço eletrónico">
+                                        <input id="email" type="email" class="form-control form-control-user {{$errors->has('email') ? ' is-invalid' : ''}} {{ $errors->has('password') ? ' is-invalid' : '' }}" name="email" id="email" aria-describedby="emailHelp" placeholder="Endereço eletrónico" autofocus>
                                         <div class="invalid-feedback">
                                             Oops, parece que algo não está bem...
                                         </div>

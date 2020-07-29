@@ -8,7 +8,7 @@
 <div class="container-fluid">
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h4 mb-0 text-gray-800">Reportar problema</h1>
+        <h1 class="h4 mb-0 text-gray-800">Edição pagamento</h1>
         <a href="#" data-toggle="modal" data-target="#infoModal" class="btn btn-secondary btn-icon-split btn-sm" title="Informações">
             <span class="icon text-white-50">
                 <i class="fas fa-info-circle"></i>
@@ -19,7 +19,7 @@
     <!-- Approach -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Formulário - Reportar problema</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Formulário - Editar pagamento</h6>
         </div>
         <div class="card-body">
             @if (isset($cliente))
@@ -61,7 +61,7 @@
                 </button>
             </div>
             <div class="modal-body text-gray-800 pl-4 pr-5">
-                O formulário preenchido será enviado aos administradores para saberem que há problemas com a aplicação. Pedimos que aguarde até uma resposta da nossa parte.
+                Aqui, basta preencher o formulário para fazer a edição de um pagamento. Após submeter o formulário podera ficar com uma nota de pagamento na sua posse.
             </div>
             <div class="modal-footer mt-3">
                 <a data-dismiss="modal" class="mr-4 font-weight-bold" id="close-option">Fechar</a>
