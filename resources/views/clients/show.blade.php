@@ -406,25 +406,11 @@
                         @endif
 
                         {{-- Adicionar Documento PESSOAL--}}
-                        @if($novosDocumentos)
-                        <div class="dropdown mt-4">
-                            <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-plus mr-2"></i>Adicionar documento
-                            </button>
-
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-
-                                @foreach($novosDocumentos as $docPessoal)
-                                @if($docPessoal->tipo=="Pessoal")
-                                <a class="dropdown-item"
-                                    href="{{route('documento-pessoal.createFromClient',$docPessoal->idDocNecessario)}}">{{$docPessoal->tipoDocumento}}</a>
-                                @endif
-                                @endforeach
-                            </div>
-
+                        
+                        <div class="col text-right">
+                            <a href="#" class="btn btn-sm btn-success m-1 mr-2 px-3 " data-toggle="modal"
+                                data-target="#novoDocPessoal"><i class="fas fa-plus mr-2 "></i>Adicionar Documento Pessoal</a>
                         </div>
-                        @endif
 
                     </div>
 
@@ -518,7 +504,7 @@
                         @endif
 
                         {{-- Adicionar Documento Academico --}}
-                        @if($novosDocumentos)
+                        {{--@if($novosDocumentos)
                         <div class="dropdown mt-4">
                             <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -530,13 +516,17 @@
                                 @foreach($novosDocumentos as $docAcademico)
                                 @if($docAcademico->tipo=="Academico")
                                 <a class="dropdown-item"
-                                    href="{{route('documento-pessoal.createFromClient',$docAcademico)}}">{{$docAcademico->tipoDocumento}}</a>
+                                    href="{{route('documento-academico.createFromClient',[$client, 'docnome'])}}">{{$docAcademico->tipoDocumento}}</a>
                                 @endif
                                 @endforeach
                             </div>
 
                         </div>
-                        @endif
+                        @endif--}}
+                        <div class="col text-right">
+                            <a href="#" class="btn btn-sm btn-success m-1 mr-2 px-3 " data-toggle="modal"
+                                data-target="#novoDocAcademico"><i class="fas fa-plus mr-2 "></i>Adicionar Documento Academico</a>
+                        </div>
 
                     </div>
 
@@ -675,10 +665,98 @@
     </div>
 </div>
 
+<!-- Modal -->
+<form class="form-group needs-validation" id="Form-Documento-Pessoal" action="{{route('documento-pessoal.createFromClient', $client)}}" method="get"
+    id="form_fase" enctype="multipart/form-data" novalidate>
+    @csrf
+
+    <div class="modal fade" id="novoDocPessoal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Novo Documento Pessoal</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <br>
+
+                    {{-- INPUT tipoDocumento --}}
+                    <label for="NomeDocumentoPessoal" class="font-weight-bold">Nome do Documento:</label>
+                    <input class="form-control" id="NomeDocumentoPessoal" style="width: 100%;" name="NomeDocumentoPessoal" required>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-sm btn-success px-2"><i class="fas fa-plus mr-2 "></i>Adicionar
+                        Documento</button>
+                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cancelar</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+<!-- Modal -->
+<form class="form-group needs-validation" id="Form-Documento-Academico" action="{{route('documento-academico.createFromClient', $client)}}" method="get"
+    id="form_fase" enctype="multipart/form-data" novalidate>
+    @csrf
+
+    <div class="modal fade" id="novoDocAcademico" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Novo Documento Pessoal</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <br>
+
+                    {{-- INPUT tipoDocumento --}}
+                    <label for="NomeDocumentoAcademico" class="font-weight-bold">Nome do Documento:</label>
+                    <input class="form-control" id="NomeDocumentoAcademico" style="width: 100%;" name="NomeDocumentoAcademico" required>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-sm btn-success px-2" ><i class="fas fa-plus mr-2 "></i>Adicionar
+                        Documento</button>
+                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cancelar</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
 
 @endsection
 
 {{-- Scripts --}}
 @section('scripts')
+<script>
+    
+    /*$(document).ready(function() {
+        bsCustomFileInput.init();
+        $(".needs-validation").submit(function(event) {
+            if (this.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+            } /*else {
+                $("#cancelBtn").removeAttr("onclick");
+                button =
+                    "<button class='btn btn-primary' type='submit' disabled><span class='spinner-border spinner-border-sm' role='status' aria-hidden='true' style='position:relative; bottom:4px; right:3px;'></span>A enviar...</button>";
+                $("#groupBtn").append(button);
+                $("#submitbtn").remove();
+            }/**/
+            /*$(".needs-validation").addClass("was-validated");
+        });
+    });/**/
+
+</script>
 {{-- <script src="{{asset('/js/show_client_details.js')}}"></script> --}}
 @endsection

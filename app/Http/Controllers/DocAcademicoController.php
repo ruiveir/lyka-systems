@@ -6,6 +6,7 @@ use App\DocAcademico;
 use App\DocNecessario;
 use App\Fase;
 use App\Produto;
+use App\Cliente;
 use App\Http\Requests\UpdateDocumentoRequest;
 use App\Http\Requests\StoreDocumentoRequest;
 use Illuminate\Support\Facades\Storage;
@@ -130,7 +131,7 @@ class DocAcademicoController extends Controller
     * @param  \App\Cliente  $client
     * @return \Illuminate\Http\Response
     */
-    public function createFromClient(DocNecessario $docnecessario)
+    public function createFromClient(StoreDocumentoRequest $request, Cliente $client)
     {
         $produts = null;
         $permissao = false;
@@ -146,12 +147,15 @@ class DocAcademicoController extends Controller
         if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||
             (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)|| $permissao){
 
+            $fields = $request->all();
+
             $documento = new DocAcademico;
-            $tipoPAT = $docnecessario->tipo;
-            $tipo = $docnecessario->tipoDocumento;
+            $tipoPAT = "Academico";
+            $docnome = $fields['NomeDocumentoAcademico'];
+            $tipo = $docnome;
             $fase = null;
 
-            return view('documentos.add',compact('fase','tipoPAT','tipo','documento', 'docnecessario'));
+            return view('documentos.add',compact('fase','tipoPAT','tipo','documento','docnome','client'));
         }else{
             abort(401);
         }
@@ -166,7 +170,7 @@ class DocAcademicoController extends Controller
     * @return \Illuminate\Http\Response
     * @param  \App\User  $user
     */
-    public function storeFromClient(StoreDocumentoRequest $request,DocNecessario $docnecessario){
+    public function storeFromClient(StoreDocumentoRequest $request, Cliente $client, String $docnome){
 
         $produts = null;
         $permissao = false;
@@ -196,36 +200,37 @@ class DocAcademicoController extends Controller
             }
 
             $documento = new DocAcademico;
-
+            $documento->idCliente = $client->idCliente;
+            $documento->verificacao = true;
             if($infoDoc){
                 $documento->info = json_encode($infoDoc);
             }else{
-                return redirect()->back()->withErrors(['message'=>$docnecessario->tipoDocumento.' tem de conter no minimo 1 campo']);
+                return redirect()->back()->withErrors(['message'=>$docnome.' tem de conter no minimo 1 campo']);
             }
 
 
-            $documento->tipo=$docnecessario->tipoDocumento;
+            $documento->tipo=$docnome;
             if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
                 $documento->verificacao = true;
             }else{
                 $documento->verificacao = false;
             }
             $documento->nome = $fields['nome'];
-            $documento->idCliente = $fase->produto->cliente->idCliente;
+            $documento->idCliente = $client->idCliente;
 
             $source = null;
 
             if($fields['img_doc']) {
                 $ficheiro = $fields['img_doc'];
                 $tipoDoc = str_replace(".","_",str_replace(" ","",$documento->tipo));
-                $nomeficheiro = 'cliente_'.$fase->produto->cliente->idCliente.'_fase_'.$fase->idFase.'_documento_academico_'.$tipoDoc.'.'.$ficheiro->getClientOriginalExtension();
-                Storage::disk('public')->putFileAs('client-documents/'.$fase->produto->cliente->idCliente.'/', $ficheiro, $nomeficheiro);
+                $nomeficheiro = 'cliente_'.$client->idCliente.'_documento_academico_'.$tipoDoc.'.'.$ficheiro->getClientOriginalExtension();
+                Storage::disk('public')->putFileAs('client-documents/'.$client->idCliente.'/', $ficheiro, $nomeficheiro);
                 /* $source = 'client-documents/'.$fase->produto->cliente->idCliente.'/'.$nomeficheiro; */
             }
             $documento->imagem = $nomeficheiro;
             $documento->save();
 
-            return redirect()->route('produtos.show',$fase->produto)->with('success', $docnecessario->tipoDocumento.' adicionado com sucesso');
+            return redirect()->route('clients.show',$client)->with('success', $docnome.' adicionado com sucesso');
         }else{
             abort(401);
         }

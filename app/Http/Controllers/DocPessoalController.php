@@ -6,6 +6,7 @@ use App\DocPessoal;
 use App\DocNecessario;
 use App\Fase;
 use App\Produto;
+use App\Cliente;
 use App\Http\Requests\UpdateDocumentoRequest;
 use App\Http\Requests\StoreDocumentoRequest;
 use Illuminate\Support\Facades\Storage;
@@ -62,7 +63,7 @@ class DocPessoalController extends Controller
     * @param  \App\Cliente  $client
     * @return \Illuminate\Http\Response
     */
-    public function createFromClient(DocNecessario $docnecessario)
+    public function createFromClient(StoreDocumentoRequest $request, Cliente $client)
     {
         $produts = null;
         $permissao = false;
@@ -78,12 +79,14 @@ class DocPessoalController extends Controller
         if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||
             (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)|| $permissao){
 
+            $fields = $request->all();
             $documento = new DocPessoal;
-            $tipoPAT = $docnecessario->tipo;
-            $tipo = $docnecessario->tipoDocumento;
+            $tipoPAT = "Pessoal";
+            $docnome = $fields['NomeDocumentoPessoal'];
+            $tipo = $docnome;
             $fase = null;
 
-            return view('documentos.add',compact('fase','tipoPAT','tipo','documento', 'docnecessario'));
+            return view('documentos.add',compact('fase','tipoPAT','tipo','documento','docnome','client'));
         }else{
             abort(401);
         }
@@ -100,7 +103,7 @@ class DocPessoalController extends Controller
     * @return \Illuminate\Http\Response
     * @param  \App\User  $user
     */
-    public function storeFromClient(StoreDocumentoRequest $request, DocNecessario $docnecessario){
+    public function storeFromClient(StoreDocumentoRequest $request, Cliente $client, String $docnome){
 
         $produts = null;
         $permissao = false;
@@ -119,12 +122,6 @@ class DocPessoalController extends Controller
             $fields = $request->all();
             //dd($fields);
             $infoDoc = null;
-            if(strtolower($docnecessario->tipoDocumento) == "passaporte"){
-                $infoDoc['numPassaporte'] = $fields['numPassaporte'];
-                $infoDoc['passaportPaisEmi'] = $fields['passaportPaisEmi'];
-                $infoDoc['dataValidPP'] = date("Y-m-d",strtotime($fields['dataValidPP'].'-1'));
-                $infoDoc['localEmissaoPP'] = $fields['localEmissaoPP'];
-            }
             for($i=1;$i<=500;$i++){
                 if(array_key_exists('nome-campo'.$i, $fields)){
                     if($fields['nome-campo'.$i]){
@@ -136,14 +133,16 @@ class DocPessoalController extends Controller
             }
 
             $documento = new DocPessoal;
+            $documento->idCliente = $client->idCliente;
 
+            $documento->verificacao = true;
             if($infoDoc){
                 $documento->info = json_encode($infoDoc);
             }else{
-                return redirect()->back()->withErrors(['message'=>$docnecessario->tipoDocumento.' tem de conter no minimo 1 campo']);;
+                return redirect()->back()->withErrors(['message'=>$docnome.' tem de conter no minimo 1 campo']);;
             }
 
-            $documento->tipo=$docnecessario->tipoDocumento;
+            $documento->tipo=$docnome;
             if(array_key_exists('dataValidade', $fields)){
                 $documento->dataValidade = date("Y-m-d",strtotime($fields['dataValidade'].'-1'));
             }
@@ -152,7 +151,6 @@ class DocPessoalController extends Controller
             }else{
                 $documento->verificacao = false;
             }
-            $documento->idCliente = $fase->produto->cliente->idCliente;
 
 
 
@@ -161,14 +159,14 @@ class DocPessoalController extends Controller
             if($fields['img_doc']) {
                 $ficheiro = $fields['img_doc'];
                 $tipoDoc = str_replace(".","_",str_replace(" ","",$documento->tipo));
-                $nomeficheiro = 'cliente_'.$fase->produto->cliente->idCliente.'_fase_'.$fase->idFase.'_documento_pessoal_'.$tipoDoc.'.'.$ficheiro->getClientOriginalExtension();
-                Storage::disk('public')->putFileAs('client-documents/'.$fase->produto->cliente->idCliente.'/', $ficheiro, $nomeficheiro);
+                $nomeficheiro = 'cliente_'.$client->idCliente.'_documento_pessoal_'.$tipoDoc.'.'.$ficheiro->getClientOriginalExtension();
+                Storage::disk('public')->putFileAs('client-documents/'.$client->idCliente.'/', $ficheiro, $nomeficheiro);
 /*                 $source = $fase->produto->cliente->idCliente.'/'.$nomeficheiro; */
             }
             $documento->imagem = $nomeficheiro;
             $documento->save();
 
-            return redirect()->route('produtos.show',$fase->produto)->with('success', $docnecessario->tipoDocumento.' adicionado com sucesso');
+            return redirect()->route('clients.show',$client)->with('success', $docnome.' adicionado com sucesso');
         }else{
             abort(401);
         }

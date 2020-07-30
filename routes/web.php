@@ -172,8 +172,8 @@ Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
     Route::resource('/produtos', 'ProdutoController')->only(['destroy','update','show','edit']);
 
     /* Documentos Pessoais */
-    Route::get('/documento-pessoal/criar/{docnecessario}', 'DocPessoalController@createFromClient')->name('documento-pessoal.createFromClient');
-    Route::get('/documento-pessoal/store/{docnecessario}', 'DocPessoalController@storeFromClient')->name('documento-pessoal.storeFromClient');
+    Route::get('/documento-pessoal/criar/{client}', 'DocPessoalController@createFromClient')->name('documento-pessoal.createFromClient');
+    Route::post('/documento-pessoal/store/{client}/{docnome}', 'DocPessoalController@storeFromClient')->name('documento-pessoal.storeFromClient');
 
     Route::get('/documento-pessoal/criar/{fase}/{docnecessario}', 'DocPessoalController@create')->name('documento-pessoal.create');
     Route::post('/documento-pessoal/store/{fase}/{docnecessario}', 'DocPessoalController@store')->name('documento-pessoal.store');
@@ -184,8 +184,8 @@ Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
     Route::resource('/documento-pessoal', 'DocPessoalController')->only(['destroy']);
 
     /* Documentos Academicos */
-    Route::get('/documento-academico/criar/{docnecessario}', 'DocAcademicoController@createFromClient')->name('documento-academico.createFromClient');
-    Route::get('/documento-academico/store/{docnecessario}', 'DocAcademicoController@storeFromClient')->name('documento-academico.storeFromClient');
+    Route::get('/documento-academico/criar/{client}', 'DocAcademicoController@createFromClient')->name('documento-academico.createFromClient');
+    Route::post('/documento-academico/store/{client}/{docnome}', 'DocAcademicoController@storeFromClient')->name('documento-academico.storeFromClient');
 
     Route::get('/documento-academico/criar/{fase}/{docnecessario}', 'DocAcademicoController@create')->name('documento-academico.create');
     Route::post('/documento-academico/store/{fase}/{docnecessario}', 'DocAcademicoController@store')->name('documento-academico.store');

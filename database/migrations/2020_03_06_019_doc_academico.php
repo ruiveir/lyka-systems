@@ -25,7 +25,7 @@ class DocAcademico extends Migration
             $table->string('slug')->nullable();
             $table->timestamps();
             $table->boolean('verificacao')->default(false);
-            $table->unsignedBigInteger('idFase');
+            $table->unsignedBigInteger('idFase')->nullable();
                 $table->foreign('idFase')->references('idFase')->on('Fase');
     });
     }

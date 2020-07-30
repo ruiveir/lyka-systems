@@ -102,9 +102,6 @@ class ProdutoController extends Controller
                 return redirect()->back()->withErrors(['required' => 'Universidade principal é obrigatório']);
             }
 
-
-
-
             $produto = new Produto;
             $produto->tipo = $fields['tipo'];
             $produto->descricao = $fields['descricao'];
@@ -203,8 +200,6 @@ class ProdutoController extends Controller
                     $responsabilidade->idSubAgente = $produto->idSubAgente;
                     $responsabilidade->idUniversidade1 = $produto->idUniversidade1;
                     $responsabilidade->idUniversidade2 = $produto->idUniversidade2;
-
-
 
 
 

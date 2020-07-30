@@ -41,9 +41,9 @@
                 @endif
             @else
                 @if($tipoPAT == 'Pessoal')
-                    <form action="{{route('documento-pessoal.storeFromClient', $docnecessario)}}" method="post" enctype="multipart/form-data">
+                    <form action="{{route('documento-pessoal.storeFromClient', [$client,$docnome])}}" method="post" enctype="multipart/form-data">
                 @else
-                    <form action="{{route('documento-academico.storeFromClient', $docnecessario)}}" method="post" enctype="multipart/form-data">
+                    <form action="{{route('documento-academico.storeFromClient', [$client,$docnome])}}" method="post" enctype="multipart/form-data">
                 @endif
             @endif
                 @csrf
@@ -66,7 +66,7 @@
                                 <div>
                                     <label for="img_doc">Imagem:</label>
                                     <input type='file' id="img_doc" name="img_doc" style="display:none"
-                                        accept="application/pdf, image/*" />
+                                        accept="application/pdf, image/*" required/>
                                 </div>
             
                                 <div class="card mx-auto p-4 rounded shadow-sm text-center "
@@ -132,7 +132,7 @@
                                 <div>
                                     <label for="img_doc">Imagem:</label>
                                     <input type='file' id="img_doc" name="img_doc" style="display:none"
-                                        accept="application/pdf, image/*" />
+                                        accept="application/pdf, image/*" required/>
                                 </div>
             
                                 <div class="card mx-auto p-4 rounded shadow-sm text-center "
@@ -204,7 +204,7 @@
                                     <div>
                                         <label for="img_doc">Imagem:</label>
                                         <input type='file' id="img_doc" name="img_doc" style="display:none"
-                                            accept="application/pdf, image/*" />
+                                            accept="application/pdf, image/*" required/>
                                     </div>
                 
                                     <div class="card mx-auto p-4 rounded shadow-sm text-center "

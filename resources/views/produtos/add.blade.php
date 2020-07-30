@@ -270,22 +270,22 @@
         var clones = $('#clonar').clone();
         $('.fornecedor').html('');
         /*$("#formulario-produto").css("display", "none");
-        $("#formulario-fases").css("display", "none");
+        $("#formulario-fases").css("display", "none");/**/
 
 
-        /*$(document).ready(function() {
+        $(document).ready(function() {
             bsCustomFileInput.init();
             $(".needs-validation").submit(function(event) {
                 if (this.checkValidity() === false) {
                     event.preventDefault();
                     event.stopPropagation();
-                }/* else {
+                } /*else {
                     $("#cancelBtn").removeAttr("onclick");
                     button =
                         "<button class='btn btn-primary' type='submit' disabled><span class='spinner-border spinner-border-sm' role='status' aria-hidden='true' style='position:relative; bottom:4px; right:3px;'></span>A enviar...</button>";
                     $("#groupBtn").append(button);
                     $("#submitbtn").remove();
-                }*//*
+                }/**/
                 $(".needs-validation").addClass("was-validated");
             });
         });/**/
