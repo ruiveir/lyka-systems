@@ -61,8 +61,8 @@
             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-bell fa-fw"></i>
                 <!-- Counter - Alerts -->
-                @if (count($allNotifications))
-                <span class="badge badge-danger badge-counter">{{count($allNotifications)>3?'3+':count($allNotifications)}}</span>
+                @if (count($notifications))
+                <span class="badge badge-danger badge-counter">{{count($notifications)>3?'3+':count($notifications)}}</span>
                 @endif
             </a>
             <!-- Dropdown - Alerts -->
@@ -71,26 +71,153 @@
                     Centro de notificações
                 </h6>
                 @if (count($notifications))
-                @foreach ($notifications as $notification)
-                <a class="dropdown-item d-flex align-items-center" href="{{route("bugreport.show", $notification->data["idReport"])}}">
-                    <div class="mr-3">
-                        @if ($notification->data["subject"] == "BugReport")
-                        <div class="icon-circle bg-danger">
-                            <i class="fas fa-bug text-white"></i>
-                        </div>
+                    @php
+                        $numNotificacao = 0;
+                    @endphp
+                    @foreach ($notifications as $notification)
+                        @if($notification->type == "App\Notifications\BugReportSend" && $numNotificacao < 3)
+                            <a class="dropdown-item d-flex align-items-center" href="{{route("bugreport.show", $notification->data["idReport"])}}">
+                                <div class="mr-3">
+                                    @if ($notification->data["subject"] == "BugReport")
+                                    <div class="icon-circle bg-danger">
+                                        <i class="fas fa-bug text-white"></i>
+                                    </div>
+                                    @endif
+                                </div>
+                                <div>
+                                    <div class="small text-gray-500">{{date('d/m/Y', strtotime($notification->created_at))}}</div>
+                                    <span class="font-weight-bold">O(A) {{$notification->data["name"]}} enviou um pedido de ajuda!</span>
+                                </div>
+                            </a>
+                            @php
+                                $numNotificacao++;
+                            @endphp
                         @endif
-                    </div>
-                    <div>
-                        <div class="small text-gray-500">{{date('d/m/Y', strtotime($notification->created_at))}}</div>
-                        <span class="font-weight-bold">O(A) {{$notification->data["name"]}} enviou um pedido de ajuda!</span>
-                    </div>
-                </a>
-                @endforeach
-                @if (count($allNotifications)>3)
-                <a class="dropdown-item text-center small text-gray-500" href="#">Ver mais</a>
+                    @endforeach
+                    @foreach ($notifications as $notification)
+                        @if($notification->type == "App\Notifications\Aniversario" && $numNotificacao < 3)
+                            <div class="alert-dismissible row p-1 mx-1 alert alert-info fade show">
+                                <i class="fas fa-birthday-cake"></i>
+                                <div class="info-not">
+                                    <div class="col p-2 assunto">
+                                        <b>{{$notification->data['assunto']}}</b>
+                                        <br>
+                                        <a class="mostraNotificacao" href="#" onClick="show($(this).closest('.info-not'))">Ler Tudo</a>
+                                    </div>
+                                    <div class="col p-2 descricaoNotificacao" style="display: none;">
+                                        @php
+                                            $descricoes = explode('*',str_replace(array("\\r\\n", "\\r", "\\n"), "*", $notification->data['descricao']));
+                                        @endphp
+                                        @foreach($descricoes as $descricao)
+                                            {{$descricao}}
+                                            <br>
+                                        @endforeach
+                                        <a href="#" onClick="hide($(this).closest('.info-not'))">Diminuir</a>
+                                    </div>
+                                </div>
+                            </div>
+                            @php
+                                $numNotificacao++;
+                            @endphp
+                        @endif
+                    @endforeach
+                    @foreach ($notifications as $notification)
+                        @if(($notification->type == "App\Notifications\Atraso" || $notification->type == 'App\Notifications\AtrasoCliente') && $notification->data['urgencia'] && $numNotificacao < 3)
+                            <div class="alert-dismissible row p-1 mx-1 alert alert-danger fade show">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <div class="info-not">
+                                    <div class="col p-2 assunto">
+                                        <b>{{$notification->data['assunto']}}</b>
+                                        <br>
+                                        <a class="mostraNotificacao" href="#" onClick="show($(this).closest('.info-not'))">Ler Tudo</a>
+                                    </div>
+                                    <div class="col p-2 descricaoNotificacao" style="display: none;">
+                                        @php
+                                            $descricoes = explode('*',str_replace(array("\\r\\n", "\\r", "\\n"), "*", $notification->data['descricao']));
+                                            $idCliente = explode('_',$notification->data['code']);
+                                            $num = 2;
+                                            $primeiraDescricao = true;
+                                        @endphp
+                                        @foreach($descricoes as $descricao)
+                                            @if($primeiraDescricao)
+                                                {{$descricao}}
+                                                @php
+                                                    $primeiraDescricao = false;
+                                                @endphp
+                                            @else
+                                                @foreach($clientes as $cliente)
+                                                    @if($cliente->idCliente == $idCliente[$num])
+                                                        <a class="dropdown-item d-flex align-items-center" href="{{route("clients.show", $cliente)}}">
+                                                            {{$descricao}}
+                                                        </a>
+                                                    @endif
+                                                @endforeach
+                                                @php
+                                                    $num++;
+                                                @endphp
+                                            @endif
+                                            <br>
+                                        @endforeach
+                                        <a href="#" onClick="hide($(this).closest('.info-not'))">Diminuir</a>
+                                    </div>
+                                </div>
+                            </div>
+                            @php
+                                $numNotificacao++;
+                            @endphp
+                        @endif
+                    @endforeach
+                    @foreach ($notifications as $notification)
+                        @if(($notification->type == "App\Notifications\Atraso" || $notification->type == 'App\Notifications\AtrasoCliente') && !$notification->data['urgencia'] && $numNotificacao < 3)
+                            <div class="alert-dismissible row p-1 mx-1 alert alert-warning fade show">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <div class="info-not">
+                                    <div class="col p-2 assunto">
+                                        <b>{{$notification->data['assunto']}}</b>
+                                        <br>
+                                        <a class="mostraNotificacao" href="#" onClick="show($(this).closest('.info-not'))">Ler Tudo</a>
+                                    </div>
+                                    <div class="col p-2 descricaoNotificacao" style="display: none;">
+                                        @php
+                                            $descricoes = explode('*',str_replace(array("\\r\\n", "\\r", "\\n"), "*", $notification->data['descricao']));
+                                            $idCliente = explode('_',$notification->data['code']);
+                                            $num = 2;
+                                            $primeiraDescricao = true;
+                                        @endphp
+                                        @foreach($descricoes as $descricao)
+                                            @if($primeiraDescricao)
+                                                {{$descricao}}
+                                                @php
+                                                    $primeiraDescricao = false;
+                                                @endphp
+                                            @else
+                                                @foreach($clientes as $cliente)
+                                                    @if($cliente->idCliente == $idCliente[$num])
+                                                        <a class="dropdown-item d-flex align-items-center" href="{{route("clients.show", $cliente)}}">
+                                                            {{$descricao}}
+                                                        </a>
+                                                    @endif
+                                                @endforeach
+                                                @php
+                                                    $num++;
+                                                @endphp
+                                            @endif
+                                            <br>
+                                        @endforeach
+                                        <a href="#" onClick="hide($(this).closest('.info-not'))">Diminuir</a>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                    @endforeach
                 @endif
+                                        
+                
+
+                @if (count($notifications)>3)
+                    <a class="dropdown-item text-center small text-gray-500" href="#">Ver mais</a>
                 @else
-                <p class="text-center mt-3 text-gray-800">wow, such empty :(</p>
+                    <p class="text-center mt-3 text-gray-800">wow, such empty :(</p>
                 @endif
             </div>
         </li>
@@ -143,3 +270,25 @@
 
 </nav>
 <!-- End of Topbar -->
+
+@section('scripts')
+<script type="text/javascript">
+    function show(div) {
+        div.find('.descricaoNotificacao').first().css({
+            "display": "block"
+        });
+        div.find('.mostraNotificacao').first().css({
+            "display": "none"
+        });
+    }
+
+    function hide(div) {
+        div.find('.descricaoNotificacao').first().css({
+            "display": "none"
+        });
+        div.find('.mostraNotificacao').first().css({
+            "display": "block"
+        });
+    }
+</script>
+@endsection

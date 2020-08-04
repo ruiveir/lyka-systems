@@ -31,9 +31,12 @@
 
     <!-- Notificações -->
     @php
+    use App\Cliente;
+    $clientes = Cliente::all();
     // $Notificacoes = Auth()->user()->getNotifications();
-    $allNotifications = Auth()->user()->unreadNotifications;
-    $notifications = Auth()->user()->unreadNotifications()->orderBy('created_at', 'DESC')->take(3)->get();
+    //$allNotifications = Auth()->user()->unreadNotifications;
+    //$notifications = Auth()->user()->unreadNotifications()->orderBy('created_at', 'DESC')->take(3)->get();
+    $notifications = Auth()->user()->getNotifications();
     @endphp
 </head>
 

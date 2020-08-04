@@ -3,6 +3,7 @@
 namespace App;
 
 use App\User;
+use DateTime;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -64,18 +65,18 @@ class User extends Authenticatable
                 foreach($todasDatas as $data){
                     foreach($allNotifications as $notification){
                         if($notification->data['dataComeco'] == $data){
-                            $notifications[] = $notification;
+                            $dataNot = new DateTime($notification->data['dataComeco']);
+                            $DataHoje = new DateTime();
+                            $diff = (date_diff($DataHoje,$dataNot))->format("%R%a");
+                            if($diff <= 0){
+                                $notifications[] = $notification;
+                            }
                         }
                     }
                 }
             }
         }
         return $notifications;
-    }
-
-    public function getRouteKeyName()
-    {
-        return 'slug';
     }
 
 }

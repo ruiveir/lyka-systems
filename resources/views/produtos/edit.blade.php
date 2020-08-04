@@ -82,7 +82,16 @@
                             @endforeach
                         </select><br>
 
-                        @if(Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null))
+                        @if($produto->idSubAgente)
+                            <label for="subagente">Sub-Agente:</label><br>
+                            <select id="subagente" name="subagente" class="form-control" readonly>
+                                @foreach($SubAgentes as $subagente)
+                                    @if($subagente->idAgente == $produto->idSubAgente)
+                                        <option {{old('idSubAgente',$produto->idSubAgente)}} value="{{$subagente->idAgente}}" selected>{{$subagente->nome.' '.$subagente->apelido.' -> '.$subagente->email}}</option>
+                                    @endif
+                                @endforeach
+                            </select><br>
+                        @else
                             <label for="subagente">Sub-Agente:</label><br>
                             <select id="subagente" name="subagente" class="form-control" onchange="AlteraInputSubAgente($(this))">
                                 <option value="" selected></option>
@@ -91,15 +100,6 @@
                                         <option {{old('idSubAgente',$produto->idSubAgente)}} value="{{$subagente->idAgente}}" selected>{{$subagente->nome.' '.$subagente->apelido.' -> '.$subagente->email}}</option>
                                     @else
                                         <option {{old('idSubAgente',$produto->idSubAgente)}} value="{{$subagente->idAgente}}">{{$subagente->nome.' '.$subagente->apelido.' -> '.$subagente->email}}</option>
-                                    @endif
-                                @endforeach
-                            </select><br>
-                        @elseif($produto->idSubAgente)
-                            <label for="subagente">Sub-Agente:</label><br>
-                            <select id="subagente" name="subagente" class="form-control" readonly>
-                                @foreach($SubAgentes as $subagente)
-                                    @if($subagente->idAgente == $produto->idSubAgente)
-                                        <option {{old('idSubAgente',$produto->idSubAgente)}} value="{{$subagente->idAgente}}" selected>{{$subagente->nome.' '.$subagente->apelido.' -> '.$subagente->email}}</option>
                                     @endif
                                 @endforeach
                             </select><br>
@@ -195,8 +195,8 @@
                                         </div>
 
                                         <div class="col-md-5">
-                                            <label for="valor-fase{{$num}}">Valor da fase: <span class="text-danger">*</span></label><br>
-                                            <input type="number" min="0" class="form-control" name="valor-fase{{$num}}" id="valor-fase{{$num}}"
+                                            <label for="valor-fase{{$fase->idFase}}">Valor da fase: <span class="text-danger">*</span></label><br>
+                                            <input type="number" min="0" class="form-control" name="valor-fase{{$fase->idFase}}" id="valor-fase{{$fase->idFase}}"
                                             value="{{old('valorFase',$fase->valorFase)}}" style="width:250px" required><br>
                                         </div>
                                     @else
@@ -205,8 +205,8 @@
                                         </div>
                                         
                                         <div class="col-md-5">
-                                            <label for="valor-fase{{$num}}">Valor da fase:</label><br>
-                                            <input type="number" min="0" class="form-control" name="valor-fase{{$num}}" id="valor-fase{{$num}}"
+                                            <label for="valor-fase{{$fase->idFase}}">Valor da fase:</label><br>
+                                            <input type="number" min="0" class="form-control" name="valor-fase{{$fase->idFase}}" id="valor-fase{{$fase->idFase}}"
                                             value="{{old('valorFase',$fase->valorFase)}}" style="width:250px" readonly/><br>
                                         </div>
                                     @endIf
@@ -219,15 +219,15 @@
                                         <input type="number" class="form-control" name="resp-cliente-fase{{$fase->idFase}}" id="resp-cliente-fase{{$fase->idFase}}"
                                         value="{{old('valorCliente',$responsabilidade->valorCliente)}}" style="width:250px" required><br>
 
-                                        <label for="resp-data-cliente-fase{{$num}}">Data de vencimento do pagamento ao cliente:</label><br>
-                                        <input type="date" class="form-control" name="resp-data-cliente-fase{{$num}}" id="resp-data-cliente-fase{{$num}}"
+                                        <label for="resp-data-cliente-fase{{$fase->idFase}}">Data de vencimento do pagamento ao cliente:</label><br>
+                                        <input type="date" class="form-control" name="resp-data-cliente-fase{{$fase->idFase}}" id="resp-data-cliente-fase{{$fase->idFase}}"
                                         value="" style="width:250px" ><br>
                                     @else
                                         <input type="number" class="form-control" name="resp-cliente-fase{{$fase->idFase}}" id="resp-cliente-fase{{$fase->idFase}}"
                                         value="{{old('valorCliente',$responsabilidade->valorCliente)}}" style="width:250px" readonly><br>
 
-                                        <label for="resp-data-cliente-fase{{$num}}">Data de vencimento do pagamento ao cliente:</label><br>
-                                        <input type="date" class="form-control" name="resp-data-cliente-fase{{$num}}" id="resp-data-cliente-fase{{$num}}"
+                                        <label for="resp-data-cliente-fase{{$fase->idFase}}">Data de vencimento do pagamento ao cliente:</label><br>
+                                        <input type="date" class="form-control" name="resp-data-cliente-fase{{$fase->idFase}}" id="resp-data-cliente-fase{{$fase->idFase}}"
                                         value="" style="width:250px" readonly><br>
                                     @endIf
 
@@ -236,15 +236,15 @@
                                         <input type="number" class="form-control valor-pagar-agente" name="resp-agente-fase{{$fase->idFase}}" id="resp-agente-fase{{$fase->idFase}}"
                                         value="{{old('valorAgente',$responsabilidade->valorAgente)}}" style="width:250px" required><br>
 
-                                        <label for="resp-data-agente-fase{{$num}}">Data de vencimento do pagamento ao agente:</label><br>
-                                        <input type="date" class="form-control" name="resp-data-agente-fase{{$num}}" id="resp-data-agente-fase{{$num}}"
+                                        <label for="resp-data-agente-fase{{$fase->idFase}}">Data de vencimento do pagamento ao agente:</label><br>
+                                        <input type="date" class="form-control" name="resp-data-agente-fase{{$fase->idFase}}" id="resp-data-agente-fase{{$fase->idFase}}"
                                         value="" style="width:250px" ><br>
                                     @else
                                         <input type="number" class="form-control" name="resp-agente-fase{{$fase->idFase}}" id="resp-agente-fase{{$fase->idFase}}"
                                         value="{{old('valorAgente',$responsabilidade->valorAgente)}}" style="width:250px" readonly><br>
 
-                                        <label for="resp-data-agente-fase{{$num}}">Data de vencimento do pagamento ao agente:</label><br>
-                                        <input type="date" class="form-control" name="resp-data-agente-fase{{$num}}" id="resp-data-agente-fase{{$num}}"
+                                        <label for="resp-data-agente-fase{{$fase->idFase}}">Data de vencimento do pagamento ao agente:</label><br>
+                                        <input type="date" class="form-control" name="resp-data-agente-fase{{$fase->idFase}}" id="resp-data-agente-fase{{$fase->idFase}}"
                                         value="" style="width:250px" readonly><br>
                                     @endIf
 
@@ -254,8 +254,8 @@
                                             <input type="number" class="form-control valor-pagar-subagente" name="resp-subagente-fase{{$fase->idFase}}" id="resp-subagente-fase{{$fase->idFase}}"
                                             value="{{old('valorSubAgente',$responsabilidade->valorSubAgente)}}" style="width:250px" readonly><br>
 
-                                            <label for="resp-data-subagente-fase{{$num}}">Data de vencimento do pagamento ao sub-agente:</label><br>
-                                            <input type="date" class="form-control" name="resp-data-subagente-fase{{$num}}" id="resp-data-subagente-fase{{$num}}"
+                                            <label for="resp-data-subagente-fase{{$fase->idFase}}">Data de vencimento do pagamento ao sub-agente:</label><br>
+                                            <input type="date" class="form-control" name="resp-data-subagente-fase{{$fase->idFase}}" id="resp-data-subagente-fase{{$fase->idFase}}"
                                             value="" style="width:250px" ><br>
                                         @else
                                             @if(Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)
@@ -268,8 +268,8 @@
                                                 {{$responsabilidade->valorAgente + $responsabilidade->valorSubAgente}})"><br>
                                             @endif
 
-                                            <label for="resp-data-subagente-fase{{$num}}">Data de vencimento do pagamento ao sub-agente:</label><br>
-                                            <input type="date" class="form-control" name="resp-data-subagente-fase{{$num}}" id="resp-data-subagente-fase{{$num}}"
+                                            <label for="resp-data-subagente-fase{{$fase->idFase}}">Data de vencimento do pagamento ao sub-agente:</label><br>
+                                            <input type="date" class="form-control" name="resp-data-subagente-fase{{$fase->idFase}}" id="resp-data-subagente-fase{{$fase->idFase}}"
                                             value="" style="width:250px" readonly><br>
                                         @endIf
                                     </div>
@@ -281,8 +281,8 @@
                                             value="{{old('valorSubAgente',$responsabilidade->valorSubAgente)}}" style="width:250px"
                                             onchange="adicionaValorSubAgente({{$responsabilidade->valorAgente}}, $(this).closest('#responsabilidades{{$responsabilidade->idResponsabilidade}}'), {{$responsabilidade->valorAgente + $responsabilidade->valorSubAgente}})"><br>
 
-                                            <label for="resp-data-subagente-fase{{$num}}">Data de vencimento do pagamento ao subagente:</label><br>
-                                            <input type="date" class="form-control" name="resp-data-subagente-fase{{$num}}" id="resp-data-subagente-fase{{$num}}"
+                                            <label for="resp-data-subagente-fase{{$fase->idFase}}">Data de vencimento do pagamento ao subagente:</label><br>
+                                            <input type="date" class="form-control" name="resp-data-subagente-fase{{$fase->idFase}}" id="resp-data-subagente-fase{{$fase->idFase}}"
                                             value="" style="width:250px" ><br>
                                         @endIf
                                     </div>
@@ -292,15 +292,15 @@
                                         <input type="number" class="form-control" name="resp-uni1-fase{{$fase->idFase}}" id="resp-uni1-fase{{$fase->idFase}}"
                                         value="{{old('valorUniversidade1',$responsabilidade->valorUniversidade1)}}" style="width:250px" required><br>
 
-                                        <label for="resp-data-uni1-fase{{$num}}">Data de vencimento do pagamento à universidade principal:</label><br>
-                                        <input type="date" class="form-control" name="resp-data-uni1-fase{{$num}}" id="resp-data-uni1-fase{{$num}}"
+                                        <label for="resp-data-uni1-fase{{$fase->idFase}}">Data de vencimento do pagamento à universidade principal:</label><br>
+                                        <input type="date" class="form-control" name="resp-data-uni1-fase{{$fase->idFase}}" id="resp-data-uni1-fase{{$fase->idFase}}"
                                         value="" style="width:250px" ><br>
                                     @else
                                         <input type="number" class="form-control" name="resp-uni1-fase{{$fase->idFase}}" id="resp-uni1-fase{{$fase->idFase}}"
                                         value="{{old('valorUniversidade1',$responsabilidade->valorUniversidade1)}}" style="width:250px" readonly><br>
 
-                                        <label for="resp-data-uni1-fase{{$num}}">Data de vencimento do pagamento à universidade principal:</label><br>
-                                        <input type="date" class="form-control" name="resp-data-uni1-fase{{$num}}" id="resp-data-uni1-fase{{$num}}"
+                                        <label for="resp-data-uni1-fase{{$fase->idFase}}">Data de vencimento do pagamento à universidade principal:</label><br>
+                                        <input type="date" class="form-control" name="resp-data-uni1-fase{{$fase->idFase}}" id="resp-data-uni1-fase{{$fase->idFase}}"
                                         value="" style="width:250px" readonly><br>
                                     @endIf
 
@@ -309,15 +309,15 @@
                                         <input type="number" class="form-control" name="resp-uni2-fase{{$fase->idFase}}" id="resp-uni2-fase{{$fase->idFase}}"
                                         value="{{old('valorUniversidade2',$responsabilidade->valorUniversidade2)}}" style="width:250px"><br>
 
-                                        <label for="resp-data-uni2-fase{{$num}}">Data de vencimento do pagamento à universidade secundária:</label><br>
-                                        <input type="date" class="form-control" name="resp-data-uni2-fase{{$num}}" id="resp-data-uni2-fase{{$num}}"
+                                        <label for="resp-data-uni2-fase{{$fase->idFase}}">Data de vencimento do pagamento à universidade secundária:</label><br>
+                                        <input type="date" class="form-control" name="resp-data-uni2-fase{{$fase->idFase}}" id="resp-data-uni2-fase{{$fase->idFase}}"
                                         value="" style="width:250px" ><br>
                                     @else
                                         <input type="number" class="form-control" name="resp-uni2-fase{{$fase->idFase}}" id="resp-uni2-fase{{$fase->idFase}}"
                                         value="{{old('valorUniversidade2',$responsabilidade->valorUniversidade2)}}" style="width:250px" readonly><br>
 
-                                        <label for="resp-data-uni2-fase{{$num}}">Data de vencimento do pagamento à universidade secundária:</label><br>
-                                        <input type="date" class="form-control" name="resp-data-uni2-fase{{$num}}" id="resp-data-uni2-fase{{$num}}"
+                                        <label for="resp-data-uni2-fase{{$fase->idFase}}">Data de vencimento do pagamento à universidade secundária:</label><br>
+                                        <input type="date" class="form-control" name="resp-data-uni2-fase{{$fase->idFase}}" id="resp-data-uni2-fase{{$fase->idFase}}"
                                         value="" style="width:250px" readonly><br>
                                     @endIf
                                 </div>
@@ -338,8 +338,8 @@
                                             <input type="number" min="0" class="form-control" name="valor-fornecedor-fase{{$fase->idFase}}" id="valor-fornecedor-fase{{$fase->idFase}}"
                                             value="{{old('valor',$relacao->valor)}}" style="width:250px" required><br>
 
-                                            <label id="label3" for="data-fornecedor-fase{{$num}}">Data de vencimento do pagamento ao fornecedor:</label><br>
-                                            <input type="date" class="form-control" name="data-fornecedor-fase{{$num}}" id="data-fornecedor-fase{{$num}}"
+                                            <label id="label3" for="data-fornecedor-fase{{$fase->idFase}}">Data de vencimento do pagamento ao fornecedor:</label><br>
+                                            <input type="date" class="form-control" name="data-fornecedor-fase{{$fase->idFase}}" id="data-fornecedor-fase{{$fase->idFase}}"
                                             value="" style="width:250px"><br>
                                             <div class="float-right">
                                                 <button type="button" onclick="" class="top-button">Remover fornecedor</button>
@@ -371,7 +371,7 @@
                                                     value="{{old('valor',$relacao->valor)}}" style="width:250px" required><br>
 
                                                     <label id="label3" for="data-fornecedor{{$numF}}-fase{{$num}}">Data de vencimento do pagamento ao fornecedor:</label><br>
-                                                    <input type="date" class="form-control" name="data-fornecedor{{$numF}}-fase{{$num}}" id="data-fornecedor{{$numF}}-fase{{$num}}"
+                                                    <input type="date" class="form-control" name="data-fornecedor{{$numF}}-fase{{$fase->idFase}}" id="data-fornecedor{{$numF}}-fase{{$fase->idFase}}"
                                                     value="{{date_create(old('dataVencimentoPagamento',$relacao->dataVencimentoPagamento))->format('Y-m-d')}}"
                                                     style="width:250px" required><br>
                                                     <div class="float-right">
