@@ -31,4 +31,5 @@ Route::namespace('Api')->name('api.')->group(function(){
 
     });
     Route::get('listagem/{pesquisa}', 'ListagemController@getList')->name('getList');
+    Route::get('listagem/cidades/{pais}', 'ListagemController@getCountries')->name('getCountries');
 });

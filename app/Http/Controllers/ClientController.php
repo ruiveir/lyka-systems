@@ -205,6 +205,17 @@ class ClientController extends Controller
             }
             $client->slug = post_slug($client->nome.' '.$client->apelido); /*slugs */
             $client->create_at == date("Y-m-d",$t);
+
+            if($client->nomeInstituicaoOrigem == ""){
+                $client->nomeInstituicaoOrigem = null;
+            }
+            if($client->cidadeInstituicaoOrigem == ""){
+                $client->cidadeInstituicaoOrigem = null;
+            }
+            if($client->nivEstudoAtual == ""){
+                $client->nivEstudoAtual = null;
+            }
+
             $client->save();
 
 
@@ -594,6 +605,17 @@ class ClientController extends Controller
             /* Slugs */
             $client->slug = post_slug($client->nome.' '.$client->apelido);
 
+
+            if($client->nomeInstituicaoOrigem == ""){
+                $client->nomeInstituicaoOrigem = null;
+            }
+            if($client->cidadeInstituicaoOrigem == ""){
+                $client->cidadeInstituicaoOrigem = null;
+            }
+            if($client->nivEstudoAtual == ""){
+                $client->nivEstudoAtual = null;
+            }
+            
             $client->save();
 
 

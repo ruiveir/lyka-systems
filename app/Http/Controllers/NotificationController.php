@@ -107,7 +107,19 @@ class NotificationController extends Controller
                                 $DocsAcademicos = $fase->docAcademico->where('verificacao','=',0)->all();
                                 $DocsPessoais = $fase->docPessoal->where('verificacao','=',0)->all();
                                 if(count($DocsAcademicos) >=1 || count($DocsAcademicos) >=1 || $fase->verificacaoPago == 0){
-                                    $Fases[] = $fase;
+                                    if($Fases){
+                                        $existe = false;
+                                        foreach($Fases as $f){
+                                            if($f->produto->cliente == $fase->produto->cliente){
+                                                $existe = true;
+                                            }
+                                        }
+                                        if(!$existe){
+                                            $Fases[] = $fase;
+                                        }
+                                    }else{
+                                        $Fases[] = $fase;
+                                    }
                                 }
                             }
                         }

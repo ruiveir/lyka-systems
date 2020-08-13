@@ -69,18 +69,26 @@
                         <label for="agente">Agente: <span class="text-danger">*</span></label><br>
                         @if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)
                             <select id="agente" name="agente" class="form-control" required>
+                                <option value="" selected></option>
+                                @foreach($Agentes as $agente)
+                                    @if($agente->idAgente == $produto->idAgente)
+                                        <option {{old('idAgente',$produto->idAgente)}} value="{{$agente->idAgente}}" selected>{{$agente->nome.' '.$agente->apelido.' -> '.$agente->email}}</option>
+                                    @else
+                                        <option {{old('idAgente',$produto->idAgente)}} value="{{$agente->idAgente}}">{{$agente->nome.' '.$agente->apelido.' -> '.$agente->email}}</option>
+                                    @endif
+                                @endforeach
+                            </select><br>
                         @else
-                            <select id="agente" name="agente" class="form-control" readonly>
-                        @endIf
-                            <option value="" selected></option>
                             @foreach($Agentes as $agente)
                                 @if($agente->idAgente == $produto->idAgente)
-                                    <option {{old('idAgente',$produto->idAgente)}} value="{{$agente->idAgente}}" selected>{{$agente->nome.' '.$agente->apelido.' -> '.$agente->email}}</option>
+                                    <input type="text" class="form-control" name="agente" id="agente"
+                                    value="{{$agente->nome.' '.$agente->apelido.' -> '.$agente->email}}" placeholder="" maxlength="20" readonly><br>
                                 @else
-                                    <option {{old('idAgente',$produto->idAgente)}} value="{{$agente->idAgente}}">{{$agente->nome.' '.$agente->apelido.' -> '.$agente->email}}</option>
+                                    <input type="text" class="form-control" name="agente" id="agente"
+                                    value="" placeholder="" maxlength="20" readonly><br>
                                 @endif
                             @endforeach
-                        </select><br>
+                        @endIf
 
                         @if($produto->idSubAgente)
                             <label for="subagente">Sub-Agente:</label><br>
@@ -107,34 +115,50 @@
                         <label for="uni1">Universidade Principal: <span class="text-danger">*</span></label><br>
                         @if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)
                             <select id="uni1" name="uni1" class="form-control" required>
+                                <option value="" selected></option>
+                                @foreach($Universidades as $uni)
+                                    @if($uni->idUniversidade == $produto->idUniversidade1)
+                                        <option {{old('idUniversidade1',$produto->idUniversidade1)}} value="{{$uni->idUniversidade}}" selected>{{$uni->nome.' -> '.$uni->email}}</option>
+                                    @else
+                                        <option {{old('idUniversidade1',$produto->idUniversidade1)}} value="{{$uni->idUniversidade}}">{{$uni->nome.' -> '.$uni->email}}</option>
+                                    @endif
+                                @endforeach
+                            </select><br>
                         @else
-                            <select id="uni1" name="uni1" class="form-control" readonly>
-                        @endIf
-                            <option value="" selected></option>
                             @foreach($Universidades as $uni)
                                 @if($uni->idUniversidade == $produto->idUniversidade1)
-                                    <option {{old('idUniversidade1',$produto->idUniversidade1)}} value="{{$uni->idUniversidade}}" selected>{{$uni->nome.' -> '.$uni->email}}</option>
+                                    <input type="text" class="form-control" name="universidade1" id="universidade1"
+                                    value="{{$uni->nome.' -> '.$uni->email}}" placeholder="" maxlength="20" readonly><br>
                                 @else
-                                    <option {{old('idUniversidade1',$produto->idUniversidade1)}} value="{{$uni->idUniversidade}}">{{$uni->nome.' -> '.$uni->email}}</option>
+                                    <input type="text" class="form-control" name="universidade1" id="universidade1"
+                                    value="" placeholder="" maxlength="20" readonly><br>
                                 @endif
                             @endforeach
-                        </select><br>
+                        @endIf
 
                         <label for="uni2">Universidade Secundária:</label><br>
                         @if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)
                             <select id="uni2" name="uni2" class="form-control">
+                                <option value="" selected></option>
+                                @foreach($Universidades as $uni)
+                                    @if($uni->idUniversidade == $produto->idUniversidade2)
+                                        <option {{old('idUniversidade2',$produto->idUniversidade2)}} value="{{$uni->idUniversidade}}" selected>{{$uni->nome.' -> '.$uni->email}}</option>
+                                    @else
+                                        <option {{old('idUniversidade2',$produto->idUniversidade2)}} value="{{$uni->idUniversidade}}">{{$uni->nome.' -> '.$uni->email}}</option>
+                                    @endif
+                                @endforeach
+                            </select>
                         @else
-                            <select id="uni2" name="uni2" class="form-control" readonly>
-                        @endIf
-                            <option value="" selected></option>
                             @foreach($Universidades as $uni)
                                 @if($uni->idUniversidade == $produto->idUniversidade2)
-                                    <option {{old('idUniversidade2',$produto->idUniversidade2)}} value="{{$uni->idUniversidade}}" selected>{{$uni->nome.' -> '.$uni->email}}</option>
+                                    <input type="text" class="form-control" name="universidade2" id="universidade2"
+                                    value="{{$uni->nome.' -> '.$uni->email}}" placeholder="" maxlength="20" readonly><br>
                                 @else
-                                    <option {{old('idUniversidade2',$produto->idUniversidade2)}} value="{{$uni->idUniversidade}}">{{$uni->nome.' -> '.$uni->email}}</option>
+                                    <input type="text" class="form-control" name="universidade2" id="universidade2"
+                                    value="" placeholder="" maxlength="20" readonly><br>
                                 @endif
                             @endforeach
-                        </select>
+                        @endIf
 
                     </div>
                 </div>
@@ -171,6 +195,12 @@
                             $responsabilidade = $fase->responsabilidade;
                             $relacoes = $responsabilidade->relacao;
                             $subagente = $responsabilidade->subagente;
+                            $permissao_subagente = false;
+                            if($subagente){
+                                if($subagente->exepcao){
+                                    $permissao_subagente = true;
+                                }
+                            }
                         @endphp
                         @if($num == 1)
                             <div class="tab-pane fade show active" id="fase{{$num}}" role="tabpanel" aria-labelledby="fase{{$num}}-tab">
@@ -248,11 +278,16 @@
                                         value="" style="width:250px" readonly><br>
                                     @endIf
 
-                                    <div class="valor-responsabilidade-subagente" style="display: none;">
+                                    @if($produto->idSubAgente)
+                                        <div class="valor-responsabilidade-subagente">
+                                    @else
+                                        <div class="valor-responsabilidade-subagente" style="display: none;">
+                                    @endif
                                         <label for="resp-subagente-fase{{$fase->idFase}}">Valor a pagar ao sub-agente:</label><br>
-                                        @if(Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null && $subagente->exepcao)
+                                        @if(Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null && (Auth()->user()->agente->tipo == "Agente" ||
+                                            (Auth()->user()->agente->tipo == "Subagente" && $permissao_subagente)))
                                             <input type="number" class="form-control valor-pagar-subagente" name="resp-subagente-fase{{$fase->idFase}}" id="resp-subagente-fase{{$fase->idFase}}"
-                                            value="{{old('valorSubAgente',$responsabilidade->valorSubAgente)}}" style="width:250px" readonly><br>
+                                            value="{{old('valorSubAgente',$responsabilidade->valorSubAgente)}}" style="width:250px"><br>
 
                                             <label for="resp-data-subagente-fase{{$fase->idFase}}">Data de vencimento do pagamento ao sub-agente:</label><br>
                                             <input type="date" class="form-control" name="resp-data-subagente-fase{{$fase->idFase}}" id="resp-data-subagente-fase{{$fase->idFase}}"
@@ -270,7 +305,7 @@
 
                                             <label for="resp-data-subagente-fase{{$fase->idFase}}">Data de vencimento do pagamento ao sub-agente:</label><br>
                                             <input type="date" class="form-control" name="resp-data-subagente-fase{{$fase->idFase}}" id="resp-data-subagente-fase{{$fase->idFase}}"
-                                            value="" style="width:250px" readonly><br>
+                                            value="" style="width:250px"><br>
                                         @endIf
                                     </div>
                                     {{--

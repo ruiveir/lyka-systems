@@ -22,12 +22,18 @@
                     class="fas fa-arrow-right rounded-circle p-2 nav_btns"></i></a>
         </div>
         <div class="float-right">
-            <a href="{{route('produtos.edit',$produto)}}" class="top-button mr-2">Editar Informação</a>
-            <form method="POST" role="form" id="{{ $produto->idCliente }}" action="{{route('produtos.destroy',$produto)}}" class="d-inline-block form_produto_id">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="top-button mr-2" title="Eliminar Produto" data-toggle="modal" data-target="#deleteModal">Eliminar Produto</i></button>
-            </form>
+            @if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
+                (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null &&
+                (Auth()->user()->agente->tipo == "Agente" || Auth()->user()->agente->exepcao)))
+                <a href="{{route('produtos.edit',$produto)}}" class="top-button mr-2">Editar Informação</a>
+            @endif
+            @if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)
+                <form method="POST" role="form" id="{{ $produto->idCliente }}" action="{{route('produtos.destroy',$produto)}}" class="d-inline-block form_produto_id">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="top-button mr-2" title="Eliminar Produto" data-toggle="modal" data-target="#deleteModal">Eliminar Produto</i></button>
+                </form>
+            @endif
             {{--<a href="{{route('produtos.print',$produto)}}" target="_blank" class="top-button">Imprimir</a>--}}
         </div>
 
@@ -460,9 +466,11 @@
                                 @else
                                     <div><span class="text-secondary">Sem documentos de transação </span> </div>
                                 @endif
-                                <div><br>
-                                    <a href="{{route('documento-transacao.create',$fase)}}" class="top-button mr-2">Adicionar transação</a>
-                                </div><br>
+                                @if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)
+                                    <div><br>
+                                        <a href="{{route('documento-transacao.create',$fase)}}" class="top-button mr-2">Adicionar transação</a>
+                                    </div><br>
+                                @endif
                             </div>
                         </div>
                     </div>

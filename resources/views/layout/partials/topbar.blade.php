@@ -61,7 +61,7 @@
             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-bell fa-fw"></i>
                 <!-- Counter - Alerts -->
-                @if (count($notifications))
+                @if ($notifications)
                 <span class="badge badge-danger badge-counter">{{count($notifications)>3?'3+':count($notifications)}}</span>
                 @endif
             </a>
@@ -70,7 +70,7 @@
                 <h6 class="dropdown-header">
                     Centro de notificações
                 </h6>
-                @if (count($notifications))
+                @if ($notifications)
                     @php
                         $numNotificacao = 0;
                     @endphp
@@ -102,9 +102,8 @@
                                     <div class="col p-2 assunto">
                                         <b>{{$notification->data['assunto']}}</b>
                                         <br>
-                                        <a class="mostraNotificacao" href="#" onClick="show($(this).closest('.info-not'))">Ler Tudo</a>
                                     </div>
-                                    <div class="col p-2 descricaoNotificacao" style="display: none;">
+                                    <div class="col p-2 descricaoNotificacao">
                                         @php
                                             $descricoes = explode('*',str_replace(array("\\r\\n", "\\r", "\\n"), "*", $notification->data['descricao']));
                                         @endphp
@@ -112,7 +111,6 @@
                                             {{$descricao}}
                                             <br>
                                         @endforeach
-                                        <a href="#" onClick="hide($(this).closest('.info-not'))">Diminuir</a>
                                     </div>
                                 </div>
                             </div>
@@ -129,9 +127,8 @@
                                     <div class="col p-2 assunto">
                                         <b>{{$notification->data['assunto']}}</b>
                                         <br>
-                                        <a class="mostraNotificacao" href="#" onClick="show($(this).closest('.info-not'))">Ler Tudo</a>
                                     </div>
-                                    <div class="col p-2 descricaoNotificacao" style="display: none;">
+                                    <div class="col p-2 descricaoNotificacao">
                                         @php
                                             $descricoes = explode('*',str_replace(array("\\r\\n", "\\r", "\\n"), "*", $notification->data['descricao']));
                                             $idCliente = explode('_',$notification->data['code']);
@@ -145,7 +142,7 @@
                                                     $primeiraDescricao = false;
                                                 @endphp
                                             @else
-                                                @foreach($clientes as $cliente)
+                                                @foreach($clientesNotificacao as $cliente)
                                                     @if($cliente->idCliente == $idCliente[$num])
                                                         <a class="dropdown-item d-flex align-items-center" href="{{route("clients.show", $cliente)}}">
                                                             {{$descricao}}
@@ -158,7 +155,6 @@
                                             @endif
                                             <br>
                                         @endforeach
-                                        <a href="#" onClick="hide($(this).closest('.info-not'))">Diminuir</a>
                                     </div>
                                 </div>
                             </div>
@@ -175,9 +171,8 @@
                                     <div class="col p-2 assunto">
                                         <b>{{$notification->data['assunto']}}</b>
                                         <br>
-                                        <a class="mostraNotificacao" href="#" onClick="show($(this).closest('.info-not'))">Ler Tudo</a>
                                     </div>
-                                    <div class="col p-2 descricaoNotificacao" style="display: none;">
+                                    <div class="col p-2 descricaoNotificacao">
                                         @php
                                             $descricoes = explode('*',str_replace(array("\\r\\n", "\\r", "\\n"), "*", $notification->data['descricao']));
                                             $idCliente = explode('_',$notification->data['code']);
@@ -191,7 +186,7 @@
                                                     $primeiraDescricao = false;
                                                 @endphp
                                             @else
-                                                @foreach($clientes as $cliente)
+                                                @foreach($clientesNotificacao as $cliente)
                                                     @if($cliente->idCliente == $idCliente[$num])
                                                         <a class="dropdown-item d-flex align-items-center" href="{{route("clients.show", $cliente)}}">
                                                             {{$descricao}}
@@ -204,7 +199,6 @@
                                             @endif
                                             <br>
                                         @endforeach
-                                        <a href="#" onClick="hide($(this).closest('.info-not'))">Diminuir</a>
                                     </div>
                                 </div>
                             </div>
@@ -214,8 +208,12 @@
                                         
                 
 
-                @if (count($notifications)>3)
-                    <a class="dropdown-item text-center small text-gray-500" href="#">Ver mais</a>
+                @if ($notifications)
+                    @if (count($notifications)>3)
+                        <a class="dropdown-item text-center small text-gray-500" href="#">Ver mais</a>
+                    @else
+                        <p class="text-center mt-3 text-gray-800">wow, such empty :(</p>
+                    @endif
                 @else
                     <p class="text-center mt-3 text-gray-800">wow, such empty :(</p>
                 @endif
@@ -236,13 +234,31 @@
                     {{Auth()->user()->cliente->nome.' '.Auth()->user()->cliente->apelido}}
                     @endif
                 </span>
-                @if(Auth()->user()->admin->fotografia)
-                    <img class="img-profile rounded-circle" src="{{Storage::disk('public')->url('admin-photos/').Auth()->user()->admin->fotografia}}" alt="Imagem de apresentação">
+                @if(Auth()->user()->tipo == "admin")
+                    @if(Auth()->user()->admin->fotografia)
+                        <img class="img-profile rounded-circle" src="{{Storage::disk('public')->url('admin-photos/').Auth()->user()->admin->fotografia}}" alt="Imagem de apresentação">
                     @elseif(Auth()->user()->admin->genero == 'F')
                         <img class="img-profile rounded-circle" src="{{Storage::disk('public')->url('default-photos/F.jpg')}}" alt="Imagem de apresentação">
-                        @else
+                    @else
                         <img class="img-profile rounded-circle" src="{{Storage::disk('public')->url('default-photos/M.jpg')}}" alt="Imagem de apresentação">
-                        @endif
+                    @endif
+                @elseif(Auth()->user()->tipo == "agente")
+                    @if(Auth()->user()->agente->fotografia)
+                        <img class="img-profile rounded-circle" src="{{Storage::disk('public')->url('agent-photos/').Auth()->user()->agente->fotografia}}" alt="Imagem de apresentação">
+                    @elseif(Auth()->user()->agente->genero == 'F')
+                        <img class="img-profile rounded-circle" src="{{Storage::disk('public')->url('default-photos/F.jpg')}}" alt="Imagem de apresentação">
+                    @else
+                        <img class="img-profile rounded-circle" src="{{Storage::disk('public')->url('default-photos/M.jpg')}}" alt="Imagem de apresentação">
+                    @endif
+                @else
+                    @if(Auth()->user()->cliente->fotografia)
+                        <img class="img-profile rounded-circle" src="{{Storage::disk('public')->url('client-photos/').Auth()->user()->cliente->fotografia}}" alt="Imagem de apresentação">
+                    @elseif(Auth()->user()->cliente->genero == 'F')
+                        <img class="img-profile rounded-circle" src="{{Storage::disk('public')->url('default-photos/F.jpg')}}" alt="Imagem de apresentação">
+                    @else
+                        <img class="img-profile rounded-circle" src="{{Storage::disk('public')->url('default-photos/M.jpg')}}" alt="Imagem de apresentação">
+                    @endif
+                @endif
             </a>
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -273,7 +289,7 @@
 
 @section('scripts')
 <script type="text/javascript">
-    function show(div) {
+    function showNotificacao(div) {
         div.find('.descricaoNotificacao').first().css({
             "display": "block"
         });
@@ -282,7 +298,7 @@
         });
     }
 
-    function hide(div) {
+    function hideNotificacao(div) {
         div.find('.descricaoNotificacao').first().css({
             "display": "none"
         });

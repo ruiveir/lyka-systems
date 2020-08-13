@@ -175,8 +175,8 @@ Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
     Route::get('/documento-pessoal/criar/{client}', 'DocPessoalController@createFromClient')->name('documento-pessoal.createFromClient');
     Route::post('/documento-pessoal/store/{client}/{docnome}', 'DocPessoalController@storeFromClient')->name('documento-pessoal.storeFromClient');
 
-    Route::get('/documento-pessoal/criar/{fase}/{docnecessario}', 'DocPessoalController@create')->name('documento-pessoal.create');
-    Route::post('/documento-pessoal/store/{fase}/{docnecessario}', 'DocPessoalController@store')->name('documento-pessoal.store');
+    Route::get('/documento-pessoal/criar-na-fase/{fase}/{docnecessario}', 'DocPessoalController@create')->name('documento-pessoal.create');
+    Route::post('/documento-pessoal/store-na-fase/{fase}/{docnecessario}', 'DocPessoalController@store')->name('documento-pessoal.store');
     Route::get('/documento-pessoal/{documento}/editar', 'DocPessoalController@edit')->name('documento-pessoal.edit');
     Route::put('/documento-pessoal/{documento}/update', 'DocPessoalController@update')->name('documento-pessoal.update');
     Route::get('/documento-pessoal/{documento}/verifica', 'DocPessoalController@verify')->name('documento-pessoal.verify');
@@ -187,8 +187,8 @@ Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
     Route::get('/documento-academico/criar/{client}', 'DocAcademicoController@createFromClient')->name('documento-academico.createFromClient');
     Route::post('/documento-academico/store/{client}/{docnome}', 'DocAcademicoController@storeFromClient')->name('documento-academico.storeFromClient');
 
-    Route::get('/documento-academico/criar/{fase}/{docnecessario}', 'DocAcademicoController@create')->name('documento-academico.create');
-    Route::post('/documento-academico/store/{fase}/{docnecessario}', 'DocAcademicoController@store')->name('documento-academico.store');
+    Route::get('/documento-academico/criar-na-fase/{fase}/{docnecessario}', 'DocAcademicoController@create')->name('documento-academico.create');
+    Route::post('/documento-academico/store-na-fase/{fase}/{docnecessario}', 'DocAcademicoController@store')->name('documento-academico.store');
     Route::get('/documento-academico/{documento}/editar', 'DocAcademicoController@edit')->name('documento-academico.edit');
     Route::put('/documento-academico/{documento}/update', 'DocAcademicoController@update')->name('documento-academico.update');
     Route::get('/documento-academico/{documento}/verifica', 'DocAcademicoController@verify')->name('documento-academico.verify');

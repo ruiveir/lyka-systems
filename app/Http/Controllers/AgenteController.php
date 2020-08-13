@@ -41,7 +41,7 @@ class AgenteController extends Controller
             if(Auth()->user()->tipo == 'admin'){
                 $agents = Agente::all();
             }else{
-                $agents = Agente::where(['idAgenteAssociado','=',Auth()->user()->idAgente],['tipo','like','Subagente'])->get();
+                $agents = Agente::where('idAgenteAssociado','=',Auth()->user()->idAgente)->get();
             }
             if($agents || $agents->toArray()){
                 $totalagents = $agents->count();
