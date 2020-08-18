@@ -102,7 +102,6 @@ class AgenteController extends Controller
             $agent->fill($fields);
             if($agent->tipo == "Agente"){
                 $agent->exepcao = false;
-                $agent->tipo = 'Subagente';
             }
 
             /* obtem os dados para criar o utilizador */

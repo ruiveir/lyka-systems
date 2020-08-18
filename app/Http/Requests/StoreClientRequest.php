@@ -37,7 +37,7 @@ class StoreClientRequest extends FormRequest
             'num_docOficial'=> 'nullable|unique:Cliente',
             'validade_docOficial'=> 'nullable', /* data de validade do CC */
             'img_docOficial'=> 'nullable',
-            'NIF' => 'nullable',
+            'NIF' => 'nullable|unique:Cliente',
 
             'numPassaporte'=> 'nullable',
             'dataValidPP'=> 'nullable',

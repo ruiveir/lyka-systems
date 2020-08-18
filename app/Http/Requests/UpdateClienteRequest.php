@@ -34,10 +34,10 @@ class UpdateClienteRequest extends FormRequest
             'obsAgente'=> 'nullable',
             'fotografia' => 'nullable',
 
-            'num_docOficial'=> 'nullable',
+            'num_docOficial'=> 'nullable|unique:Cliente',
             'validade_docOficial'=> 'nullable', /* data de validade do CC */
             'img_docOficial'=> 'nullable',
-            'NIF' => 'nullable',
+            'NIF' => 'nullable|unique:Cliente',
 
             'numPassaporte'=> 'nullable',
             'dataValidPP'=> 'nullable',
@@ -52,7 +52,7 @@ class UpdateClienteRequest extends FormRequest
 
             'telefone1' => 'nullable',
             'telefone2' => 'nullable',
-            'email' => 'nullable',
+            'email' => 'nullable|unique:Cliente|unique:Agente|unique:User',
             'moradaResidencia' => 'nullable',
             'morada' => 'nullable',
             'cidade' => 'nullable',
@@ -63,14 +63,13 @@ class UpdateClienteRequest extends FormRequest
             'telefoneMae' => 'nullable',
             'emailMae' => 'nullable',
 
-
             'IBAN' => 'nullable',
             'obsFinanceiras' => 'nullable',
 
             'refCliente' => 'nullable',
 
-            'estado' => 'nullable',
-            'editavel' => 'nullable',
+            'estado' => 'required',
+            'editavel' => 'required',
 
         ];
     }

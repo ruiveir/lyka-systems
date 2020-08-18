@@ -253,5 +253,3 @@ Route::put('/restaurar-password/{user}/nova-password', 'AccountConfirmationContr
 /* Listagens */
 Route::resource('/listagens', 'ListagemController');
 
-/* Edgar Teste -> Eliminar no futuro */
-Route::get('/data', 'EdgarTesteController@index');

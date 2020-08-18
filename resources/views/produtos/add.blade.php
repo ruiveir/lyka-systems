@@ -317,49 +317,6 @@
             fornecedor.css("display", "none");
         }
 
-        /*function AtualizaProduto(idproduto, form){
-            if(idproduto>0){
-                AjaxProdutos(idproduto[0]);
-                form.attr('action','/produtos/store/'+idproduto[0]);
-            }else{
-                $("#formulario-produto").css("display", "none");
-                $("#formulario-fases").css("display", "none");
-            }
-        }
-
-        function AjaxProdutos(idproduto){
-            var link = '/../api/stock/produto/'+idproduto;
-            $.ajax({
-                method:"GET",
-                url:link
-            })
-            .done(function(response){
-                if(response.produto != null){
-                    $("#formulario-produto").css("display", "block");
-                    $("#formulario-fases").css("display", "block");
-                    $('#tipo').attr('value', response.produto[0].tipoProduto);
-                    $('#descricao').attr('value', response.produto[0].descricao);
-                    $('#anoAcademico').attr('value', response.produto[0].anoAcademico);
-                    if(response.fases != null){
-                        var num = 0;
-                        for (var i = 0; i < response.fases.length; i++) {
-                            num++;
-                            $('#descricao-fase'+num).attr('value', response.fases[i].descricao);
-                            $('#fase-idStock'+num).attr('value', response.fases[i].idFaseStock);
-                            $("#data-fase"+num).attr("required", true);
-                            $('#fase'+num+'-tab').text('Fase '+num+': '+response.fases[i].descricao);
-                        }
-                        if(num < 20){
-                            num++;
-                            for(var i=num;i<=20;i++){
-                                $("#fase"+i).css("display", "none");
-                                $("#fase"+i+"-li").css("display", "none");
-                            }
-                        }
-                    }
-                }
-            })
-        }*/
     </script>
 
 @endsection

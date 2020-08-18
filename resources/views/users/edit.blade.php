@@ -109,3 +109,32 @@
     </div>
 </div>
 @endsection
+
+
+@section('scripts')
+<script>
+    
+    $(document).ready(function() {
+        bsCustomFileInput.init();
+        $(".needs-validation").submit(function(event) {
+            var email = $('#email').val();
+            
+            var link = "/api/unique/admin/{{$user->admin->slug}}/"+email;
+            $.ajax({
+                method:"GET",
+                url:link
+            })
+            .done(function(response){
+                if(response != null){
+                    if(response.email == true){
+                        alert("Já existe um agente/subagente com esse email");
+                    }
+                    if(response.user == true && response.email == false){
+                        alert("Já existe um user com esse email");
+                    }
+                }
+            })
+        });
+    });
+</script>
+@endsection

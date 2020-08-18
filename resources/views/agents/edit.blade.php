@@ -68,4 +68,39 @@
 {{-- script permite definir se um input recebe só numeros OU so letras --}}
 <script src="{{asset('/js/jquery-key-restrictions.min.js')}}"></script>
 
+<script>
+    
+    $(document).ready(function() {
+        bsCustomFileInput.init();
+        $(".needs-validation").submit(function(event) {
+            var nif = $('#NIF').val();
+            var num_doc = $('#num_doc').val();
+            var email = $('#email').val();
+
+            var uniques = num_doc + "_" + nif + "_" + email;
+            
+            var link = "/api/unique/agente/{{$agent->slug}}/"+uniques;
+            $.ajax({
+                method:"GET",
+                url:link
+            })
+            .done(function(response){
+                if(response != null){
+                    if(response.email == true){
+                        alert("Já existe um agente/subagente com esse email");
+                    }
+                    if(response.nif == true){
+                        alert("Já existe um agente/subagente com esse nif");
+                    }
+                    if(response.numdoc == true){
+                        alert("Já existe um agente/subagente com o mesmo numero de documento");
+                    }
+                    if(response.user == true && response.email == false){
+                        alert("Já existe um user com esse email");
+                    }
+                }
+            })
+        });
+    });
+</script>
 @endsection

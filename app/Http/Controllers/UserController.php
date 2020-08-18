@@ -123,7 +123,7 @@ class UserController extends Controller
 
             $user->fill($fieldsUser);
             $admin->fill($fieldsAdmin);
-
+            
             $admin->save();
             $user->save();
 

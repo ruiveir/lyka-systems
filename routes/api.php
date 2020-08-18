@@ -32,4 +32,27 @@ Route::namespace('Api')->name('api.')->group(function(){
     });
     Route::get('listagem/{pesquisa}', 'ListagemController@getList')->name('getList');
     Route::get('listagem/cidades/{pais}', 'ListagemController@getCountries')->name('getCountries');
+    
+    Route::prefix('unique')->group(function(){
+
+        Route::get('/agente/{P_Agente}/{uniques}', 'UniqueController@agente')->name('agente');
+
+        Route::get('/cliente/{P_Cliente}/{uniques}', 'UniqueController@cliente')->name('prclienteoduto');
+
+        Route::get('/admin/{P_Administrador}/{email}', 'UniqueController@administrador')->name('administrador');
+
+        Route::get('/conta/{P_Conta}/{uniques}', 'UniqueController@conta')->name('conta');
+
+        Route::get('/uni/{P_Universidade}/{NIF}', 'UniqueController@universidade')->name('universidade');
+
+        Route::get('/agente/{uniques}', 'UniqueController@agente')->name('agente');
+
+        Route::get('/cliente/{uniques}', 'UniqueController@cliente')->name('prclienteoduto');
+
+        Route::get('/admin/{email}', 'UniqueController@administrador')->name('administrador');
+
+        Route::get('/conta/{uniques}', 'UniqueController@conta')->name('conta');
+
+        Route::get('/uni/{NIF}', 'UniqueController@universidade')->name('universidade');
+    });
 });
