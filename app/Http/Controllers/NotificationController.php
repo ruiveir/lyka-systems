@@ -20,8 +20,9 @@ use App\Notifications\BugReportSend;
 
 class NotificationController extends Controller
 {
-    public function getNotificacaoAniversario($AllNotifications)
+    public function getNotificacaoAniversario()
     {
+        $notificacoes = Auth()->user()->unreadNotifications;
         if(!Auth()->user()){
             return null;
         }
@@ -65,12 +66,10 @@ class NotificationController extends Controller
                 }
                 $code = Auth()->user()->idUser.'_aniversario_'.$date->format('d-m-Y');
                 $existe=false;
-                if($AllNotifications){
-                    foreach($AllNotifications as $notification){
-                        $dados = json_decode($notification->data);
-                        $dadosArray = json_decode($notification->data, true);
-                        if(array_key_exists('code', $dadosArray)){
-                            if($dados->code == $code){
+                if($notificacoes){
+                    foreach($notificacoes as $notification){
+                        if($notification->type == "App\Notifications\Aniversario"){
+                            if($notification->data["code"] == $code){
                                 $existe = true;
                             }
                         }
@@ -86,12 +85,12 @@ class NotificationController extends Controller
             }
         }
     }
-    public function getNotificacaoInicioProduto($AllNotifications)
+    public function getNotificacaoInicioProduto()
     {
         /*************************** NOTIFICAÇÕES PARA INICIO PRODUTOS **************************/
 
     }
-    public function getNotificacaoBugReport($AllNotifications)
+    public function getNotificacaoBugReport()
     {
         if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
             $relatorios = RelatorioProblema::where("estado","!=","Resolvido")->get();
@@ -110,38 +109,25 @@ class NotificationController extends Controller
                     Auth()->user()->notify(new BugReportSend($relatorio->nome, $relatorio->idRelatorioProblema));
                 }
             }
-
-            /*
-            
-            foreach($AllNotifications as $notification){
-                if($notification->type == "App\Notifications\BugReportSend"){
-                    $RelExiste = false;
+            foreach($notificacoes as $not){
+                $relExiste = false;
+                if($not->type == "App\Notifications\BugReportSend"){
                     foreach($relatorios as $relatorio){
-                        if($notification->read_at == null){
-                            $dados = json_decode($notification->data);
-                            if($dados->idReport == $relatorio->idRelatorioProblema){
-                                if($relatorio->estado != "Resolvido"){
-                                    $RelExiste = true;
-                                }
-                            }
+                        if($not->data["idReport"] == $relatorio->idRelatorioProblema){
+                            $relExiste = true;
                         }
                     }
-                    if($RelExiste == false && $notification->read_at == null){
-                        foreach($notificacoes as $not){
-                            $dados = json_decode($notification->data);
-                            dd(strcmp($not->data["idReport"], $dados->idReport)."     =>    ".$not->data["idReport"]." -> ".$dados->idReport);
-                            if(strcmp($not->data["idReport"], $dados->idReport) == 0){
-                                $not->markAsRead();
-                            }
-                        }
+                    if($relExiste == false){
+                        $not->delete();
                     }
                 }
-            }*/
+            }
         }
         
     }
-    public function getNotificacaoFaseAcaba($AllNotifications)
+    public function getNotificacaoFaseAcaba()
     {
+        $notificacoes = Auth()->user()->unreadNotifications;
         $Fases = null;
         $Assunto = 'Clientes com documentos ou pagamentos em atraso';
         $Descricao = null;
@@ -211,6 +197,7 @@ class NotificationController extends Controller
                 }
             }
         }
+        //dd($Fases);
         if($Fases){
             $urgencia = false;
             $Descricao = 'Clientes: ';
@@ -229,19 +216,17 @@ class NotificationController extends Controller
             }
             $code = Auth()->user()->idUser.'_atraso'.$codecli;
             $existe=false;
-            if($AllNotifications){
-                foreach($AllNotifications as $notification){
-                    $dados = json_decode($notification->data);
-                    $dadosArray = json_decode($notification->data, true);
-                    if(array_key_exists('code', $dadosArray)){
-                        if($dados->code == $code){
+            if($notificacoes){
+                foreach($notificacoes as $notification){
+                    if($notification->type == "App\Notifications\Atraso"){
+                        if($notification->data["code"] == $code){
                             $existe = true;
                             auth()->user()->readNotifications->where('id','=',$notification->id)->markAsUnread();
                         }
                     }
                 }
                 if(!$existe){
-                    foreach($AllNotifications as $notification){
+                    foreach($notificacoes as $notification){
                         if($notification->type == 'App\Notifications\Atraso' && $notification->notifiable_id == Auth()->user()->idUser){
                             auth()->user()->unreadNotifications->where('id','=',$notification->id)->markAsRead();
                         }
@@ -254,8 +239,9 @@ class NotificationController extends Controller
         }
     }
 
-    public function getNotificacaoDocFalta($AllNotifications)
+    public function getNotificacaoDocFalta()
     {
+        $notificacoes = Auth()->user()->unreadNotifications;
         $FasesFalta = null;
         if(Auth()->user()->tipo == 'cliente' && Auth()->user()->idCliente != null){
             $produtosCliente = Auth()->user()->cliente->produto->all();
@@ -323,19 +309,17 @@ class NotificationController extends Controller
                     $pagamento = 1;
                 }
                 $code = Auth()->user()->idUser.'_atrasoCliente_'.$Fase->idFase.'_'.$NumDocumentos.'_'.$pagamento;
-                if($AllNotifications){
-                    foreach($AllNotifications as $notification){
-                        $dados = json_decode($notification->data);
-                        $dadosArray = json_decode($notification->data, true);
-                        if(array_key_exists('code', $dadosArray)){
-                            if($dados->code == $code){
+                if($notificacoes){
+                    foreach($notificacoes as $notification){
+                        if($notification->type == 'App\Notifications\AtrasoCliente'){
+                            if($notification->data["code"] == $code){
                                 $existe = true;
                                 auth()->user()->readNotifications->where('id','=',$notification->id)->markAsUnread();
                             }
                         }
                     }
                     if(!$existe){
-                        foreach($AllNotifications as $notification){
+                        foreach($notificacoes as $notification){
                             if($notification->type == 'App\Notifications\AtrasoCliente' && $notification->notifiable_id == Auth()->user()->idUser){
                                 auth()->user()->readNotifications->where('id','=',$notification->id)->markAsRead();
                             }
