@@ -139,16 +139,16 @@ Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
       Route::put('/cobrancas/{product}/{document}', 'ChargesController@update')->name('charges.update');
 
     /* Utilizadores */
-    Route::resource('/administradores', 'UserController')->parameters([
-      'administradores' => 'user'
+    Route::resource('/administradores', 'AdminController')->parameters([
+      'administradores' => 'admin'
     ])->names([
-      'index' => 'users.index',
-      'store' => 'users.store',
-      'create' => 'users.create',
-      'show' => 'users.show',
-      'update' => 'users.update',
-      'destroy' => 'users.destroy',
-      'edit' => 'users.edit',
+      'index' => 'admins.index',
+      'store' => 'admins.store',
+      'create' => 'admins.create',
+      'show' => 'admins.show',
+      'update' => 'admins.update',
+      'destroy' => 'admins.destroy',
+      'edit' => 'admins.edit',
     ]);
 
     /* Produto Stock*/

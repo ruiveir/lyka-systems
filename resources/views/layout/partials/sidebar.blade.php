@@ -85,7 +85,7 @@
         </div>
     </li>
 
-    <li class="nav-item <?php if (Route::is('libraries.*') || Route::is('contacts.*') || Route::is('agenda.*') || Route::is('produtostock.*') || Route::is('users.*') || Route::is('listagens.*') || Route::is('provider.*')) { echo 'active'; } ?>">
+    <li class="nav-item <?php if (Route::is('libraries.*') || Route::is('contacts.*') || Route::is('agenda.*') || Route::is('produtostock.*') || Route::is('admins.*') || Route::is('listagens.*') || Route::is('provider.*')) { echo 'active'; } ?>">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseDiversos" aria-expanded="true" aria-controls="collapseDiversos">
             <i class="fas fa-fw fa-folder"></i>
             <span>Diversos</span>
@@ -97,7 +97,7 @@
                     <a class="collapse-item {{Route::is('produtostock.*') ? 'active' : ''}}" href="{{route('produtostock.index')}}">Produtos Stock</a>
                     <a class="collapse-item {{Route::is('listagens.*') ? 'active' : ''}}" href="{{route('listagens.index')}}">Listagens</a>
                     <a class="collapse-item {{Route::is('libraries.*') ? 'active' : ''}}" href="{{route('libraries.index')}}">Biblioteca</a>
-                    <a class="collapse-item {{Route::is('users.*') ? 'active' : ''}}" href="{{route('users.index')}}">Administradores</a>
+                    <a class="collapse-item {{Route::is('admins.*') ? 'active' : ''}}" href="{{route('admins.index')}}">Administradores</a>
                     <div class="collapse-divider"></div>
                     <h6 class="collapse-header">Outras Páginas:</h6>
                     <a class="collapse-item {{Route::is('provider.*') ? 'active' : ''}}" href="{{route('provider.index')}}">Fornecedores</a>

@@ -33,13 +33,10 @@
     @php
     use App\Cliente;
     $clientesNotificacao = Cliente::all();
-    // $Notificacoes = Auth()->user()->getNotifications();
-    //$allNotifications = Auth()->user()->unreadNotifications;
-    //$notifications = Auth()->user()->unreadNotifications()->orderBy('created_at', 'DESC')->take(3)->get();
+    
     $notifications = Auth()->user()->getNotifications();
     @endphp
 </head>
-
 <body id="page-top">
     {{-- Modal de contactos --}}
     @include('layout.partials.modal-contactos')

@@ -22,7 +22,6 @@ class FaseStock extends Migration
             $table->unsignedBigInteger('idProdutoStock');
                 $table->foreign('idProdutoStock')->references('idProdutoStock')->on('ProdutoStock');
 
-            $table->softDeletes();
         });
     }
 

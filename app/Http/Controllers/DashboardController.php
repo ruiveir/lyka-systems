@@ -29,12 +29,16 @@ class DashboardController extends Controller{
         $clientes = Cliente::all();
         $universidades = Universidade::all();
 
-        $AllNotifications = Notificacao::all();
+        $AllNotifications = Notificacao::where("notifiable_id", "=",Auth()->user()->idUser)->get();
 
         $this->NotController->getNotificacaoAniversario($AllNotifications);
         $this->NotController->getNotificacaoInicioProduto($AllNotifications);
         $this->NotController->getNotificacaoFaseAcaba($AllNotifications);
         $this->NotController->getNotificacaoDocFalta($AllNotifications);
+
+        
+        $AllNotifications = Notificacao::where("notifiable_id", "=",Auth()->user()->idUser)->whereNull("read_at")->get();
+        $this->NotController->getNotificacaoBugReport($AllNotifications);
 
         return view('dashboard.index', compact('agentes', 'clientes', 'universidades'));
     }

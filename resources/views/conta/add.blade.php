@@ -101,7 +101,7 @@
 <script>
     $(document).ready(function() {
         bsCustomFileInput.init();
-        $(".needs-validation").submit(function(event) {
+        $(".needs-validation").submit(function(event) {var nif = $('#NIF').val();
             if (this.checkValidity() === false) {
                 event.preventDefault();
                 event.stopPropagation();

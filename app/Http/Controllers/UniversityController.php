@@ -58,6 +58,12 @@ class UniversityController extends Controller
             $university = new Universidade;
             $university->fill($fields);
 
+            $unis = Universidade::withTrashed()->get();
+            foreach ($unis as $trash){
+                if($trash->NIF == $university->NIF){
+                    return redirect()->back()->withInput();
+                }
+            }
             // Data em que o registo é criado
             $t = time();
             $university->create_at == date("Y-m-d", $t);
@@ -142,6 +148,12 @@ class UniversityController extends Controller
             $fields = $request->validated();
             $university->fill($fields);
 
+            $unis = Universidade::withTrashed()->get();
+            foreach ($unis as $trash){
+                if($trash->NIF == $university->NIF){
+                    return redirect()->back()->withInput();
+                }
+            }
             // Data em que o registo é modificado
             $t = time();
             $university->updated_at == date("Y-m-d", $t);

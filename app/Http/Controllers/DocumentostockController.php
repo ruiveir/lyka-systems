@@ -67,7 +67,7 @@ class DocumentostockController extends Controller
             $documentostock->updated_at == date("Y-m-d",$t);
             $documentostock->save();
 
-            return redirect()->back()->with('success', 'Dados do documento de stock modificados com sucesso');
+            return redirect()->route('fasestock.show',$documentostock->faseStock)->with('success', 'Dados do documento de stock modificados com sucesso');
         }else{
             /* não tem permissões */
             abort (401);

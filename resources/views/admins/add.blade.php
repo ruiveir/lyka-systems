@@ -42,18 +42,18 @@
         </div>
         <br>
         <div class="payment-card shadow-sm">
-            <form method="POST" action="{{route('users.store')}}" enctype="multipart/form-data">
+            <form class="needs-validation" method="POST" action="{{route('admins.store')}}" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
                     <div class="col-md-6">
                         <label for="nome">Primeiro nome *</label>
                         <br>
-                        <input type="text" name="nome" required title="Campo de preenchimento obrigatório." placeholder="Inserir primeiro nome" value="{{old('nome', $user->nome)}}">
+                        <input type="text" name="nome" required title="Campo de preenchimento obrigatório." placeholder="Inserir primeiro nome" value="{{old('nome', $admin->nome)}}">
                     </div>
                     <div class="col-md-6">
                         <label for="apelido">Último nome *</label>
                         <br>
-                        <input type="text" name="apelido" required title="Campo de preenchimento obrigatório." placeholder="Inserir último nome" value="{{old('apelido', $user->apelido)}}">
+                        <input type="text" name="apelido" required title="Campo de preenchimento obrigatório." placeholder="Inserir último nome" value="{{old('apelido', $admin->apelido)}}">
                     </div>
                 </div>
                 <br>
@@ -61,12 +61,12 @@
                     <div class="col-md-6">
                         <label for="email">Endereço eletrónico *</label>
                         <br>
-                        <input type="text" name="email" id="inputEmail" placeholder="Inserir endereço eletrónico" required title="Campo de preenchimento obrigatório." value="{{old('email', $user->email)}}">
+                        <input type="text" name="email" id="inputEmail" placeholder="Inserir endereço eletrónico" required title="Campo de preenchimento obrigatório." value="{{old('email', $admin->email)}}">
                     </div>
                     <div class="col-md-6">
                         <label for="dataNasc">Data de nascimento *</label>
                         <br>
-                        <input type="date" name="dataNasc" required title="Campo de preenchimento obrigatório." value="{{old('dataNasc', $user->dataNasc)}}">
+                        <input type="date" name="dataNasc" required title="Campo de preenchimento obrigatório." value="{{old('dataNasc', $admin->dataNasc)}}">
                     </div>
                 </div>
                 <br>
@@ -74,12 +74,12 @@
                     <div class="col-md-6">
                         <label for="telefone1">Telefone princial *</label>
                         <br>
-                        <input type="text" name="telefone1" required title="Campo de preenchimento obrigatório." placeholder="Inserir número de telefone principal" maxlength="25" value="{{old('telefone1', $user->telefone1)}}">
+                        <input type="text" name="telefone1" required title="Campo de preenchimento obrigatório." placeholder="Inserir número de telefone principal" maxlength="25" value="{{old('telefone1', $admin->telefone1)}}">
                     </div>
                     <div class="col-md-6">
                         <label for="telefone2">Telefone secundário</label>
                         <br>
-                        <input type="text" name="telefone2" placeholder="Inserir número de telefone secundário" value="{{old('telefone2', $user->telefone2)}}" maxlength="25">
+                        <input type="text" name="telefone2" placeholder="Inserir número de telefone secundário" value="{{old('telefone2', $admin->telefone2)}}" maxlength="25">
                     </div>
                 </div>
                 <br>
@@ -120,7 +120,7 @@
     $(document).ready(function() {
         bsCustomFileInput.init();
         $(".needs-validation").submit(function(event) {
-            var email = $('#email').val();
+            var email = $('#inputEmail').val();
             
             var link = "/api/unique/admin/"+email;
             $.ajax({
@@ -130,7 +130,7 @@
             .done(function(response){
                 if(response != null){
                     if(response.email == true){
-                        alert("Já existe um agente/subagente com esse email");
+                        alert("Já existe um administrador com esse email");
                     }
                     if(response.user == true && response.email == false){
                         alert("Já existe um user com esse email");

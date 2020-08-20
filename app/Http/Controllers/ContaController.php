@@ -34,6 +34,12 @@ class ContaController extends Controller
       $fields = $contaRequest->validated();
         $conta = new Conta;
         $conta->fill($fields);
+        $contas = Conta::withTrashed()->get();
+        foreach ($contas as $trash){
+            if($trash->numConta == $conta->numConta || $trash->IBAN == $conta->IBAN || $trash->SWIFT == $conta->SWIFT){
+                return redirect()->back()->withInput();
+            }
+        }
         $conta->save();
         return redirect()->route('conta.index')->with('success', 'Conta bancária adicionada com sucesso.');
       }else{
@@ -64,6 +70,13 @@ class ContaController extends Controller
       if (Auth()->user()->tipo == "admin" && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
         $fields = $contaRequest->validated();
         $conta->fill($fields);
+
+        $contas = Conta::withTrashed()->get();
+        foreach ($contas as $trash){
+            if($trash->numConta == $conta->numConta || $trash->IBAN == $conta->IBAN || $trash->SWIFT == $conta->SWIFT){
+                return redirect()->back()->withInput();
+            }
+        }
         $conta->updated_at = time();
         $conta->save();
         return redirect()->route('conta.index')->with('success', 'Conta bancária editada com sucesso.');

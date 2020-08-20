@@ -69,7 +69,7 @@ class FasestockController extends Controller
             $fasestock->updated_at == date("Y-m-d",$t);
             $fasestock->save();
 
-            return redirect()->back()->with('success', 'Dados da fase de stock modificados com sucesso');
+            return redirect()->route('produtostock.show',$fasestock->produtoStock)->with('success', 'Dados da fase de stock modificados com sucesso');
         }else{
             /* não tem permissões */
             abort (401);

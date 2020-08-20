@@ -10,10 +10,12 @@ use DateInterval;
 use App\Fase;
 use App\Notificacao;
 use App\Produto;
+use App\RelatorioProblema;
 use App\Notifications\Adicionado;
 use App\Notifications\Aniversario;
 use App\Notifications\Atraso;
 use App\Notifications\AtrasoCliente;
+use App\Notifications\BugReportSend;
 
 
 class NotificationController extends Controller
@@ -88,6 +90,55 @@ class NotificationController extends Controller
     {
         /*************************** NOTIFICAÇÕES PARA INICIO PRODUTOS **************************/
 
+    }
+    public function getNotificacaoBugReport($AllNotifications)
+    {
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
+            $relatorios = RelatorioProblema::where("estado","!=","Resolvido")->get();
+            $notificacoes = Auth()->user()->unreadNotifications;
+            
+            foreach($relatorios as $relatorio){
+                $notExiste = false;
+                foreach($notificacoes as $not){
+                    if($not->type == "App\Notifications\BugReportSend"){
+                        if($not->data["idReport"] == $relatorio->idRelatorioProblema){
+                            $notExiste = true;
+                        }
+                    }
+                }
+                if($notExiste == false){
+                    Auth()->user()->notify(new BugReportSend($relatorio->nome, $relatorio->idRelatorioProblema));
+                }
+            }
+
+            /*
+            
+            foreach($AllNotifications as $notification){
+                if($notification->type == "App\Notifications\BugReportSend"){
+                    $RelExiste = false;
+                    foreach($relatorios as $relatorio){
+                        if($notification->read_at == null){
+                            $dados = json_decode($notification->data);
+                            if($dados->idReport == $relatorio->idRelatorioProblema){
+                                if($relatorio->estado != "Resolvido"){
+                                    $RelExiste = true;
+                                }
+                            }
+                        }
+                    }
+                    if($RelExiste == false && $notification->read_at == null){
+                        foreach($notificacoes as $not){
+                            $dados = json_decode($notification->data);
+                            dd(strcmp($not->data["idReport"], $dados->idReport)."     =>    ".$not->data["idReport"]." -> ".$dados->idReport);
+                            if(strcmp($not->data["idReport"], $dados->idReport) == 0){
+                                $not->markAsRead();
+                            }
+                        }
+                    }
+                }
+            }*/
+        }
+        
     }
     public function getNotificacaoFaseAcaba($AllNotifications)
     {

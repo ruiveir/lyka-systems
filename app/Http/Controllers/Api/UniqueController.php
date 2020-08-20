@@ -38,8 +38,14 @@ class UniqueController extends Controller
         $verifyUser = false;
 
         foreach($users as $user){
-            if($user->idAgente != $P_Agente->idAgente){
-                if($user->email == $email){
+            if($P_Agente->idAgente){
+                if($user->idAgente != $P_Agente->idAgente){
+                    if(strtolower($user->email) == strtolower($email)){
+                        $verifyUser = true;
+                    }
+                }
+            }else{
+                if(strtolower($user->email) == strtolower($email)){
                     $verifyUser = true;
                 }
             }
@@ -51,13 +57,13 @@ class UniqueController extends Controller
 
         foreach($agentes as $agente){
             if($agente->idAgente != $P_Agente->idAgente){
-                if($agente->email == $email && $agente->email != null){
+                if(strtolower($agente->email) == strtolower($email) && $agente->email != null){
                     $existeEmail = true;
                 }
-                if($agente->NIF == $NIF && $agente->NIF != null){
+                if(strtolower($agente->NIF) == strtolower($NIF) && $agente->NIF != null){
                     $existeNif = true;
                 }
-                if($agente->num_doc == $num_doc && $agente->num_doc != null){
+                if(strtolower($agente->num_doc) == strtolower($num_doc) && $agente->num_doc != null){
                     $existeNumDoc = true;
                 }
             }
@@ -90,8 +96,14 @@ class UniqueController extends Controller
         $verifyUser = false;
 
         foreach($users as $user){
-            if($user->idCliente != $P_Cliente->idCliente){
-                if($user->email == $email && $user->email != null){
+            if($P_Administrador->idCliente){
+                if($user->idCliente != $P_Cliente->idCliente){
+                    if(strtolower($user->email) == strtolower($email) && $user->email != null){
+                        $verifyUser = true;
+                    }
+                }
+            }else{
+                if(strtolower($user->email) == strtolower($email)){
                     $verifyUser = true;
                 }
             }
@@ -103,13 +115,13 @@ class UniqueController extends Controller
 
         foreach($clientes as $cliente){
             if($cliente->idCliente != $P_Cliente->idCliente){
-                if($cliente->email == $email && $cliente->email != null){
+                if(strtolower($cliente->email) == strtolower($email) && $cliente->email != null){
                     $existeEmail = true;
                 }
-                if($cliente->NIF == $NIF && $cliente->NIF != null){
+                if(strtolower($cliente->NIF) == strtolower($NIF) && $cliente->NIF != null){
                     $existeNif = true;
                 }
-                if($cliente->num_docOficial == $num_doc && $cliente->num_docOficial != null){
+                if(strtolower($cliente->num_docOficial) == strtolower($num_doc) && $cliente->num_docOficial != null){
                     $existeNumDoc = true;
                 }
             }
@@ -124,18 +136,25 @@ class UniqueController extends Controller
         $verifyUser = false;
 
         foreach($users as $user){
-            if($user->idAdmin != $P_Administrador->idAdmin){
-                if($user->email == $email){
+            if($P_Administrador->idAdmin){
+                if($user->idAdmin != $P_Administrador->idAdmin){
+                    if(strtolower($user->email) == strtolower($email)){
+                        $verifyUser = true;
+                    }
+                }
+            }else{
+                if(strtolower($user->email) == strtolower($email)){
                     $verifyUser = true;
                 }
             }
         }
+        
 
         $existeEmail = false;
 
         foreach($Admins as $Admin){
             if($Admin->idAdmin != $P_Administrador->idAdmin){
-                if($Admin->email == $email && $Admin->email != null){
+                if(strtolower($Admin->email) == strtolower($email) && $Admin->email != null){
                     $existeEmail = true;
                 }
             }
@@ -158,22 +177,17 @@ class UniqueController extends Controller
 
         foreach($Contas as $Conta){
             if($Conta->idConta != $P_Conta->idConta){
-                if($Conta->numConta == $numConta && $Conta->numConta != null){
+                if(strtolower($Conta->numConta) == strtolower($numConta) && $Conta->numConta != null){
                     $existeNumConta = true;
                 }
-                if($Conta->IBAN == $IBAN && $Conta->IBAN != null){
+                if(strtolower($Conta->IBAN) == strtolower($IBAN) && $Conta->IBAN != null){
                     $existeIban = true;
                 }
-                if($Conta->SWIFT == $SWIFT && $Conta->SWIFT != null){
+                if(strtolower($Conta->SWIFT) == strtolower($SWIFT) && $Conta->SWIFT != null){
                     $existeSwift = true;
                 }
             }
         }
-
-        $resultado[] = $existeNumConta;
-        $resultado[] = $existeIban;
-        $resultado[] = $existeSwift;
-        
         return ["numconta" => $existeNumConta,"iban" => $existeIban,"swift" => $existeSwift];
     }
     public function universidade(Universidade $P_Universidade, String $NIF){
@@ -183,7 +197,7 @@ class UniqueController extends Controller
 
         foreach($universidades as $universidade){
             if($universidade->idUniversidade != $P_Universidade->idUniversidade){
-                if($universidade->NIF == $NIF && $universidade->NIF != null){
+                if(strtolower($universidade->NIF) == strtolower($NIF) && $universidade->NIF != null){
                     $existeNif = true;
                 }
             }
