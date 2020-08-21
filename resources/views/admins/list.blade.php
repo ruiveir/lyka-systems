@@ -22,7 +22,7 @@
         </a>
     </div>
     <div class="float-right">
-        <a href="{{route('users.create')}}" class="top-button">Adicionar Administrador</a>
+        <a href="{{route('admins.create')}}" class="top-button">Adicionar Administrador</a>
     </div>
 
     <br><br>
@@ -43,7 +43,7 @@
                     <i class="fas fa-user-cog active" style="font-size:80px"></i>
                 </div>
                 <div class="col">
-                    <div class="text-secondary"><strong>Estão registados no sistema {{$users->count()}} administradores</strong></div>
+                    <div class="text-secondary"><strong>Estão registados no sistema {{$admins->count()}} administradores</strong></div>
                     <br>
             {{-- Input de procura nos resultados da dataTable --}}
 
@@ -69,13 +69,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($users as $user)
+                    @foreach ($admins as $admin)
                     <tr>
                         <td>
                             <div class="align-middle mx-auto shadow-sm rounded bg-white" style="overflow:hidden; width:50px; height:50px">
-                              @if($user->admin->fotografia)
-                                  <img src="{{Storage::disk('public')->url('admin-photos/').$user->admin->fotografia}}" width="100%" class="mx-auto">
-                              @elseif($user->admin->genero == 'F')
+                              @if($admin->fotografia)
+                                  <img src="{{Storage::disk('public')->url('admin-photos/').$admin->fotografia}}" width="100%" class="mx-auto">
+                              @elseif($admin->genero == 'F')
                                   <img src="{{Storage::disk('public')->url('default-photos/F.jpg')}}" width="100%" class="mx-auto">
                               @else
                                   <img src="{{Storage::disk('public')->url('default-photos/M.jpg')}}" width="100%" class="mx-auto">
@@ -83,13 +83,13 @@
                             </div>
                         </td>
 
-                        <td class="align-middle"><a href="{{route('users.show', $user)}}" class="name_link " title="Ver ficha completa">{{$user->admin->nome.' '.$user->admin->apelido}}</a></td>
-                        <td class="align-middle">@if($user->estado == true) Ativo @else Inativo @endif</td>
+                        <td class="align-middle"><a href="{{route('admins.show', $admin)}}" class="name_link " title="Ver ficha completa">{{$admin->nome.' '.$admin->apelido}}</a></td>
+                        <td class="align-middle">@if($admin->user->estado == true) Ativo @else Inativo @endif</td>
 
                         <td class="text-center align-middle">
-                            <a href="{{route('users.show', $user)}}" class="btn_list_opt " title="Ver ficha completa"><i class="far fa-eye mr-2"></i></a>
-                            <a href="{{route('users.edit', $user)}}" class="btn_list_opt btn_list_opt_edit" title="Editar"><i class="fas fa-pencil-alt mr-2"></i></a>
-                            <a href="" class="btn_delete" title="Eliminar agente" data-toggle="modal" data-target="#deleteModal" data-name="{{$user->admin->nome.' '.$user->admin->apelido}}" data-slug="{{$user->slug}}"><i class="fas fa-trash-alt"></i></a>
+                            <a href="{{route('admins.show', $admin)}}" class="btn_list_opt " title="Ver ficha completa"><i class="far fa-eye mr-2"></i></a>
+                            <a href="{{route('admins.edit', $admin)}}" class="btn_list_opt btn_list_opt_edit" title="Editar"><i class="fas fa-pencil-alt mr-2"></i></a>
+                            <a href="" class="btn_delete" title="Eliminar agente" data-toggle="modal" data-target="#deleteModal" data-name="{{$admin->nome.' '.$admin->apelido}}" data-slug="{{$admin->user->slug}}"><i class="fas fa-trash-alt"></i></a>
                         </td>
                     </tr>
                     @endforeach
@@ -115,7 +115,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form class="form" method="POST" action="{{route('users.destroy', $user)}}">
+                <form class="form" method="POST" action="{{route('admins.destroy', $admin)}}">
                     @csrf
                     @method('DELETE')
                     <p style="display:inline-block;">Prente eliminar o administrador: <p class="ml-1" id="text" style="font-weight:700; display:inline-block;"></p>?</p>

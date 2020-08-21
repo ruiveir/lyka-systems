@@ -43,10 +43,12 @@
             </div>
 
             {{-- Opções --}}
+            @if (Auth::user()->tipo == "admin")
             <div class="col text-right">
                 <a href="{{route('agents.create')}}" class="btn btn-sm btn-success px-3"><i
                         class="fas fa-plus mr-2"></i>Adicionar Agente</a>
             </div>
+            @endif
 
         </div>
 
@@ -134,6 +136,7 @@
                                         title="Ver ficha completa"><i class="far fa-eye"></i></a>
 
 
+                                    @if (Auth::user()->tipo == "admin")
                                     <a href="{{route('agents.edit',$agent)}}" class="btn btn-sm btn-outline-warning"
                                         title="Editar"><i class="fas fa-pencil-alt"></i></a>
 
@@ -147,7 +150,7 @@
                                             data-toggle="modal" data-target="#deleteModal"><i
                                                 class="fas fa-trash-alt"></i></button>
                                     </form>
-
+                                    @endif
                                 </td>
                             </tr>
                             @endforeach

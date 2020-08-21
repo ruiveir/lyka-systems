@@ -23,8 +23,6 @@ class DocStock extends Migration
             $table->unsignedBigInteger('idFaseStock');
                 $table->foreign('idFaseStock')->references('idFaseStock')->on('FaseStock');
 
-            $table->softDeletes();
-
         });
     }
 

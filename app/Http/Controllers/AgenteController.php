@@ -41,7 +41,7 @@ class AgenteController extends Controller
             if(Auth()->user()->tipo == 'admin'){
                 $agents = Agente::all();
             }else{
-                $agents = Agente::where(['idAgenteAssociado','=',Auth()->user()->idAgente],['tipo','like','Subagente'])->get();
+                $agents = Agente::where('idAgenteAssociado','=',Auth()->user()->idAgente)->get();
             }
             if($agents || $agents->toArray()){
                 $totalagents = $agents->count();
@@ -102,7 +102,6 @@ class AgenteController extends Controller
             $agent->fill($fields);
             if($agent->tipo == "Agente"){
                 $agent->exepcao = false;
-                $agent->tipo = 'Subagente';
             }
 
             /* obtem os dados para criar o utilizador */
@@ -111,6 +110,18 @@ class AgenteController extends Controller
             $user->fill($fieldsUser);
 
 
+            $agentes = Agente::withTrashed()->get();
+            foreach ($agentes as $trash){
+                if($trash->email == $agent->email || $trash->NIF == $agent->NIF || $trash->num_doc == $agent->num_doc){
+                    return redirect()->back()->withInput();
+                }
+            }
+            $users = User::withTrashed()->get();
+            foreach ($users as $trash){
+                if($trash->email == $agent->email){
+                    return redirect()->back()->withInput();
+                }
+            }
 
             /* Criação de SubAgente */
             $agent->idAgenteAssociado= $requestAgent->idAgenteAssociado;
@@ -323,6 +334,19 @@ class AgenteController extends Controller
             }
 
 
+            $agentes = Agente::withTrashed()->get();
+            foreach ($agentes as $trash){
+                if($trash->email == $agent->email || $trash->NIF == $agent->NIF || $trash->num_doc == $agent->num_doc){
+                    return redirect()->back()->withInput();
+                }
+            }
+            $users = User::withTrashed()->get();
+            foreach ($users as $trash){
+                if($trash->email == $agent->email && $trash->idAgente != $agent->idAgente){
+                    return redirect()->back()->withInput();
+                }
+            }
+            
             /* Registo antigo: para verificar se existem ficheiros para apagar/substituir */
             $oldfile=Agente::
             where('idAgente', '=',$agent->idAgente)

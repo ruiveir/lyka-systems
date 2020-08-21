@@ -31,12 +31,12 @@
 
     <!-- Notificações -->
     @php
-    // $Notificacoes = Auth()->user()->getNotifications();
-    $allNotifications = Auth()->user()->unreadNotifications;
-    $notifications = Auth()->user()->unreadNotifications()->orderBy('created_at', 'DESC')->take(3)->get();
+    use App\Cliente;
+    $clientesNotificacao = Cliente::all();
+    
+    $notifications = Auth()->user()->getNotifications();
     @endphp
 </head>
-
 <body id="page-top">
     {{-- Modal de contactos --}}
     @include('layout.partials.modal-contactos')

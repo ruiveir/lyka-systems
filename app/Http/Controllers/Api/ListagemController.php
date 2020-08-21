@@ -10,6 +10,28 @@ use App\Cliente;
 class ListagemController extends Controller
 {
 
+    public function getCountries(String $pais){
+        $clientes = Cliente::where('paisNaturalidade','like',$pais)->orderBy('Cidade')->get();
+        $cidades = null;
+        if($clientes){
+            foreach($clientes as $cliente){
+                $existe = false;
+                if($cidades){
+                    foreach($cidades as $cidade){
+                        if($cidade == $cliente->cidade){
+                            $existe = true;
+                        }
+                    }
+                }
+                if(!$existe){
+                    $cidades[] = $cliente->cidade;
+                }
+            }
+        }
+        return ['results' => $cidades];
+    }
+
+    
     public function getList(String $pesquisa)
     {/*String $pais, String $cidade, Agente $agente, Agente $subagente, Universidade $universidade, String $curso, String $intitutoOrigem, String $atividade*/
         /*if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){/**/
@@ -30,57 +52,61 @@ class ListagemController extends Controller
                 if($where){
                     $where = $where.' and ';
                 }
-                $where = $where.'Cliente.paisNaturalidade like "'.$final['pais'].'"';
+                $where = $where."Cliente.paisNaturalidade like '".$final['pais']."'";
             }
             if($final['cidade']){
                 if($where){
                     $where = $where.' and ';
                 }
-                $where = $where.'Cliente.cidade like "'.$final['cidade'].'"';
+                $where = $where."Cliente.cidade like '".$final['cidade']."'";
             }
             if($final['agente']){
                 if($where){
                     $where = $where.' and ';
                 }
-                $where = $where.'Cliente.idAgente = '.$final['agente'].' or Produto.idAgente = '.$final['agente'];
+                $where = $where."(Cliente.idAgente = ".$final['agente']." or Produto.idAgente = ".$final['agente'].")";
                 $join = true;
             }
             if($final['subagente']){
                 if($where){
                     $where = $where.' and ';
                 }
-                $where = $where.'Produto.idSubAgente = '.$final['subagente'];
+                $where = $where."Produto.idSubAgente = ".$final['subagente'];
                 $join = true;
             }
             if($final['universidade']){
                 if($where){
                     $where = $where.' and ';
                 }
-                $where = $where.'Cliente.idUniversidade = '.$final['universidade'];
+                $where = $where."Cliente.idUniversidade = ".$final['universidade'];
             }
             if($final['curso']){
                 if($where){
                     $where = $where.' and ';
                 }
-                $where = $where.'Produto.tipo like "'.$final['curso'].'"';
+                $where = $where."Produto.tipo like '".$final['curso']."'";
                 $join = true;
             }
             if($final['institutoOrigem']){
                 if($where){
                     $where = $where.' and ';
                 }
-                $where = $where.'Cliente.nomeInstituicaoOrigem like "'.$final['intitutoOrigem'].'"';
+                $where = $where."Cliente.nomeInstituicaoOrigem like '".$final['intitutoOrigem']."'";
             }
             if($final['atividade']){
                 if($where){
                     $where = $where.' and ';
                 }
-                $where = $where.'Cliente.estado like "'.$final['atividade'].'"';
+                $where = $where."Cliente.estado like '".$final['atividade']."'";
             }
-            if($join){
-                $Clientes = Cliente::leftJoin('Produto','Cliente.idCliente','=','Produto.idCliente')->whereRaw($where)->get();
+            if($where){
+                if($join){
+                    $Clientes = Cliente::leftJoin('Produto','Cliente.idCliente','=','Produto.idCliente')->whereRaw($where)->groupBy('Cliente.idCliente')->get();
+                }else{
+                    $Clientes = Cliente::whereRaw($where)->groupBy('Cliente.idCliente')->get();
+                }
             }else{
-                $Clientes = Cliente::whereRaw($where)->get();
+                $Clientes = Cliente::all();
             }
             return ['results' => $Clientes];
         /*}else{

@@ -20,7 +20,7 @@ class StoreAdministradorRequest extends FormRequest
             'dataNasc' => 'required',
             'telefone1' => 'required',
             'telefone2' => 'nullable',
-            'superAdmin' => 'required|in:0,1'
+            'superAdmin' => 'required'
         ];
     }
 

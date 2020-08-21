@@ -21,7 +21,6 @@ class ProdutoStock extends Migration
             $table->enum('tipoProduto',['Licenciatura','Mestrado','Doutoramento','Curso de Verão','Estágio Profissional','Transferência de Curso','Curso Indiomas','Erasmus','Pré-Universitário']);
             $table->string('anoAcademico',255);
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

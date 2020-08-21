@@ -216,7 +216,8 @@
 
                                 <div class="row p-0 m-0" style="margin-top:-30px!important">
                                     <div class="col text-right p-0">
-
+                                        
+                                        @if (Auth::user()->tipo == "admin")
                                         {{-- APAGAR --}}
                                         <form method="POST" role="form" id="#"
                                             action="{{route('agenda.destroy',$agenda)}}"
@@ -230,7 +231,7 @@
                                                 <i class="fas fa-trash-alt"></i>
                                             </button>
                                         </form>
-
+                                        @endif
                                     </div>
                                 </div>
 

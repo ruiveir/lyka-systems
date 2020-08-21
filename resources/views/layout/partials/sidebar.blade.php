@@ -32,12 +32,17 @@
             <i class="fas fa-fw fa-user"></i>
             <span>Estudantes</span></a>
     </li>
-
+    @if (Auth()->user()->tipo == "admin" && Auth()->user()->idAdmin != null || Auth()->user()->tipo == "agente" && Auth()->user()->agente->tipo == "Agente")
     <li class="nav-item {{Route::is('agents.*') ? 'active' : ''}}">
         <a class="nav-link" href="{{route('agents.index')}}">
             <i class="fas fa-fw fa-users"></i>
-            <span>Agentes</span></a>
+            @if (Auth()->user()->tipo == "admin" && Auth()->user()->idAdmin != null)
+                <span>Agentes</span></a>
+            @else
+                <span>Subagentes</span></a>
+            @endif
     </li>
+    @endif
 
     <li class="nav-item {{Route::is('universities.*') ? 'active' : ''}}">
         <a class="nav-link" href="{{route('universities.index')}}">
@@ -50,7 +55,11 @@
 
     <!-- Heading -->
     <div class="sidebar-heading">
-        Ferramentas admin.
+        @if (Auth()->user()->tipo == "admin" && Auth()->user()->idAdmin != null)
+            Ferramentas admin.
+        @else
+            Ferramentas agente
+        @endif
     </div>
 
     <!-- Nav Item - Pages Collapse Menu -->
@@ -62,17 +71,21 @@
         <div id="collapseFinance" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Páginas principais:</h6>
-                <a class="collapse-item {{Route::is('payments.*') ? 'active' : ''}}" href="{{route('payments.index')}}">Pagamentos</a>
-                <a class="collapse-item {{Route::is('charges.*') ? 'active' : ''}}" href="{{route('charges.index')}}">Cobranças</a>
-                <a class="collapse-item" href="#">Relatório e Contas</a>
-                <div class="collapse-divider"></div>
-                <h6 class="collapse-header">Outras Páginas:</h6>
-                <a class="collapse-item {{Route::is('conta.*') ? 'active' : ''}}" href="{{route("conta.index")}}">Conta bancária</a>
+                @if (Auth()->user()->tipo == "admin" && Auth()->user()->idAdmin != null)
+                    <a class="collapse-item {{Route::is('payments.*') ? 'active' : ''}}" href="{{route('payments.index')}}">Pagamentos</a>
+                    <a class="collapse-item {{Route::is('charges.*') ? 'active' : ''}}" href="{{route('charges.index')}}">Cobranças</a>
+                    <a class="collapse-item" href="#">Relatório e Contas</a>
+                    <div class="collapse-divider"></div>
+                    <h6 class="collapse-header">Outras Páginas:</h6>
+                    <a class="collapse-item {{Route::is('conta.*') ? 'active' : ''}}" href="{{route("conta.index")}}">Conta bancária</a>
+                @else
+                    <a class="collapse-item {{Route::is('charges.*') ? 'active' : ''}}" href="{{route('charges.index')}}">Cobranças</a>
+                @endif
             </div>
         </div>
     </li>
 
-    <li class="nav-item <?php if (Route::is('libraries.*') || Route::is('contacts.*') || Route::is('agenda.*') || Route::is('produtostock.*') || Route::is('users.*') || Route::is('listagens.*') || Route::is('provider.*')) { echo 'active'; } ?>">
+    <li class="nav-item <?php if (Route::is('libraries.*') || Route::is('contacts.*') || Route::is('agenda.*') || Route::is('produtostock.*') || Route::is('admins.*') || Route::is('listagens.*') || Route::is('provider.*')) { echo 'active'; } ?>">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseDiversos" aria-expanded="true" aria-controls="collapseDiversos">
             <i class="fas fa-fw fa-folder"></i>
             <span>Diversos</span>
@@ -80,16 +93,20 @@
         <div id="collapseDiversos" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Páginas principais:</h6>
-                <a class="collapse-item {{Route::is('produtostock.*') ? 'active' : ''}}" href="{{route('produtostock.index')}}">Produtos Stock</a>
-                <a class="collapse-item {{Route::is('listagens.*') ? 'active' : ''}}" href="{{route('listagens.index')}}">Listagens</a>
-                <a class="collapse-item {{Route::is('libraries.*') ? 'active' : ''}}" href="{{route('libraries.index')}}">Biblioteca</a>
-                <a class="collapse-item {{Route::is('users.*') ? 'active' : ''}}" href="{{route('users.index')}}">Administradores</a>
-                <div class="collapse-divider"></div>
-                <h6 class="collapse-header">Outras Páginas:</h6>
-                <a class="collapse-item {{Route::is('provider.*') ? 'active' : ''}}" href="{{route('provider.index')}}">Fornecedores</a>
-                <a class="collapse-item {{Route::is('agenda.*') ? 'active' : ''}}" href="{{route('agenda.index')}}">Agenda</a>
-                <a class="collapse-item {{Route::is('contacts.*') ? 'active' : ''}}" href="{{route('contacts.index')}}">Lista telefónica</a>
-                <a class="collapse-item {{Route::is('bugreport.*') ? 'active' : ''}}" href="{{route('bugreport.index')}}">Relatório de erros</a>
+                @if (Auth()->user()->tipo == "admin" && Auth()->user()->idAdmin != null)
+                    <a class="collapse-item {{Route::is('produtostock.*') ? 'active' : ''}}" href="{{route('produtostock.index')}}">Produtos Stock</a>
+                    <a class="collapse-item {{Route::is('listagens.*') ? 'active' : ''}}" href="{{route('listagens.index')}}">Listagens</a>
+                    <a class="collapse-item {{Route::is('libraries.*') ? 'active' : ''}}" href="{{route('libraries.index')}}">Biblioteca</a>
+                    <a class="collapse-item {{Route::is('admins.*') ? 'active' : ''}}" href="{{route('admins.index')}}">Administradores</a>
+                    <div class="collapse-divider"></div>
+                    <h6 class="collapse-header">Outras Páginas:</h6>
+                    <a class="collapse-item {{Route::is('provider.*') ? 'active' : ''}}" href="{{route('provider.index')}}">Fornecedores</a>
+                    <a class="collapse-item {{Route::is('agenda.*') ? 'active' : ''}}" href="{{route('agenda.index')}}">Agenda</a>
+                    <a class="collapse-item {{Route::is('contacts.*') ? 'active' : ''}}" href="{{route('contacts.index')}}">Lista telefónica</a>
+                    <a class="collapse-item {{Route::is('bugreport.*') ? 'active' : ''}}" href="{{route('bugreport.index')}}">Relatório de erros</a>
+                @else
+                        <a class="collapse-item {{Route::is('libraries.*') ? 'active' : ''}}" href="{{route('libraries.index')}}">Biblioteca</a>
+                @endif
             </div>
         </div>
     </li>

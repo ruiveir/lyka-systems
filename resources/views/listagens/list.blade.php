@@ -26,16 +26,96 @@
         <br><br>
 
         <div class="cards-navigation">
-            <div class="title">
-                <h6>Listagem:</h6>
-                <select id="">
-                  <option>Escolher Opção:</option>
-                  <option value="Administradores">Administradores</option>
-                  <option value="Agentes">Agentes</option>
-                  <option value="Clientes">Clientes</option>
-                  <option value="Universidades">Universidades</option>
-                  <option value="Produtos Stock">Produtos Stock</option>
-                </select>
+            <h3>Listagem:</h3>
+            <div class="row">
+                <div class="col-md-3">
+                    <label for="pais">País:</label><br>
+                    <select id="pais" class="form-control" onChange="GetCountries()">
+                        <option value="null" selected="" hidden="">Selecione país</option>
+                        <option value="null">Todos</option>
+                        @if($paises)
+                            @foreach($paises as $pais)
+                                <option value="{{$pais}}">{{$pais}}</option>
+                            @endforeach
+                        @endif
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="cidade">Cidade:</label><br>
+                    <select id="cidade" class="form-control butCity" onChange="GetList()" readonly>
+                        <option value="null" selected="" hidden="">Selecione cidade</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="agente">Agente:</label><br>
+                    <select id="agente" class="form-control" onChange="GetList()">
+                        <option value="null" selected="" hidden="">Selecione agente</option>
+                        <option value="null">Todos</option>
+                        @if($agentes)
+                            @foreach($agentes as $agente)
+                                <option value="{{$agente->idAgente}}">{{$agente->nome.' '.$agente->apelido.' => '.$agente->email}}</option>
+                            @endforeach
+                        @endif
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="subagente">Descrição:</label><br>
+                    <select id="subagente" class="form-control"  onChange="GetList()">
+                        <option value="null" selected="" hidden="">Selecione subagente</option>
+                        <option value="null">Todos</option>
+                        @if($subagentes)
+                            @foreach($subagentes as $subagente)
+                                <option value="{{$subagente->idAgente}}">{{$subagente->nome.' '.$subagente->apelido.' => '.$subagente->email}}</option>
+                            @endforeach
+                        @endif
+                    </select>
+                </div><br><br><br><br>
+                <div class="col-md-3">
+                    <label for="universidade">Descrição:</label><br>
+                    <select id="universidade" class="form-control" onChange="GetList()">
+                        <option value="null" selected="" hidden="">Selecione universidade</option>
+                        <option value="null">Todos</option>
+                        @if($universidades)
+                            @foreach($universidades as $universidade)
+                                <option value="{{$universidade->idUniversidade}}">{{$universidade->nome.' -> '.$universidade->email}}</option>
+                            @endforeach
+                        @endif
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="curso">Descrição:</label><br>
+                    <select id="curso" class="form-control" onChange="GetList()">
+                        <option value="null" selected="" hidden="">Selecione tipo de curso</option>
+                        <option value="null">Todos</option>
+                        @if($cursos)
+                            @foreach($cursos as $curso)
+                                <option value="{{$curso}}">{{$curso}}</option>
+                            @endforeach
+                        @endif
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="institutoOrigem">Instituto origem:</label><br>
+                    <select id="institutoOrigem" class="form-control" onChange="GetList()">
+                        <option value="null" selected="" hidden="">Selecione instituto origem</option>
+                        <option value="null">Todos</option>
+                        @if($institutos)
+                            @foreach($institutos as $instituto)
+                                <option value="{{$instituto}}">{{$instituto}}</option>
+                            @endforeach
+                        @endif
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="atividade">Atividade:</label><br>
+                    <select id="atividade" class="form-control" onChange="GetList()">
+                        <option value="null" selected="" hidden="">Selecione atividade</option>
+                        <option value="null">Todos</option>
+                        <option value="Ativo">Ativo</option>
+                        <option value="Proponente">Proponente</option>
+                        <option value="Inativo">Inativo</option>
+                    </select>
+                </div>
             </div>
             <br>
             <br>
@@ -56,12 +136,41 @@
 
                 {{-- Corpo da tabela --}}
                 <tbody id="table-body">
-                    @foreach ($clientes as $cliente)
-                    <tr {{--id="clonar"--}}>
+                    <tr id="clonar">
                         {{-- Só mostras os clientes ativos ou proponentes --}}
                         {{-- Nome e Apelido --}}
                         <td class="align-middle">
-                            <a class="routa-show name_link" href="#">{{$cliente->nome ." ". $cliente->apelido}}</a>
+                            <a class="routa-show name_link" href="#"></a>
+                        </td>
+
+                        {{-- numPassaporte --}}
+                        <td class="numPassaporte align-middle"></td>
+
+                        {{-- País de origem --}}
+                        <td class="paisNaturalidade align-middle"></td>
+
+                        {{-- Estado de cliente --}}
+                        <td class="align-middle">
+                            <span class="span-estado"></span>
+                        </td>
+
+
+                        {{-- OPÇÔES --}}
+                        <td class="text-center align-middle">
+
+                            {{-- Opção: Ver detalhes --}}
+                            <a href="#" class="butao-show btn btn-sm btn-outline-primary"
+                                title="Ver ficha completa"><i class="far fa-eye"></i></a>
+
+
+                        </td>
+                    </tr>
+                    @foreach ($clientes as $cliente)
+                    <tr>
+                        {{-- Só mostras os clientes ativos ou proponentes --}}
+                        {{-- Nome e Apelido --}}
+                        <td class="align-middle">
+                            <a class="routa-show name_link" href="{{route('clients.show',$cliente)}}">{{$cliente->nome ." ". $cliente->apelido}}</a>
                         </td>
 
                         {{-- numPassaporte --}}
@@ -80,24 +189,9 @@
                         <td class="text-center align-middle">
 
                             {{-- Opção: Ver detalhes --}}
-                            <a href="#" class="butao-show btn btn-sm btn-outline-primary"
+                            <a href="{{route('clients.show',$cliente)}}" class="butao-show btn btn-sm btn-outline-primary"
                                 title="Ver ficha completa"><i class="far fa-eye"></i></a>
 
-                            {{-- Permissões para editar --}}
-                            <a href="#" class="butao-editar btn btn-sm btn-outline-warning"
-                                title="Editar"><i class="fas fa-pencil-alt"></i>
-                            </a>
-
-                            {{-- Opção APAGAR --}}
-                            <form method="POST" role="form" id=""
-                                action="#"
-                                data="" class="d-inline-block form_client_id butao-delete">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar estudante"
-                                    data-toggle="modal" data-target="#deleteModal"><i
-                                        class="fas fa-trash-alt"></i></button>
-                            </form>
 
                         </td>
                     </tr>
@@ -107,68 +201,103 @@
         </div>
 
     </div>
+
+    <option value="null" id="clonecity"></option>
+
+
     @section('scripts')
         <script type="text/javascript">
             var clone = $('#clonar').clone();
             $('#clonar').remove();
+            var clonecity = $('#clonecity').clone();
+            $('#clonecity').remove();
+
+            function GetCountries(){
+
+                GetList();
+                $('.butCity').children('option:not(:first)').remove();
+                var pais = null;
+                
+                if($('#pais').val() != "null"){
+                    pais = $('#pais').val();
+                }
+                if(pais){
+                    $('.butCity').attr("readonly", false);
+                    var link = '/../api/listagem/cidades/'+pais;
+                    $.ajax({
+                        method:"GET",
+                        url:link
+                    })
+                    .done(function(response){
+                        if(response != null){
+                            for (i=0; i<response.results.length; i++) {
+                                var CloneCidade = clonecity.clone();
+                                $(CloneCidade).text(response.results[i]);
+                                $(CloneCidade).attr(response.results[i]);
+                                $('.butCity').append(CloneCidade);
+                            }
+                        }
+                    })
+                }else{
+                    $('.butCity').attr("readonly", true);
+                }
+            }
 
             function GetList(){
                 $('#table-body').html("");
 
                 var lista = null;
 
-                if($('#pais').value() != "null"){
-                    lista = "pais-"+$('#pais').value();
+                if($('#pais').val() != "null"){
+                    lista = "pais-"+$('#pais').val();
                 }else{
                     lista = "pais-null";
                 }
 
-                if($('#cidade').value() != "null"){
-                    lista = "_cidade-"+$('#cidade').value();
+                if($('#cidade').val() != "null"){
+                    lista += "_cidade-"+$('#cidade').val();
                 }else{
-                    lista = "_cidade-null";
+                    lista += "_cidade-null";
                 }
 
-                if($('#agente').value() != "null"){
-                    lista = "_agente-"+$('#agente').value();
+                if($('#agente').val() != "null"){
+                    lista += "_agente-"+$('#agente').val();
                 }else{
-                    lista = "_agente-null";
+                    lista += "_agente-null";
                 }
 
-                if($('#subagente').value() != "null"){
-                    lista = "_subagente-"+$('#subagente').value();
+                if($('#subagente').val() != "null"){
+                    lista += "_subagente-"+$('#subagente').val();
                 }else{
-                    lista = "_subagente-null";
+                    lista += "_subagente-null";
                 }
 
-                if($('#universidade').value() != "null"){
-                    lista = "_universidade-"+$('#universidade').value();
+                if($('#universidade').val() != "null"){
+                    lista += "_universidade-"+$('#universidade').val();
                 }else{
-                    lista = "_universidade-null";
+                    lista += "_universidade-null";
                 }
 
-                if($('#curso').value() != "null"){
-                    lista = "_curso-"+$('#curso').value();
+                if($('#curso').val() != "null"){
+                    lista += "_curso-"+$('#curso').val();
                 }else{
-                    lista = "_curso-null";
+                    lista += "_curso-null";
                 }
 
-                if($('#institutoOrigem').value() != "null"){
-                    lista = "_institutoOrigem-"+$('#institutoOrigem').value();
+                if($('#institutoOrigem').val() != "null"){
+                    lista += "_institutoOrigem-"+$('#institutoOrigem').val();
                 }else{
-                    lista = "_institutoOrigem-null";
+                    lista += "_institutoOrigem-null";
                 }
 
-                if($('#atividade').value() != "null"){
-                    lista = "_atividade-"+$('#atividade').value();
+                if($('#atividade').val() != "null"){
+                    lista += "_atividade-"+$('#atividade').val();
                 }else{
-                    lista = "_atividade-null";
+                    lista += "_atividade-null";
                 }
-
                 /***********    Para Eliminar   ************//*para testes*/
                 //lista = "pais-russia_cidade-null_agente-null_subagente-null_universidade-null_curso-null_institutoOrigem-null_atividade-null";
                 /*******************************************/
-
                 var link = '/../api/listagem/'+lista;
                 $.ajax({
                     method:"GET",
@@ -179,7 +308,7 @@
                         for (i=0; i<response.results.length; i++) {
                             var resultClone = clone.clone();
 
-                            $('.routa-show',resultClone).attr('href',"{{route('clients.show',"+response.results[i].idCliente+")}}");
+                            $('.routa-show',resultClone).attr('href',"clientes/"+response.results[i].slug);
                             $('.routa-show',resultClone).text(response.results[i].nome+" "+response.results[i].apelido);
 
                             $('.numPassaporte',resultClone).text(response.results[i].numPassaporte);
@@ -199,13 +328,8 @@
                                 }
                             }
 
-                            $('.butao-show',resultClone).attr('href',"{{route('clients.show',"+response.results[i].idCliente+")}}");
+                            $('.butao-show',resultClone).attr('href',"clientes/"+response.results[i].slug);
 
-                            $('.butao-editar',resultClone).attr('href',"{{route('clients.edit',"+response.results[i].idCliente+")}}");
-
-                            $('.butao-delete',resultClone).attr('href',"{{route('clients.destroy',"+response.results[i].idCliente+")}}");
-                            $('.butao-delete',resultClone).attr('id',response.results[i].idCliente);
-                            $('.butao-delete',resultClone).attr('data',response.results[i].nome+" "+response.results[i].apelido);
 
                             $('#table-body').append(resultClone);
                         }

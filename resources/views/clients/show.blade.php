@@ -288,7 +288,7 @@
                 <div class="row mt-2 pl-2">
                     {{-- Botão para adicionar novo produto --}}
 
-                    <a class="name_link text-center m-2" href="{{route('produtos.create',$client)}}">
+                    <a class="name_link text-center m-2" href="{{route('produtos.list',$client)}}">
                         <div class="col bg-light border border-info rounded shadow-sm p-4"
                             style="height:143px; min-width: 160px">
                             <div style="font-size:80px; line-height:60px "><strong>+</strong></div>
@@ -407,8 +407,8 @@
 
                         {{-- Adicionar Documento PESSOAL--}}
                         
-                        <div class="col text-right">
-                            <a href="#" class="btn btn-sm btn-success m-1 mr-2 px-3 " data-toggle="modal"
+                        <div class="col text-left">
+                            <a href="#" class="btn btn-sm btn-primary m-1 mr-2 px-3 " data-toggle="modal"
                                 data-target="#novoDocPessoal"><i class="fas fa-plus mr-2 "></i>Adicionar Documento Pessoal</a>
                         </div>
 
@@ -504,27 +504,8 @@
                         @endif
 
                         {{-- Adicionar Documento Academico --}}
-                        {{--@if($novosDocumentos)
-                        <div class="dropdown mt-4">
-                            <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-plus mr-2"></i>Adicionar documento
-                            </button>
-
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-
-                                @foreach($novosDocumentos as $docAcademico)
-                                @if($docAcademico->tipo=="Academico")
-                                <a class="dropdown-item"
-                                    href="{{route('documento-academico.createFromClient',[$client, 'docnome'])}}">{{$docAcademico->tipoDocumento}}</a>
-                                @endif
-                                @endforeach
-                            </div>
-
-                        </div>
-                        @endif--}}
-                        <div class="col text-right">
-                            <a href="#" class="btn btn-sm btn-success m-1 mr-2 px-3 " data-toggle="modal"
+                        <div class="col text-left">
+                            <a href="#" class="btn btn-sm btn-primary m-1 mr-2 px-3" data-toggle="modal"
                                 data-target="#novoDocAcademico"><i class="fas fa-plus mr-2 "></i>Adicionar Documento Academico</a>
                         </div>
 

@@ -59,4 +59,25 @@
 {{-- script permite definir se um input recebe só numeros OU so letras --}}
 <script src="{{asset('/js/jquery-key-restrictions.min.js')}}"></script>
 
+<script>
+    
+    $(document).ready(function() {
+        bsCustomFileInput.init();
+        $(".needs-validation").submit(function(event) {
+            var nif = $('#inputNIF').val();
+            var link = "/api/unique/uni/"+nif;
+            $.ajax({
+                method:"GET",
+                url:link
+            })
+            .done(function(response){
+                if(response != null){
+                    if(response.nif == true){
+                        alert("Já existe uma universidade com esse nif");
+                    }
+                }
+            })
+        });
+    });
+</script>
 @endsection

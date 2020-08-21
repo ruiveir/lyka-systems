@@ -63,7 +63,7 @@ class ExtraFunctionsController extends Controller
         }else {
             $errorfile = null;
             dispatch(new SendReportMail($name, $email, $phone, $text, $errorfile));
-            Auth()->user()->notify(new BugReportSend($name, $idReport));
+            //Auth()->user()->notify(new BugReportSend($name, $idReport));
         }
 
         return redirect()->route('report')->with('success', 'Relatório enviado com sucesso. Obrigado pela sua contribuição!');

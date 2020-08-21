@@ -3,6 +3,8 @@
 namespace App;
 
 use App\User;
+use App\Notificacao;
+use DateTime;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -45,37 +47,49 @@ class User extends Authenticatable
         $allNotifications = $this->unreadNotifications;
         if($allNotifications){
             foreach($allNotifications as $notification){
-                if($todasDatas){
-                    $repete = false;
-                    foreach($todasDatas as $data){
-                        if($notification->data['dataComeco'] == $data){
-                            $repete = true;
+                if(!$notification->read_at){
+                    if($notification->type == "App\Notifications\BugReportSend"){
+                        if(Auth()->user()->tipo == "admin"){
+                            $notifications[] = $notification;
+                        }
+                    }else{
+                        if($todasDatas){
+                            $repete = false;
+                            foreach($todasDatas as $data){
+                                if($notification->data['dataComeco'] == $data){
+                                    $repete = true;
+                                }
+                            }
+                            if(!$repete){
+                                $todasDatas[] = $notification->data['dataComeco'];
+                            }
+                        }else{
+                            $todasDatas[] = $notification->data['dataComeco'];
                         }
                     }
-                    if(!$repete){
-                        $todasDatas[] = $notification->data['dataComeco'];
-                    }
-                }else{
-                    $todasDatas[] = $notification->data['dataComeco'];
                 }
             }
             if($todasDatas){
                 rsort($todasDatas);
                 foreach($todasDatas as $data){
                     foreach($allNotifications as $notification){
-                        if($notification->data['dataComeco'] == $data){
-                            $notifications[] = $notification;
+                        if(!$notification->read_at){
+                            if($notification->type != "App\Notifications\BugReportSend" && $notification->notifiable_id == Auth()->user()->idUser){
+                                if($notification->data['dataComeco'] == $data){
+                                    $dataNot = new DateTime($notification->data['dataComeco']);
+                                    $DataHoje = new DateTime();
+                                    $diff = (date_diff($DataHoje,$dataNot))->format("%R%a");
+                                    if($diff <= 0){
+                                        $notifications[] = $notification;
+                                    }
+                                }
+                            }
                         }
                     }
                 }
             }
         }
         return $notifications;
-    }
-
-    public function getRouteKeyName()
-    {
-        return 'slug';
     }
 
 }
