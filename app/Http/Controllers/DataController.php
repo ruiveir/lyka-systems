@@ -195,7 +195,7 @@ class DataController extends Controller
         $conta->titular = 'Estudar Portugal';
         $conta->morada = 'Praça Goa Damäo e Diu, 2400 - 147 Leiria';
         $conta->numConta = rand(999999, 9999999999);
-        $conta->IBAN = 'PT50 123 4321 1345678901 72';
+        $conta->IBAN = 'PT50 324 8251 1345678901 34';
         $conta->SWIFT = 'DS26E HD23D ASD55 62DS6 FWW23';
         $conta->contacto = '244 032 985';
         $conta->obsConta = null;

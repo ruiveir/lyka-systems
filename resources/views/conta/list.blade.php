@@ -48,9 +48,9 @@
                             <td>{{$conta->IBAN}}</td>
                             <td>{{$conta->contacto}}</td>
                             <td class="text-center align-middle">
-                                <a href="{{route("conta.show", $conta)}}" class="btn btn-sm btn-outline-primary" title="Relatório completo"><i class="far fa-eye"></i></a>
-                                <button data-toggle="modal" data-target="#editModal" data-id="{{$conta->idRelatorioProblema}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></button>
-                                <button data-toggle="modal" data-target="#deleteModal" data-id="{{$conta->idRelatorioProblema}}" class="btn btn-sm btn-outline-danger" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+                                <a href="{{route("conta.show", $conta)}}" class="btn btn-sm btn-outline-primary" title="Ficha completa"><i class="far fa-eye"></i></a>
+                                <a href="{{route("conta.edit", $conta)}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                <button data-toggle="modal" data-target="#deleteModal" data-slug="{{$conta->slug}}" class="btn btn-sm btn-outline-danger" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
                             </td>
                         </tr>
                         @endforeach
@@ -73,7 +73,7 @@
                 </button>
             </div>
             <div class="modal-body text-gray-800 pl-4 pr-5">
-                Nesta secção encontram-se os pedidos de ajuda que os utilizadores enviaram com problemas na aplicação. Deve-se ler e mudar o seu estado aquando resolvidos.
+                Nesta secção encontram-se as listagens das contas bancárias da Estudar Portugal. Pode acrescentar mais clicando no botão <b>Adicionar conta bancária</b>.
             </div>
             <div class="modal-footer mt-3">
                 <a data-dismiss="modal" class="mr-4 font-weight-bold" id="close-option">Fechar</a>
@@ -89,13 +89,13 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header pl-4 pb-1 pt-4">
-                <h5 class="modal-title text-gray-800 font-weight-bold">Pretende eliminar o relatório?</h5>
+                <h5 class="modal-title text-gray-800 font-weight-bold">Pretende eliminar a conta bancária?</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close-button">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body text-gray-800 pl-4 pr-5">
-                Ao apagar o relatório de ajuda ao erro, <b>irá eliminar o mesmo para todo o sempre!</b> Pense duas vezes antes de proceder com a ação.
+                Ao apagar o registo da conta bancária, <b>irá eliminar o mesmo para todo o sempre!</b> Pense duas vezes antes de proceder com a ação.
             </div>
             <div class="modal-footer mt-3">
                 <form method="post">
@@ -109,41 +109,6 @@
     </div>
 </div>
 <!-- End of Modal for delete report -->
-
-<!-- Modal for edit report -->
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header pl-4 pb-1 pt-4">
-                <h5 class="modal-title text-gray-800 font-weight-bold">Atualizar o estado do pedido.</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close-button">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form method="post" class="needs-validation" novalidate>
-                @csrf
-                @method('PUT')
-                <div class="modal-body text-gray-800 pl-4 pr-5">
-                    <p>Escolha a opção que pretende e clique em <b>confirmar</b>.</p>
-                    <select class="custom-select" id="estado" name="estado" required>
-                        <option selected disabled hidden>Escolha uma opção</option>
-                        <option value="Pendente">Pendente</option>
-                        <option value="Em curso">Em curso</option>
-                        <option value="Resolvido">Resolvido</option>
-                    </select>
-                    <div class="invalid-feedback">
-                        Oops, parece que algo não está bem...
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <a data-dismiss="modal" class="mr-4 font-weight-bold" id="close-option">Cancelar</a>
-                    <button type="submit" class="btn btn-primary font-weight-bold mr-2">Confirmar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<!-- End of Modal for edit report -->
 
 <!-- Begin of Scripts -->
 @section('scripts')
@@ -179,23 +144,7 @@
         $('#deleteModal').on('show.bs.modal', function(event) {
             var button = $(event.relatedTarget);
             var modal = $(this);
-            modal.find("form").attr('action', '/relatorio-problema/' + button.data('id'));
-        });
-
-        // Edit report modal
-        $('#editModal').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget);
-            var modal = $(this);
-            var id = button.data('id');
-            modal.find("form").attr('action', '/relatorio-problema/' + button.data('id'));
-
-            $(".needs-validation").submit(function(event) {
-                if (this.checkValidity() === false) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                }
-                $(".needs-validation").addClass("was-validated");
-            });
+            modal.find("form").attr('action', '/conta-bancaria/' + button.data('slug'));
         });
     });
 </script>

@@ -200,7 +200,7 @@
                 </button>
             </div>
             <div class="modal-body text-gray-800 pl-4 pr-5">
-                Nesta secção pode encontrar os todos os pagamentos da Estudar Portugal. Pode editá-los de modo a mudar o seu estado.
+                Nesta secção encontram-se todos os pagamentos da Estudar Portugal. Pode editá-los de modo a alterar o seu estado e adicionar outras informações.
             </div>
             <div class="modal-footer mt-3">
                 <a data-dismiss="modal" class="mr-4 font-weight-bold" id="close-option">Fechar</a>

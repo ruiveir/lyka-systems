@@ -1,6 +1,6 @@
 @extends('layout.master')
 <!-- Page Title -->
-@section('title', 'Edição do Pagamento')
+@section('title', 'Registo do pagamento')
 <!-- Page Content -->
 @section('content')
 <!-- Begin Page Content -->
@@ -8,7 +8,7 @@
 <div class="container-fluid">
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h4 mb-0 text-gray-800">Edição pagamento</h1>
+        <h1 class="h4 mb-0 text-gray-800">Registo de pagamento</h1>
         <a href="#" data-toggle="modal" data-target="#infoModal" class="btn btn-secondary btn-icon-split btn-sm" title="Informações">
             <span class="icon text-white-50">
                 <i class="fas fa-info-circle"></i>
@@ -18,34 +18,29 @@
     </div>
     <!-- Approach -->
     <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Formulário - Editar pagamento</h6>
-        </div>
-        <div class="card-body">
-            @if (isset($cliente))
-            {{-- Registar pagamento CLIENTE --}}
-            @include('payments.partials.create.add-cliente')
-            @elseif (isset($agente))
-            {{-- Registar pagamento AGENTE --}}
-            @include('payments.partials.create.add-agente')
-            @elseif (isset($subagente))
-            {{-- Registar pagamento SUBAGENTE --}}
-            @include('payments.partials.create.add-subagente')
-            @elseif (isset($universidade1))
-            {{-- Registar pagamento UNIVERSIDADE1 --}}
-            @include('payments.partials.create.add-uniprincipal')
-            @elseif (isset($universidade2))
-            {{-- Registar pagamento UNIVERSIDADE2 --}}
-            @include('payments.partials.create.add-unisecundaria')
-            @elseif (isset($fornecedor))
-            {{-- Registar pagamento FORNECEDOR --}}
-            @include('payments.partials.create.add-fornecedor')
-            @endif
+        @if (isset($cliente))
+        <!-- Registar pagamento CLIENTE -->
+        @include('payments.partials.create.add-cliente')
+        @elseif (isset($agente))
+        <!-- Registar pagamento AGENTE -->
+        @include('payments.partials.create.add-agente')
+        @elseif (isset($subagente))
+        <!-- Registar pagamento SUBAGENTE -->
+        @include('payments.partials.create.add-subagente')
+        @elseif (isset($universidade1))
+        <!-- Registar pagamento UNIVERSIDADE1 -->
+        @include('payments.partials.create.add-uniprincipal')
+        @elseif (isset($universidade2))
+        <!-- Registar pagamento UNIVERSIDADE2 -->
+        @include('payments.partials.create.add-unisecundaria')
+        @elseif (isset($fornecedor))
+        <!-- Registar pagamento FORNECEDOR -->
+        @include('payments.partials.create.add-fornecedor')
+        @endif
 
-            {{-- Mensagens informativas - MODAL --}}
-            @include('payments.partials.modal.modal-success')
-            @include('payments.partials.modal.modal-error')
-        </div>
+        <!-- Mensagens informativas - MODAL -->
+        @include('payments.partials.modal.modal-success')
+        @include('payments.partials.modal.modal-error')
     </div>
 </div>
 <!-- End of container-fluid -->
@@ -61,7 +56,7 @@
                 </button>
             </div>
             <div class="modal-body text-gray-800 pl-4 pr-5">
-                Aqui, basta preencher o formulário para fazer a edição de um pagamento. Após submeter o formulário podera ficar com uma nota de pagamento na sua posse.
+                Aqui, basta preencher o formulário para fazer a edição de um pagamento. Após submeter o formulário poderá ficar com uma nota de pagamento na sua posse.
             </div>
             <div class="modal-footer mt-3">
                 <a data-dismiss="modal" class="mr-4 font-weight-bold" id="close-option">Fechar</a>
@@ -77,16 +72,39 @@
 <script>
     $(document).ready(function() {
         bsCustomFileInput.init();
-        $(".needs-validation").submit(function(event) {
+        $("#registar-pagamento-form").submit(function(event) {
             if (this.checkValidity() === false) {
                 event.preventDefault();
                 event.stopPropagation();
             } else {
+                event.preventDefault();
                 $("#cancelBtn").removeAttr("onclick");
-                button =
-                    "<button class='btn btn-primary' type='submit' disabled><span class='spinner-border spinner-border-sm' role='status' aria-hidden='true' style='position:relative; bottom:4px; right:3px;'></span>A enviar...</button>";
+                button = "<button class='btn btn-primary' type='submit' disabled><span class='spinner-border spinner-border-sm' role='status' aria-hidden='true' style='position:relative; bottom:4px; right:3px;'></span>A registar pagamento...</button>";
                 $("#groupBtn").append(button);
                 $("#submitbtn").remove();
+                var info = new FormData(this);
+                $.ajax({
+                    type: "post",
+                    enctype: "multipart/form-data",
+                    url: "{{route('payments.store', $responsabilidade->idResponsabilidade)}}",
+                    data: info,
+                    context: this,
+                    cache: false,
+                    processData: false,
+                    contentType: false,
+                    success: function(data) {
+                        $("#modal-success").modal("show");
+                        $("#anchor-stream").attr("href", "/pagamentos/nota-pagamento/" + data.idPagoResp + "/transferir");
+                        $("#anchor-stream").click(function() {
+                            setTimeout(function() {
+                                window.location.assign("http://lykasystems.test/pagamentos");
+                            }, 500);
+                        });
+                    },
+                    error: function() {
+                        $("#modal-error").modal("show");
+                    }
+                });
             }
             $(".needs-validation").addClass("was-validated");
         });

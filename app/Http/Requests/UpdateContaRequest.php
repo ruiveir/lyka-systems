@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateContaRequest extends FormRequest
@@ -17,12 +18,21 @@ class UpdateContaRequest extends FormRequest
           'descricao' => 'required',
           'instituicao' => 'required',
           'titular' => 'required',
-          'morada' => 'required',
-          'numConta' => 'required',
-          'IBAN' => 'required',
-          'SWIFT' => 'required',
-          'contacto' => 'nullable',
+          'morada' => 'nullable',
+          'numConta' => ['required', Rule::unique('Conta')->ignore($this->conta)],
+          'IBAN' => ['required', Rule::unique('Conta')->ignore($this->conta)],
+          'SWIFT' => ['required', Rule::unique('Conta')->ignore($this->conta)],
+          'contacto' => 'required',
           'obsConta' => 'nullable'
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'numConta.unique' => 'O número de conta já está registado no sistema. Insira um número diferente.',
+            'IBAN.unique' => 'O código IBAN já está registado no sistema. Insira um código diferente.',
+            'SWIFT.unique' => 'O código SWIFT já está registado no sistema. Insira um código diferente.'
         ];
     }
 }

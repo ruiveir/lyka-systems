@@ -1,6 +1,6 @@
 @extends('layout.master')
 <!-- Page Title -->
-@section('title', 'Reportar Problema')
+@section('title', 'Adicionar conta bancária')
 <!-- Page Content -->
 @section('content')
 <!-- Begin Page Content -->
@@ -21,43 +21,77 @@
             <h6 class="m-0 font-weight-bold text-primary">Formulário - Criação de uma conta bancária</h6>
         </div>
         <div class="card-body">
-            <form class="form-group needs-validation" novalidate action="{{route('report.send')}}" method="POST" enctype="multipart/form-data">
+            <form class="form-group needs-validation" novalidate action="{{route('conta.store')}}" method="POST">
                 @csrf
                 <div class="container-fluid">
-                    <div class="form-row">
+                    <div class="form-row mb-3">
                         <div class="col-md-6 mb-3">
-                            <label for="nome" class="text-gray-900">Nome completo <sup class="text-danger small">&#10033;</sup> </label>
-                            <input type="text" class="form-control" name="nome" id="nome" value="asdasd" required>
+                            <label for="instituicao" class="text-gray-900">Insituição bancária <sup class="text-danger small">&#10033;</sup> </label>
+                            <input type="text" class="form-control" name="instituicao" id="instituicao" placeholder="Inserir uma instituição..." value="{{old('instituicao', $conta->instituicao)}}" required>
                             <div class="invalid-feedback">
                                 Oops, parece que algo não está bem...
                             </div>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="email" class="text-gray-900">Endereço eletrónico <sup class="text-danger small">&#10033;</sup> </label>
-                            <input type="email" class="form-control" name="email" id="email" value="asdasd" required>
+                            <label for="descricao" class="text-gray-900">Descrição da conta <sup class="text-danger small">&#10033;</sup> </label>
+                            <input type="text" class="form-control" name="descricao" id="descricao" placeholder="Inserir uma descrição..." value="{{old('descricao', $conta->descricao)}}" required>
                             <div class="invalid-feedback">
                                 Oops, parece que algo não está bem...
                             </div>
                         </div>
                     </div>
-                    <div class="form-row">
+                    <div class="form-row mb-3">
                         <div class="col-md-6 mb-3">
-                            <label for="telemovel" class="text-gray-900">Número de telemóvel</label>
-                            <input type="text" class="form-control" name="telemovel" id="telemovel" value="asdasd">
+                            <label for="titular" class="text-gray-900">Titular da conta <sup class="text-danger small">&#10033;</sup></label>
+                            <input type="text" class="form-control" name="titular" id="titular" placeholder="Inserir um titular..." value="{{old('titular', $conta->titular)}}" required>
+                            <div class="invalid-feedback">
+                                Oops, parece que algo não está bem...
+                            </div>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="screenshot" class="text-gray-900">Captura de ecrã</label>
-                            <div class="custom-file mb-3">
-                                <input type="file" class="custom-file-input" name="screenshot" id="screenshot">
-                                <small class="form-text text-muted">A imagem não deve ultrupassar 2MB.</small>
-                                <label class="custom-file-label" for="screenshot" data-browse="Escolher">Escolher ficheiro...</label>
+                            <label for="morada" class="text-gray-900">Morada da instituição</label>
+                            <input type="text" class="form-control" name="morada" id="morada" placeholder="Inserir uma morada..." value="{{old('morada', $conta->morada)}}">
+                            <div class="invalid-feedback">
+                                Oops, parece que algo não está bem...
                             </div>
                         </div>
                     </div>
-                    <div class="form-row">
+                    <div class="form-row mb-3">
+                        <div class="col-md-6 mb-3">
+                            <label for="contacto" class="text-gray-900">Contacto da instituição <sup class="text-danger small">&#10033;</sup></label>
+                            <input type="text" class="form-control" name="contacto" id="contacto" placeholder="Inserir um contacto..." value="{{old('contacto', $conta->contacto)}}" required>
+                            <div class="invalid-feedback">
+                                Oops, parece que algo não está bem...
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="numConta" class="text-gray-900">Número de conta <sup class="text-danger small">&#10033;</sup></label>
+                            <input type="text" class="form-control" name="numConta" id="numConta" placeholder="Inserir número de conta..." value="{{old('numConta', $conta->numConta)}}" required>
+                            <div class="invalid-feedback">
+                                Oops, parece que algo não está bem...
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row mb-3">
+                        <div class="col-md-6 mb-3">
+                            <label for="IBAN" class="text-gray-900">Código IBAN <sup class="text-danger small">&#10033;</sup></label>
+                            <input type="text" class="form-control" name="IBAN" id="IBAN" placeholder="Inserir código IBAN..." value="{{old('IBAN', $conta->IBAN)}}" required>
+                            <div class="invalid-feedback">
+                                Oops, parece que algo não está bem...
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="SWIFT" class="text-gray-900">Código SWIFT <sup class="text-danger small">&#10033;</sup></label>
+                            <input type="text" class="form-control" name="SWIFT" id="SWIFT" placeholder="Inserir código SWIFT..." value="{{old('SWIFT', $conta->SWIFT)}}" required>
+                            <div class="invalid-feedback">
+                                Oops, parece que algo não está bem...
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row mb-3">
                         <div class="col mb-3">
-                            <label for="relatorio" class="text-gray-900">Descrição do problema <sup class="text-danger small">&#10033;</sup></label>
-                            <textarea class="form-control" name="relatorio" id="relatorio" rows="5" required placeholder="Qual é o problema?"></textarea>
+                            <label for="obsConta" class="text-gray-900">Observações da conta bancária</label>
+                            <textarea class="form-control" name="obsConta" id="obsConta" rows="3" placeholder="Inserir uma observação..." value="{{old('obsConta', $conta->obsConta)}}"></textarea>
                             <div class="invalid-feedback">
                                 Oops, parece que algo não está bem...
                             </div>
@@ -65,7 +99,7 @@
                     </div>
                     <div class="text-right mt-3" id="groupBtn">
                         <span class="mr-4 font-weight-bold" onclick="window.history.back();" id="cancelBtn" style="cursor:pointer;">Cancelar</span>
-                        <button type="submit" name="button" class="btn btn-primary text-white font-weight-bold" id="submitbtn">Adicionar</button>
+                        <button type="submit" name="button" class="btn btn-primary text-white font-weight-bold" id="submitbtn">Registar conta bancária</button>
                     </div>
                 </div>
             </form>
@@ -85,7 +119,7 @@
                 </button>
             </div>
             <div class="modal-body text-gray-800 pl-4 pr-5">
-                O formulário preenchido será enviado aos administradores para saberem que há problemas com a aplicação. Pedimos que aguarde até uma resposta da nossa parte.
+                Ao preencher o formulário irá criar uma nova conta bancária. Os campos com o asterisco de cor vermelha são de preenchimento obrigatório.
             </div>
             <div class="modal-footer mt-3">
                 <a data-dismiss="modal" class="mr-4 font-weight-bold" id="close-option">Fechar</a>
@@ -107,8 +141,7 @@
                 event.stopPropagation();
             } else {
                 $("#cancelBtn").removeAttr("onclick");
-                button =
-                    "<button class='btn btn-primary' type='submit' disabled><span class='spinner-border spinner-border-sm' role='status' aria-hidden='true' style='position:relative; bottom:4px; right:3px;'></span>A enviar...</button>";
+                button = "<button class='btn btn-primary' type='submit' disabled><span class='spinner-border spinner-border-sm' role='status' aria-hidden='true' style='position:relative; bottom:4px; right:3px;'></span>A fazer o registo...</button>";
                 $("#groupBtn").append(button);
                 $("#submitbtn").remove();
             }

@@ -23,7 +23,7 @@ class PaymentController extends Controller
 {
     public function index()
     {
-      if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
+      if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
         $responsabilidades = Responsabilidade::orderByRaw("FIELD(estado, \"Dívida\", \"Pendente\", \"Pago\")")
         ->with(["cliente", "agente", "subAgente", "universidade1", "universidade2", "relacao", "relacao.fornecedor", "fase"])
         ->get();
@@ -156,13 +156,13 @@ class PaymentController extends Controller
         }
         return view('payments.list', compact('responsabilidades', 'valorTotalPendente', 'valorTotalPago', 'valorTotalDivida', 'estudantes', 'agentes', 'subagentes', 'universidades', 'fornecedores', 'currentdate'));
       }else{
-          abort (403);
+          abort(403);
       }
     }
 
     public function search(Request $request)
     {
-      if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
+      if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
       $idEstudante = ($request->input('estudante') != 'default') ? $request->input('estudante') : null;
       $idAgente = ($request->input('agente') != 'default') ? $request->input('agente') : null;
       $idSubagente = ($request->input('subagente') != 'default') ? $request->input('subagente') : null;
@@ -308,82 +308,86 @@ class PaymentController extends Controller
             return response()->json('NOK', 404);
         }
       }else{
-          abort (403);
+          abort(403);
       }
     }
 
     public function createcliente(Cliente $cliente, Fase $fase, Responsabilidade $responsabilidade)
     {
-      if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
-        $contas = Conta::all();
-        $fase = Fase::where('idFase', $fase->idFase)->with(["produto", "produto.universidade1", "produto.agente"])->first();
-        return view('payments.add', compact('cliente', 'fase', 'responsabilidade', 'contas'));
+      if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
+          $pagoResponsabilidade = new PagoResponsabilidade;
+          $contas = Conta::all();
+          $fase = Fase::where('idFase', $fase->idFase)->with(["produto", "produto.universidade1", "produto.agente"])->first();
+          return view('payments.add', compact('cliente', 'fase', 'responsabilidade', 'contas', 'pagoResponsabilidade'));
       }else{
-          abort (403);
+          abort(403);
       }
     }
 
-    public function createagente(Agente $agente, Fase $fase, Responsabilidade $responsabilidade)
+    public function createagente(Agente $agente, Fase $fase, Responsabilidade $responsabilidade, PagoResponsabilidade $pagoResponsabilidade)
     {
-      if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
-        $contas = Conta::all();
-        $fase = Fase::where('idFase', $fase->idFase)->with(["produto", "produto.universidade1", "produto.cliente"])->first();
-        return view('payments.add', compact('agente', 'fase', 'responsabilidade', 'contas'));
+      if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
+          $pagoResponsabilidade = new PagoResponsabilidade;
+          $contas = Conta::all();
+          $fase = Fase::where('idFase', $fase->idFase)->with(["produto", "produto.universidade1", "produto.cliente"])->first();
+          return view('payments.add', compact('agente', 'fase', 'responsabilidade', 'contas', 'pagoResponsabilidade'));
       }else{
-          abort (403);
+          abort(403);
       }
     }
 
     public function createsubagente(Agente $subagente, Fase $fase, Responsabilidade $responsabilidade)
     {
-      if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
-        $contas = Conta::all();
-        $fase = Fase::where('idFase', $fase->idFase)->with(["produto", "produto.universidade1", "produto.cliente"])->first();
-        return view('payments.add', compact('subagente', 'fase', 'responsabilidade', 'contas'));
+      if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
+          $pagoResponsabilidade = new PagoResponsabilidade;
+          $contas = Conta::all();
+          $fase = Fase::where('idFase', $fase->idFase)->with(["produto", "produto.universidade1", "produto.cliente"])->first();
+          return view('payments.add', compact('subagente', 'fase', 'responsabilidade', 'contas', 'pagoResponsabilidade'));
       }else{
-          abort (403);
+          abort(403);
       }
     }
 
     public function createuni1(Universidade $universidade1, Fase $fase, Responsabilidade $responsabilidade)
     {
-      if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
-        $contas = Conta::all();
-        $fase = Fase::where('idFase', $fase->idFase)->with(["produto", "produto.agente", "produto.cliente"])->first();
-        return view('payments.add', compact('universidade1', 'fase', 'responsabilidade', 'contas'));
+      if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
+          $pagoResponsabilidade = new PagoResponsabilidade;
+          $contas = Conta::all();
+          $fase = Fase::where('idFase', $fase->idFase)->with(["produto", "produto.agente", "produto.cliente"])->first();
+          return view('payments.add', compact('universidade1', 'fase', 'responsabilidade', 'contas', 'pagoResponsabilidade'));
       }else{
-          /* não tem permissões */
-          abort (401);
+          abort(403);
       }
     }
 
     public function createuni2(Universidade $universidade2, Fase $fase, Responsabilidade $responsabilidade)
     {
-      if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
-        $contas = Conta::all();
-        $fase = Fase::where('idFase', $fase->idFase)->with(["produto", "produto.agente", "produto.cliente"])->first();
-        return view('payments.add', compact('universidade2', 'fase', 'responsabilidade', 'contas'));
+      if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
+          $pagoResponsabilidade = new PagoResponsabilidade;
+          $contas = Conta::all();
+          $fase = Fase::where('idFase', $fase->idFase)->with(["produto", "produto.agente", "produto.cliente"])->first();
+          return view('payments.add', compact('universidade2', 'fase', 'responsabilidade', 'contas', 'pagoResponsabilidade'));
       }else{
-          /* não tem permissões */
-          abort (401);
+          abort(403);
       }
     }
 
     public function createfornecedor(Fornecedor $fornecedor, Fase $fase, RelFornResp $relacao)
     {
-      if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
-        $contas = Conta::all();
-        $fase = Fase::where('idFase', $fase->idFase)->with(["produto", "produto.agente", "produto.cliente", "produto.universidade1", "responsabilidade"])->first();
-        return view('payments.add', compact('fornecedor', 'fase', 'contas', 'relacao'));
+      if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
+          $pagoResponsabilidade = new PagoResponsabilidade;
+          $contas = Conta::all();
+          $responsabilidade = $relacao->responsabilidade;
+          $fase = Fase::where('idFase', $fase->idFase)->with(["produto", "produto.agente", "produto.cliente", "produto.universidade1", "responsabilidade"])->first();
+          return view('payments.add', compact('fornecedor', 'fase', 'contas', 'relacao', 'pagoResponsabilidade', 'responsabilidade'));
       }else{
-          /* não tem permissões */
-          abort (401);
+          abort(403);
       }
     }
 
     public function store(Request $request, Responsabilidade $responsabilidade)
     {
-      if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
+      if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
         $responsabilidade = Responsabilidade::where('idResponsabilidade', $responsabilidade->idResponsabilidade)->with(["cliente", "agente", "subAgente", "universidade1", "universidade2", "fase"])->first();
         // Campos de CLIENTE
         $valorCliente = ($request->input('valorPagoCliente') != null ? $request->input('valorPagoCliente') : null);
@@ -432,18 +436,20 @@ class PaymentController extends Controller
 
         if ($valorCliente != null) {
             $pagoResponsabilidade = new PagoResponsabilidade;
-            $valorCliente = str_replace('€', '', $valorCliente);
             $valorCliente = number_format((float) $valorCliente,2 ,'.' ,'');
             $pagoResponsabilidade->valorPago = $valorCliente;
             $pagoResponsabilidade->beneficiario = $responsabilidade->fase->produto->cliente->nome.' '.$responsabilidade->fase->produto->cliente->apelido;
             $pagoResponsabilidade->descricao = $descricaoCliente;
             $pagoResponsabilidade->observacoes = $observacoesCliente;
             $pagoResponsabilidade->dataPagamento = $dataCliente;
-                // Comprovativo de pagamento
+            if ($comprovativoCliente != null) {
                 $ficheiroPagamento = $comprovativoCliente;
                 $nomeFicheiro = post_slug($responsabilidade->fase->produto->cliente->nome.' '.$responsabilidade->fase->descricao).'-comprovativo-'.post_slug($responsabilidade->fase->idFase).'.'.$ficheiroPagamento->getClientOriginalExtension();
                 Storage::disk('public')->putFileAs('comprovativos-pagamento/', $ficheiroPagamento, $nomeFicheiro);
                 $pagoResponsabilidade->comprovativoPagamento = $nomeFicheiro;
+            }else {
+                $pagoResponsabilidade->comprovativoPagamento = null;
+            }
             $pagoResponsabilidade->idResponsabilidade = $responsabilidade->idResponsabilidade;
             $pagoResponsabilidade->idConta = $contaCliente;
             $pagoResponsabilidade->save();
@@ -456,18 +462,20 @@ class PaymentController extends Controller
 
         if ($valorAgente != null) {
             $pagoResponsabilidade = new PagoResponsabilidade;
-            $valorAgente = str_replace('€', '', $valorAgente);
             $valorAgente = number_format((float) $valorAgente,2 ,'.' ,'');
             $pagoResponsabilidade->valorPago = $valorAgente;
             $pagoResponsabilidade->beneficiario = $responsabilidade->fase->produto->agente->nome.' '.$responsabilidade->fase->produto->agente->apelido;
             $pagoResponsabilidade->dataPagamento = $dataAgente;
             $pagoResponsabilidade->descricao = $descricaoAgente;
             $pagoResponsabilidade->observacoes = $observacoesAgente;
-                // Comprovativo de pagamento
+            if ($comprovativoAgente != null) {
                 $ficheiroPagamento = $comprovativoAgente;
                 $nomeFicheiro = post_slug($responsabilidade->fase->produto->agente->nome.' '.$responsabilidade->fase->descricao).'-comprovativo-'.post_slug($responsabilidade->fase->idFase).'.'.$ficheiroPagamento->getClientOriginalExtension();
                 Storage::disk('public')->putFileAs('comprovativos-pagamento/', $ficheiroPagamento, $nomeFicheiro);
                 $pagoResponsabilidade->comprovativoPagamento = $nomeFicheiro;
+            }else {
+                $pagoResponsabilidade->comprovativoPagamento = null;
+            }
             $pagoResponsabilidade->idResponsabilidade = $responsabilidade->idResponsabilidade;
             $pagoResponsabilidade->idConta = $contaAgente;
             $pagoResponsabilidade->save();
@@ -480,18 +488,20 @@ class PaymentController extends Controller
 
         if ($valorSubAgente != null) {
             $pagoResponsabilidade = new PagoResponsabilidade;
-            $valorSubAgente = str_replace('€', '', $valorSubAgente);
             $valorSubAgente = number_format((float) $valorSubAgente,2 ,'.' ,'');
             $pagoResponsabilidade->valorPago = $valorSubAgente;
             $pagoResponsabilidade->beneficiario = $responsabilidade->fase->produto->subAgente->nome.' '.$responsabilidade->fase->produto->subAgente->apelido;
             $pagoResponsabilidade->dataPagamento = $dataSubAgente;
             $pagoResponsabilidade->descricao = $descricaoSubAgente;
             $pagoResponsabilidade->observacoes = $observacoesSubAgente;
-                // Comprovativo de pagamento
+            if ($comprovativoSubAgente != null) {
                 $ficheiroPagamento = $comprovativoSubAgente;
                 $nomeFicheiro = post_slug($responsabilidade->fase->produto->subAgente->nome.' '.$responsabilidade->fase->descricao).'-comprovativo-'.post_slug($responsabilidade->fase->idFase).'.'.$ficheiroPagamento->getClientOriginalExtension();
                 Storage::disk('public')->putFileAs('comprovativos-pagamento/', $ficheiroPagamento, $nomeFicheiro);
                 $pagoResponsabilidade->comprovativoPagamento = $nomeFicheiro;
+            }else {
+                $pagoResponsabilidade->comprovativoPagamento = null;
+            }
             $pagoResponsabilidade->idResponsabilidade = $responsabilidade->idResponsabilidade;
             $pagoResponsabilidade->idConta = $contaSubAgente;
             $pagoResponsabilidade->save();
@@ -504,18 +514,20 @@ class PaymentController extends Controller
 
         if ($valorUni1 != null) {
             $pagoResponsabilidade = new PagoResponsabilidade;
-            $valorUni1 = str_replace('€', '', $valorUni1);
             $valorUni1 = number_format((float) $valorUni1,2 ,'.' ,'');
             $pagoResponsabilidade->valorPago = $valorUni1;
             $pagoResponsabilidade->beneficiario = $responsabilidade->fase->produto->universidade1->nome;
             $pagoResponsabilidade->dataPagamento = $dataUni1;
             $pagoResponsabilidade->descricao = $descricaoUni1;
             $pagoResponsabilidade->observacoes = $observacoesUni1;
-                // Comprovativo de pagamento
+            if ($comprovativoUni1 != null) {
                 $ficheiroPagamento = $comprovativoUni1;
                 $nomeFicheiro = post_slug($responsabilidade->fase->produto->universidade1->nome.' '.$responsabilidade->fase->descricao).'-comprovativo-'.post_slug($responsabilidade->fase->idFase).'.'.$ficheiroPagamento->getClientOriginalExtension();
                 Storage::disk('public')->putFileAs('comprovativos-pagamento/', $ficheiroPagamento, $nomeFicheiro);
                 $pagoResponsabilidade->comprovativoPagamento = $nomeFicheiro;
+            }else {
+                $pagoResponsabilidade->comprovativoPagamento = null;
+            }
             $pagoResponsabilidade->idResponsabilidade = $responsabilidade->idResponsabilidade;
             $pagoResponsabilidade->idConta = $contaUni1;
             $pagoResponsabilidade->save();
@@ -528,18 +540,20 @@ class PaymentController extends Controller
 
         if ($valorUni2 != null) {
             $pagoResponsabilidade = new PagoResponsabilidade;
-            $valorUni2 = str_replace('€', '', $valorUni2);
             $valorUni2 = number_format((float) $valorUni2,2 ,'.' ,'');
             $pagoResponsabilidade->valorPago = $valorUni2;
             $pagoResponsabilidade->beneficiario = $responsabilidade->fase->produto->universidade2->nome;
             $pagoResponsabilidade->dataPagamento = $dataUni2;
             $pagoResponsabilidade->descricao = $descricaoUni2;
             $pagoResponsabilidade->observacoes = $observacoesUni2;
-                // Comprovativo de pagamento
+            if ($comprovativoUni2 != null) {
                 $ficheiroPagamento = $comprovativoUni2;
                 $nomeFicheiro = post_slug($responsabilidade->fase->produto->universidade2->nome.' '.$responsabilidade->fase->descricao).'-comprovativo-'.post_slug($responsabilidade->fase->idFase).'.'.$ficheiroPagamento->getClientOriginalExtension();
                 Storage::disk('public')->putFileAs('comprovativos-pagamento/', $ficheiroPagamento, $nomeFicheiro);
                 $pagoResponsabilidade->comprovativoPagamento = $nomeFicheiro;
+            }else {
+                $pagoResponsabilidade->comprovativoPagamento = null;
+            }
             $pagoResponsabilidade->idResponsabilidade = $responsabilidade->idResponsabilidade;
             $pagoResponsabilidade->idConta = $contaUni2;
             $pagoResponsabilidade->save();
@@ -553,18 +567,20 @@ class PaymentController extends Controller
         if ($valorFornecedor != null) {
             $relacao = RelFornResp::where('idRelacao', $idRelacao)->first();
             $pagoResponsabilidade = new PagoResponsabilidade;
-            $valorFornecedor = str_replace('€', '', $valorFornecedor);
             $valorFornecedor = number_format((float) $valorFornecedor,2 ,'.' ,'');
             $pagoResponsabilidade->valorPago = $valorFornecedor;
             $pagoResponsabilidade->beneficiario = $nomeFornecedor;
             $pagoResponsabilidade->dataPagamento = $dataFornecedor;
             $pagoResponsabilidade->descricao = $descricaoFornecedor;
             $pagoResponsabilidade->observacoes = $observacoesFornecedor;
-                // Comprovativo de pagamento
+            if ($comprovativoFornecedor != null) {
                 $ficheiroPagamento = $comprovativoFornecedor;
                 $nomeFicheiro = post_slug($nomeFornecedor.' '.$responsabilidade->fase->descricao).'-comprovativo-'.post_slug($responsabilidade->fase->idFase).'.'.$ficheiroPagamento->getClientOriginalExtension();
                 Storage::disk('public')->putFileAs('comprovativos-pagamento/', $ficheiroPagamento, $nomeFicheiro);
                 $pagoResponsabilidade->comprovativoPagamento = $nomeFicheiro;
+            }else {
+                $pagoResponsabilidade->comprovativoPagamento = null;
+            }
             $pagoResponsabilidade->idResponsabilidade = $responsabilidade->idResponsabilidade;
             $pagoResponsabilidade->idConta = $contaFornecedor;
             $pagoResponsabilidade->save();
@@ -581,21 +597,19 @@ class PaymentController extends Controller
         event(new StorePayment($responsabilidade));
         return response()->json($pagoResponsabilidade, 200);
       }else{
-          /* não tem permissões */
-          abort (401);
+          abort(403);
       }
     }
 
     public function download(PagoResponsabilidade $pagoresponsabilidade)
     {
-      if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
+      if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
         $pagoresponsabilidade = PagoResponsabilidade::where("idPagoResp", $pagoresponsabilidade->idPagoResp)->with(["responsabilidade", "responsabilidade.cliente"])->first();
         $pdf = PDF::loadView('payments.pdf.nota-pagamento', ['pagoresponsabilidade' => $pagoresponsabilidade])->setPaper('a4', 'portrait');
         $file = post_slug($pagoresponsabilidade->responsabilidade->cliente->nome.' '.$pagoresponsabilidade->responsabilidade->fase->descricao);
         return $pdf->stream('nota-pagamento-'.$file.'.pdf');
       }else{
-          /* não tem permissões */
-          abort (401);
+          abort(403);
       }
     }
 }

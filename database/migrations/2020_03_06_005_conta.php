@@ -15,11 +15,11 @@ class Conta extends Migration
             $table->string('descricao',255);
             $table->string('instituicao',255);
             $table->string('titular',255);
-            $table->string('morada',255);
+            $table->string('morada',255)->nullable();
             $table->bigInteger('numConta')->unique();
-            $table->string('IBAN',255)->nullable()->unique();
-            $table->string('SWIFT',255)->nullable()->unique();
-            $table->string('contacto')->nullable();
+            $table->string('IBAN',255)->unique();
+            $table->string('SWIFT',255)->unique();
+            $table->string('contacto');
             $table->longText('obsConta')->nullable();
             $table->string('slug')->nullable();
             $table->timestamps();

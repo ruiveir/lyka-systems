@@ -10,4 +10,10 @@
 <script src="{{asset('/vendor/jquery/jquery.min.js')}}"></script>
 <script src="{{asset('/vendor/jquery-easing/jquery.easing.min.js')}}"></script>
 
-<script src="{{asset("/js/form-messages.js")}}" charset="utf-8"></script>
+<script>
+    $(document).ready(function() {
+        $("#success-alert").fadeTo(2500, 500).slideUp(500, function() {
+            $("#success-alert").slideUp(500);
+        });
+    });
+</script>

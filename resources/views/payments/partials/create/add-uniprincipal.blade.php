@@ -1,82 +1,69 @@
-<div class="cards-navigation">
-    <div class="title">
-        <h6>Secção de pagamento: {{$universidade1->nome.' ('.$fase->descricao.')'}}</h6>
-    </div>
-    <br>
-    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        <p style="font-weight:500;">
-            Este pagamento está associado à fase <strong>{{$fase->descricao}}</strong> do produto <strong>{{$fase->produto->descricao}}</strong>, que têm como cliente
-            <strong>{{$fase->produto->cliente->nome.' '.$fase->produto->cliente->apelido}}</strong> e agente <strong>{{$fase->produto->agente->nome.' '.$fase->produto->agente->apelido}}</strong>.
-        </p>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    <div class="payment-card shadow-sm">
-        <div id="loader-background">
-            <div id="loader"></div>
-        </div>
-        <p style="margin-left: 0px !important; font-weight:600;">Valor a pagar:</p>
-        <p style="margin-left: 0px !important;">{{number_format((float)$responsabilidade->valorUniversidade1, 2, ',', '').'€'}}</p>
-        <hr>
-        <form id="registar-pagamento-form" class="mt-4">
-            <input type="text" id="idResp" name="idResp" value="{{$responsabilidade->idResponsabilidade}}" hidden="true">
-            <div class="row">
-                <div class="col-md-4">
-                    <label for="valorPagoUni1">Valor pago a universidade</label>
-                    <br>
-                    <input type="text" name="valorPagoUni1" id="valorPagoUni1" value="{{number_format((float)$responsabilidade->valorUniversidade1, 2, ',', '').'€'}}">
+<div class="card-header py-3">
+    <h6 class="m-0 font-weight-bold text-primary">Formulário - Registo de pagamento sobre a universidade {{$fase->produto->universidade1->nome}}</h6>
+</div>
+<div class="card-body">
+    <form method="POST" class="form-group needs-validation" id="registar-pagamento-form" novalidate>
+        @csrf
+        <div class="container-fluid">
+            <div class="form-row mb-3">
+                <div class="col-md-6 mb-3">
+                    <label for="valorPagoUni1" class="text-gray-900">Valor pago a universidade <sup class="text-danger small">&#10033;</sup> </label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="valorPagoUni1" id="valorPagoUni1" aria-describedby="validatedInputGroupPrepend" value="{{old('valorPagoUni1', number_format((float)$responsabilidade->valorUniversidade1, 2, ',', ''))}}" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text">€</span>
+                        </div>
+                        <div class="invalid-feedback">
+                            Oops, parece que algo não está bem...
+                        </div>
+                    </div>
+                    <small class="form-text text-muted">Utilizar vírgula para separar decimais.</small>
                 </div>
-                <div class="col-md-4" oncontextmenu="return showContextMenu();">
-                    <label for="comprovativoPagamentoUni1">Comp. de pagamento</label>
-                    <br>
-                    <input type="file" name="comprovativoPagamentoUni1" id="upfileCliente" onchange="sub(this)">
-                    <div class="input-file-div text-truncate" id="addFileButtonCliente" onclick="getFileCliente()">Adicionar um ficheiro</div>
-                </div>
-                <div class="col-md-4">
-                    <label for="dataUni1">Data de pagamento</label>
-                    <br>
-                    <input name="dataUni1" id="dataUni1" type="date">
+                <div class="col-md-6 mb-3">
+                    <label for="comprovativoPagamentoUni1" class="text-gray-900">Comprovativo de pagamento</label>
+                    <div class="custom-file mb-3">
+                        <input type="file" class="custom-file-input" name="comprovativoPagamentoUni1" id="comprovativoPagamentoUni1">
+                        <small class="form-text text-muted">O comprovativo não deve ultrupassar 2MB.</small>
+                        <label class="custom-file-label" for="screenshot" data-browse="Escolher">Escolher ficheiro...</label>
+                    </div>
                 </div>
             </div>
-            <br>
-            <div class="row">
-                <div class="col-md-4">
-                    <label for="contaUni1">Associar conta bancária</label>
-                    <br>
-                    <select name="contaUni1" id="contaUni1">
+            <div class="form-row mb-3">
+                <div class="col-md-6 mb-3">
+                    <label for="dataUni1" class="text-gray-900">Data de pagamento <sup class="text-danger small">&#10033;</sup></label>
+                    <input type="date" class="form-control" name="dataUni1" id="dataUni1" value="{{old('dataUni1', $pagoResponsabilidade->dataPagamento)}}" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="contaUni1" class="text-gray-900">Conta bancária <sup class="text-danger small">&#10033;</sup></label>
+                    <select class="custom-select" name="contaUni1" id="contaUni1" value="{{old('contaUni1', $pagoResponsabilidade->idConta)}}" required>
                         @foreach ($contas as $conta)
                         <option value="{{$conta->idConta}}">{{$conta->descricao}}</option>
                         @endforeach
                         <option selected disabled hidden>Escolher conta bancária</option>
                     </select>
                 </div>
-                <div class="col-md-8">
-                    <div class="help-button" id="tooltipValor" data-toggle="tooltip" data-placement="top" title="A descrição que inserir será colocada na nota de pagamento como descrição do mesmo.">
-                        <span>
-                            ?
-                        </span>
+            </div>
+            <div class="form-row mb-3">
+                <div class="col-md-6 mb-3">
+                    <label for="descricaoUni1" class="text-gray-900">Descrição do pagamento <sup class="text-danger small">&#10033;</sup></label>
+                    <input type="text" class="form-control" name="descricaoUni1" id="descricaoUni1" value="Pagamento a universidade {{$fase->produto->universidade1->nome}}." required>
+                    <small class="form-text text-muted">Esta descrição irá ser utilizada na nota de pagamento.</small>
+                    <div class="invalid-feedback">
+                        Oops, parece que algo não está bem...
                     </div>
-                    <label for="descricaoUni1">Descrição do pagamento</label>
-                    <br>
-                    <input type="text" name="descricaoUni1" id="descricaoUni1" required="required" placeholder="Adicionar uma descrição" maxlength="150">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="observacoes" class="text-gray-900">Observações</label>
+                    <input type="text" class="form-control" name="observacoes" id="observacoes" placeholder="Inserir uma observação..." value="{{old('observacoes', $pagoResponsabilidade->observacoes)}}">
+                    <div class="invalid-feedback">
+                        Oops, parece que algo não está bem...
+                    </div>
                 </div>
             </div>
-            <br>
-            <div class="row">
-                <div class="col">
-                    <label for="observacoes">Observações</label>
-                    <br>
-                    <textarea name="observacoes" rows="3" placeholder="Adicionar uma observação"></textarea>
-                </div>
+            <div class="text-right mt-3" id="groupBtn">
+                <span class="mr-4 font-weight-bold" onclick="window.history.back();" id="cancelBtn" style="cursor:pointer;">Cancelar</span>
+                <button type="submit" name="button" class="btn btn-primary text-white font-weight-bold" id="submitbtn">Registar pagamento</button>
             </div>
-            <br>
-    </div>
-    <div class="form-group text-right">
-        <br>
-        <button type="submit" class="top-button mr-2" name="ok" id="buttonSubmit">registar pagamento</button>
-        <a href="javascript:history.go(-1)" class="cancel-button">Cancelar</a>
-    </div>
+        </div>
     </form>
-    <br>
 </div>

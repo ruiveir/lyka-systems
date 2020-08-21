@@ -60,6 +60,11 @@
             @include('layout.msg-error-message.partials.success')
             @endif
 
+            <!-- Error message on forms -->
+            @if ($errors->any())
+            @include ('layout.msg-error-message.partials.errors')
+            @endif
+
             <!-- Content -->
             @yield('content')
 
