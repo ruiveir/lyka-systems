@@ -60,7 +60,7 @@
                     <div class="form-row mb-3">
                         <div class="col mb-3">
                             <label for="observacoes" class="text-gray-900">Observações do fornecedor</label>
-                            <textarea class="form-control" name="observacoes" id="observacoes" rows="3" placeholder="Inserir uma observação..." value="{{old('observacoes', $provider->observacoes)}}"></textarea>
+                            <textarea class="form-control" name="observacoes" id="observacoes" rows="3" placeholder="Inserir uma observação...">{{old('observacoes', $provider->observacoes)}}</textarea>
                             <div class="invalid-feedback">
                                 Oops, parece que algo não está bem...
                             </div>

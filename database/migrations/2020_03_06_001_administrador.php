@@ -22,7 +22,6 @@ class Administrador extends Migration
             $table->integer('telefone2')->nullable();
             $table->boolean('superAdmin')->default(false);
             $table->timestamps();
-            $table->softDeletes();
         });
 
         $data = array(

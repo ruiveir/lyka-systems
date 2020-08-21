@@ -3,11 +3,9 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Administrador extends Model
 {
-    use SoftDeletes;
 
     protected $table = 'Administrador';
 
@@ -27,6 +25,6 @@ class Administrador extends Model
 
     public function user()
     {
-        return $this->belongsTo("App\User","idAdmin","idAdmin")->withTrashed();
+        return $this->belongsTo("App\User","idAdmin","idAdmin");
     }
 }

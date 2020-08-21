@@ -28,7 +28,7 @@ class Cliente extends Model
 
 
     public function user(){
-        return $this->belongsTo("App\User","idUser","idUser")->withTrashed();
+        return $this->belongsTo("App\User","idUser","idUser");
     }
 
     public function produto(){

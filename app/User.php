@@ -6,13 +6,12 @@ use App\User;
 use App\Notificacao;
 use DateTime;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use Notifiable, SoftDeletes;
+    use Notifiable;
     protected $table = 'User';
     protected $primaryKey = 'idUser';
 
@@ -26,7 +25,7 @@ class User extends Authenticatable
     ];
 
     public function admin(){
-        return $this->belongsTo("App\Administrador","idAdmin","idAdmin")->withTrashed();
+        return $this->belongsTo("App\Administrador","idAdmin","idAdmin");
     }
 
     public function agente(){
