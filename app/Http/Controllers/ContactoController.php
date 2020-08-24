@@ -22,10 +22,29 @@ class ContactoController extends Controller
     {
         if (Auth::user()->tipo == "admin" && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
             $contacts = Contacto::all();
+            $favorito = false;
 /*             where('Contacto.idUser', '=', Auth::user()->idUser)
             ->get(); */
 
-            return view('contacts.list', compact('contacts'));
+            return view('contacts.list', compact('contacts','favorito'));
+        }else{
+            abort(401);
+        }
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function favoritos()
+    {
+        if (Auth::user()->tipo == "admin" && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
+            $contacts = Contacto::where("favorito","=","1")->get();
+            $favorito = true;
+/*             where('Contacto.idUser', '=', Auth::user()->idUser)
+            ->get(); */
+
+            return view('contacts.list', compact('contacts','favorito'));
         }else{
             abort(401);
         }

@@ -23,7 +23,6 @@ class Administrador extends Migration
             $table->boolean('superAdmin')->default(false);
             $table->string('slug')->nullable();
             $table->timestamps();
-            $table->softDeletes();
         });
 
         $data = array(

@@ -5,7 +5,6 @@ namespace App;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Administrador extends Model
 {
@@ -28,7 +27,7 @@ class Administrador extends Model
 
     public function user()
     {
-        return $this->belongsTo("App\User","idAdmin","idAdmin")->withTrashed();
+        return $this->belongsTo("App\User","idAdmin","idAdmin");
     }
 
     public function getSlugOptions() : SlugOptions

@@ -37,6 +37,16 @@
             </div>
 
             {{-- Opções --}}
+            @if($favorito)
+                <div class="col text-right">
+                    <a href="{{route('contacts.index')}}" class="btn btn-sm btn-info px-2" style="color:black;font-weight: bold; width: 35%">Mostrar Todos</a>
+                </div>
+            @else
+                <div class="col text-right">
+                    <a href="{{route('contacts.favoritos')}}" class="btn btn-sm btn-danger px-2" style="color:black;font-weight: bold;"><i class="fas fa-star text-warning mr-2" title="Contacto favorito"
+                        style="font-size:12px"></i>Mostrar Favoritos</a>
+                </div>
+            @endif
             <div class="col text-right">
                 <a href="{{route('contacts.create')}}" class="btn btn-sm btn-success px-2"><i
                         class="fas fa-plus mr-2"></i>Adicionar Contacto</a>
@@ -99,7 +109,7 @@
                                         <a class="name_link" href="{{route('contacts.show',$contact)}}">
                                             @if($contact->fotografia)
                                             <img src="{{Storage::disk('public')->url('contact-photos/').$contact->fotografia}}"
-                                                width="100%" class="mx-auto"">
+                                                width="100%" class="mx-auto">
                                                             @else
                                                                 <img src="
                                                 {{Storage::disk('public')->url('default-photos/M.jpg')}}" width="100%"

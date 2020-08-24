@@ -37,6 +37,7 @@ Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
 
     /* Contacts */
     Route::get('/contactos', 'ContactoController@index')->name('contacts.index');
+    Route::get('/contactos/favoritos', 'ContactoController@favoritos')->name('contacts.favoritos');
     Route::delete('/contactos/{contact}', 'ContactoController@destroy')->name('contacts.destroy');
     Route::put('/contactos/{contact}', 'ContactoController@update')->name('contacts.update');
     Route::get('/contactos/criar/{university?}', 'ContactoController@create')->name('contacts.create');

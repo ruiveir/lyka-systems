@@ -86,6 +86,7 @@
             })
             .done(function(response){
                 if(response != null){
+                    alert(response.email);
                     if(response.email == true){
                         alert("Já existe um agente/subagente com esse email");
                     }
