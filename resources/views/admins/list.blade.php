@@ -1,197 +1,159 @@
 @extends('layout.master')
-
-{{-- Titulo da Página --}}
-@section('title', 'Lista de administradores')
-
-{{-- Estilos de CSS --}}
-@section('styleLinks')
-<link href="{{asset('/css/datatables_general.css')}}" rel="stylesheet">
-<link href="{{asset('/css/inputs.css')}}" rel="stylesheet">
-@endsection
-
-{{-- Conteudo da Página --}}
+<!-- Page Title -->
+@section('title', 'Administradores')
+<!-- Page Content -->
 @section('content')
-
-<div class="container mt-2">
-    <div class="float-left buttons">
-        <a href="javascript:history.go(-1)" title="Voltar">
-            <ion-icon name="arrow-back-outline" class="button-back"></ion-icon>
-        </a>
-        <a href="javascript:window.history.forward();" title="Avançar">
-            <ion-icon name="arrow-forward-outline" class="button-foward"></ion-icon>
-        </a>
+<!-- Begin Page Content -->
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h4 mb-0 text-gray-800">Administradores</h1>
+        <div>
+            <a href="{{route('admin.create')}}" class="btn btn-primary btn-icon-split btn-sm" title="Adicionar">
+                <span class="icon text-white-50">
+                    <i class="fas fa-plus"></i>
+                </span>
+                <span class="text">Adicionar administrador</span>
+            </a>
+            <a href="#" data-toggle="modal" data-target="#infoModal" class="btn btn-secondary btn-icon-split btn-sm" title="Informações">
+                <span class="icon text-white-50">
+                    <i class="fas fa-info-circle"></i>
+                </span>
+                <span class="text">Informações</span>
+            </a>
+        </div>
     </div>
-    <div class="float-right">
-        <a href="{{route('admins.create')}}" class="top-button">Adicionar Administrador</a>
-    </div>
-
-    <br><br>
-    <div class="cards-navigation">
-        <div class="title">
-            <div>
-                <h6>Listagem de administradores</h6>
+    <!-- Approach -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Listagem - Administradores</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive p-1">
+                <table class="table table-bordered table-striped" id="table" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>E-mail</th>
+                            <th>Telemóvel</th>
+                            <th style="max-width:200px; min-width:200px;">Estado</th>
+                            <th style="max-width:100px; min-width:100px;">Opções</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($admins as $admin)
+                        <tr>
+                            <td>{{$admin->nome.' '.$admin->apelido}}</td>
+                            <td>{{$admin->email}}</td>
+                            <td>{{$admin->telefone1}}</td>
+                            <td class="font-weight-bold @if($admin->user->estado) text-success @else text-danger @endif">@if($admin->user->estado) Ativo @else Inativo @endif</td>
+                            <td class="text-center align-middle">
+                                <a href="{{route("admin.show", $admin)}}" class="btn btn-sm btn-outline-primary" title="Ficha completa"><i class="far fa-eye"></i></a>
+                                <a href="{{route("admin.edit", $admin)}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                @if ($admin->user->idUser == Auth()->user()->idUser)
+                                <button disabled data-toggle="modal" data-target="#deleteModal" data-slug="{{$admin->slug}}" class="btn btn-sm btn-outline-dark text-gray-900" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+                                @else
+                                <button data-toggle="modal" data-target="#deleteModal" data-slug="{{$admin->slug}}" class="btn btn-sm btn-outline-danger" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+                                @endif
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
-
-
-        <br>
-
-
-        <div class="bg-white shadow-sm mb-4 p-4 " style="border-radius:10px;">
-            <div class="row mx-1">
-                <div class="col col-2" style="max-width: 120px">
-                    <i class="fas fa-user-cog active" style="font-size:80px"></i>
-                </div>
-                <div class="col">
-                    <div class="text-secondary"><strong>Estão registados no sistema {{$admins->count()}} administradores</strong></div>
-                    <br>
-            {{-- Input de procura nos resultados da dataTable --}}
-
-                    <div style="width: 100%; border-radius:10px;">
-                        <input type="text" class="shadow-sm" id="customSearchBox"
-                            placeholder="Procurar nos resultados..." aria-label="Procurar">
-
-            </div>
-                </div>
-            </div>
-
-
-            <br>
-
-            <div class="table-responsive">
-                <table id="dataTable" class="table table-bordered table-hover " style="width:100%">
-                <thead>
-                    <tr>
-                        <th class="text-center align-content-center">Foto</th>
-                        <th>Nome</th>
-                        <th>Estado</th>
-                        <th class="text-center">Opções</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($admins as $admin)
-                    <tr>
-                        <td>
-                            <div class="align-middle mx-auto shadow-sm rounded bg-white" style="overflow:hidden; width:50px; height:50px">
-                              @if($admin->fotografia)
-                                  <img src="{{Storage::disk('public')->url('admin-photos/').$admin->fotografia}}" width="100%" class="mx-auto">
-                              @elseif($admin->genero == 'F')
-                                  <img src="{{Storage::disk('public')->url('default-photos/F.jpg')}}" width="100%" class="mx-auto">
-                              @else
-                                  <img src="{{Storage::disk('public')->url('default-photos/M.jpg')}}" width="100%" class="mx-auto">
-                              @endif
-                            </div>
-                        </td>
-
-                        <td class="align-middle"><a href="{{route('admins.show', $admin)}}" class="name_link " title="Ver ficha completa">{{$admin->nome.' '.$admin->apelido}}</a></td>
-                        <td class="align-middle">@if($admin->user->estado == true) Ativo @else Inativo @endif</td>
-
-                        <td class="text-center align-middle">
-                            <a href="{{route('admins.show', $admin)}}" class="btn_list_opt " title="Ver ficha completa"><i class="far fa-eye mr-2"></i></a>
-                            <a href="{{route('admins.edit', $admin)}}" class="btn_list_opt btn_list_opt_edit" title="Editar"><i class="fas fa-pencil-alt mr-2"></i></a>
-                            <a href="" class="btn_delete" title="Eliminar agente" data-toggle="modal" data-target="#deleteModal" data-name="{{$admin->nome.' '.$admin->apelido}}" data-slug="{{$admin->user->slug}}"><i class="fas fa-trash-alt"></i></a>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-        </div>
-
-
-
-
     </div>
 </div>
+<!-- End of container-fluid -->
 
-<!-- Modal -->
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<!-- Modal for more information -->
+<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Eliminar administrador</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <div class="modal-header pl-4 pb-1 pt-4">
+                <h5 class="modal-title text-gray-800 font-weight-bold">Para que serve?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close-button">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <form class="form" method="POST" action="{{route('admins.destroy', $admin)}}">
-                    @csrf
-                    @method('DELETE')
-                    <p style="display:inline-block;">Prente eliminar o administrador: <p class="ml-1" id="text" style="font-weight:700; display:inline-block;"></p>?</p>
-                    <p style="font-weight:500;">Ao clicar "Sim, eliminar administrador", irá eliminar a conta definitivamente e perder todos os dados associados.</p>
-                  </div>
-                    <div class="modal-footer">
-                        <button class="top-button btn_submit bg-danger" type="submit"><i class="far fa-trash-alt mr-2"></i>Sim, eliminar administrador</button>
-                        <button type="button" class="top-button bg-secondary mr-2" data-dismiss="modal">Cancelar</button>
-                    </div>
-                </form>
+            <div class="modal-body text-gray-800 pl-4 pr-5">
+                Nesta secção encontram-se a listagem dos administradores da Estudar Portugal. Pode acrescentar mais clicando no botão <b>Adicionar administrador</b>.
+            </div>
+            <div class="modal-footer mt-3">
+                <a data-dismiss="modal" class="mr-4 font-weight-bold" id="close-option">Fechar</a>
+                <button type="button" data-dismiss="modal" class="btn btn-primary font-weight-bold mr-2">Entendido!</button>
+            </div>
         </div>
     </div>
 </div>
+<!-- End of Modal for more information  -->
 
+<!-- Modal for delete admin -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header pl-4 pb-1 pt-4">
+                <h5 class="modal-title text-gray-800 font-weight-bold">Pretende eliminar o administrador?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close-button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-gray-800 pl-4 pr-5">
+                Ao apagar o registo do administrador, <b>irá eliminar o mesmo para todo o sempre!</b> Pense duas vezes antes de proceder com a ação.
+            </div>
+            <div class="modal-footer mt-3">
+                <form method="post">
+                    @csrf
+                    @method('DELETE')
+                    <a data-dismiss="modal" class="mr-4 font-weight-bold" id="close-option">Cancelar</a>
+                    <button type="submit" class="btn btn-danger font-weight-bold mr-2">Eliminar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Modal for delete report -->
+
+<!-- Begin of Scripts -->
 @section('scripts')
 <script>
     $(document).ready(function() {
-        var table = $('#dataTable').DataTable({
-
-            "columnDefs": [{
-                    "orderable": false,
-                    "width": "60px",
-                    "targets": 0
-                },
-                {
-                    "orderable": false,
-                    "targets": 2
-                },
-                {
-                    "orderable": false,
-                    "width": "130px",
-                    "targets": 3
-                },
-
-            ],
-
+        $('#table').DataTable({
             "language": {
-                "lengthMenu": "Mostrar _MENU_ por página",
-                "search": "Procurar",
-                "zeroRecords": "Sem registos",
-                "paginate": {
-                    "first": "Primeiro",
-                    "last": "Ultimo",
-                    "next": "Seguinte",
-                    "previous": "Anterior"
+                "sEmptyTable": "Não foi encontrado nenhum registo",
+                "sLoadingRecords": "A carregar...",
+                "sProcessing": "A processar...",
+                "sLengthMenu": "Mostrar _MENU_ registos",
+                "sZeroRecords": "Não foram encontrados resultados",
+                "sInfo": "Mostrando _END_ de _TOTAL_ registos",
+                "sInfoEmpty": "Mostrando de 0 de 0 registos",
+                "sInfoFiltered": "(filtrado de _MAX_ registos no total)",
+                "sInfoPostFix": "",
+                "sSearch": "Procurar:",
+                "sUrl": "",
+                "oPaginate": {
+                    "sFirst": "Primeiro",
+                    "sPrevious": "Anterior",
+                    "sNext": "Seguinte",
+                    "sLast": "Último"
                 },
-
-                "info": "",
-                "infoEmpty": "",
-                "infoFiltered": ""
+                "oAria": {
+                    "sSortAscending": ": Ordenar colunas de forma ascendente",
+                    "sSortDescending": ": Ordenar colunas de forma descendente"
+                }
             },
-
-            "order": [2, 'asc'],
+            "order": [ 3, 'asc' ]
         });
 
-
-        $(".dataTables_filter").hide();
-        $("#customSearchBox").on('keyup', function() {
-            $(".dataTables_filter input").val($("#customSearchBox").val())
-            table.search($(".dataTables_filter input").val()).draw();
-        });
-
-        $('.dataTables_length').hide();
-        $('#records_per_page').val(table.page.len());
-        $('#records_per_page').change(function() {
-            table.page.len($(this).val()).draw();
-        });
-
+        // Modal for DELETE
         $('#deleteModal').on('show.bs.modal', function(event) {
             var button = $(event.relatedTarget);
-            var name = button.data('name');
             var modal = $(this);
-            modal.find('#text').text(name);
             modal.find("form").attr('action', '/administradores/' + button.data('slug'));
         });
     });
 </script>
 @endsection
+<!-- End of Scripts -->
 @endsection
+<!-- End of Page Content -->

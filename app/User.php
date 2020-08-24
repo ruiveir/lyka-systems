@@ -92,4 +92,9 @@ class User extends Authenticatable
         return $notifications;
     }
 
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
 }

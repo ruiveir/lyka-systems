@@ -1,72 +1,86 @@
 @extends('layout.master')
-{{-- Page Title --}}
-@section('title', 'Ficha de Administrador')
-{{-- CSS Style Link --}}
-@section('styleLinks')
-<link href="{{asset('/css/users.css')}}" rel="stylesheet">
-@endsection
-{{-- Page Content --}}
+<!-- Page Title -->
+@section('title', 'Visualização de um administrador')
+<!-- Page Content -->
 @section('content')
-
-@if ( Auth::user()->tipo == "admin")
-<div class="container mt-2">
-    {{-- Navegação --}}
-    <div class="float-left buttons">
-        <a href="javascript:history.go(-1)" title="Voltar">
-            <ion-icon name="arrow-back-outline" class="button-back"></ion-icon>
-        </a>
-        <a href="javascript:window.history.forward();" title="Avançar">
-            <ion-icon name="arrow-forward-outline" class="button-foward"></ion-icon>
-        </a>
-    </div>
-    <div class="float-right">
-        @if (Auth::user()->tipo == "admin")
-        <a href="{{route('admins.edit', $admin)}}" class="top-button mr-2">Editar Informação</a>
-        {{-- <a href="{{route('admins.print',$admin)}}" target="_blank" class="top-button">Imprimir</a> --}}
-        @endif
-    </div>
-
-    <br><br>
-    <div class="row font-weight-bold border p-2 pt-3 pb-3" style="color:#6A74C9">
-        <div class="col p-0 text-center" style="flex: 0 0 20%; -ms-flex: 0 0 20%; min-width:195px">
-
-            @if($admin->fotografia)
-            <img class="m-2 p-1 rounded bg-white shadow-sm"
-                src="{{Storage::disk('public')->url('admin-photos/').$admin->fotografia}}" style="width:90%">
-            @elseif($admin->genero == 'F')
-            <img class="m-2 p-1 rounded bg-white shadow-sm"
-                src="{{Storage::disk('public')->url('default-photos/F.jpg')}}" style="width:90%">
-            @else
-            <img class="m-2 p-1 rounded bg-white shadow-sm"
-                src="{{Storage::disk('public')->url('default-photos/M.jpg')}}" style="width:90%">
-            @endif
-
+<!-- Begin Page Content -->
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h4 mb-0 text-gray-800">Visualização de um administrador</h1>
+        <div>
+            <a href="{{route('admin.edit', $admin)}}" class="btn btn-success btn-icon-split btn-sm" title="Editar">
+                <span class="icon text-white-50">
+                    <i class="fas fa-pencil-alt"></i>
+                </span>
+                <span class="text">Editar administrador</span>
+            </a>
+            <a href="#" data-toggle="modal" data-target="#infoModal" class="btn btn-secondary btn-icon-split btn-sm" title="Informações">
+                <span class="icon text-white-50">
+                    <i class="fas fa-info-circle"></i>
+                </span>
+                <span class="text">Informações</span>
+            </a>
         </div>
-        <div class="col p-2" style="min-width:280px !important">
-            {{-- Informações Pessoais --}}
-            <div><span class="text-secondary ">Nome:</span> {{$admin->nome}} {{$admin->apelido}}</div>
-            <div><span class="text-secondary ">Género: </span>
-                @if ($admin->genero == 'M')
-                Masculino
-                @else
-                Feminino
-                @endif
+    </div>
+    <!-- Approach -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Visualização do administrador: {{$admin->nome.' '.$admin->apelido}}</h6>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="text-gray-800"><b>Nome completo:</b> @if($admin->nome != null) {{$admin->nome.' '.$admin->apelido}} @else N/A @endif</p>
+                </div>
+                <div class="col-md-6">
+                    <p class="text-gray-800"><b>Género:</b> @if($admin->genero != null) @if($admin->genero == "M") Masculino @else Feminino @endif @else N/A @endif</p>
+                </div>
             </div>
-            <br>
-            <div><span class="text-secondary ">Data de nascimento: </span>
-                {{ date('d-M-y', strtotime($admin->dataNasc)) }}</div>
-                <br>
-            <div><span class="text-secondary">Telefone (principal):</span> {{$admin->telefone1}}</div>
-            <div><span class="text-secondary">Telefone (alternativo):</span> {{$admin->telefone2}}</div><br>
-            <div><span class="text-secondary">E-mail:</span> {{$admin->email}}</div><br>
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="text-gray-800"><b>Data de nascimento:</b> @if($admin->dataNasc != null) {{date('d/m/Y', strtotime($admin->dataNasc))}} @else N/A @endif</p>
+                </div>
+                <div class="col-md-6">
+                    <p class="text-gray-800"><b>Endereço eletrónico:</b> @if($admin->email != null) {{$admin->email}} @else N/A @endif</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="text-gray-800"><b>Contacto principal:</b> @if($admin->telefone1 != null) {{$admin->telefone1}} @else N/A @endif</p>
+                </div>
+                <div class="col-md-6">
+                    <p class="text-gray-800"><b>Contacto secundário:</b> @if($admin->telefone2 != null) {{$admin->telefone2}} @else N/A @endif</p>
+                </div>
+            </div>
             <hr>
-            <div class="text-muted"><small>Adicionado: {{ date('d-M-y', strtotime($admin->created_at)) }}</small>
-            </div>
-            <div class="text-muted"><small>Ultima atualização:
-                    {{ date('d-M-y', strtotime($admin->updated_at)) }}</small></div>
+            <p class="text-gray-800"><b>Data de registo:</b> {{date('d/m/Y', strtotime($admin->created_at))}}</p>
+            <p class="text-gray-800"><b>Última atualização:</b> @if($admin->updated_at != null) {{date('d/m/Y', strtotime($admin->updated_at))}} @else N/A @endif</p>
         </div>
     </div>
 </div>
-@endif
+<!-- End of container-fluid -->
 
+<!-- Modal Info -->
+<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header pl-4 pb-1 pt-4">
+                <h5 class="modal-title text-gray-800 font-weight-bold">Para que serve?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close-button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-gray-800 pl-4 pr-5">
+                Aqui apenas pode visualizar os detalhes do administrador. Para editar os dados do administrador, clique no botão <b>Editar administrador</b>.
+            </div>
+            <div class="modal-footer mt-3">
+                <a data-dismiss="modal" class="mr-4 font-weight-bold" id="close-option">Fechar</a>
+                <button type="button" data-dismiss="modal" class="btn btn-primary font-weight-bold mr-2">Entendido!</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Modal Info -->
 @endsection
+<!-- End of Page Content -->

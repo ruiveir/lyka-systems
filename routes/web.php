@@ -142,13 +142,13 @@ Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
     Route::resource('/administradores', 'AdminController')->parameters([
       'administradores' => 'admin'
     ])->names([
-      'index' => 'admins.index',
-      'store' => 'admins.store',
-      'create' => 'admins.create',
-      'show' => 'admins.show',
-      'update' => 'admins.update',
-      'destroy' => 'admins.destroy',
-      'edit' => 'admins.edit',
+      'index' => 'admin.index',
+      'store' => 'admin.store',
+      'create' => 'admin.create',
+      'show' => 'admin.show',
+      'update' => 'admin.update',
+      'destroy' => 'admin.destroy',
+      'edit' => 'admin.edit',
     ]);
 
     /* Produto Stock*/
@@ -252,4 +252,3 @@ Route::put('/restaurar-password/{user}/nova-password', 'AccountConfirmationContr
 
 /* Listagens */
 Route::resource('/listagens', 'ListagemController');
-

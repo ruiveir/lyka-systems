@@ -2,12 +2,14 @@
 
 namespace App;
 
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Administrador extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasSlug;
 
     protected $table = 'Administrador';
 
@@ -19,7 +21,6 @@ class Administrador extends Model
         'genero',
         'email',
         'dataNasc',
-        'fotografia',
         'telefone1',
         'telefone2',
         'superAdmin'
@@ -28,5 +29,17 @@ class Administrador extends Model
     public function user()
     {
         return $this->belongsTo("App\User","idAdmin","idAdmin")->withTrashed();
+    }
+
+    public function getSlugOptions() : SlugOptions
+    {
+      return SlugOptions::create()
+          ->generateSlugsFrom(['nome','apelido'])
+          ->saveSlugsTo('slug');
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
     }
 }
