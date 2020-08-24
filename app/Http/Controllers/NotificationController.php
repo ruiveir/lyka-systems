@@ -134,7 +134,12 @@ class NotificationController extends Controller
         if(Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null){
             $todasFases = Fase::where('dataVencimento','<=',(new DateTime())->add(new DateInterval('P7D')))
                 ->get()->all();
-            $agenteProdutos = Auth()->user()->agente->produtoA->all();
+            $agenteProdutos = null;
+            if(Auth()->user()->agente->tipo == "Agente"){
+                $agenteProdutos = Auth()->user()->agente->produtoA->all();
+            }else{
+                $agenteProdutos = Auth()->user()->agente->produtoSubA->all();
+            }
             if($agenteProdutos && $todasFases){
                 foreach($agenteProdutos as $produto){
                     $fasesProduto = $produto->fase->all();

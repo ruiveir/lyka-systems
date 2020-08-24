@@ -334,9 +334,7 @@ class ClientController extends Controller
             $permissao = true;
         }
 
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||
-            (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null &&
-            $client->idAgente == Auth()->user()->idAgente) || $permissao){
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||$permissao){
 
             $totalprodutos=null;
 
@@ -454,9 +452,7 @@ class ClientController extends Controller
             $permissao = true;
         }
 
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||
-            (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null &&
-            $client->idAgente == Auth()->user()->idAgente) || $permissao){
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||$permissao){
 
             // Produtos adquiridos pelo cliente
             $produtos = $client->produto;
@@ -510,9 +506,7 @@ class ClientController extends Controller
             $permissao = true;
         }
 
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||
-            (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null &&
-            $client->idAgente == Auth()->user()->idAgente && $client->editavel) || $permissao){
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||$permissao){
 
             /* Obtem as informações sobre os documentos */
 
@@ -579,11 +573,20 @@ class ClientController extends Controller
     * @return \Illuminate\Http\Response
     */
 
-    public function update(UpdateClienteRequest $request, Cliente $client){
-
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||
-            (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null &&
-            $client->idAgente == Auth()->user()->idAgente && $client->editavel) || $permissao){
+    public function update(UpdateClienteRequest $request, Cliente $client)
+    {
+        $produts = null;
+        $permissao = false;
+        if(Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null && Auth()->user()->agente->tipo == 'Agente'){
+            $produts = Produto::whereRaw('idAgente = '.Auth()->user()->idAgente.' and idCliente = '.$client->idCliente)->get();
+        }elseif(Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null && Auth()->user()->agente->tipo == 'Subagente'){
+            $produts = Produto::whereRaw('idSubAgente = '.Auth()->user()->idAgente.' and idCliente = '.$client->idCliente)->get();
+        }
+        if($produts && $client->editavel){
+            $permissao = true;
+        }
+        
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||$permissao){
 
             $t=time(); /*  data atual */
 
