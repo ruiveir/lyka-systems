@@ -64,18 +64,6 @@ class AdminController extends Controller
                 $admin->superAdmin = true;
             }
 
-            $admins = Administrador::withTrashed()->get();
-            foreach ($admins as $trash){
-                if($trash->email == $admin->email){
-                    return redirect()->back()->withInput();
-                }
-            }
-            $users = User::withTrashed()->get();
-            foreach ($users as $trash){
-                if($trash->email == $admin->email){
-                    return redirect()->back()->withInput();
-                }
-            }
             $admin->save();
 
             $name = $admin->nome.' '.$admin->apelido;
