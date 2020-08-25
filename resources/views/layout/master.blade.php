@@ -17,6 +17,9 @@
     <!-- DataTables -->
     <link type="text/css" href="{{asset('/vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
 
+    <!-- Datetime Picker -->
+    <link type="text/css" href="{{asset('/vendor/datetimepicker/build/jquery.datetimepicker.min.css')}}" rel="stylesheet">
+
     <!-- Fontawesome core CSS -->
     <link href="{{asset('/vendor/fontawesome-free/css/all.min.css')}}" rel=" stylesheet" type="text/css">
 
@@ -33,7 +36,7 @@
     @php
     use App\Cliente;
     $clientesNotificacao = Cliente::all();
-    
+
     $notifications = Auth()->user()->getNotifications();
     @endphp
 </head>

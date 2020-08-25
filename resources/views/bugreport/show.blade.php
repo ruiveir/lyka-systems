@@ -8,33 +8,48 @@
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h4 mb-0 text-gray-800">Relatório de erros</h1>
-        <a href="#" data-toggle="modal" data-target="#infoModal" class="btn btn-secondary btn-icon-split btn-sm" title="Informações">
-            <span class="icon text-white-50">
-                <i class="fas fa-info-circle"></i>
-            </span>
-            <span class="text">Informações</span>
-        </a>
+        <div>
+            <a href="#" data-toggle="modal" data-target="#editModal" data-id="{{$bugreport->idRelatorioProblema}}" class="btn btn-success btn-icon-split btn-sm" title="Editar">
+                <span class="icon text-white-50">
+                    <i class="fas fa-pencil-alt"></i>
+                </span>
+                <span class="text">Editar relatório</span>
+            </a>
+            <a href="#" data-toggle="modal" data-target="#infoModal" class="btn btn-secondary btn-icon-split btn-sm" title="Informações">
+                <span class="icon text-white-50">
+                    <i class="fas fa-info-circle"></i>
+                </span>
+                <span class="text">Informações</span>
+            </a>
+        </div>
     </div>
     <!-- Approach -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Visualização - Relatório de erros</h6>
         </div>
-        <div class="text-right" style="float: right;">
-            <button style="width: 15%;" data-toggle="modal" data-target="#editModal" data-id="{{$bugreport->idRelatorioProblema}}" 
-                class="btn btn-sm btn-success m-1 mr-2 px-3" title="Editar">
-                <i class="fas fa-pencil-alt mr-2"></i>Editar Informação
-            </button>
-        </div>
-
         <div class="card-body">
-            <p class="text-gray-800"><b>Nome:</b> {{$bugreport->nome}}</p>
-            <p class="text-gray-800"><b>Endereço eletrónico:</b> {{$bugreport->email}}</p>
-            @if ($bugreport->telemovel)
-            <p class="text-gray-800"><b>Telemóvel:</b> {{$bugreport->telemovel}}</p>
-            @endif
-            <p class="text-gray-800"><b>Estado:</b> <span @if($bugreport->estado == "Pendente") class="text-danger" @elseif($bugreport->estado == "Resolvido") class="text-success"
-                        @else class="text-warning" @endif>{{$bugreport->estado}}</span></p>
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="text-gray-800"><b>Nome:</b> {{$bugreport->nome}}</p>
+                </div>
+                <div class="col-md-6">
+                    <p class="text-gray-800"><b>Endereço eletrónico:</b> {{$bugreport->email}}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    @if ($bugreport->telemovel)
+                    <p class="text-gray-800"><b>Telemóvel:</b> {{$bugreport->telemovel}}</p>
+                    @else
+                    <p class="text-gray-800"><b>Telemóvel:</b>N/A</p>
+                    @endif
+                </div>
+                <div class="col-md-6">
+                    <p class="text-gray-800"><b>Estado:</b> <span @if($bugreport->estado == "Pendente") class="text-danger font-weight-bold" @elseif($bugreport->estado == "Resolvido") class="text-success font-weight-bold"
+                    @else class="text-warning font-weight-bold" @endif>{{$bugreport->estado}}</span></p>
+                </div>
+            </div>
             @if ($bugreport->screenshot)
             <p class="text-gray-800"><b>Imagem do erro:</b> <a href="{{route("bugreport.download", $bugreport)}}">{{$bugreport->screenshot}}</a></p>
             @endif

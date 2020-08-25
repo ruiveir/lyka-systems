@@ -60,7 +60,7 @@ class AdminController extends Controller
             $user = new User;
             $user->tipo = "admin";
 
-            if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email == "admin@test.com"){
+            if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
                 $admin->superAdmin = true;
             }
 
