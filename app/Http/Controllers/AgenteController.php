@@ -108,7 +108,7 @@ class AgenteController extends Controller
             $user = new User;
             $fieldsUser = $requestUser->validated();
             $user->fill($fieldsUser);
-
+/*
 
             $agentes = Agente::withTrashed()->get();
             foreach ($agentes as $trash){
@@ -333,7 +333,7 @@ class AgenteController extends Controller
                 $agent->exepcao = false;
             }
 
-
+/*
             $agentes = Agente::withTrashed()->get();
             foreach ($agentes as $trash){
                 if($trash->email == $agent->email || $trash->NIF == $agent->NIF || $trash->num_doc == $agent->num_doc){

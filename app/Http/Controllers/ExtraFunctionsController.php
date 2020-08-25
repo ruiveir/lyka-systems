@@ -58,13 +58,13 @@ class ExtraFunctionsController extends Controller
         $text = $report->relatorio;
         $idReport = $report->idRelatorioProblema;
 
-        if (isset($errorfile)) {
-            dispatch(new SendReportMail($name, $email, $phone, $text, $errorfile));
-        }else {
-            $errorfile = null;
-            dispatch(new SendReportMail($name, $email, $phone, $text, $errorfile));
-            //Auth()->user()->notify(new BugReportSend($name, $idReport));
+        $link = null;
+        if (Storage::disk('public')->exists('report-errors/'.$errorimg)) {
+            $link = Storage::disk('public')->url('report-errors/'.$errorimg);
         }
+        //$file = File::get($path);
+
+        dispatch(new SendReportMail($name, $email, $phone, $text, $link));
 
         return redirect()->route('report')->with('success', 'Relatório enviado com sucesso. Obrigado pela sua contribuição!');
     }
