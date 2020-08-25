@@ -81,7 +81,7 @@
 
                                     <form method="POST" role="form" id="{{ $docstock->idDocStock }}"
                                         action="{{route('documentostock.destroy',$docstock)}}"
-                                        class="d-inline-block form_client_id">
+                                        class="d-inline-block">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-outline-danger"

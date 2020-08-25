@@ -111,6 +111,11 @@
                                             {{$descricao}}
                                             <br>
                                         @endforeach
+                                        <div class="text-right">
+                                            <a href="#" onclick="{{$notification->delete()}}">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

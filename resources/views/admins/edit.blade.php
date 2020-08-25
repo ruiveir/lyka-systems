@@ -77,9 +77,13 @@
                         <div class="col-md-6 mb-3">
                             <label for="genero" class="text-gray-900">Género do administrador <sup class="text-danger small">&#10033;</sup></label>
                             <select class="custom-select" name="genero" id="genero" value="{{old('genero', $admin->genero)}}" required>
-                                <option selected disabled hidden>Escolher género...</option>
-                                <option value="M">Masculino</option>
+                                @if($admin->genero == "M")
+                                <option selected value="M">Masculino</option>
                                 <option value="F">Feminino</option>
+                                @else
+                                <option value="M">Masculino</option>
+                                <option selected value="F">Feminino</option>
+                                @endif
                             </select>
                             <div class="invalid-feedback">
                                 Oops, parece que algo não está bem...
@@ -88,9 +92,13 @@
                         <div class="col-md-6 mb-3">
                             <label for="superAdmin" class="text-gray-900">Cargo do administrador <sup class="text-danger small">&#10033;</sup></label>
                             <select class="custom-select" name="superAdmin" id="superAdmin" value="{{old('superAdmin', $admin->superAdmin)}}" required>
-                                <option selected disabled hidden>Escolher cargo...</option>
+                                @if($admin->superAdmin)
                                 <option value="0">Regular</option>
+                                <option selected value="1">Total</option>
+                                @else
+                                <option selected value="0">Regular</option>
                                 <option value="1">Total</option>
+                                @endif
                             </select>
                             <div class="invalid-feedback">
                                 Oops, parece que algo não está bem...
