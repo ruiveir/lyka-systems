@@ -49,17 +49,6 @@ class DataController extends Controller
         $admin->telefone2 = null;
         $admin->save();
 
-        $admin = new Administrador;
-        $admin->nome = 'Neuza';
-        $admin->apelido = 'Cordeiro';
-        $admin->genero = 'F';
-        $admin->email = 'nex543@hotmail.com';
-        $admin->dataNasc = date('Y-m-d',strtotime('30-10-1999'));
-        $admin->fotografia = null;
-        $admin->telefone1 = 919200000;
-        $admin->telefone2 = null;
-        $admin->save();
-
         /********************          Agentes          ********************/
 
         $agente = new Agente;

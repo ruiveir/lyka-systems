@@ -71,6 +71,14 @@
 @section('scripts')
 <script>
     $(document).ready(function() {
+        jQuery.datetimepicker.setLocale('pt');
+        $("#dataNasc").datetimepicker({
+            timepicker: false,
+            datepicker: true,
+            format: "d/m/Y",
+            weeks: true
+        });
+
         bsCustomFileInput.init();
         $("#registar-pagamento-form").submit(function(event) {
             if (this.checkValidity() === false) {
@@ -79,7 +87,8 @@
             } else {
                 event.preventDefault();
                 $("#cancelBtn").removeAttr("onclick");
-                button = "<button class='btn btn-primary' type='submit' disabled><span class='spinner-border spinner-border-sm' role='status' aria-hidden='true' style='position:relative; bottom:4px; right:3px;'></span>A registar pagamento...</button>";
+                button =
+                    "<button class='btn btn-primary' type='submit' disabled><span class='spinner-border spinner-border-sm' role='status' aria-hidden='true' style='position:relative; bottom:4px; right:3px;'></span>A registar pagamento...</button>";
                 $("#groupBtn").append(button);
                 $("#submitbtn").remove();
                 var info = new FormData(this);

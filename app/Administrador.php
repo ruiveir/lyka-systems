@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Administrador extends Model
 {
-    use SoftDeletes, HasSlug;
+    use HasSlug;
 
     protected $table = 'Administrador';
 

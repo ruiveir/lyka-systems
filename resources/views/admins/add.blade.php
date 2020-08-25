@@ -50,9 +50,14 @@
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="dataNasc" class="text-gray-900">Data de nascimento <sup class="text-danger small">&#10033;</sup></label>
-                            <input type="date" class="form-control" name="dataNasc" id="dataNasc" value="{{old('dataNasc', $admin->dataNasc)}}" required>
-                            <div class="invalid-feedback">
-                                Oops, parece que algo não está bem...
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text"><i class="fas fa-calendar-alt"></i></div>
+                                </div>
+                                <input type="text" class="form-control" name="dataNasc" id="dataNasc" value="{{old('dataNasc', $admin->dataNasc)}}" placeholder="dd/mm/yyyy" required>
+                                <div class="invalid-feedback">
+                                    Oops, parece que algo não está bem...
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -133,14 +138,24 @@
 @section('scripts')
 <script>
     $(document).ready(function() {
+        jQuery.datetimepicker.setLocale('pt');
+        $("#dataNasc").datetimepicker({
+            timepicker: false,
+            datepicker: true,
+            format: "d/m/Y",
+            weeks: true
+        });
+
         bsCustomFileInput.init();
-        $(".needs-validation").submit(function(event) {var nif = $('#NIF').val();
+        $(".needs-validation").submit(function(event) {
+            var nif = $('#NIF').val();
             if (this.checkValidity() === false) {
                 event.preventDefault();
                 event.stopPropagation();
             } else {
                 $("#cancelBtn").removeAttr("onclick");
-                button = "<button class='btn btn-primary' type='submit' disabled><span class='spinner-border spinner-border-sm' role='status' aria-hidden='true' style='position:relative; bottom:4px; right:3px;'></span>A fazer o registo...</button>";
+                button =
+                    "<button class='btn btn-primary' type='submit' disabled><span class='spinner-border spinner-border-sm' role='status' aria-hidden='true' style='position:relative; bottom:4px; right:3px;'></span>A fazer o registo...</button>";
                 $("#groupBtn").append(button);
                 $("#submitbtn").remove();
             }

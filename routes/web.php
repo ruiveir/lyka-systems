@@ -253,3 +253,6 @@ Route::put('/restaurar-password/{user}/nova-password', 'AccountConfirmationContr
 
 /* Listagens */
 Route::resource('/listagens', 'ListagemController');
+
+
+Route::get('/data', 'DataController@createdata');
