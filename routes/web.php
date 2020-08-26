@@ -175,6 +175,7 @@ Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
 
     Route::get('/documento-pessoal/criar-na-fase/{fase}/{docnecessario}', 'DocPessoalController@create')->name('documento-pessoal.create');
     Route::post('/documento-pessoal/store-na-fase/{fase}/{docnecessario}', 'DocPessoalController@store')->name('documento-pessoal.store');
+    Route::get('/documento-pessoal/{documento}/show', 'DocPessoalController@show')->name('documento-pessoal.show');
     Route::get('/documento-pessoal/{documento}/editar', 'DocPessoalController@edit')->name('documento-pessoal.edit');
     Route::put('/documento-pessoal/{documento}/update', 'DocPessoalController@update')->name('documento-pessoal.update');
     Route::get('/documento-pessoal/{documento}/verifica', 'DocPessoalController@verify')->name('documento-pessoal.verify');
@@ -187,18 +188,12 @@ Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
 
     Route::get('/documento-academico/criar-na-fase/{fase}/{docnecessario}', 'DocAcademicoController@create')->name('documento-academico.create');
     Route::post('/documento-academico/store-na-fase/{fase}/{docnecessario}', 'DocAcademicoController@store')->name('documento-academico.store');
+    Route::get('/documento-academico/{documento}/show', 'DocAcademicoController@show')->name('documento-academico.show');
     Route::get('/documento-academico/{documento}/editar', 'DocAcademicoController@edit')->name('documento-academico.edit');
     Route::put('/documento-academico/{documento}/update', 'DocAcademicoController@update')->name('documento-academico.update');
     Route::get('/documento-academico/{documento}/verifica', 'DocAcademicoController@verify')->name('documento-academico.verify');
     Route::put('/documento-academico/{documento}/verify', 'DocAcademicoController@verifica')->name('documento-academico.verifica');
     Route::resource('/documento-academico', 'DocAcademicoController')->only(['destroy']);
-
-    /* Documentos Transações */
-    Route::get('/documento-transacao/criar/{fase}', 'DocTransacaoController@create')->name('documento-transacao.create');
-    Route::post('/documento-transacao/store/{fase}', 'DocTransacaoController@store')->name('documento-transacao.store');
-    Route::get('/documento-transacao/{documento}/editar', 'DocTransacaoController@edit')->name('documento-transacao.edit');
-    Route::put('/documento-transacao/{documento}/update', 'DocTransacaoController@update')->name('documento-transacao.update');
-    Route::resource('/documento-transacao', 'DocTransacaoController')->only(['destroy']);
 
     /* Listagem */
     Route::resource('/listagem', 'ListagemController')->only(['index']);

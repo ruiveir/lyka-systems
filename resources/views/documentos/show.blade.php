@@ -25,21 +25,20 @@
     <br><br>
 
     <div class="cards-navigation">
-        <div class="title">
-            <h1 class="h4 mb-0 text-gray-800">Verificação do {{$tipo}}</h1>
+        <div class="row">
+            <div class="col-md-4 title">
+                <h1 class="h4 mb-0 text-gray-800">Informação do {{$tipo}}</h1>
+            </div>
+            <div class="col-md-8">
+                <a class="" onclick="window.open('{{Storage::disk('public')->url('client-documents/'.$documento->idCliente .'/'. $documento->imagem)}}', '', 'width=620,height=450,toolbar=no,location=no,menubar=no,copyhistory=no,status=no,directories=no,scrollbars=yes,resizable=yes'); return false;" href="{{Storage::disk('public')->url('client-documents/'.$documento->idCliente .'/'. $documento->imagem)}}" id="yui_3_17_2_1_1589215110643_49">
+                    <img src="../../storage/default-photos/pdf.png" class="iconlarge activityicon" alt="" role="presentation" aria-hidden="true">
+                    <span class="instancename">Abrir Imagem do {{$documento->tipo}}</span>
+                </a>
+            </div><br><br>
         </div>
         <br>
         <div class="formulario-edicao shadow-sm">
             <div class="row documento">
-                <div class="col-md-4">
-                    <label for="nome">Verifique o documento:</label><br>
-                </div><br><br>
-                <div class="col-md-8">
-                    <a class="" onclick="window.open('{{Storage::disk('public')->url('client-documents/'.$documento->idCliente .'/'. $documento->imagem)}}', '', 'width=620,height=450,toolbar=no,location=no,menubar=no,copyhistory=no,status=no,directories=no,scrollbars=yes,resizable=yes'); return false;" href="{{Storage::disk('public')->url('client-documents/'.$documento->idCliente .'/'. $documento->imagem)}}" id="yui_3_17_2_1_1589215110643_49">
-                        <img src="../../storage/default-photos/pdf.png" class="iconlarge activityicon" alt="" role="presentation" aria-hidden="true">
-                        <span class="instancename">Abrir {{$documento->tipo}}</span>
-                    </a>
-                </div><br><br>
                 @if(strtolower($tipo) == "passaport")
                     <div class="col-md-4">
                         <div><span class="text-secondary ">Nº Passaport:</span> {{$documento->numPassaport}}</div><br>
@@ -89,44 +88,27 @@
             </div>
             <div class="text-right">
                 @if($tipoPAT == 'Pessoal')
-                    <a href="{{route('documento-pessoal.edit', $documento)}}" class="btn btn-primary btn-icon-split btn-sm" title="Editar">
+                    <a href="{{route('documento-pessoal.edit', $documento)}}" class="btn btn-success btn-icon-split btn-sm" title="Editar">
                         <span class="icon text-white-50">
                             <i class="fas fa-pencil-alt"></i>
                         </span>
                         <span class="text">Editar Documento</span>
                     </a>
                 @elseif($tipoPAT == 'Academico')
-                    <a href="{{route('documento-academico.edit', $documento)}}" class="btn btn-primary btn-icon-split btn-sm" title="Editar">
+                    <a href="{{route('documento-academico.edit', $documento)}}" class="btn btn-success btn-icon-split btn-sm" title="Editar">
                         <span class="icon text-white-50">
                             <i class="fas fa-pencil-alt"></i>
                         </span>
                         <span class="text">Editar Documento</span>
                     </a>
                 @else
-                    <a href="{{route('documento-transacao.edit', $documento)}}" class="btn btn-primary btn-icon-split btn-sm" title="Editar">
+                    <a href="{{route('documento-transacao.edit', $documento)}}" class="btn btn-success btn-icon-split btn-sm" title="Editar">
                         <span class="icon text-white-50">
                             <i class="fas fa-pencil-alt"></i>
                         </span>
                         <span class="text">Editar Documento</span>
                     </a>
                 @endif
-
-                @if($tipoPAT == 'Pessoal')
-                    <form method="POST" role="form" action="{{route('documento-pessoal.verifica',$documento)}}" class="d-inline-block">
-                @elseif($tipoPAT == 'Academico')
-                    <form method="POST" role="form" action="{{route('documento-academico.verifica',$documento)}}" class="d-inline-block">
-                @else
-                    <form method="POST" role="form" action="{{route('documento-transacao.verifica',$documento)}}" class="d-inline-block">
-                @endif
-                    @csrf
-                    @method('PUT')
-                    <button type="submit" class="btn btn-success btn-icon-split btn-sm" style="color: black;" title="Verificar Documento">
-                        <span class="icon text-white-50">
-                            <i class="fas fa-pencil-alt"></i>
-                        </span>
-                        <span class="text">Aceitar Documento</span>
-                    </button>
-                </form><br>
             </div>
         </div>
         <br>

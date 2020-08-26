@@ -296,7 +296,7 @@
                                             <div><span class="text-secondary">{{$documento->tipoDocumento}}: </span>
                                             @foreach($DocsPessoais as $docpessoal)
                                                 @if($documento->tipoDocumento == $docpessoal->tipo && !$existe)
-                                                    <a class="" onclick="window.open('{{Storage::disk('public')->url('client-documents/'.$docpessoal->idCliente .'/'. $docpessoal->imagem)}}', '', 'width=620,height=450,toolbar=no,location=no,menubar=no,copyhistory=no,status=no,directories=no,scrollbars=yes,resizable=yes'); return false;" href="{{Storage::disk('public')->url('client-documents/'.$docpessoal->idCliente .'/'. $docpessoal->imagem)}}" id="yui_3_17_2_1_1589215110643_49">
+                                                    <a href="{{route('documento-pessoal.show',$docpessoal)}}" id="yui_3_17_2_1_1589215110643_49">
                                                         <img src="../../storage/default-photos/pdf.png" class="iconlarge activityicon" alt="" role="presentation" aria-hidden="true">
                                                         <span class="instancename">Abrir {{$docpessoal->tipo}}</span>
                                                     </a></div><br>
@@ -368,7 +368,7 @@
                                             <div><span class="text-secondary">{{$documento->tipoDocumento}}: </span>
                                             @foreach($DocsAcademicos as $docacademico)
                                                 @if($documento->tipoDocumento == $docacademico->tipo && !$existe)
-                                                    <a class="" onclick="window.open('{{Storage::disk('public')->url('client-documents/'.$docacademico->idCliente .'/'. $docacademico->imagem)}}', '', 'width=620,height=450,toolbar=no,location=no,menubar=no,copyhistory=no,status=no,directories=no,scrollbars=yes,resizable=yes'); return false;" href="{{Storage::disk('public')->url('client-documents/'.$documento->idCliente .'/'. $docacademico->imagem)}}" id="yui_3_17_2_1_1589215110643_49">
+                                                    <a class="" href="{{route('documento-academico.show',$docacademico)}}" id="yui_3_17_2_1_1589215110643_49">
                                                         <img src="../../storage/default-photos/pdf.png" class="iconlarge activityicon" alt="" role="presentation" aria-hidden="true">
                                                         <span class="instancename">Abrir {{$docacademico->tipo}}</span>
                                                     </a></div><br>
@@ -435,7 +435,7 @@
                                     @foreach($DocsTransacao as $documento)
                                         <div>
                                             <span class="text-secondary">{{$documento->descricao}}:</span>
-                                            <a class="" onclick="window.open('../../storage/{{$documento->comprovativoPagamento}}', '', 'width=620,height=450,toolbar=no,location=no,menubar=no,copyhistory=no,status=no,directories=no,scrollbars=yes,resizable=yes'); return false;" href="../../storage/{{$documento->imagem}}" id="yui_3_17_2_1_1589215110643_49">
+                                            <a class="" href="#" id="yui_3_17_2_1_1589215110643_49">
                                                 <img src="../../storage/default-photos/pdf.png" class="iconlarge activityicon" alt="" role="presentation" aria-hidden="true">
                                                 <span class="instancename">Abrir Transação</span>
                                             </a>
@@ -456,20 +456,12 @@
                                                 <span class="text-danger">Não Recebido</span>
                                             @endif
                                         </div>
-                                        <div><br>
-                                            <a href="{{route('documento-transacao.edit',$documento)}}" class="top-button mr-2">Editar {{$documento->descricao}}</a>
-                                        </div><br>
                                         @php
                                             $existe = true;
                                         @endphp
                                     @endforeach
                                 @else
                                     <div><span class="text-secondary">Sem documentos de transação </span> </div>
-                                @endif
-                                @if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)
-                                    <div><br>
-                                        <a href="{{route('documento-transacao.create',$fase)}}" class="top-button mr-2">Adicionar transação</a>
-                                    </div><br>
                                 @endif
                             </div>
                         </div>
