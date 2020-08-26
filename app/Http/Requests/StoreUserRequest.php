@@ -9,20 +9,10 @@ class StoreUserRequest extends FormRequest
         return true;
     }
 
-
     public function rules()
     {
         return [
-          'email' => 'required|unique:User',
-          'password' => 'nullable',
+          'email' => 'required|unique:User'
         ];
-    }
-
-    public function messages()
-    {
-       return [
-       'email.required' => 'O e-mail deve ser preenchido corretamente.',
-       'email.unique' => 'Este e-mail ja se encontra registado.',
-       ];
     }
 }

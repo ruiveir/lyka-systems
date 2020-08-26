@@ -2,25 +2,16 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateClienteRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
     public function authorize()
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
     public function rules()
     {
         return [
@@ -34,12 +25,12 @@ class UpdateClienteRequest extends FormRequest
             'obsAgente'=> 'nullable',
             'fotografia' => 'nullable',
 
-            'num_docOficial'=> 'nullable|unique:Cliente',
-            'validade_docOficial'=> 'nullable', /* data de validade do CC */
+            'num_docOficial'=> ['nullable', Rule::unique('Cliente')->ignore($this->client)],
+            'validade_docOficial'=> 'nullable',
             'img_docOficial'=> 'nullable',
             'NIF' => 'nullable|unique:Cliente',
 
-            'numPassaporte'=> 'nullable',
+            'numPassaporte'=> ['nullable', Rule::unique('Cliente')->ignore($this->client)],
             'dataValidPP'=> 'nullable',
             'passaportPaisEmi'=> 'nullable',
             'localEmissaoPP'=> 'nullable',
@@ -52,7 +43,7 @@ class UpdateClienteRequest extends FormRequest
 
             'telefone1' => 'nullable',
             'telefone2' => 'nullable',
-            'email' => 'nullable|unique:Cliente|unique:Agente|unique:User',
+            'email' => ['required', Rule::unique('Cliente')->ignore($this->client), Rule::unique('Agente'), Rule::unique('Administrador')],
             'moradaResidencia' => 'nullable',
             'morada' => 'nullable',
             'cidade' => 'nullable',
@@ -63,14 +54,24 @@ class UpdateClienteRequest extends FormRequest
             'telefoneMae' => 'nullable',
             'emailMae' => 'nullable',
 
-            'IBAN' => 'nullable',
+            'IBAN' => ['nullable', Rule::unique('Cliente')->ignore($this->client), Rule::unique('Agente'), Rule::unique('Conta')],
             'obsFinanceiras' => 'nullable',
 
             'refCliente' => 'nullable',
 
             'estado' => 'required',
-            'editavel' => 'required',
+            'editavel' => 'required'
+        ];
+    }
 
+    public function messages()
+    {
+        return [
+            'email.unique' => 'O e-mail que colocou já está registado no sistema. Insira um e-mail diferente.',
+            'num_docOficial.unique'=> 'O número de indentificação pessoal que colocou já está registado no sistema. Insira um num. de identificação diferente.',
+            'numPassaporte.unique'=> 'O número de passaporte que colocou já está registado no sistema. Insira um num. de passaporte diferente.',
+            'NIF.unique'=> 'O NIF que colocou já está registado no sistema. Insira um NIF diferente.',
+            'IBAN.unique'=> 'O IBAN que colocou já está registado no sistema. Insira um IBAN diferente.'
         ];
     }
 }

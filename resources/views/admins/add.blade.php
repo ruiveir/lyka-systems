@@ -54,7 +54,7 @@
                                 <div class="input-group-prepend">
                                     <div class="input-group-text"><i class="fas fa-calendar-alt"></i></div>
                                 </div>
-                                <input type="text" class="form-control" name="dataNasc" id="dataNasc" value="{{old('dataNasc', $admin->dataNasc)}}" placeholder="dd/mm/yyyy" required>
+                                <input type="date" class="form-control" name="dataNasc" id="dataNasc" value="{{old('dataNasc', $admin->dataNasc)}}" required>
                                 <div class="invalid-feedback">
                                     Oops, parece que algo não está bem...
                                 </div>
@@ -138,14 +138,6 @@
 @section('scripts')
 <script>
     $(document).ready(function() {
-        jQuery.datetimepicker.setLocale('pt');
-        $("#dataNasc").datetimepicker({
-            timepicker: false,
-            datepicker: true,
-            format: "d/m/Y",
-            weeks: true
-        });
-
         bsCustomFileInput.init();
         $(".needs-validation").submit(function(event) {
             var nif = $('#NIF').val();

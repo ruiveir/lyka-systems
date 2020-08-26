@@ -51,9 +51,14 @@
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="dataNasc" class="text-gray-900">Data de nascimento <sup class="text-danger small">&#10033;</sup></label>
-                            <input type="date" class="form-control" name="dataNasc" id="dataNasc" value="{{old('dataNasc', $admin->dataNasc)}}" required>
-                            <div class="invalid-feedback">
-                                Oops, parece que algo não está bem...
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text"><i class="fas fa-calendar-alt"></i></div>
+                                </div>
+                                <input type="date" class="form-control" name="dataNasc" id="dataNasc" value="{{old('dataNasc', $admin->dataNasc)}}" required>
+                                <div class="invalid-feedback">
+                                    Oops, parece que algo não está bem...
+                                </div>
                             </div>
                         </div>
                     </div>

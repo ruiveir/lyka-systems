@@ -9,9 +9,13 @@ use App\Produto;
 
 class ListagemController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('admin');
+    }
+    
     public function index()
     {
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
             $agentes = Agente::where('tipo','=','Agente')->get();
             $subagentes = Agente::where('tipo','=','Subagente')->get();
             $clientes = Cliente::all();
@@ -68,11 +72,8 @@ class ListagemController extends Controller
                     }
                 }
             }
-            
+
             return view('listagens.list', compact('agentes', 'subagentes', 'clientes', 'universidades', 'cursos','institutos','paises'));
-        }else{
-            abort(401);
-        }
     }
 
 }

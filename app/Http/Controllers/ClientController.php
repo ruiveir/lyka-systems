@@ -76,7 +76,7 @@ class ClientController extends Controller
     public function index(){
 
         /* Permissões */
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
         (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)){
 
 
@@ -151,7 +151,7 @@ class ClientController extends Controller
     */
     public function create(){
 
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
             $client = new Cliente;
             $agents = Agente::where("tipo","=","Agente")->get();
 
@@ -180,7 +180,7 @@ class ClientController extends Controller
     */
     public function store(StoreClientRequest $requestClient){
 
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
             $t=time(); /*  data atual */
 
             /* obtem os dados para criar o cliente */
@@ -334,7 +334,7 @@ class ClientController extends Controller
             $permissao = true;
         }
 
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||$permissao){
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||$permissao){
 
             $totalprodutos=null;
 
@@ -452,7 +452,7 @@ class ClientController extends Controller
             $permissao = true;
         }
 
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||$permissao){
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||$permissao){
 
             // Produtos adquiridos pelo cliente
             $produtos = $client->produto;
@@ -506,7 +506,7 @@ class ClientController extends Controller
             $permissao = true;
         }
 
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||$permissao){
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||$permissao){
 
             /* Obtem as informações sobre os documentos */
 
@@ -585,8 +585,8 @@ class ClientController extends Controller
         if($produts && $client->editavel){
             $permissao = true;
         }
-        
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||$permissao){
+
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||$permissao){
 
             $t=time(); /*  data atual */
 
@@ -643,7 +643,7 @@ class ClientController extends Controller
             if($client->nivEstudoAtual == ""){
                 $client->nivEstudoAtual = null;
             }
-            
+
             $client->save();
 
 

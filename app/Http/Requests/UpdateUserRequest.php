@@ -15,7 +15,6 @@ class UpdateUserRequest extends FormRequest
     {
         return [
             'email' => 'required',
-            'password' => 'nullable',
         ];
     }
 }

@@ -20,7 +20,6 @@ class DashboardController extends Controller{
 
     public function __construct(NotificationController $NotController)
     {
-        $this->middleware('auth');
         $this->NotController = $NotController;
     }
 
