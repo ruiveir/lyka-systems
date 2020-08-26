@@ -8,6 +8,7 @@ use DateTime;
 use DateInterval;
 
 use App\Fase;
+use App\Cliente;
 use App\Notificacao;
 use App\Produto;
 use App\RelatorioProblema;
@@ -224,16 +225,26 @@ class NotificationController extends Controller
             if($notificacoes){
                 foreach($notificacoes as $notification){
                     if($notification->type == "App\Notifications\Atraso"){
-                        if($notification->data["code"] == $code){
+                        if($notification->data["code"] == $code && $notification->data["urgencia"] == $urgencia){
                             $existe = true;
-                            auth()->user()->readNotifications->where('id','=',$notification->id)->markAsUnread();
+                            $notifications = auth()->user()->readNotifications;
+                            foreach($notifications as $not){
+                                if($not->id == $notification->id){
+                                    $not->markAsUnread();
+                                }
+                            }
                         }
                     }
                 }
                 if(!$existe){
                     foreach($notificacoes as $notification){
                         if($notification->type == 'App\Notifications\Atraso' && $notification->notifiable_id == Auth()->user()->idUser){
-                            auth()->user()->unreadNotifications->where('id','=',$notification->id)->markAsRead();
+                            $notifications = auth()->user()->unreadNotifications;
+                            foreach($notifications as $not){
+                                if($not->id == $notification->id){
+                                    $not->markAsRead();
+                                }
+                            }
                         }
                     }
                 }
@@ -319,14 +330,24 @@ class NotificationController extends Controller
                         if($notification->type == 'App\Notifications\AtrasoCliente'){
                             if($notification->data["code"] == $code){
                                 $existe = true;
-                                auth()->user()->readNotifications->where('id','=',$notification->id)->markAsUnread();
+                                $notifications = auth()->user()->readNotifications;
+                                foreach($notifications as $not){
+                                    if($not->id == $notification->id){
+                                        $not->markAsUnread();
+                                    }
+                                }
                             }
                         }
                     }
                     if(!$existe){
                         foreach($notificacoes as $notification){
                             if($notification->type == 'App\Notifications\AtrasoCliente' && $notification->notifiable_id == Auth()->user()->idUser){
-                                auth()->user()->readNotifications->where('id','=',$notification->id)->markAsRead();
+                                $notifications = auth()->user()->unreadNotifications;
+                                foreach($notifications as $not){
+                                    if($not->id == $notification->id){
+                                        $not->markAsRead();
+                                    }
+                                }
                             }
                         }
                     }
@@ -335,6 +356,36 @@ class NotificationController extends Controller
                     Auth()->user()->notify(new AtrasoCliente($code,$urgencia,(new DateTime())->format('Y-m-d'),'AtrasoCliente',null,$DataLimite,$Assunto,$Descricao));
                 }
             }
+        }
+    }
+    
+    
+    public function index()
+    {
+        if (Auth()->user()->tipo == "admin" && Auth()->user()->idAdmin != null){
+            $notifications = Auth()->user()->getNotifications();
+            $relatorios = RelatorioProblema::all();
+            return view('notifications.list', compact('notifications','relatorios'));
+        }else{
+            abort(403);
+        }
+    }
+    
+    public function show($notif_id)
+    {
+        if (Auth()->user()->tipo == "admin" && Auth()->user()->idAdmin != null){
+            $notifications = Auth()->user()->getNotifications();
+            $notification = null;
+            foreach($notifications as $not){
+                if($not->id == $notif_id){
+                    $notification = $not;
+                }
+            }
+
+            $clientesNotificacao = Cliente::all();
+            return view('notifications.show', compact('notification','clientesNotificacao'));
+        }else{
+            abort(403);
         }
     }
 }

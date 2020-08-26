@@ -192,20 +192,6 @@ class ClientController extends Controller
             $client->nomeInstituicaoOrigem = ucwords(mb_strtolower($requestClient->nomeInstituicaoOrigem,'UTF-8'));
             $client->cidadeInstituicaoOrigem = ucwords(mb_strtolower($requestClient->cidadeInstituicaoOrigem,'UTF-8'));
 
-
-            $clientes = Cliente::withTrashed()->get();
-            foreach ($clientes as $trash){
-                if($trash->email == $client->email || $trash->NIF == $client->NIF || $trash->num_docOficial == $client->num_docOficial){
-                    return redirect()->back()->withInput();
-                }
-            }
-            $users = User::withTrashed()->get();
-            foreach ($users as $trash){
-                if($trash->email == $client->email){
-                    return redirect()->back()->withInput();
-                }
-            }
-
             $client->save();
 
             /* Criação de cliente */
@@ -597,19 +583,6 @@ class ClientController extends Controller
             $client->nomeInstituicaoOrigem = ucwords(mb_strtolower($request->nomeInstituicaoOrigem,'UTF-8'));
             $client->cidadeInstituicaoOrigem = ucwords(mb_strtolower($request->cidadeInstituicaoOrigem,'UTF-8'));
 
-
-            $clientes = Cliente::withTrashed()->get();
-            foreach ($clientes as $trash){
-                if($trash->email == $client->email || $trash->NIF == $client->NIF || $trash->num_docOficial == $client->num_docOficial){
-                    return redirect()->back()->withInput();
-                }
-            }
-            $users = User::withTrashed()->get();
-            foreach ($users as $trash){
-                if($trash->email == $client->email  && $trash->idCliente != $client->idCliente){
-                    return redirect()->back()->withInput();
-                }
-            }
             /* Verifica se existem ficheiros antigos e apaga do storage*/
             $oldfile=Cliente::where('idCliente', '=',$client->idCliente)->first();
 

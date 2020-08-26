@@ -251,5 +251,11 @@ Route::put('/restaurar-password/{user}/nova-password', 'AccountConfirmationContr
 /* Listagens */
 Route::resource('/listagens', 'ListagemController');
 
+/* Notificações */
+Route::get('/notificacoes', 'NotificationController@index')->name('notification.index');
+Route::get('/notificacao/{notif_id}', 'NotificationController@show')->name('notification.show');
+
+
+
 
 Route::get('/data', 'DataController@createdata');

@@ -33,7 +33,7 @@ Route::namespace('Api')->name('api.')->group(function(){
     Route::get('listagem/{pesquisa}', 'ListagemController@getList')->name('getList');
     Route::get('listagem/cidades/{pais}', 'ListagemController@getCountries')->name('getCountries');
     
-    Route::prefix('unique')->group(function(){
+    /*Route::prefix('unique')->group(function(){
 
         Route::get('/agente/{P_Agente}/{uniques}', 'UniqueController@agente')->name('agente');
 
@@ -54,5 +54,5 @@ Route::namespace('Api')->name('api.')->group(function(){
         Route::get('/conta/{uniques}', 'UniqueController@conta')->name('conta');
 
         Route::get('/uni/{NIF}', 'UniqueController@universidade')->name('universidade');
-    });
+    });*/
 });
