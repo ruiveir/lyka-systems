@@ -1,87 +1,61 @@
 <?php
 namespace App\Http\Controllers;
-use Illuminate\Http\Request;
+
 use App\DocStock;
 use App\FaseStock;
-use App\Http\Requests\StoreDocstockRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\StoreDocstockRequest;
 
 class DocumentostockController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('superadmin');
+    }
+
     public function index()
     {
-            return redirect()->route('dashboard');
-    }
-    public function create(){
-            return redirect()->route('dashboard');
+        return redirect()->route('dashboard');
     }
 
-    public function store(StoreDocstockRequest $requestDoc, FaseStock $fasestock){
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
-            $docFields = $requestDoc->validated();
+    public function create()
+    {
+        return redirect()->route('dashboard');
+    }
 
-            $docStock = new DocStock();
-            $docStock->fill($docFields);
-            $idFaseStock = $fasestock->idFaseStock;
-            $docStock->idFaseStock = $idFaseStock;
-
-            $docStock->save();
-
-            return redirect()->back()->with('success', 'Documento stock adicionado com sucesso');
-        }else{
-            /* não tem permissões */
-            abort (401);
-        }
+    public function store(StoreDocstockRequest $requestDoc, FaseStock $fasestock)
+    {
+        $docFields = $requestDoc->validated();
+        $docStock = new DocStock();
+        $docStock->fill($docFields);
+        $idFaseStock = $fasestock->idFaseStock;
+        $docStock->idFaseStock = $idFaseStock;
+        $docStock->save();
+        return redirect()->back()->with('success', 'Documento stock adicionado com sucesso');
     }
 
     public function show(DocStock $documentostock){
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
-            // $documentostock = DocStock::where('idFaseStock', '=', $fasestock->idFaseStock)->get();
-
-            return view('documentostock.show', compact('documentostock'));
-        }else{
-            /* não tem permissões */
-            abort (401);
-        }
+        // $documentostock = DocStock::where('idFaseStock', '=', $fasestock->idFaseStock)->get();
+        return view('documentostock.show', compact('documentostock'));
     }
 
     public function edit(DocStock $documentostock)
     {
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
-
-            return view('documentostock.edit', compact('documentostock'));
-        }else{
-            /* não tem permissões */
-            abort (401);
-        }
+        return view('documentostock.edit', compact('documentostock'));
     }
 
     public function update(StoreDocstockRequest $request, DocStock $documentostock)
     {
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
-            $fields = $request->validated();
-            $documentostock->fill($fields);
-
-            // data em que foi modificado
-            $t=time();
-            $documentostock->updated_at == date("Y-m-d",$t);
-            $documentostock->save();
-
-            return redirect()->route('fasestock.show',$documentostock->faseStock)->with('success', 'Dados do documento de stock modificados com sucesso');
-        }else{
-            /* não tem permissões */
-            abort (401);
-        }
+        $fields = $request->validated();
+        $documentostock->fill($fields);
+        $documentostock->save();
+        return redirect()->route('fasestock.show',$documentostock->faseStock)->with('success', 'Dados do documento de stock modificados com sucesso');
     }
 
-    public function destroy(DocStock $documentostock){
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
-            $documentostock->delete();
-
-            return redirect()->back()->with('success', 'Documento stock eliminado com sucesso');
-        }else{
-            /* não tem permissões */
-            abort (401);
-        }
+    public function destroy(DocStock $documentostock)
+    {
+        $documentostock->delete();
+        return redirect()->back()->with('success', 'Documento stock eliminado com sucesso');
     }
 }

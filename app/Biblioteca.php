@@ -16,23 +16,23 @@ class Biblioteca extends Model
     protected $primaryKey = 'idBiblioteca';
 
     protected $fillable = [
-        'acesso','descricao','ficheiro','tipo','tamanho'
-        ];
+        'acesso',
+        'descricao',
+        'ficheiro',
+        'tipo',
+        'tamanho'
+    ];
 
 
+    public function getSlugOptions() : SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('ficheiro')
+            ->saveSlugsTo('slug');
+    }
 
-        /* URL */
-
-        public function getSlugOptions() : SlugOptions
-        {
-          return SlugOptions::create()
-              ->generateSlugsFrom('ficheiro')
-              ->saveSlugsTo('slug');
-        }
-
-        public function getRouteKeyName()
-        {
-            return 'slug';
-        }
-
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 }

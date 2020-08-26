@@ -111,7 +111,7 @@
         </div>
     </li>
 
-    <li class="nav-item">
+    <li class="nav-item {{Route::is('notification.*') ? 'active' : ''}}">
         <a class="nav-link" href="{{route('notification.index')}}">
             <i class="fas fa-fw fa-table"></i>
             <span>Notificações</span></a>

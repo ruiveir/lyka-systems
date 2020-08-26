@@ -2,25 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Fase;
+use App\Cliente;
+use App\Produto;
 use App\DocPessoal;
 use App\DocNecessario;
-use App\Fase;
-use App\Produto;
-use App\Cliente;
-use App\Http\Requests\UpdateDocumentoRequest;
-use App\Http\Requests\StoreDocumentoRequest;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\StoreDocumentoRequest;
+use App\Http\Requests\UpdateDocumentoRequest;
 
 class DocPessoalController extends Controller
 {
-
-    /**
-    * Display the specified resource.
-    *
-    * @param  \App\Cliente  $client
-    * @return \Illuminate\Http\Response
-    */
     public function create(Fase $fase, DocNecessario $docnecessario)
     {
         $produts = null;
@@ -34,7 +27,7 @@ class DocPessoalController extends Controller
             $permissao = true;
         }
 
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
             (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)|| $permissao){
 
             $documento = new DocPessoal;
@@ -43,26 +36,10 @@ class DocPessoalController extends Controller
 
             return view('documentos.add',compact('fase','tipoPAT','tipo','documento', 'docnecessario'));
         }else{
-            abort(401);
+            abort(403);
         }
-
-
     }
 
-
-
-
-
-
-
-
-
-    /**
-    * Display the specified resource.
-    *
-    * @param  \App\Cliente  $client
-    * @return \Illuminate\Http\Response
-    */
     public function createFromClient(StoreDocumentoRequest $request, Cliente $client)
     {
         $produts = null;
@@ -76,7 +53,7 @@ class DocPessoalController extends Controller
             $permissao = true;
         }
 
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
             (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)|| $permissao){
 
             $fields = $request->all();
@@ -88,21 +65,10 @@ class DocPessoalController extends Controller
 
             return view('documentos.add',compact('fase','tipoPAT','tipo','documento','docnome','client'));
         }else{
-            abort(401);
+            abort(403);
         }
-
-
     }
 
-
-
-
-    /***********************************************************************//*
-    *
-    * @param  \Illuminate\Http\Request  $request
-    * @return \Illuminate\Http\Response
-    * @param  \App\User  $user
-    */
     public function storeFromClient(StoreDocumentoRequest $request, Cliente $client, String $docnome){
 
         $produts = null;
@@ -116,7 +82,7 @@ class DocPessoalController extends Controller
             $permissao = true;
         }
 
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
             (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)|| $permissao){
 
             $fields = $request->all();
@@ -146,7 +112,7 @@ class DocPessoalController extends Controller
             if(array_key_exists('dataValidade', $fields)){
                 $documento->dataValidade = date("Y-m-d",strtotime($fields['dataValidade'].'-1'));
             }
-            if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
+            if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
                 $documento->verificacao = true;
             }else{
                 $documento->verificacao = false;
@@ -168,7 +134,7 @@ class DocPessoalController extends Controller
 
             return redirect()->route('clients.show',$client)->with('success', $docnome.' adicionado com sucesso');
         }else{
-            abort(401);
+            abort(403);
         }
     }
 
@@ -195,13 +161,6 @@ class DocPessoalController extends Controller
 
 
 
-
-    /***********************************************************************//*
-    *
-    * @param  \Illuminate\Http\Request  $request
-    * @return \Illuminate\Http\Response
-    * @param  \App\User  $user
-    */
     public function store(StoreDocumentoRequest $request,Fase $fase, DocNecessario $docnecessario){
 
         $produts = null;
@@ -215,7 +174,7 @@ class DocPessoalController extends Controller
             $permissao = true;
         }
 
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
             (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)|| $permissao){
 
             $fields = $request->all();
@@ -249,7 +208,7 @@ class DocPessoalController extends Controller
             if(array_key_exists('dataValidade', $fields)){
                 $documento->dataValidade = date("Y-m-d",strtotime($fields['dataValidade'].'-1'));
             }
-            if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
+            if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
                 $documento->verificacao = true;
             }else{
                 $documento->verificacao = false;
@@ -273,48 +232,34 @@ class DocPessoalController extends Controller
 
             return redirect()->route('produtos.show',$fase->produto)->with('success', $docnecessario->tipoDocumento.' adicionado com sucesso');
         }else{
-            abort(401);
+            abort(403);
         }
     }
 
-
-
-
     public function verify(DocPessoal $documento)
     {
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")){
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)){
             $infoDoc = (array)json_decode($documento->info);
             $infoKeys = array_keys($infoDoc);
             $tipoPAT = 'Pessoal';
             $tipo = $documento->tipo;
             return view('documentos.verify',compact('documento','infoDoc','infoKeys','tipo','tipoPAT'));
         }else{
-            abort(401);
+            abort(403);
         }
     }
 
-
-
     public function verifica(DocPessoal $documento)
     {
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")){
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)){
             $documento->verificacao = true;
             $documento->save();
             return redirect()->route('produtos.show',$documento->fase->produto);
         }else{
-            abort(401);
+            abort(403);
         }
     }
 
-
-
-
-    /**
-    * Show the form for editing the specified resource.
-    *
-    * @param  \App\Cliente  $client
-    * @return \Illuminate\Http\Response
-    */
     public function edit(DocPessoal $documento)
     {
         $produts = null;
@@ -328,7 +273,7 @@ class DocPessoalController extends Controller
             $permissao = true;
         }
 
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
             (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)|| $permissao){
             $infoDoc = (array)json_decode($documento->info);
             $infoKeys = array_keys($infoDoc);
@@ -337,19 +282,9 @@ class DocPessoalController extends Controller
 
             return view('documentos.edit', compact('documento','infoDoc','infoKeys','tipo','tipoPAT'));
         }else{
-            abort(401);
+            abort(403);
         }
     }
-
-
-
-    /**
-    * Update the specified resource in storage.
-    *
-    * @param  \Illuminate\Http\Request  $request
-    * @param  \App\Cliente  $user
-    * @return \Illuminate\Http\Response
-    */
 
     public function update(UpdateDocumentoRequest $request, DocPessoal $documento)
     {
@@ -364,7 +299,7 @@ class DocPessoalController extends Controller
             $permissao = true;
         }
 
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
             (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)|| $permissao){
 
             $fields = $request->all();
@@ -397,7 +332,7 @@ class DocPessoalController extends Controller
             if(array_key_exists('dataValidade', $fields)){
                 $documento->dataValidade = date("Y-m-d",strtotime($fields['dataValidade'].'-1'));
             }
-            if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
+            if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
                 $documento->verificacao = true;
             }else{
                 $documento->verificacao = false;
@@ -417,30 +352,17 @@ class DocPessoalController extends Controller
             $documento->save();
             return redirect()->route('produtos.show',$documento->fase->produto)->with('success', 'Dados do '.$documento->tipo.' editados com sucesso');
         }else{
-            abort(401);
+            abort(403);
         }
-
     }
-
-
-
-
-    /**
-    * Remove the specified resource from storage.
-    *
-    * @param  \App\Cliente  $client
-    * @return \Illuminate\Http\Response
-    */
 
     public function destroy(DocPessoal $documento)
     {
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
-
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
             $documento->delete();
-
             return redirect()->route('produtos.show',$documento->fase->produto)->with('success', $tipo.' eliminado com sucesso');
         }else{
-            abort(401);
+            abort(403);
         }
     }
 }

@@ -14,11 +14,17 @@ class Agenda extends Model
     protected $primaryKey = 'idAgenda';
 
     protected $fillable = [
-        'idUniversidade','titulo', 'descricao', 'cor', 'visibilidade','dataInicio','dataFim','$idUser'
+        'idUniversidade',
+        'titulo',
+        'descricao',
+        'cor',
+        'visibilidade',
+        'dataInicio',
+        'dataFim',
+        '$idUser'
     ];
 
     public function user(){
         return $this->belongsTo("App\User","idUser","idUser")->withTrashed();
     }
-
 }

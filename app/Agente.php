@@ -10,9 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Agente extends Model
 {
-    use HasSlug;
-    use SoftDeletes;
-
+    use HasSlug, SoftDeletes;
 
     protected $table = 'Agente';
 
@@ -53,23 +51,15 @@ class Agente extends Model
         return $this->belongsTo("App\Agente","idAgenteAssociado","idAgente")->withTrashed();
     }
 
+    public function getSlugOptions() : SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom(['nome','apelido'])
+            ->saveSlugsTo('slug');
+    }
 
-
-
-        /* URL */
-
-        public function getSlugOptions() : SlugOptions
-        {
-          return SlugOptions::create()
-              ->generateSlugsFrom(['nome','apelido'])
-              ->saveSlugsTo('slug');
-        }
-
-        public function getRouteKeyName()
-        {
-            return 'slug';
-        }
-
-
-
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 }
