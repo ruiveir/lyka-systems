@@ -39,7 +39,7 @@ class ExtraFunctionsController extends Controller
             'screenshot' => 'nullable',
             'relatorio' => 'required'
         ]);
-
+        $errorimg = null;
         $report = new RelatorioProblema;
         $report->fill($fields);
         $report->save();
@@ -59,8 +59,10 @@ class ExtraFunctionsController extends Controller
         $idReport = $report->idRelatorioProblema;
 
         $link = null;
-        if (Storage::disk('public')->exists('report-errors/'.$errorimg)) {
-            $link = Storage::disk('public')->url('report-errors/'.$errorimg);
+        if($errorimg){
+            if (Storage::disk('public')->exists('report-errors/'.$errorimg)) {
+                $link = Storage::disk('public')->url('report-errors/'.$errorimg);
+            }
         }
         //$file = File::get($path);
 

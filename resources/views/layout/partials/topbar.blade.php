@@ -96,29 +96,19 @@
                     @endforeach
                     @foreach ($notifications as $notification)
                         @if($notification->type == "App\Notifications\Aniversario" && $numNotificacao < 3)
-                            <div class="alert-dismissible row p-1 mx-1 alert alert-info fade show">
-                                <i class="fas fa-birthday-cake"></i>
+                            <a class="dropdown-item d-flex align-items-center" href="{{route("notification.show", $notification)}}">
+                                <div class="mr-3">
+                                    <div class="icon-circle bg-danger">
+                                        <i class="fas fa-birthday-cake"></i>
+                                    </div>
+                                </div>
                                 <div class="info-not">
                                     <div class="col p-2 assunto">
                                         <b>{{$notification->data['assunto']}}</b>
                                         <br>
                                     </div>
-                                    <div class="col p-2 descricaoNotificacao">
-                                        @php
-                                            $descricoes = explode('*',str_replace(array("\\r\\n", "\\r", "\\n"), "*", $notification->data['descricao']));
-                                        @endphp
-                                        @foreach($descricoes as $descricao)
-                                            {{$descricao}}
-                                            <br>
-                                        @endforeach
-                                        <div class="text-right">
-                                            <a href="#" onclick="{{$notification->delete()}}">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </a>
-                                        </div>
-                                    </div>
                                 </div>
-                            </div>
+                            </a>
                             @php
                                 $numNotificacao++;
                             @endphp
@@ -126,43 +116,19 @@
                     @endforeach
                     @foreach ($notifications as $notification)
                         @if(($notification->type == "App\Notifications\Atraso" || $notification->type == 'App\Notifications\AtrasoCliente') && $notification->data['urgencia'] && $numNotificacao < 3)
-                            <div class="alert-dismissible row p-1 mx-1 alert alert-danger fade show">
-                                <i class="fas fa-exclamation-triangle"></i>
+                            
+                            <a class="dropdown-item d-flex align-items-center" href="{{route("notification.show", $notification)}}">
+                                <div class="mr-3">
+                                    <div class="icon-circle bg-danger">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </div>
+                                </div>
                                 <div class="info-not">
                                     <div class="col p-2 assunto">
                                         <b>{{$notification->data['assunto']}}</b>
-                                        <br>
-                                    </div>
-                                    <div class="col p-2 descricaoNotificacao">
-                                        @php
-                                            $descricoes = explode('*',str_replace(array("\\r\\n", "\\r", "\\n"), "*", $notification->data['descricao']));
-                                            $idCliente = explode('_',$notification->data['code']);
-                                            $num = 2;
-                                            $primeiraDescricao = true;
-                                        @endphp
-                                        @foreach($descricoes as $descricao)
-                                            @if($primeiraDescricao)
-                                                {{$descricao}}
-                                                @php
-                                                    $primeiraDescricao = false;
-                                                @endphp
-                                            @else
-                                                @foreach($clientesNotificacao as $cliente)
-                                                    @if($cliente->idCliente == $idCliente[$num])
-                                                        <a class="dropdown-item d-flex align-items-center" href="{{route("clients.show", $cliente)}}">
-                                                            {{$descricao}}
-                                                        </a>
-                                                    @endif
-                                                @endforeach
-                                                @php
-                                                    $num++;
-                                                @endphp
-                                            @endif
-                                            <br>
-                                        @endforeach
                                     </div>
                                 </div>
-                            </div>
+                            </a>
                             @php
                                 $numNotificacao++;
                             @endphp
@@ -170,43 +136,20 @@
                     @endforeach
                     @foreach ($notifications as $notification)
                         @if(($notification->type == "App\Notifications\Atraso" || $notification->type == 'App\Notifications\AtrasoCliente') && !$notification->data['urgencia'] && $numNotificacao < 3)
-                            <div class="alert-dismissible row p-1 mx-1 alert alert-warning fade show">
-                                <i class="fas fa-exclamation-triangle"></i>
+                            
+                            <a class="dropdown-item d-flex align-items-center" href="{{route("notification.show", $notification)}}">
+                                <div class="mr-3">
+                                    <div class="icon-circle bg-danger">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </div>
+                                </div>
                                 <div class="info-not">
                                     <div class="col p-2 assunto">
                                         <b>{{$notification->data['assunto']}}</b>
                                         <br>
                                     </div>
-                                    <div class="col p-2 descricaoNotificacao">
-                                        @php
-                                            $descricoes = explode('*',str_replace(array("\\r\\n", "\\r", "\\n"), "*", $notification->data['descricao']));
-                                            $idCliente = explode('_',$notification->data['code']);
-                                            $num = 2;
-                                            $primeiraDescricao = true;
-                                        @endphp
-                                        @foreach($descricoes as $descricao)
-                                            @if($primeiraDescricao)
-                                                {{$descricao}}
-                                                @php
-                                                    $primeiraDescricao = false;
-                                                @endphp
-                                            @else
-                                                @foreach($clientesNotificacao as $cliente)
-                                                    @if($cliente->idCliente == $idCliente[$num])
-                                                        <a class="dropdown-item d-flex align-items-center" href="{{route("clients.show", $cliente)}}">
-                                                            {{$descricao}}
-                                                        </a>
-                                                    @endif
-                                                @endforeach
-                                                @php
-                                                    $num++;
-                                                @endphp
-                                            @endif
-                                            <br>
-                                        @endforeach
-                                    </div>
                                 </div>
-                            </div>
+                            </a>
                         @endif
                     @endforeach
                 @endif

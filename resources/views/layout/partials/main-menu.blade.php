@@ -224,7 +224,7 @@
                     {{--@if (Auth()->user()->tipo == "admin")--}}
                     {{-- Financeiro Collapse --}}
                     <li class="menu-option">
-                        <a href="#">
+                        <a href="{{route('notifications.index')}}">
                             <div class="menu-icon">
                                 <span class="iconify" data-inline="false" data-icon="ant-design:bell-outlined"></span>
                             </div>

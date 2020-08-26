@@ -108,20 +108,6 @@ class AgenteController extends Controller
             $user = new User;
             $fieldsUser = $requestUser->validated();
             $user->fill($fieldsUser);
-/*
-
-            $agentes = Agente::withTrashed()->get();
-            foreach ($agentes as $trash){
-                if($trash->email == $agent->email || $trash->NIF == $agent->NIF || $trash->num_doc == $agent->num_doc){
-                    return redirect()->back()->withInput();
-                }
-            }
-            $users = User::withTrashed()->get();
-            foreach ($users as $trash){
-                if($trash->email == $agent->email){
-                    return redirect()->back()->withInput();
-                }
-            }
 
             /* Criação de SubAgente */
             $agent->idAgenteAssociado= $requestAgent->idAgenteAssociado;
@@ -333,20 +319,6 @@ class AgenteController extends Controller
                 $agent->exepcao = false;
             }
 
-/*
-            $agentes = Agente::withTrashed()->get();
-            foreach ($agentes as $trash){
-                if($trash->email == $agent->email || $trash->NIF == $agent->NIF || $trash->num_doc == $agent->num_doc){
-                    return redirect()->back()->withInput();
-                }
-            }
-            $users = User::withTrashed()->get();
-            foreach ($users as $trash){
-                if($trash->email == $agent->email && $trash->idAgente != $agent->idAgente){
-                    return redirect()->back()->withInput();
-                }
-            }
-            
             /* Registo antigo: para verificar se existem ficheiros para apagar/substituir */
             $oldfile=Agente::
             where('idAgente', '=',$agent->idAgente)
