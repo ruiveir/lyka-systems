@@ -2,25 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\DocAcademico;
-use App\DocNecessario;
 use App\Fase;
 use App\Produto;
 use App\Cliente;
-use App\Http\Requests\UpdateDocumentoRequest;
-use App\Http\Requests\StoreDocumentoRequest;
-use Illuminate\Support\Facades\Storage;
+use App\DocAcademico;
+use App\DocNecessario;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\StoreDocumentoRequest;
+use App\Http\Requests\UpdateDocumentoRequest;
 
 class DocAcademicoController extends Controller
 {
-
-    /**
-    * Display the specified resource.
-    *
-    * @param  \App\Cliente  $client
-    * @return \Illuminate\Http\Response
-    */
     public function create(Fase $fase, DocNecessario $docnecessario)
     {
         $produts = null;
@@ -34,7 +27,7 @@ class DocAcademicoController extends Controller
             $permissao = true;
         }
 
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
             (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)|| $permissao){
 
             $documento = new DocAcademico;
@@ -43,19 +36,10 @@ class DocAcademicoController extends Controller
 
             return view('documentos.add',compact('fase','tipoPAT','tipo','documento', 'docnecessario'));
         }else{
-            abort(401);
+            abort(403);
         }
     }
 
-
-
-
-    /***********************************************************************//*
-    *
-    * @param  \Illuminate\Http\Request  $request
-    * @return \Illuminate\Http\Response
-    * @param  \App\User  $user
-    */
     public function store(StoreDocumentoRequest $request,Fase $fase,DocNecessario $docnecessario){
 
         $produts = null;
@@ -69,7 +53,7 @@ class DocAcademicoController extends Controller
             $permissao = true;
         }
 
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
             (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)|| $permissao){
 
             $fields = $request->all();
@@ -95,7 +79,7 @@ class DocAcademicoController extends Controller
 
 
             $documento->tipo=$docnecessario->tipoDocumento;
-            if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
+            if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
                 $documento->verificacao = true;
             }else{
                 $documento->verificacao = false;
@@ -118,19 +102,10 @@ class DocAcademicoController extends Controller
 
             return redirect()->route('produtos.show',$fase->produto)->with('success', $docnecessario->tipoDocumento.' adicionado com sucesso');
         }else{
-            abort(401);
+            abort(403);
         }
     }
 
-
-
-
-    /**
-    * Display the specified resource.
-    *
-    * @param  \App\Cliente  $client
-    * @return \Illuminate\Http\Response
-    */
     public function createFromClient(StoreDocumentoRequest $request, Cliente $client)
     {
         $produts = null;
@@ -144,7 +119,7 @@ class DocAcademicoController extends Controller
             $permissao = true;
         }
 
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
             (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)|| $permissao){
 
             $fields = $request->all();
@@ -157,19 +132,10 @@ class DocAcademicoController extends Controller
 
             return view('documentos.add',compact('fase','tipoPAT','tipo','documento','docnome','client'));
         }else{
-            abort(401);
+            abort(403);
         }
     }
 
-
-
-
-    /***********************************************************************//*
-    *
-    * @param  \Illuminate\Http\Request  $request
-    * @return \Illuminate\Http\Response
-    * @param  \App\User  $user
-    */
     public function storeFromClient(StoreDocumentoRequest $request, Cliente $client, String $docnome){
 
         $produts = null;
@@ -183,7 +149,7 @@ class DocAcademicoController extends Controller
             $permissao = true;
         }
 
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
             (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)|| $permissao){
 
             $fields = $request->all();
@@ -210,7 +176,7 @@ class DocAcademicoController extends Controller
 
 
             $documento->tipo=$docnome;
-            if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
+            if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
                 $documento->verificacao = true;
             }else{
                 $documento->verificacao = false;
@@ -232,48 +198,34 @@ class DocAcademicoController extends Controller
 
             return redirect()->route('clients.show',$client)->with('success', $docnome.' adicionado com sucesso');
         }else{
-            abort(401);
+            abort(403);
         }
     }
 
-
-
     public function verify(DocAcademico $documento)
     {
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")){
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)){
             $infoDoc = (array)json_decode($documento->info);
             $infoKeys = array_keys($infoDoc);
             $tipoPAT = 'Academico';
             $tipo = $documento->tipo;
             return view('documentos.verify',compact('documento','infoDoc','infoKeys','tipo','tipoPAT'));
         }else{
-            abort(401);
+            abort(403);
         }
     }
 
-
-
     public function verifica(DocAcademico $documento)
     {
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")){
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)){
             $documento->verificacao = true;
             $documento->save();
             return redirect()->route('produtos.show',$documento->fase->produto);
         }else{
-            abort(401);
+            abort(403);
         }
     }
 
-
-
-
-
-    /**
-    * Show the form for editing the specified resource.
-    *
-    * @param  \App\Cliente  $client
-    * @return \Illuminate\Http\Response
-    */
     public function edit(DocAcademico $documento)
     {
         $produts = null;
@@ -287,7 +239,7 @@ class DocAcademicoController extends Controller
             $permissao = true;
         }
 
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
             (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)|| $permissao){
 
             $infoDoc = (array)json_decode($documento->info);
@@ -297,19 +249,9 @@ class DocAcademicoController extends Controller
 
             return view('documentos.edit', compact('documento','infoDoc','infoKeys','tipo','tipoPAT'));
         }else{
-            abort(401);
+            abort(403);
         }
     }
-
-
-
-    /**
-    * Update the specified resource in storage.
-    *
-    * @param  \Illuminate\Http\Request  $request
-    * @param  \App\Cliente  $user
-    * @return \Illuminate\Http\Response
-    */
 
     public function update(UpdateDocumentoRequest $request, DocAcademico $documento)
     {
@@ -324,7 +266,7 @@ class DocAcademicoController extends Controller
             $permissao = true;
         }
 
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
             (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)|| $permissao){
 
             $fields = $request->all();
@@ -347,7 +289,7 @@ class DocAcademicoController extends Controller
                 return redirect()->back()->withErrors(['message'=>$documento->tipo.' tem de conter no minimo 1 campo']);
             }
 
-            if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
+            if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
                 $documento->verificacao = true;
             }else{
                 $documento->verificacao = false;
@@ -369,32 +311,21 @@ class DocAcademicoController extends Controller
             $documento->save();
             return redirect()->route('produtos.show',$documento->fase->produto)->with('success', 'Dados do '.$documento->tipo.' editados com sucesso');
         }else{
-            abort(401);
+            abort(403);
         }
 
     }
 
 
-
-
-
-
-    /**
-    * Remove the specified resource from storage.
-    *
-    * @param  \App\Cliente  $client
-    * @return \Illuminate\Http\Response
-    */
-
     public function destroy(DocAcademico $documento)
     {
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
             $tipo = $documento->tipo;
             $documento->delete();
 
             return redirect()->route('produtos.show',$documento->fase->produto)->with('success', $tipo.' eliminado com sucesso');
         }else{
-            abort(401);
+            abort(403);
         }
     }
 }
