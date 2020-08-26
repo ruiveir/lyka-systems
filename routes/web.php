@@ -231,6 +231,13 @@ Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
 
     /* Ajuda */
     Route::get('/ajuda', 'HelpController@show')->name('ajuda');
+
+    /* Listagens */
+    Route::resource('/listagens', 'ListagemController');
+
+    /* Notificações */
+    Route::get('/notificacoes', 'NotificationController@index')->name('notification.index');
+    Route::get('/notificacao/{notif_id}', 'NotificationController@show')->name('notification.show');
 });
 
 /* Account Confirmation */
@@ -247,15 +254,5 @@ Route::post('/restaurar-passwords/confirmacao-email', 'AccountConfirmationContro
 Route::get('/restaurar-password/{user}', 'AccountConfirmationController@restorepassword');
 Route::post('/restaurar-password/{user}/check-key', 'AccountConfirmationController@checkkey')->name('check.key');
 Route::put('/restaurar-password/{user}/nova-password', 'AccountConfirmationController@newpassword')->name('new.password');
-
-/* Listagens */
-Route::resource('/listagens', 'ListagemController');
-
-/* Notificações */
-Route::get('/notificacoes', 'NotificationController@index')->name('notification.index');
-Route::get('/notificacao/{notif_id}', 'NotificationController@show')->name('notification.show');
-
-
-
 
 Route::get('/data', 'DataController@createdata');

@@ -21,9 +21,13 @@ use Illuminate\Support\Facades\Storage;
 
 class PaymentController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('superadmin');
+    }
+
     public function index()
     {
-      if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
         $responsabilidades = Responsabilidade::orderByRaw("FIELD(estado, \"Dívida\", \"Pendente\", \"Pago\")")
         ->with(["cliente", "agente", "subAgente", "universidade1", "universidade2", "relacao", "relacao.fornecedor", "fase"])
         ->get();
@@ -155,14 +159,10 @@ class PaymentController extends Controller
           }
         }
         return view('payments.list', compact('responsabilidades', 'valorTotalPendente', 'valorTotalPago', 'valorTotalDivida', 'estudantes', 'agentes', 'subagentes', 'universidades', 'fornecedores', 'currentdate'));
-      }else{
-          abort(403);
-      }
     }
 
     public function search(Request $request)
     {
-      if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
       $idEstudante = ($request->input('estudante') != 'default') ? $request->input('estudante') : null;
       $idAgente = ($request->input('agente') != 'default') ? $request->input('agente') : null;
       $idSubagente = ($request->input('subagente') != 'default') ? $request->input('subagente') : null;
@@ -307,87 +307,59 @@ class PaymentController extends Controller
         }else {
             return response()->json('NOK', 404);
         }
-      }else{
-          abort(403);
-      }
     }
 
     public function createcliente(Cliente $cliente, Fase $fase, Responsabilidade $responsabilidade)
     {
-      if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
-          $pagoResponsabilidade = new PagoResponsabilidade;
-          $contas = Conta::all();
-          $fase = Fase::where('idFase', $fase->idFase)->with(["produto", "produto.universidade1", "produto.agente"])->first();
-          return view('payments.add', compact('cliente', 'fase', 'responsabilidade', 'contas', 'pagoResponsabilidade'));
-      }else{
-          abort(403);
-      }
+        $pagoResponsabilidade = new PagoResponsabilidade;
+        $contas = Conta::all();
+        $fase = Fase::where('idFase', $fase->idFase)->with(["produto", "produto.universidade1", "produto.agente"])->first();
+        return view('payments.add', compact('cliente', 'fase', 'responsabilidade', 'contas', 'pagoResponsabilidade'));
     }
 
     public function createagente(Agente $agente, Fase $fase, Responsabilidade $responsabilidade, PagoResponsabilidade $pagoResponsabilidade)
     {
-      if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
-          $pagoResponsabilidade = new PagoResponsabilidade;
-          $contas = Conta::all();
-          $fase = Fase::where('idFase', $fase->idFase)->with(["produto", "produto.universidade1", "produto.cliente"])->first();
-          return view('payments.add', compact('agente', 'fase', 'responsabilidade', 'contas', 'pagoResponsabilidade'));
-      }else{
-          abort(403);
-      }
+        $pagoResponsabilidade = new PagoResponsabilidade;
+        $contas = Conta::all();
+        $fase = Fase::where('idFase', $fase->idFase)->with(["produto", "produto.universidade1", "produto.cliente"])->first();
+        return view('payments.add', compact('agente', 'fase', 'responsabilidade', 'contas', 'pagoResponsabilidade'));
     }
 
     public function createsubagente(Agente $subagente, Fase $fase, Responsabilidade $responsabilidade)
     {
-      if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
-          $pagoResponsabilidade = new PagoResponsabilidade;
-          $contas = Conta::all();
-          $fase = Fase::where('idFase', $fase->idFase)->with(["produto", "produto.universidade1", "produto.cliente"])->first();
-          return view('payments.add', compact('subagente', 'fase', 'responsabilidade', 'contas', 'pagoResponsabilidade'));
-      }else{
-          abort(403);
-      }
+        $pagoResponsabilidade = new PagoResponsabilidade;
+        $contas = Conta::all();
+        $fase = Fase::where('idFase', $fase->idFase)->with(["produto", "produto.universidade1", "produto.cliente"])->first();
+        return view('payments.add', compact('subagente', 'fase', 'responsabilidade', 'contas', 'pagoResponsabilidade'));
     }
 
     public function createuni1(Universidade $universidade1, Fase $fase, Responsabilidade $responsabilidade)
     {
-      if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
-          $pagoResponsabilidade = new PagoResponsabilidade;
-          $contas = Conta::all();
-          $fase = Fase::where('idFase', $fase->idFase)->with(["produto", "produto.agente", "produto.cliente"])->first();
-          return view('payments.add', compact('universidade1', 'fase', 'responsabilidade', 'contas', 'pagoResponsabilidade'));
-      }else{
-          abort(403);
-      }
+        $pagoResponsabilidade = new PagoResponsabilidade;
+        $contas = Conta::all();
+        $fase = Fase::where('idFase', $fase->idFase)->with(["produto", "produto.agente", "produto.cliente"])->first();
+        return view('payments.add', compact('universidade1', 'fase', 'responsabilidade', 'contas', 'pagoResponsabilidade'));
     }
 
     public function createuni2(Universidade $universidade2, Fase $fase, Responsabilidade $responsabilidade)
     {
-      if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
-          $pagoResponsabilidade = new PagoResponsabilidade;
-          $contas = Conta::all();
-          $fase = Fase::where('idFase', $fase->idFase)->with(["produto", "produto.agente", "produto.cliente"])->first();
-          return view('payments.add', compact('universidade2', 'fase', 'responsabilidade', 'contas', 'pagoResponsabilidade'));
-      }else{
-          abort(403);
-      }
+        $pagoResponsabilidade = new PagoResponsabilidade;
+        $contas = Conta::all();
+        $fase = Fase::where('idFase', $fase->idFase)->with(["produto", "produto.agente", "produto.cliente"])->first();
+        return view('payments.add', compact('universidade2', 'fase', 'responsabilidade', 'contas', 'pagoResponsabilidade'));
     }
 
     public function createfornecedor(Fornecedor $fornecedor, Fase $fase, RelFornResp $relacao)
     {
-      if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
-          $pagoResponsabilidade = new PagoResponsabilidade;
-          $contas = Conta::all();
-          $responsabilidade = $relacao->responsabilidade;
-          $fase = Fase::where('idFase', $fase->idFase)->with(["produto", "produto.agente", "produto.cliente", "produto.universidade1", "responsabilidade"])->first();
-          return view('payments.add', compact('fornecedor', 'fase', 'contas', 'relacao', 'pagoResponsabilidade', 'responsabilidade'));
-      }else{
-          abort(403);
-      }
+        $pagoResponsabilidade = new PagoResponsabilidade;
+        $contas = Conta::all();
+        $responsabilidade = $relacao->responsabilidade;
+        $fase = Fase::where('idFase', $fase->idFase)->with(["produto", "produto.agente", "produto.cliente", "produto.universidade1", "responsabilidade"])->first();
+        return view('payments.add', compact('fornecedor', 'fase', 'contas', 'relacao', 'pagoResponsabilidade', 'responsabilidade'));
     }
 
     public function store(Request $request, Responsabilidade $responsabilidade)
     {
-      if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
         $responsabilidade = Responsabilidade::where('idResponsabilidade', $responsabilidade->idResponsabilidade)->with(["cliente", "agente", "subAgente", "universidade1", "universidade2", "fase"])->first();
         // Campos de CLIENTE
         $valorCliente = ($request->input('valorPagoCliente') != null ? $request->input('valorPagoCliente') : null);
@@ -596,20 +568,13 @@ class PaymentController extends Controller
         $responsabilidade = Responsabilidade::where('idResponsabilidade', $responsabilidade->idResponsabilidade)->first();
         event(new StorePayment($responsabilidade));
         return response()->json($pagoResponsabilidade, 200);
-      }else{
-          abort(403);
-      }
     }
 
     public function download(PagoResponsabilidade $pagoresponsabilidade)
     {
-      if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
         $pagoresponsabilidade = PagoResponsabilidade::where("idPagoResp", $pagoresponsabilidade->idPagoResp)->with(["responsabilidade", "responsabilidade.cliente"])->first();
         $pdf = PDF::loadView('payments.pdf.nota-pagamento', ['pagoresponsabilidade' => $pagoresponsabilidade])->setPaper('a4', 'portrait');
         $file = post_slug($pagoresponsabilidade->responsabilidade->cliente->nome.' '.$pagoresponsabilidade->responsabilidade->fase->descricao);
         return $pdf->stream('nota-pagamento-'.$file.'.pdf');
-      }else{
-          abort(403);
-      }
     }
 }

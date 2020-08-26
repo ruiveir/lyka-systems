@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateUniversidadeRequest extends FormRequest
@@ -17,9 +18,9 @@ class UpdateUniversidadeRequest extends FormRequest
             'nome' => 'required|max:255',
             'morada' => 'nullable|max:255',
             'telefone' => 'nullable',
-            'email' => 'required|max:255|unique:Universidade',
-            'NIF' => 'required|unique:Universidade',
-            'IBAN' => 'nullable|unique:Universidade',
+            'email' => ['required', 'max:255', Rule::unique('Universidade')->ignore($this->university), Rule::unique('Cliente'), Rule::unique('Administrador'), Rule::unique('Agente')],
+            'NIF' => ['required', Rule::unique('Universidade')->ignore($this->university), Rule::unique('Cliente'), Rule::unique('Agente')],
+            'IBAN' => ['nullable', Rule::unique('Universidade')->ignore($this->university), Rule::unique('Cliente'), Rule::unique('Conta'), Rule::unique('Agente')],
             'observacoes' => 'nullable',
             'obsCursos' => 'nullable',
             'obsCandidaturas' => 'nullable',
