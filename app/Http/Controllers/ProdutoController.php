@@ -21,33 +21,19 @@ use App\Http\Requests\StoreProdutoRequest;
 
 class ProdutoController extends Controller
 {
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function list($client)
     {
-
-        /* Permissões */
-        if (Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
+        if (Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
             $produtosStock = ProdutoStock::all();
             return view('produtos.list', compact('produtosStock','client'));
         }else{
-            abort (401);
+            abort(403);
         }
-
     }
-    /**
-    * Display the specified resource.
-    *
-    * @param  \App\Cliente  $client
-    * @return \Illuminate\Http\Response
-    */
+
     public function create(Cliente $client, ProdutoStock $produtoStock)
     {
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
             $cliente = $client;
             $produto = new Produto;
             $produto->idCLiente = $cliente->idCliente;
@@ -73,22 +59,13 @@ class ProdutoController extends Controller
 
             return view('produtos.add',compact('produto','produtoStock','cliente','Agentes','SubAgentes','Universidades','Fases','Responsabilidades','Fornecedores','relacao'));
         }else{
-            abort(401);
+            abort(403);
         }
     }
 
-
-
-
-    /***********************************************************************//*
-    *
-    * @param  \Illuminate\Http\Request  $request
-    * @return \Illuminate\Http\Response
-    * @param  \App\User  $user
-    */
-    public function store(StoreProdutoRequest $request, ProdutoStock $produtoStock){
-
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
+    public function store(StoreProdutoRequest $request, ProdutoStock $produtoStock)
+    {
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
             $fields = $request->all();
             //dd($fields);
 
@@ -122,7 +99,7 @@ class ProdutoController extends Controller
             $valorTSubAgente = 0;
 
             $fasesStock = $produtoStock->faseStock;
-            
+
             for($i=1;$i<=count($fasesStock->toArray());$i++){
                 if($fields['descricao-fase'.$i]!=null){
 
@@ -262,19 +239,10 @@ class ProdutoController extends Controller
 
             return redirect()->route('clients.show',$produto->cliente)->with('success', 'Produto criada com sucesso');
         }else{
-            abort(401);
+            abort(403);
         }
     }
 
-
-
-
-    /**
-    * Display the specified resource.
-    *
-    * @param  \App\Cliente  $client
-    * @return \Illuminate\Http\Response
-    */
     public function show(Produto $produto)
     {
         $produts = null;
@@ -288,41 +256,15 @@ class ProdutoController extends Controller
             $permissao = true;
         }
 
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)|| $permissao && Auth()->user()->email != "admin@test.com"){
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)|| $permissao){
             $Fases = $produto->fase;
             $Today = (new DateTime)->format('Y-m-d');
             return view('produtos.show',compact("produto",'Fases','Today'));
         }else{
-            abort(401);
+            abort(403);
         }
     }
 
-
-
-
-    /**
-    * Prepares document for printing the specified client.
-    *
-    * @param  \App\Cliente  $client
-    * @return \Illuminate\Http\Response
-    */
-    public function print(Produto $produto)
-    {
-        return redirect()->route('dashboard');
-    }
-
-
-
-
-
-
-
-    /**
-    * Show the form for editing the specified resource.
-    *
-    * @param  \App\Cliente  $client
-    * @return \Illuminate\Http\Response
-    */
     public function edit(Produto $produto)
     {
         $produts = null;
@@ -334,7 +276,7 @@ class ProdutoController extends Controller
             $permissao = true;
         }
 
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null&& Auth()->user()->email != "admin@test.com")|| $permissao ){
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != nul)|| $permissao ){
             $Fornecedores = Fornecedor::all();
             $Agentes = Agente::where('tipo','=','Agente')->orderBy('nome')->get();
             $SubAgentes = Agente::where('tipo','=','Subagente')->orderBy('nome')->get();
@@ -344,19 +286,9 @@ class ProdutoController extends Controller
             $fases = $produto->fase;
             return view('produtos.edit', compact('produto','Agentes','SubAgentes','Universidades','fases','Fornecedores','relacao'));
         }else{
-            abort(401);
+            abort(403);
         }
     }
-
-
-
-    /**
-    * Update the specified resource in storage.
-    *
-    * @param  \Illuminate\Http\Request  $request
-    * @param  \App\Cliente  $user
-    * @return \Illuminate\Http\Response
-    */
 
     public function update(UpdateProdutoRequest $request, Produto $produto)
     {
@@ -371,8 +303,8 @@ class ProdutoController extends Controller
             $permissao = true;
         }
 
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")|| $permissao){
-            
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)|| $permissao){
+
             $fases = $produto->fase;
             $fields = $request->all();
             //dd($fields);
@@ -445,7 +377,7 @@ class ProdutoController extends Controller
                 $fase->save();
 
                 $responsabilidade = $fase->responsabilidade;
-                
+
                 if(!$permissao){
                     $relacoes = $responsabilidade->relacao;
                     $valorRelacoes = 0;
@@ -488,7 +420,7 @@ class ProdutoController extends Controller
                         $responsabilidade->dataVencimentoSubAgente = null;
                     }
                 }
-                
+
                 if(!$permissao){
                     if($responsabilidade->valorUniversidade1 != $fields['resp-uni1-fase'.$fase->idFase]){
                         $responsabilidade->valorUniversidade1 = $fields['resp-uni1-fase'.$fase->idFase];
@@ -596,26 +528,14 @@ class ProdutoController extends Controller
 
             return redirect()->route('clients.show',$produto->cliente)->with('success', 'Dados do produto modificados com sucesso');
         }else{
-            abort(401);
+            abort(403);
         }
 
     }
 
-
-
-
-
-
-    /**
-    * Remove the specified resource from storage.
-    *
-    * @param  \App\Cliente  $client
-    * @return \Illuminate\Http\Response
-    */
-
     public function destroy(Produto $produto)
     {
-        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com"){
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
             $produto->delete();
             $fases = $produto->fase;
             foreach($fases as $fase){
@@ -625,7 +545,7 @@ class ProdutoController extends Controller
             }
             return redirect()->route('clients.show',$produto->cliente)->with('success', 'Produto eliminado com sucesso');
         }else{
-            abort(401);
+            abort(403);
         }
     }
 }

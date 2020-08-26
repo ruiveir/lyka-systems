@@ -19,7 +19,7 @@ class UniversityController extends Controller
             $universities = Universidade::all();
 
             if($universities->isEmpty()){
-                $universities=null;
+                $universities = null;
             }
 
             return view('universities.list', compact('universities'));
@@ -30,11 +30,8 @@ class UniversityController extends Controller
 
     public function create()
     {
-        /* Permissões */
         if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
-
             $university = new Universidade;
-
             return view('universities.add', compact('university'));
         }else{
             abort(403);
@@ -43,22 +40,10 @@ class UniversityController extends Controller
 
     public function store(StoreUniversidadeRequest $request)
     {
-        /* Permissões */
         if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
             $fields = $request->validated();
-
             $university = new Universidade;
             $university->fill($fields);
-
-            $unis = Universidade::withTrashed()->get();
-            foreach ($unis as $trash){
-                if($trash->NIF == $university->NIF){
-                    return redirect()->back()->withInput();
-                }
-            }
-            // Data em que o registo é criado
-            $t = time();
-            $university->create_at == date("Y-m-d", $t);
             $university->save();
             return redirect()->route('universities.show',$university)->with('success', 'Universidade Adicionada com Sucesso!');
         }else{
@@ -69,24 +54,14 @@ class UniversityController extends Controller
 
     public function show(Universidade $university)
     {
-        /* Permissões */
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
-        (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)){
-
-            /* Obtem os eventos da universidade */
-            $eventos = Agenda::
-            where('idUniversidade', $university->idUniversidade)
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null) || (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)){
+            $eventos = Agenda::where('idUniversidade', $university->idUniversidade)
             ->orderBy('dataInicio', 'asc')
             ->get();
 
             if ($eventos->isEmpty()) {
-                $eventos=null;
+                $eventos = null;
             }
-
-
-            /* Obtem os clientes da que estão na universidade */
-    /*      SELECT DISTINCT cliente.idCliente FROM cliente JOIN produto ON
-            cliente.idCliente=produto.idCliente WHERE produto.idUniversidade1 LIKE 1 OR produto.idUniversidade2 =1; */
 
             $clients = Cliente::distinct('Cliente.idCliente')
             ->join('Produto', 'Produto.idCliente', '=', 'Cliente.idCliente')
@@ -95,20 +70,14 @@ class UniversityController extends Controller
             ->select('Cliente.*')
             ->get();
 
-        /*  dd($clients); */
-
             if ($clients->isEmpty()) {
-                $clients=null;
+                $clients = null;
             }
 
+            $contacts = Contacto::where('idUniversidade', '=', $university->idUniversidade)->get();
 
-
-            /* Contactos da universidade */
-            $contacts = Contacto::
-            where('idUniversidade', '=', $university->idUniversidade)
-            ->get();
             if ($contacts->isEmpty()) {
-                $contacts=null;
+                $contacts = null;
             }
 
             return view('universities.show', compact('university','eventos','clients','contacts'));
@@ -122,9 +91,7 @@ class UniversityController extends Controller
 
     public function edit(Universidade $university)
     {
-        /* Permissões */
         if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
-
             return view('universities.edit', compact('university'));
         }else{
             abort(403);
@@ -135,36 +102,18 @@ class UniversityController extends Controller
 
     public function update(UpdateUniversidadeRequest $request, Universidade $university)
     {
-        /* Permissões */
         if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
             $fields = $request->validated();
             $university->fill($fields);
-
-            $unis = Universidade::withTrashed()->get();
-            foreach ($unis as $trash){
-                if($trash->NIF == $university->NIF){
-                    return redirect()->back()->withInput();
-                }
-            }
-            // Data em que o registo é modificado
-            $t = time();
-            $university->updated_at == date("Y-m-d", $t);
-
-            /* Update das slugs */
-            $university->slug =post_slug($university->nome);
-
             $university->save();
-
             return redirect()->route('universities.show',$university)->with('success', 'Universidade Editada com Sucesso!');
         }else{
             abort(403);
         }
-
     }
 
     public function destroy(Universidade $university)
     {
-        /* Permissões */
         if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
             $university->delete();
             return redirect()->route('universities.index')->with('success', 'Universidade Eliminada com Sucesso!');
