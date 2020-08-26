@@ -88,22 +88,22 @@
                                                     <i class="fas fa-bug text-white"></i>
                                                 </div>
                                             @elseif($notification->type == "App\Notifications\Aniversario")
-                                                <div class="icon-circle bg-danger">
-                                                    <i class="fa fa-birthday-cake text-white" style="color:rgb(0, 132, 255)"></i>
+                                                <div class="icon-circle bg-gradient-primary text-white">
+                                                    <i class="fa fa-birthday-cake"></i>
                                                 </div>
                                             @elseif(($notification->type == "App\Notifications\Atraso" || $notification->type == 'App\Notifications\AtrasoCliente') 
                                                 && $notification->data['urgencia'])
-                                                <div class="icon-circle bg-danger">
-                                                    <i class="fas fa-exclamation-triangle text-white" style="color:rgba(255, 0, 0, 0.507)"></i>
+                                                <div class="icon-circle bg-gradient-danger text-white">
+                                                    <i class="fas fa-exclamation-triangle"></i>
                                                 </div>
                                             @elseif(($notification->type == "App\Notifications\Atraso" || $notification->type == 'App\Notifications\AtrasoCliente')
                                                 && !$notification->data['urgencia'])
-                                                <div class="icon-circle bg-danger">
-                                                    <i class="fas fa-exclamation-triangle text-white" style="color:rgb(255, 115, 0)"></i>
+                                                <div class="icon-circle bg-gradient-warning text-white">
+                                                    <i class="fas fa-exclamation-triangle"></i>
                                                 </div>
                                             @else
-                                                <div class="icon-circle bg-danger">
-                                                    <i class="fas fa-bug text-white" style="color:rgb(94, 255, 0)"></i>
+                                                <div class="icon-circle bg-gradient-success text-white">
+                                                    <i class="fas fa-bug"></i>
                                                 </div>
                                             @endif
                                         </div>

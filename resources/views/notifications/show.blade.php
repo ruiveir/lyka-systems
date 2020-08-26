@@ -44,11 +44,13 @@
                 @php
                     $descricoes = explode('*',str_replace(array("\\r\\n", "\\r", "\\n"), "*", $notification->data['descricao']));
                 @endphp
-                Descrição
-                @foreach($descricoes as $descricao)
-                    {{$descricao}}
-                    <br>
-                @endforeach
+                    <p class="text-gray-800"><b>Mensagem:</b></p>
+                    <p class="text-gray-800">
+                    @foreach($descricoes as $descricao)
+                        {{$descricao}}
+                        <br>
+                    @endforeach
+                </p>
             @elseif($notification->type == "App\Notifications\Atraso" || $notification->type == 'App\Notifications\AtrasoCliente')
                 @php
                     $descricoes = explode('*',str_replace(array("\\r\\n", "\\r", "\\n"), "*", $notification->data['descricao']));
@@ -56,7 +58,7 @@
                     $num = 2;
                     $primeiraDescricao = true;
                 @endphp
-                Clientes com Atraso
+                <p class="text-gray-800"><b>Clientes com Atraso:</b></p>
                 <div class="table-responsive mt-4">
                     <table id="dataTable" class="table table-bordered table-hover text-black" style="width:100%">
         
