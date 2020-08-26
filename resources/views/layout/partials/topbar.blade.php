@@ -158,12 +158,10 @@
 
                 @if ($notifications)
                     @if (count($notifications)>3)
-                        <a class="dropdown-item text-center small text-gray-500" href="#">Ver mais</a>
-                    @else
-                        <p class="text-center mt-3 text-gray-800">wow, such empty :(</p>
+                        <a class="dropdown-item text-center small text-gray-500" href="{{route('notification.index')}}">Ver mais</a>
                     @endif
                 @else
-                    <p class="text-center mt-3 text-gray-800">wow, such empty :(</p>
+                    <p class="text-center mt-3 text-gray-800">Não há notificações</p>
                 @endif
             </div>
         </li>
