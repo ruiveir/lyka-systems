@@ -1,42 +1,28 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use App\Agente;
 use App\User;
+use App\Agente;
 use App\Cliente;
-use App\Responsabilidade;
 use App\Produto;
-
-use Illuminate\Support\Facades\Auth;
-
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
-
-use Illuminate\Support\Facades\Hash;
-
-use App\Jobs\SendWelcomeEmail;
-
+use App\Responsabilidade;
 use Illuminate\Http\Request;
-use App\Http\Requests\UpdateAgenteRequest;
-use App\Http\Requests\StoreAgenteRequest;
+use App\Jobs\SendWelcomeEmail;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreUserRequest;
-
 use App\Http\Requests\UpdateUserRequest;
+use App\Http\Requests\StoreAgenteRequest;
+use App\Http\Requests\UpdateAgenteRequest;
 
 
 class AgenteController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-
-        /* Permissões */
-        if ((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||(Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)){
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null) || (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)){
             $agents =null;
             if(Auth()->user()->tipo == 'admin'){
                 $agents = Agente::all();
@@ -48,53 +34,26 @@ class AgenteController extends Controller
             }else{
                 $totalagents = 0;
             }
-
         }else{
-            abort (401);
+            abort(403);
         }
-            return view('agents.list', compact('agents', 'totalagents'));
-
     return view('agents.list', compact('agents', 'totalagents'));
-
     }
 
-
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-
-        if (Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
             $agent = new Agente;
-
-            /* lista dos agentes principais */
-            $listagents = Agente::
-            whereNull('idAgenteAssociado')
-            ->get();
-
+            $listagents = Agente::whereNull('idAgenteAssociado')->get();
             return view('agents.add',compact('agent','listagents'));
-
         }else{
-            /* não tem permissões */
-            abort (401);
+            abort(403);
         }
-
-
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(StoreAgenteRequest $requestAgent, StoreUserRequest $requestUser)
     {
-        if (Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
+        if (Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
 
             /* obtem os dados para criar o agente */
             $agent = new Agente;
@@ -111,13 +70,6 @@ class AgenteController extends Controller
 
             /* Criação de SubAgente */
             $agent->idAgenteAssociado= $requestAgent->idAgenteAssociado;
-
-            // data em que foi criado
-            $t=time();
-            $agent->create_at == date("Y-m-d",$t);
-
-            /* Slugs */
-            $agent->slug = post_slug($agent->nome.' '.$agent->apelido);
 
             $agent->save();
 
@@ -163,28 +115,21 @@ class AgenteController extends Controller
             return redirect()->route('agents.index')->with('success', 'Registo criado com sucesso. Aguarda Ativação');
 
         }else{
-            /* não tem permissões */
-            abort (401);
+            abort(403);
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Agente  $agent
-     * @return \Illuminate\Http\Response
-     */
+
     public function show(Agente $agent)
     {
-        /* Permissões */
-        if ((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||
+        if ((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
             (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null &&
             (Auth()->user()->idAgente == $agent->idAgenteAssociado||Auth()->user()->idAgente == $agent->idAgente))){
 
             /* Só os administradores podem ver os perfis dos agentes */
             /* Cada agente só pode ver o seu perfil *//*
             if(Auth::user()->tipo == "agente" && Auth::user()->idAgente != $agent->idAgente){
-                abort(401);
+                abor(403);
             }/** */
 
             /* Lista de sub-agentes do $agente */
@@ -219,7 +164,7 @@ class AgenteController extends Controller
             ->groupBy('Cliente.idCliente')
             ->orderBy('Cliente.idCliente','asc')
             ->get();
-            
+
 
             if ($clients->isEmpty()) {
             /* lista de alunos do agente associação na ficha de cliente  */
@@ -249,7 +194,7 @@ class AgenteController extends Controller
 
             return view('agents.show',compact("agent" ,'listagents','mainAgent','telefone2','IBAN','clients','comissoes'));
         }else{
-            abort(401);
+            abort(403);
         }
 
     }
@@ -263,13 +208,12 @@ class AgenteController extends Controller
     */
     public function print(Agente $agent)
     {
-        /* Permissões */
-        if ((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->email != "admin@test.com")||
+        if ((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
             (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null &&
             (Auth()->user()->idAgente == $agent->idAgenteAssociado||Auth()->user()->idAgente == $agent->idAgente))){
             return view('agents.print',compact("agent"));
         }else{
-            abort(401);
+            abor(403);
         }
     }
 
@@ -281,7 +225,7 @@ class AgenteController extends Controller
      */
     public function edit(Agente $agent)
     {
-        if (Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
+        if (Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
             /* lista dos agentes principais */
             $listagents = Agente::
             whereNull('idAgenteAssociado')
@@ -290,7 +234,7 @@ class AgenteController extends Controller
             return view('agents.edit', compact('agent','listagents'));
         }else{
             /* não tem permissões */
-            abort (401);
+            abort(403);
         }
     }
 
@@ -307,12 +251,11 @@ class AgenteController extends Controller
      */
     public function update(UpdateAgenteRequest $request, Agente $agent)
     {
-        if (Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
+        if (Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
 
             $fields = $request->validated();
 
             $agent->fill($fields);
-
 
             /* Definição de exeçao */
             if($agent->tipo == "Agente"){
@@ -367,10 +310,6 @@ class AgenteController extends Controller
             }
 
 
-
-            /* Update das slugs */
-            $agent->slug = post_slug($agent->nome.' '.$agent->apelido);
-
             // data em que foi modificado
             $t=time();
             $agent->updated_at == date("Y-m-d",$t);
@@ -382,10 +321,10 @@ class AgenteController extends Controller
             ->update(['email' => $agent->email]);
 
 
-            return redirect()->route('agents.show',$agent)->with('success', 'Dados do agente modificados com sucesso');
+            return redirect()->route('agents.index')->with('success', 'Dados do agente modificados com sucesso');
             }else{
                 /* não tem permissões */
-                abort (401);
+                abort(403);
             }
     }
 
@@ -397,8 +336,8 @@ class AgenteController extends Controller
      */
     public function destroy(Agente $agent)
     {
-        if (Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin && Auth()->user()->email != "admin@test.com"){
-        
+        if (Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
+
             /* "Apaga" dos agentes */
             $agent->delete();
 
@@ -439,8 +378,7 @@ class AgenteController extends Controller
 
             return redirect()->route('agents.index')->with('success', 'Agente eliminado com sucesso');
         }else{
-            /* não tem permissões */
-            abort (401);
+            abort(403);
         }
     }
 }

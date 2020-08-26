@@ -6,21 +6,12 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StoreClientRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
+
     public function authorize()
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
     public function rules()
     {
         return [
@@ -35,11 +26,11 @@ class StoreClientRequest extends FormRequest
             'fotografia' => 'nullable',
 
             'num_docOficial'=> 'nullable|unique:Cliente',
-            'validade_docOficial'=> 'nullable', /* data de validade do CC */
+            'validade_docOficial'=> 'nullable',
             'img_docOficial'=> 'nullable',
             'NIF' => 'nullable|unique:Cliente',
 
-            'numPassaporte'=> 'nullable',
+            'numPassaporte'=> 'nullable|unique:Cliente',
             'dataValidPP'=> 'nullable',
             'passaportPaisEmi'=> 'nullable',
             'localEmissaoPP'=> 'nullable',
@@ -63,25 +54,24 @@ class StoreClientRequest extends FormRequest
             'telefoneMae' => 'nullable',
             'emailMae' => 'nullable',
 
-            'IBAN' => 'nullable',
+            'IBAN' => 'nullable|unique:Cliente|unique:Agente|unique:Conta',
             'obsFinanceiras' => 'nullable',
 
             'refCliente' => 'nullable',
 
             'estado' => 'required',
             'editavel' => 'required',
-
         ];
     }
 
-
     public function messages()
     {
-       return [
-       'email.unique'=>'Este e-mail já está registado. Insira um e-mail diferente',
-       ];
+        return [
+            'email.unique' => 'O e-mail que colocou já está registado no sistema. Insira um e-mail diferente.',
+            'num_docOficial.unique'=> 'O número de indentificação pessoal que colocou já está registado no sistema. Insira um num. de identificação diferente.',
+            'numPassaporte.unique'=> 'O número de passaporte que colocou já está registado no sistema. Insira um num. de passaporte diferente.',
+            'NIF.unique'=> 'O NIF que colocou já está registado no sistema. Insira um NIF diferente.',
+            'IBAN.unique'=> 'O IBAN que colocou já está registado no sistema. Insira um IBAN diferente.'
+        ];
     }
-
-
-
 }

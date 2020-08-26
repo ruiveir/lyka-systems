@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Auth;
 
 Auth::routes();
 
-/* Route group protected with authentication and prevent back in history after logout */
 Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
     /* Logout */
     Route::get('/logout', 'Auth\LoginController@logout');
@@ -16,7 +15,6 @@ Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
     /* Reportar Problema */
     Route::get('/reportar-problema', 'ExtraFunctionsController@report')->name('report');
     Route::post('/reportar-problema/email', 'ExtraFunctionsController@reportmail')->name('report.send');
-
     Route::resource('/relatorio-problema', 'BugReportController')->parameters([
         'relatorio-problema' => 'bugreport'
     ])->only([
@@ -44,7 +42,6 @@ Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
     Route::get('/contactos/show/{contact}/{university?}', 'ContactoController@show')->name('contacts.show');
     Route::get('/contactos/editar/{contact}/{university?}', 'ContactoController@edit')->name('contacts.edit');
     Route::post('/contactos', 'ContactoController@store')->name('contacts.store');
-
 
     /* Universidades */
     Route::resource('/universidades', 'UniversityController')->parameters([

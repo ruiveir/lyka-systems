@@ -1,5 +1,4 @@
 <?php
-
 namespace App;
 
 use Spatie\Sluggable\HasSlug;
@@ -7,19 +6,24 @@ use Spatie\Sluggable\SlugOptions;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-
-
 class Universidade extends Model
 {
-    use HasSlug;
-    use SoftDeletes;
+    use HasSlug, SoftDeletes;
 
     protected $table = 'Universidade';
 
     protected $primaryKey = 'idUniversidade';
 
     protected $fillable = [
-        'nome', 'morada', 'telefone', 'email', 'NIF', 'IBAN', 'observacoes', 'obsCursos', 'obsCandidaturas',
+        'nome',
+        'morada',
+        'telefone',
+        'email',
+        'NIF',
+        'IBAN',
+        'observacoes',
+        'obsCursos',
+        'obsCandidaturas'
     ];
 
     public function user()
@@ -52,22 +56,15 @@ class Universidade extends Model
         return $this->hasMany("App\Contacto", "idUniversidade", "idUniversidade");
     }
 
-
-
-        /* URL */
-
-        public function getSlugOptions() : SlugOptions
-        {
-          return SlugOptions::create()
-              ->generateSlugsFrom('nome')
-              ->saveSlugsTo('slug');
+    public function getSlugOptions() : SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('nome')
+            ->saveSlugsTo('slug');
         }
 
-        public function getRouteKeyName()
-        {
-            return 'slug';
-        }
-
-
-
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 }
