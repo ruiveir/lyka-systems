@@ -56,7 +56,7 @@
                 </button>
             </div>
             <div class="modal-body text-gray-800 pl-4 pr-5">
-                Aqui, basta preencher o formulário para fazer a edição de um pagamento. Após submeter o formulário poderá ficar com uma nota de pagamento na sua posse.
+                Aqui, basta preencher o formulário para fazer o registo de um pagamento. Após submeter o formulário poderá ficar com uma nota de pagamento na sua posse.
             </div>
             <div class="modal-footer mt-3">
                 <a data-dismiss="modal" class="mr-4 font-weight-bold" id="close-option">Fechar</a>
@@ -71,14 +71,6 @@
 @section('scripts')
 <script>
     $(document).ready(function() {
-        jQuery.datetimepicker.setLocale('pt');
-        $("#dataNasc").datetimepicker({
-            timepicker: false,
-            datepicker: true,
-            format: "d/m/Y",
-            weeks: true
-        });
-
         bsCustomFileInput.init();
         $("#registar-pagamento-form").submit(function(event) {
             if (this.checkValidity() === false) {

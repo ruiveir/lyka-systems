@@ -108,19 +108,26 @@ Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
     /* Pagamentos */
     Route::get('/pagamentos', 'PaymentController@index')->name('payments.index');
     Route::post('/pagamentos/pesquisa', 'PaymentController@search')->name('payments.search');
-        // Registar pagamento CLIENTE
+        // Registar/Editar pagamento CLIENTE
         Route::get('/pagamentos/cliente/{cliente}/fase/{fase}/{responsabilidade}', 'PaymentController@createcliente')->name('payments.cliente');
-        // Registar pagamento AGENTE
+        Route::get('/pagamentos/cliente/{cliente}/fase/{fase}/{responsabilidade}/{pagoResponsabilidade}/editar', 'PaymentController@editcliente')->name('payments.editcliente');
+        // Registar/Editar pagamento AGENTE
         Route::get('/pagamentos/agente/{agente}/fase/{fase}/{responsabilidade}', 'PaymentController@createagente')->name('payments.agente');
-        // Registar pagamento SUBAGENTE
+        Route::get('/pagamentos/agente/{agente}/fase/{fase}/{responsabilidade}/{pagoResponsabilidade}/editar', 'PaymentController@editagente')->name('payments.editagente');
+        // Registar/Editar pagamento SUBAGENTE
         Route::get('/pagamentos/subagente/{subagente}/fase/{fase}/{responsabilidade}', 'PaymentController@createsubagente')->name('payments.subagente');
-        // Registar pagamento UNIVERSIDADE PRINCIPAL
+        Route::get('/pagamentos/subagente/{subagente}/fase/{fase}/{responsabilidade}/{pagoResponsabilidade}/editar', 'PaymentController@editsubagente')->name('payments.editsubagente');
+        // Registar/Editar pagamento UNIVERSIDADE PRINCIPAL
         Route::get('/pagamentos/universidade-principal/{universidade1}/fase/{fase}/{responsabilidade}', 'PaymentController@createuni1')->name('payments.uni1');
-        // Registar pagamento UNIVERSIDADE SECUNDÁRIA
+        Route::get('/pagamentos/universidade-principal/{universidade1}/fase/{fase}/{responsabilidade}/{pagoResponsabilidade}/editar', 'PaymentController@edituni1')->name('payments.edituni1');
+        // Registar/Editar pagamento UNIVERSIDADE SECUNDÁRIA
         Route::get('/pagamentos/universidade-secundaria/{universidade2}/fase/{fase}/{responsabilidade}', 'PaymentController@createuni2')->name('payments.uni2');
-        // Registar pagamento FORNECEDOR
+        Route::get('/pagamentos/universidade-secundaria/{universidade2}/fase/{fase}/{responsabilidade}/{pagoResponsabilidade}/editar', 'PaymentController@edituni2')->name('payments.edituni2');
+        // Registar/Editar pagamento FORNECEDOR
         Route::get('/pagamentos/fornecedor/{fornecedor}/fase/{fase}/{relacao}', 'PaymentController@createfornecedor')->name('payments.fornecedor');
+        Route::get('/pagamentos/fornecedor/{fornecedor}/fase/{fase}/{relacao}/{pagoResponsabilidade}/editar', 'PaymentController@editfornecedor')->name('payments.editfornecedor');
     Route::post('/pagamentos/{responsabilidade}/registar', 'PaymentController@store')->name('payments.store');
+    Route::put('/pagamentos/{responsabilidade}', 'PaymentController@update')->name('payments.update');
     Route::get('/pagamentos/nota-pagamento/{pagoresponsabilidade}/transferir', 'PaymentController@download')->name('payments.download');
 
     /* Cobranças */

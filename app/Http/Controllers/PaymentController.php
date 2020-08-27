@@ -36,6 +36,8 @@ class PaymentController extends Controller
         $responsabilidadesPagas = Responsabilidade::where('estado', '=', 'Pago')->get();
         $responsabilidadesDivida = Responsabilidade::where('estado', '=', 'Dívida')->get();
 
+        $pagoResponsabilidade = PagoResponsabilidade::all();
+
         $relacoes = RelFornResp::all();
         $estudantes = Cliente::all();
         $universidades = Universidade::all();
@@ -158,7 +160,7 @@ class PaymentController extends Controller
             }
           }
         }
-        return view('payments.list', compact('responsabilidades', 'valorTotalPendente', 'valorTotalPago', 'valorTotalDivida', 'estudantes', 'agentes', 'subagentes', 'universidades', 'fornecedores', 'currentdate'));
+        return view('payments.list', compact('responsabilidades', 'pagoResponsabilidade', 'valorTotalPendente', 'valorTotalPago', 'valorTotalDivida', 'estudantes', 'agentes', 'subagentes', 'universidades', 'fornecedores', 'currentdate'));
     }
 
     public function search(Request $request)
@@ -317,7 +319,7 @@ class PaymentController extends Controller
         return view('payments.add', compact('cliente', 'fase', 'responsabilidade', 'contas', 'pagoResponsabilidade'));
     }
 
-    public function createagente(Agente $agente, Fase $fase, Responsabilidade $responsabilidade, PagoResponsabilidade $pagoResponsabilidade)
+    public function createagente(Agente $agente, Fase $fase, Responsabilidade $responsabilidade)
     {
         $pagoResponsabilidade = new PagoResponsabilidade;
         $contas = Conta::all();
@@ -568,6 +570,49 @@ class PaymentController extends Controller
         $responsabilidade = Responsabilidade::where('idResponsabilidade', $responsabilidade->idResponsabilidade)->first();
         event(new StorePayment($responsabilidade));
         return response()->json($pagoResponsabilidade, 200);
+    }
+
+    public function editcliente(Cliente $cliente, Fase $fase, Responsabilidade $responsabilidade, PagoResponsabilidade $pagoResponsabilidade)
+    {
+        $contas = Conta::all();
+        return view('payments.edit', compact('cliente', 'fase', 'responsabilidade', 'contas', 'pagoResponsabilidade'));
+    }
+
+    public function editagente(Agente $agente, Fase $fase, Responsabilidade $responsabilidade, PagoResponsabilidade $pagoResponsabilidade)
+    {
+        $contas = Conta::all();
+        return view('payments.edit', compact('agente', 'fase', 'responsabilidade', 'contas', 'pagoResponsabilidade'));
+    }
+
+    public function editsubagente(Agente $subagente, Fase $fase, Responsabilidade $responsabilidade, PagoResponsabilidade $pagoResponsabilidade)
+    {
+        $contas = Conta::all();
+        return view('payments.edit', compact('subagente', 'fase', 'responsabilidade', 'contas', 'pagoResponsabilidade'));
+    }
+
+    public function edituni1(Universidade $universidade1, Fase $fase, Responsabilidade $responsabilidade, PagoResponsabilidade $pagoResponsabilidade)
+    {
+        $contas = Conta::all();
+        return view('payments.edit', compact('universidade1', 'fase', 'responsabilidade', 'contas', 'pagoResponsabilidade'));
+    }
+
+    public function edituni2(Universidade $universidade2, Fase $fase, Responsabilidade $responsabilidade, PagoResponsabilidade $pagoResponsabilidade)
+    {
+        $contas = Conta::all();
+        return view('payments.edit', compact('universidade2', 'fase', 'responsabilidade', 'contas', 'pagoResponsabilidade'));
+    }
+
+    public function editfornecedor(Fornecedor $fornecedor, Fase $fase, RelFornResp $relacao, PagoResponsabilidade $pagoResponsabilidade)
+    {
+        $contas = Conta::all();
+        $responsabilidade = $relacao->responsabilidade;
+        $fase = Fase::where('idFase', $fase->idFase)->with(["produto", "produto.agente", "produto.cliente", "produto.universidade1", "responsabilidade"])->first();
+        return view('payments.edit', compact('fornecedor', 'fase', 'contas', 'relacao', 'pagoResponsabilidade', 'responsabilidade'));
+    }
+
+    public function update(Request $request, Responsabilidade $responsabilidade)
+    {
+        dd("hey");
     }
 
     public function download(PagoResponsabilidade $pagoresponsabilidade)

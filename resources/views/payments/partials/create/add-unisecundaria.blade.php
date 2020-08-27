@@ -31,7 +31,12 @@
             <div class="form-row mb-3">
                 <div class="col-md-6 mb-3">
                     <label for="dataUni2" class="text-gray-900">Data de pagamento <sup class="text-danger small">&#10033;</sup></label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text"><i class="fas fa-calendar-alt"></i></div>
+                        </div>
                     <input type="date" class="form-control" name="dataUni2" id="dataUni2" value="{{old('dataUni2', $pagoResponsabilidade->dataPagamento)}}" required>
+                </div>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="contaUni2" class="text-gray-900">Conta bancária <sup class="text-danger small">&#10033;</sup></label>

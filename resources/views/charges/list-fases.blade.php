@@ -67,7 +67,7 @@
                                     <a href="{{route("charges.show", [$product, $fase, $fase->docTransacao[0]])}}" class="btn btn-sm btn-outline-primary" title="Ver em detalhe"><i class="far fa-eye"></i></a>
                                     <a href="{{route("charges.edit", [$product, $fase, $fase->docTransacao[0]])}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
                                 @else
-                                    <a href="{{route("charges.create", [$product, $fase])}}" class="btn btn-sm btn-outline-success" title="Ver em detalhe"><i class="fas fa-check"></i></i></a>
+                                    <a href="{{route("charges.create", [$product, $fase])}}" class="btn btn-sm btn-outline-success" title="Registar"><i class="fas fa-check"></i></i></a>
                                     <button class="btn btn-sm btn-outline-dark text-gray-900" title="Ver em detalhe" disabled><i class="far fa-eye"></i></button>
                                     <button class="btn btn-sm btn-outline-dark text-gray-900" title="Editar" disabled><i class="fas fa-pencil-alt"></i></button>
                                 @endif

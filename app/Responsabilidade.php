@@ -69,6 +69,6 @@ class Responsabilidade extends Model
     }
 
     public function pagoResponsabilidade(){
-        return $this->belongsTo("App\PagoResponsabilidade","idResponsabilidade","idResponsabilidade")->withTrashed();
+        return $this->belongsTo("App\PagoResponsabilidade","idResponsabilidade","idResponsabilidade");
     }
 }

@@ -1,6 +1,6 @@
 @extends('layout.master')
 <!-- Page Title -->
-@section('title', 'Lista de Pagamentos')
+@section('title', 'Pagamentos')
 <!-- Page Content -->
 @section('content')
 <!-- Begin Page Content -->
@@ -20,7 +20,7 @@
     <!-- Approach -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Listagem - Pagamentos</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Listagem de pagamentos</h6>
         </div>
         <div class="card-body">
             <div class="table-responsive p-1">
@@ -54,8 +54,15 @@
                             @endif
                             </td>
                             <td class="text-center align-middle">
-                                <a href="{{route('payments.cliente', [$responsabilidade->cliente, $responsabilidade->fase, $responsabilidade])}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
-                                <button data-toggle="modal" data-target="#deleteModal" data-id="{{$responsabilidade->idResponsabilidade}}" class="btn btn-sm btn-outline-danger" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+                                @if($responsabilidade->pagoResponsabilidade && $responsabilidade->verificacaoPagoCliente)
+                                    <button class="btn btn-sm btn-outline-dark text-gray-900" disabled><i class="fas fa-check"></i></button>
+                                    <a href="#" class="btn btn-sm btn-outline-primary" title="Visualizar"><i class="far fa-eye"></i></a>
+                                    <a href="{{route('payments.editcliente', [$responsabilidade->cliente, $responsabilidade->fase, $responsabilidade, $responsabilidade->pagoResponsabilidade])}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                @else
+                                    <a href="{{route('payments.cliente', [$responsabilidade->cliente, $responsabilidade->fase, $responsabilidade])}}" class="btn btn-sm btn-outline-success" title="Registar"><i class="fas fa-check"></i></a>
+                                    <button class="btn btn-sm btn-outline-dark text-gray-900" title="Ver em detalhe" disabled><i class="far fa-eye"></i></button>
+                                    <button class="btn btn-sm btn-outline-dark text-gray-900" title="Editar" disabled><i class="fas fa-pencil-alt"></i></button>
+                                @endif
                             </td>
                         </tr>
                         @endif
@@ -78,8 +85,15 @@
                             @endif
                             </td>
                             <td class="text-center align-middle">
-                                <a href="{{route('payments.agente', [$responsabilidade->agente, $responsabilidade->fase, $responsabilidade])}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
-                                <button data-toggle="modal" data-target="#deleteModal" data-id="{{$responsabilidade->idResponsabilidade}}" class="btn btn-sm btn-outline-danger" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+                                @if($responsabilidade->pagoResponsabilidade && $responsabilidade->verificacaoPagoAgente)
+                                    <button class="btn btn-sm btn-outline-dark text-gray-900" disabled><i class="fas fa-check"></i></button>
+                                    <a href="#" class="btn btn-sm btn-outline-primary" title="Visualizar"><i class="far fa-eye"></i></a>
+                                    <a href="{{route('payments.editagente', [$responsabilidade->agente, $responsabilidade->fase, $responsabilidade, $responsabilidade->pagoResponsabilidade])}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                @else
+                                    <a href="{{route('payments.agente', [$responsabilidade->agente, $responsabilidade->fase, $responsabilidade])}}" class="btn btn-sm btn-outline-success" title="Registar"><i class="fas fa-check"></i></a>
+                                    <button class="btn btn-sm btn-outline-dark text-gray-900" title="Ver em detalhe" disabled><i class="far fa-eye"></i></button>
+                                    <button class="btn btn-sm btn-outline-dark text-gray-900" title="Editar" disabled><i class="fas fa-pencil-alt"></i></button>
+                                @endif
                             </td>
                         </tr>
                         @endif
@@ -102,8 +116,15 @@
                             @endif
                             </td>
                             <td class="text-center align-middle">
-                                <a href="{{route('payments.subagente', [$responsabilidade->subAgente, $responsabilidade->fase, $responsabilidade])}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
-                                <button data-toggle="modal" data-target="#deleteModal" data-id="{{$responsabilidade->idResponsabilidade}}" class="btn btn-sm btn-outline-danger" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+                                @if($responsabilidade->pagoResponsabilidade && $responsabilidade->verificacaoPagoSubAgente)
+                                    <button class="btn btn-sm btn-outline-dark text-gray-900" disabled><i class="fas fa-check"></i></button>
+                                    <a href="#" class="btn btn-sm btn-outline-primary" title="Visualizar"><i class="far fa-eye"></i></a>
+                                    <a href="{{route('payments.editsubagente', [$responsabilidade->subAgente, $responsabilidade->fase, $responsabilidade, $responsabilidade->pagoResponsabilidade])}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                @else
+                                    <a href="{{route('payments.subagente', [$responsabilidade->subAgente, $responsabilidade->fase, $responsabilidade])}}" class="btn btn-sm btn-outline-success" title="Registar"><i class="fas fa-check"></i></a>
+                                    <button class="btn btn-sm btn-outline-dark text-gray-900" title="Ver em detalhe" disabled><i class="far fa-eye"></i></button>
+                                    <button class="btn btn-sm btn-outline-dark text-gray-900" title="Editar" disabled><i class="fas fa-pencil-alt"></i></button>
+                                @endif
                             </td>
                         </tr>
                         @endif
@@ -126,8 +147,15 @@
                             @endif
                             </td>
                             <td class="text-center align-middle">
-                                <a href="{{route('payments.uni1', [$responsabilidade->universidade1, $responsabilidade->fase, $responsabilidade])}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
-                                <button data-toggle="modal" data-target="#deleteModal" data-id="{{$responsabilidade->idResponsabilidade}}" class="btn btn-sm btn-outline-danger" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+                                @if($responsabilidade->pagoResponsabilidade && $responsabilidade->verificacaoPagoUni1)
+                                    <button class="btn btn-sm btn-outline-dark text-gray-900" disabled><i class="fas fa-check"></i></button>
+                                    <a href="#" class="btn btn-sm btn-outline-primary" title="Visualizar"><i class="far fa-eye"></i></a>
+                                    <a href="{{route('payments.edituni1', [$responsabilidade->universidade1, $responsabilidade->fase, $responsabilidade, $responsabilidade->pagoResponsabilidade])}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                @else
+                                    <a href="{{route('payments.uni1', [$responsabilidade->universidade1, $responsabilidade->fase, $responsabilidade])}}" class="btn btn-sm btn-outline-success" title="Registar"><i class="fas fa-check"></i></a>
+                                    <button class="btn btn-sm btn-outline-dark text-gray-900" title="Ver em detalhe" disabled><i class="far fa-eye"></i></button>
+                                    <button class="btn btn-sm btn-outline-dark text-gray-900" title="Editar" disabled><i class="fas fa-pencil-alt"></i></button>
+                                @endif
                             </td>
                         </tr>
                         @endif
@@ -150,8 +178,15 @@
                             @endif
                             </td>
                             <td class="text-center align-middle">
-                                <a href="{{route('payments.uni2', [$responsabilidade->universidade2, $responsabilidade->fase, $responsabilidade])}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
-                                <button data-toggle="modal" data-target="#deleteModal" data-id="{{$responsabilidade->idResponsabilidade}}" class="btn btn-sm btn-outline-danger" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+                                @if($responsabilidade->pagoResponsabilidade && $responsabilidade->verificacaoPagoUni2)
+                                    <button class="btn btn-sm btn-outline-dark text-gray-900" disabled><i class="fas fa-check"></i></button>
+                                    <a href="#" class="btn btn-sm btn-outline-primary" title="Visualizar"><i class="far fa-eye"></i></a>
+                                    <a href="{{route('payments.edituni2', [$responsabilidade->universidade2, $responsabilidade->fase, $responsabilidade, $responsabilidade->pagoResponsabilidade])}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                @else
+                                    <a href="{{route('payments.uni2', [$responsabilidade->universidade2, $responsabilidade->fase, $responsabilidade])}}" class="btn btn-sm btn-outline-success" title="Registar"><i class="fas fa-check"></i></a>
+                                    <button class="btn btn-sm btn-outline-dark text-gray-900" title="Ver em detalhe" disabled><i class="far fa-eye"></i></button>
+                                    <button class="btn btn-sm btn-outline-dark text-gray-900" title="Editar" disabled><i class="fas fa-pencil-alt"></i></button>
+                                @endif
                             </td>
                         </tr>
                         @endif
@@ -174,8 +209,15 @@
                             @endif
                             </td>
                             <td class="text-center align-middle">
-                                <a href="{{route('payments.fornecedor', [$relacao->fornecedor, $relacao->responsabilidade->fase, $relacao])}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
-                                <button data-toggle="modal" data-target="#deleteModal" data-id="{{$responsabilidade->idResponsabilidade}}" class="btn btn-sm btn-outline-danger" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+                                @if($responsabilidade->pagoResponsabilidade && $relacao->verificacaoPago)
+                                    <button class="btn btn-sm btn-outline-dark text-gray-900" disabled><i class="fas fa-check"></i></button>
+                                    <a href="#" class="btn btn-sm btn-outline-primary" title="Visualizar"><i class="far fa-eye"></i></a>
+                                    <a href="{{route('payments.editfornecedor', [$relacao->fornecedor, $relacao->responsabilidade->fase, $relacao, $responsabilidade->pagoResponsabilidade])}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                @else
+                                    <a href="{{route('payments.fornecedor', [$relacao->fornecedor, $relacao->responsabilidade->fase, $relacao])}}" class="btn btn-sm btn-outline-success" title="Registar"><i class="fas fa-check"></i></a>
+                                    <button class="btn btn-sm btn-outline-dark text-gray-900" title="Ver em detalhe" disabled><i class="far fa-eye"></i></button>
+                                    <button class="btn btn-sm btn-outline-dark text-gray-900" title="Editar" disabled><i class="fas fa-pencil-alt"></i></button>
+                                @endif
                             </td>
                         </tr>
                         @endforeach
@@ -200,7 +242,7 @@
                 </button>
             </div>
             <div class="modal-body text-gray-800 pl-4 pr-5">
-                Nesta secção encontram-se todos os pagamentos da Estudar Portugal. Pode editá-los de modo a alterar o seu estado e adicionar outras informações.
+                Nesta secção encontram-se todos os pagamentos da Estudar Portugal. Pode registar um pagamento e mais tarde editá-lo ou visualizar os seus detalhes.
             </div>
             <div class="modal-footer mt-3">
                 <a data-dismiss="modal" class="mr-4 font-weight-bold" id="close-option">Fechar</a>
