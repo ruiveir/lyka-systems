@@ -39,37 +39,7 @@
                         <tr>
                             <td>{{$product->cliente->nome.' '.$product->cliente->apelido}}</td>
                             <td>{{$product->descricao}}</td>
-                            <td>
-                                <?php
-                                $valorPago = 0;
-                                foreach ($product->fase as $fase) {
-                                  if (count($fase->DocTransacao)) {
-                                    foreach ($fase->DocTransacao as $document) {
-                                      $valorPago = $valorPago + $document->valorRecebido;
-                                    }
-                                  }
-                                }
-
-                                $valorDivida = 0;
-                                foreach ($product->fase as $fase) {
-                                  if (count($fase->DocTransacao)) {
-                                    foreach ($fase->DocTransacao as $document) {
-                                      if ($document->valorRecebido < $fase->valorFase) {
-                                        $valorDivida = $valorDivida + ($fase->valorFase - $document->valorRecebido);
-                                      }
-                                    }
-                                  }
-                                }
-
-                            ?>
-                              @if ($valorPago != 0)
-                                <div style="color:#47BC00;">{{number_format((float)$valorPago, 2, ',', '')}}€</div>
-                              @endif
-                              @if ($valorDivida != 0)
-                                <div style="color:#FF3D00;">{{number_format((float)$valorDivida, 2, ',', '')}}€</div>
-                              @endif
-                              <div>{{number_format((float)$product->valorTotal, 2, ',', '')}}€</div>
-                            </td>
+                            <td>{{number_format((float)$product->valorTotal, 2, ',', '').'€'}}</td>
                             <td>
                             @php
                                 switch ($product->estado) {

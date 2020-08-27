@@ -29,7 +29,7 @@
                         <div class="col-md-6 mb-3">
                             <label for="valorRecebido" class="text-gray-900">Valor recebido <sup class="text-danger small">&#10033;</sup> </label>
                             <div class="input-group">
-                                <input type="text" class="form-control" name="valorRecebido" id="valorRecebido" aria-describedby="validatedInputGroupPrepend" value="{{old('valorRecebido', number_format((float)$fase->valorFase, 2, ',', ''))}}" required>
+                                <input type="text" class="form-control" name="valorRecebido" id="valorRecebido" aria-describedby="validatedInputGroupPrepend" value="{{old('valorRecebido', number_format((float)$docTransacao->valorRecebido, 2, ',', ''))}}" required>
                                 <div class="input-group-append">
                                     <span class="input-group-text">€</span>
                                 </div>
@@ -44,7 +44,11 @@
                             <div class="custom-file mb-3">
                                 <input type="file" class="custom-file-input" name="comprovativoPagamento" id="comprovativoPagamento" value="{{old("comprovativoPagamento", $docTransacao->comprovativoPagamento)}}">
                                 <small class="form-text text-muted">O comprovativo não deve ultrupassar 2MB.</small>
-                                <label class="custom-file-label" for="screenshot" data-browse="Escolher">{{old("comprovativoPagamento", $docTransacao->comprovativoPagamento)}}</label>
+                                @if($docTransacao->comprovativoPagamento)
+                                    <label class="custom-file-label" for="comprovativoPagamento" data-browse="Escolher">{{old("comprovativoPagamento", $docTransacao->comprovativoPagamento)}}</label>
+                                @else
+                                    <label class="custom-file-label" for="comprovativoPagamento" data-browse="Escolher">Escolher um comprovativo...</label>
+                                @endif
                             </div>
                         </div>
                     </div>

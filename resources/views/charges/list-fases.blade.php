@@ -52,7 +52,7 @@
                                     break;
 
                                     case 'Dívida':
-                                        echo "<span class='font-weight-bold text-danger'>Vencido</span>";
+                                        echo "<span class='font-weight-bold text-danger'>Dívida</span>";
                                     break;
 
                                     case 'Crédito':

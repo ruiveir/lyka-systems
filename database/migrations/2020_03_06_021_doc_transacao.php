@@ -19,7 +19,6 @@ class DocTransacao extends Migration
             $table->date('dataRecebido')->nullable();
             $table->text('observacoes')->nullable();
             $table->string('comprovativoPagamento',255)->nullable();
-            $table->boolean('verificacao')->default(false);
             $table->string('slug')->nullable();
             $table->unsignedBigInteger('idConta');
                 $table->foreign('idConta')->references('idConta')->on('Conta');

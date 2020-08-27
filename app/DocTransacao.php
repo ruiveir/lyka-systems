@@ -19,7 +19,6 @@ class DocTransacao extends Model
         'valorRecebido',
         'dataOperacao',
         'dataRecebido',
-        'verificacao',
         'observacoes',
         'tipoPagamento',
         'comprovativoPagamento',
