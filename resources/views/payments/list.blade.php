@@ -7,7 +7,7 @@
 <div class="container-fluid">
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h4 mb-0 text-gray-800">Pagamentos</h1>
+        <h1 class="h4 mb-0 text-gray-800">Listagem de pagamentos</h1>
         <div>
             <a href="#" data-toggle="modal" data-target="#infoModal" class="btn btn-secondary btn-icon-split btn-sm" title="Informações">
                 <span class="icon text-white-50">

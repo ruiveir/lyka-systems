@@ -9,14 +9,23 @@ use Illuminate\Database\Eloquent\Model;
 class DocTransacao extends Model
 {
     use HasSlug;
+
     protected $table = 'DocTransacao';
 
     protected $primaryKey = 'idDocTransacao';
 
     protected $fillable = [
-        'descricao','valorRecebido','dataOperacao','dataRecebido','verificacao','observacoes','tipoPagamento',
-        'comprovativoPagamento','$idConta','$idFase'
-        ];
+        'descricao',
+        'valorRecebido',
+        'dataOperacao',
+        'dataRecebido',
+        'verificacao',
+        'observacoes',
+        'tipoPagamento',
+        'comprovativoPagamento',
+        '$idConta',
+        '$idFase'
+    ];
 
     public function fase(){
         return $this->belongsTo("App\Fase","idFase","idFase")->withTrashed();

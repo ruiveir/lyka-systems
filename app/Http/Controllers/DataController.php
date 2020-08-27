@@ -426,7 +426,6 @@ class DataController extends Controller
         $fase->dataVencimento = date('Y-m-d H:i',strtotime('16-03-2020 15:00'));
         $fase->valorFase = 50;
         $fase->verificacaoPago = false;
-        $fase->icon = 'cube';
         $fase->idProduto = 1;
         $fase->save();
 
@@ -435,7 +434,6 @@ class DataController extends Controller
         $fase->dataVencimento = date('Y-m-d H:i',strtotime('06-09-2020 18:30'));
         $fase->valorFase = 300;
         $fase->verificacaoPago = false;
-        $fase->icon = 'layers';
         $fase->idProduto = 1;
         $fase->save();
 
@@ -444,7 +442,6 @@ class DataController extends Controller
         $fase->dataVencimento = date('Y-m-d H:i',strtotime('25-09-2020 23:59'));
         $fase->valorFase = 1000;
         $fase->verificacaoPago = false;
-        $fase->icon = 'school';
         $fase->idProduto = 1;
         $fase->save();
 
@@ -453,7 +450,6 @@ class DataController extends Controller
         $fase->dataVencimento = date('Y-m-d H:i',strtotime('01-07-2021 18:30'));
         $fase->valorFase = 150;
         $fase->verificacaoPago = false;
-        $fase->icon = 'pie-chart';
         $fase->idProduto = 1;
         $fase->save();
 

@@ -14,11 +14,8 @@ use App\Http\Requests\UpdateChargeRequest;
 
 class ChargesController extends Controller
 {
-    public function index()
+    public function listProducts()
     {
-      if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
-        (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)||
-        (Auth()->user()->tipo == 'cliente' && Auth()->user()->idCliente != null)){
         $products = null;
         $fasesPendentes = null;
         $fasesPagas = null;
@@ -26,25 +23,13 @@ class ChargesController extends Controller
         $numberProducts = null;
 
         if(Auth()->user()->tipo == 'admin'){
-
-          $products = Produto::all();
-          /*$fasesPendentes = Fase::where('estado', '=', 'Pendente')->get();
-          $fasesPagas = Fase::where('estado', '=', 'Pago')->get();
-          $fasesDivida = Fase::where('estado', '=', 'Dívida')->get();
-          $numberProducts = Produto::where('valorTotal', '!=', '0')->get();*/
-
-        }elseif(Auth()->user()->tipo == 'agente'&&Auth()->user()->agente->tipo=="Agente"){
-
-          $products = Produto::where('idAgente','=',Auth()->user()->idAgente);
-
-        }elseif(Auth()->user()->tipo == 'agente'&&Auth()->user()->agente->tipo=="Subagente"){
-
-          $products = Produto::where('idSubAgente','=',Auth()->user()->idAgente);
-
+          $products = Produto::orderByRaw("FIELD(estado, \"Crédito\", \"Dívida\", \"Pendente\", \"Pago\")")->get();
+        }elseif(Auth()->user()->tipo == 'agente' && Auth()->user()->agente->tipo == "Agente"){
+          $products = Produto::where('idAgente', Auth()->user()->idAgente);
+        }elseif(Auth()->user()->tipo == 'agente' && Auth()->user()->agente->tipo == "Subagente"){
+          $products = Produto::where('idSubAgente', Auth()->user()->idAgente);
         }else{
-
-          $products = Produto::where('idCliente','=',Auth()->user()->idCliente);
-
+          $products = Produto::where('idCliente', Auth()->user()->idCliente);
         }
 
         foreach($products as $product){
@@ -60,72 +45,69 @@ class ChargesController extends Controller
               $fasesDivida[] = $fase;
             }
           }
+
           if($product->valorTotal != 0){
             $numberProducts[] = $product;
           }
         }
-
-        return view('charges.list', compact('products', 'numberProducts', 'fasesPendentes', 'fasesPagas', 'fasesDivida'));
-      }else{
-        abort(403);
-      }
+        return view('charges.list-products', compact('products', 'numberProducts', 'fasesPendentes', 'fasesPagas', 'fasesDivida'));
     }
 
-    public function show(DocTransacao $docTrasancao, Fase $fase, Produto $product)
+    public function listFases(Produto $product)
     {
-      if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
-        (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)||
-        (Auth()->user()->tipo == 'cliente' && Auth()->user()->idCliente != null)){
-        $docTrasancao = DocTransacao::all();
-        $fases = Fase::where('idProduto', '=', $product->idProduto)
-        ->orderBy('verificacaoPago', 'ASC')
+        $docTransacao = DocTransacao::all();
+        $fases = Fase::where('idProduto', $product->idProduto)
+        ->orderByRaw("FIELD(estado, \"Pendente\", \"Pago\")")
         ->orderBy('dataVencimento', 'ASC')
+        ->with(["produto", "docTransacao"])
         ->get();
-        return view('charges.show', compact('product', 'fases', 'docTrasancao'));
-      }else{
-        abort(403);
-      }
+        return view('charges.list-fases', compact('product', 'fases', 'docTransacao'));
     }
 
-    public function showcharge(Produto $product, Fase $fase, Conta $contas)
+    public function show(Produto $product, Fase $fase, DocTransacao $docTransacao)
     {
-      if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
-        $contas = Conta::all();
-        $docTrasancao = DocTransacao::where('idFase', '=', $fase->idFase)->get();
-        return view('charges.showcharge', compact('product', 'fase', 'docTrasancao', 'contas'));
-      }else{
-        abort(403);
-      }
+        return view('charges.show', compact('product', 'fase', 'docTransacao'));
+    }
+
+    public function create(Produto $product, Fase $fase)
+    {
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
+            $contas = Conta::all();
+            $docTransacao = new DocTransacao;
+            return view('charges.add', compact('product', 'fase', 'docTransacao', 'contas'));
+        }else{
+            abort(403);
+        }
     }
 
     public function store(Request $request, StoreChargeRequest $requestCharge, Produto $product, Fase $fase)
     {
       if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
-        $docTrasancao = new DocTransacao;
+        $docTransacao = new DocTransacao;
         $fields = $requestCharge->validated();
-        $docTrasancao->fill($fields);
+        $docTransacao->fill($fields);
 
-        $value = number_format((float) $docTrasancao->valorRecebido,2 ,'.' ,'');
-        $docTrasancao->valorRecebido = $value;
+        $value = number_format((float) $docTransacao->valorRecebido,2 ,'.' ,'');
+        $docTransacao->valorRecebido = $value;
 
         $idConta = $request->input('conta');
-        $docTrasancao->idConta = $idConta;
+        $docTransacao->idConta = $idConta;
 
-        $docTrasancao->descricao = 'Cobrança da '.$fase->descricao;
-        $docTrasancao->idFase = $fase->idFase;
+        $docTransacao->descricao = 'Cobrança da '.$fase->descricao;
+        $docTransacao->idFase = $fase->idFase;
 
-        $docTrasancao->save();
+        $docTransacao->save();
 
         if ($requestCharge->hasFile('comprovativoPagamento')) {
             $fileproof = $requestCharge->file('comprovativoPagamento');
-            $imgproof = strtolower($docTrasancao->descricao).'_comprovativo_'.$docTrasancao->idDocTransacao.'.' . $fileproof->getClientOriginalExtension();
+            $imgproof= post_slug($docTransacao->descricao).'-comprovativo-'.$docTransacao->idDocTransacao.'.'.$fileproof->getClientOriginalExtension();
             Storage::disk('public')->putFileAs('comprovativos-pagamento/', $fileproof, $imgproof);
-            $docTrasancao->comprovativoPagamento = $imgproof;
-            $docTrasancao->save();
+            $docTransacao->comprovativoPagamento = $imgproof;
+            $docTransacao->save();
         }
 
-        switch ($docTrasancao->valorRecebido) {
-          case $docTrasancao->valorRecebido == $fase->valorFase:
+        switch ($docTransacao->valorRecebido) {
+          case $docTransacao->valorRecebido == $fase->valorFase:
             Fase::where('idFase', '=', $fase->idFase)
             ->update([
               'verificacaoPago' => '1',
@@ -133,7 +115,7 @@ class ChargesController extends Controller
             ]);
             break;
 
-          case $docTrasancao->valorRecebido > $fase->valorFase:
+          case $docTransacao->valorRecebido > $fase->valorFase:
             Fase::where('idFase', '=', $fase->idFase)
             ->update([
               'verificacaoPago' => '1',
@@ -141,67 +123,65 @@ class ChargesController extends Controller
             ]);
             break;
 
-          case $docTrasancao->valorRecebido < $fase->valorFase:
+          case $docTransacao->valorRecebido < $fase->valorFase:
             Fase::where('idFase', '=', $fase->idFase)
             ->update(['estado' => 'Dívida']);
             break;
         }
 
-        return redirect()->route('charges.show', $product)->with('success', 'Estado da cobrança alterado com sucesso!');
+        return redirect()->route('charges.listfases', $product)->with('success', 'Estado da cobrança alterado com sucesso!');
       }else{
         abort(403);
       }
     }
 
-    public function edit(Produto $product, Fase $fase, DocTransacao $document, Conta $contas)
+    public function edit(Produto $product, Fase $fase, DocTransacao $docTransacao)
     {
-      if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
-        $contas = Conta::all();
-        return view('charges.edit', compact('product', 'fase', 'document', 'contas'));
-      }else{
-        abort(403);
-      }
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
+            $contas = Conta::all();
+            return view('charges.edit', compact('product', 'fase', 'docTransacao', 'contas'));
+        }else{
+            abort(403);
+        }
     }
 
-    public function update(UpdateChargeRequest $requestCharge, Produto $product, DocTransacao $document)
+    public function update(UpdateChargeRequest $requestCharge, Produto $product, DocTransacao $docTransacao)
     {
-      if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
-        $fields = $requestCharge->validated();
-        $document->fill($fields);
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
+            $fields = $requestCharge->validated();
+            $oldfilename = $docTransacao->comprovativoPagamento;
+            $docTransacao->fill($fields);
+            $value = number_format((float) $docTransacao->valorRecebido,2 ,'.' ,'');
+            $docTransacao->valorRecebido = $value;
 
-        $value = number_format((float) $document->valorRecebido,2 ,'.' ,'');
-        $document->valorRecebido = $value;
-
-        if ($requestCharge->hasFile('comprovativoPagamento')) {
-            $fileproof = $requestCharge->file('comprovativoPagamento');
-            $imgproof = strtolower(preg_replace('/\s+/', '_', $document->descricao)) . '_comprovativo_'. $document->idDocTransacao .'.' . $fileproof->getClientOriginalExtension();
-            if (!empty($document->comprovativoPagamento)) {
-                Storage::disk('public')->delete('comprovativos-pagamento/'.$document->comprovativoPagamento);
+            if($requestCharge->hasFile('comprovativoPagamento')) {
+                $fileproof = $requestCharge->file('comprovativoPagamento');
+                $imgproof = post_slug($docTransacao->descricao).'-comprovativo-'.$docTransacao->idDocTransacao.'.'.$fileproof->getClientOriginalExtension();
+                Storage::disk('public')->putFileAs('comprovativos-pagamento/', $fileproof, $imgproof);
+                Storage::disk('public')->delete('comprovativos-pagamento/'.$oldfilename);
+                $docTransacao->comprovativoPagamento = $imgproof;
             }
-            Storage::disk('public')->putFileAs('comprovativos-pagamento/', $fileproof, $imgproof);
-            $document->comprovativoPagamento = $imgproof;
-        }
 
-        $document->save();
+        $docTransacao->save();
 
-        if ($document->valorRecebido >= $document->fase->valorFase) {
-          Fase::where('descricao', '=', $document->fase->descricao)->update(['verificacaoPago' => '1']);
+        if ($docTransacao->valorRecebido >= $docTransacao->fase->valorFase) {
+          Fase::where('descricao', $docTransacao->fase->descricao)->update(['verificacaoPago' => '1']);
         }else {
-          Fase::where('descricao', '=', $document->fase->descricao)->update(['verificacaoPago' => '0']);
+          Fase::where('descricao', $docTransacao->fase->descricao)->update(['verificacaoPago' => '0']);
         }
 
-        return redirect()->route('charges.show', $product)->with('success', 'Estado da cobrança editado com sucesso!');
+        return redirect()->route('charges.listfases', $product)->with('success', 'Cobrança editado com sucesso!');
       }else{
         abort(403);
       }
     }
 
-    public function download(DocTransacao $document)
+    public function download(DocTransacao $docTransacao)
     {
-      if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
-        return Storage::disk('public')->download('comprovativos-pagamento/'.$document->comprovativoPagamento);
-      }else{
-        abort(403);
-      }
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
+            return Storage::disk('public')->download('comprovativos-pagamento/'.$docTransacao->comprovativoPagamento);
+        }else{
+            abort(403);
+        }
     }
 }

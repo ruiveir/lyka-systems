@@ -1,13 +1,13 @@
 @extends('layout.master')
 <!-- Page Title -->
-@section('title', 'Edição de uma cobrança')
+@section('title', 'Registo de uma cobrança')
 <!-- Page Content -->
 @section('content')
 <!-- Begin Page Content -->
 <div class="container-fluid">
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h4 mb-0 text-gray-800">Edição de uma cobrança</h1>
+        <h1 class="h4 mb-0 text-gray-800">Registo de uma cobrança</h1>
         <a href="#" data-toggle="modal" data-target="#infoModal" class="btn btn-secondary btn-icon-split btn-sm" title="Informações">
             <span class="icon text-white-50">
                 <i class="fas fa-info-circle"></i>
@@ -18,12 +18,11 @@
     <!-- Approach -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Formulário de edição da cobrança sobre a fase {{$fase->descricao}} do cliente {{$product->cliente->nome.' '.$product->cliente->apelido}}</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Formulário de registo da cobrança sobre a fase {{$fase->descricao}} do cliente {{$product->cliente->nome.' '.$product->cliente->apelido}}</h6>
         </div>
         <div class="card-body">
-            <form class="form-group needs-validation" action="{{route('charges.update', [$product, $docTransacao])}}" method="POST" enctype="multipart/form-data" novalidate>
+            <form class="form-group needs-validation" action="{{route('charges.store', [$product, $fase])}}" method="POST" enctype="multipart/form-data" novalidate>
                 @csrf
-                @method("PUT")
                 <div class="container-fluid">
                     <div class="form-row mb-3">
                         <div class="col-md-6 mb-3">
@@ -42,9 +41,12 @@
                         <div class="col-md-6 mb-3">
                             <label for="comprovativoPagamento" class="text-gray-900">Comprovativo de pagamento</label>
                             <div class="custom-file mb-3">
-                                <input type="file" class="custom-file-input" name="comprovativoPagamento" id="comprovativoPagamento" value="{{old("comprovativoPagamento", $docTransacao->comprovativoPagamento)}}">
+                                <input type="file" class="custom-file-input" name="comprovativoPagamento" id="comprovativoPagamento">
                                 <small class="form-text text-muted">O comprovativo não deve ultrupassar 2MB.</small>
-                                <label class="custom-file-label" for="screenshot" data-browse="Escolher">{{old("comprovativoPagamento", $docTransacao->comprovativoPagamento)}}</label>
+                                <label class="custom-file-label" for="screenshot" data-browse="Escolher">Escolher ficheiro...</label>
+                            </div>
+                            <div class="invalid-feedback">
+                                Oops, parece que algo não está bem...
                             </div>
                         </div>
                     </div>
@@ -52,9 +54,10 @@
                         <div class="col-md-6 mb-3">
                             <label for="tipoPagamento" class="text-gray-900">Tipo de pagamento <sup class="text-danger small">&#10033;</sup></label>
                             <select class="custom-select" name="tipoPagamento" id="tipoPagamento" value="{{old('tipoPagamento', $docTransacao->tipoPagamento)}}" required>
-                                <option value="Multibanco" @if ($docTransacao->tipoPagamento == "Multibanco") selected @endif>Multibanco</option>
-                                <option value="Paypal" @if ($docTransacao->tipoPagamento == "Paypal") selected @endif>Paypal</option>
-                                <option value="Outro" @if ($docTransacao->tipoPagamento == "Outro") selected @endif>Outro</option>
+                                <option selected disabled hidden>Escolher tipo pagamento</option>
+                                <option value="Multibanco">Multibanco</option>
+                                <option value="Paypal">Paypal</option>
+                                <option value="Outro">Outro</option>
                             </select>
                             <div class="invalid-feedback">
                                 Oops, parece que algo não está bem...
@@ -63,17 +66,10 @@
                         <div class="col-md-6 mb-3">
                             <label for="conta" class="text-gray-900">Conta bancária <sup class="text-danger small">&#10033;</sup></label>
                             <select class="custom-select" name="conta" id="conta" value="{{old('idConta', $docTransacao->idConta)}}" required>
-                                @if ($docTransacao->idConta == null)
-                                    @foreach ($contas as $conta)
-                                        <option value="{{$conta->idConta}}">{{$conta->descricao}}</option>
-                                    @endforeach
-                                    <option selected disabled hidden>Escolher conta bancária</option>
-                                @else
-                                    @foreach ($contas as $conta)
-                                        <option value="{{$conta->idConta}}">{{$conta->descricao}}</option>
-                                    @endforeach
-                                    <option selected value="{{$docTransacao->conta->idConta}}">{{old('conta', $docTransacao->conta->descricao)}}</option>
-                                @endif
+                                <option selected disabled hidden>Escolher conta bancária...</option>
+                                @foreach ($contas as $conta)
+                                <option value="{{$conta->idConta}}">{{$conta->descricao}}</option>
+                                @endforeach
                             </select>
                             <div class="invalid-feedback">
                                 Oops, parece que algo não está bem...
@@ -117,7 +113,7 @@
                     </div>
                     <div class="text-right mt-3" id="groupBtn">
                         <span class="mr-4 font-weight-bold" onclick="window.history.back();" id="cancelBtn" style="cursor:pointer;">Cancelar</span>
-                        <button type="submit" name="button" class="btn btn-primary text-white font-weight-bold" id="submitbtn">Editar cobrança</button>
+                        <button type="submit" name="button" class="btn btn-primary text-white font-weight-bold" id="submitbtn">Registar cobrança</button>
                     </div>
                 </div>
             </form>
@@ -137,7 +133,7 @@
                 </button>
             </div>
             <div class="modal-body text-gray-800 pl-4 pr-5">
-                Ao preencher o formulário irá editar uma cobrança. Os campos com o asterisco de cor vermelha são de preenchimento obrigatório.
+                Ao preencher o formulário irá registar uma cobrança. Os campos com o asterisco de cor vermelha são de preenchimento obrigatório.
             </div>
             <div class="modal-footer mt-3">
                 <a data-dismiss="modal" class="mr-4 font-weight-bold" id="close-option">Fechar</a>

@@ -73,7 +73,7 @@
                 <h6 class="collapse-header">Páginas principais:</h6>
                 @if (Auth()->user()->tipo == "admin" && Auth()->user()->idAdmin != null)
                     <a class="collapse-item {{Route::is('payments.*') ? 'active' : ''}}" href="{{route('payments.index')}}">Pagamentos</a>
-                    <a class="collapse-item {{Route::is('charges.*') ? 'active' : ''}}" href="{{route('charges.index')}}">Cobranças</a>
+                    <a class="collapse-item {{Route::is('charges.*') ? 'active' : ''}}" href="{{route('charges.listproducts')}}">Cobranças</a>
                     <a class="collapse-item" href="#">Relatório e Contas</a>
                     <div class="collapse-divider"></div>
                     <h6 class="collapse-header">Outras Páginas:</h6>

@@ -1,132 +1,94 @@
 @extends('layout.master')
-
-{{-- Titulo da Página --}}
-@section('title', 'Lista de cobranças')
-
-{{-- Estilos de CSS --}}
-@section('styleLinks')
-<link href="{{asset('/css/charges.css')}}" rel="stylesheet">
-@endsection
-
-{{-- Conteudo da Página --}}
+<!-- Page Title -->
+@section('title', 'Visualização de uma cobrança')
+<!-- Page Content -->
 @section('content')
-<div class="container mt-2 ">
-    {{-- Navegação --}}
-    <div class="float-left buttons">
-        <a href="javascript:history.go(-1)" title="Voltar">
-            <ion-icon name="arrow-back-outline" class="button-back"></ion-icon>
-        </a>
-        <a href="javascript:window.history.forward();" title="Avançar">
-            <ion-icon name="arrow-forward-outline" class="button-foward"></ion-icon>
-        </a>
+<!-- Begin Page Content -->
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h4 mb-0 text-gray-800">Visualização de uma cobrança</h1>
+        <div>
+            <a href="{{route('charges.edit', [$product, $fase, $docTransacao])}}" class="btn btn-success btn-icon-split btn-sm" title="Editar">
+                <span class="icon text-white-50">
+                    <i class="fas fa-pencil-alt"></i>
+                </span>
+                <span class="text">Editar cobrança</span>
+            </a>
+            <a href="#" data-toggle="modal" data-target="#infoModal" class="btn btn-secondary btn-icon-split btn-sm" title="Informações">
+                <span class="icon text-white-50">
+                    <i class="fas fa-info-circle"></i>
+                </span>
+                <span class="text">Informações</span>
+            </a>
+        </div>
     </div>
-
-
-    <br><br>
-
-    <div class="cards-navigation">
-        <div class="title row">
-            <div class="col-md-6">
-                <h6>Secção de cobrança - {{$product->cliente->nome.' '.$product->cliente->apelido}}</h6>
-            </div>
-            <div class="col-md-6" style="bottom:5px; height:32px;">
-                <div class="input-group pl-0 float-right search-section" style="width:250px">
-                    <input class="shadow-sm" type="text" id="customSearchBox" placeholder="Secção de procura" aria-label="Procurar">
-                    <div class="search-button input-group-append">
-                        <ion-icon name="search-outline" class="search-icon"></ion-icon>
-                    </div>
+    <!-- Approach -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Visualização da cobrança sobre a fase {{$fase->descricao}} do cliente {{$product->cliente->nome.' '.$product->cliente->apelido}}</h6>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="text-gray-800"><b>Descrição da cobrança:</b> @if($docTransacao->descricao != null) {{$docTransacao->descricao}} @else N/A @endif</p>
+                </div>
+                <div class="col-md-6">
+                    <p class="text-gray-800"><b>Valor recebido:</b> @if($docTransacao->valorRecebido != null) {{number_format((float)$docTransacao->valorRecebido, 2, ',', '').'€'}} @else N/A @endif</p>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="text-gray-800"><b>Data da operação:</b> @if($docTransacao->dataOperacao != null) {{date('d/m/Y', strtotime($docTransacao->dataOperacao))}} @else N/A @endif</p>
+                </div>
+                <div class="col-md-6">
+                    <p class="text-gray-800"><b>Data de recebimento:</b> @if($docTransacao->dataRecebido != null) {{date('d/m/Y', strtotime($docTransacao->dataRecebido))}} @else N/A @endif</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="text-gray-800"><b>Tipo de pagamento:</b> @if($docTransacao->tipoPagamento != null) {{$docTransacao->tipoPagamento}} @else N/A @endif</p>
+                </div>
+                <div class="col-md-6">
+                    <p class="text-gray-800"><b>Comprovativo de pagamento:</b> @if($docTransacao->comprovativoPagamento != null) <a href="{{route("charges.download", $docTransacao)}}">{{$docTransacao->comprovativoPagamento}}</a> @else N/A @endif</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="text-gray-800"><b>Conta bancária:</b> @if($docTransacao->idConta != null) {{$docTransacao->conta->descricao}} @else N/A @endif</p>
+                </div>
+                <div class="col-md-6">
+                    <p class="text-gray-800"><b>Observações:</b> @if($docTransacao->telefone1 != null) {{$docTransacao->telefone1}} @else N/A @endif</p>
+                </div>
+            </div>
+            <hr>
+            <p class="text-gray-800"><b>Data de registo:</b> {{date('d/m/Y', strtotime($docTransacao->created_at))}}</p>
+            <p class="text-gray-800"><b>Última atualização:</b> @if($docTransacao->updated_at != null) {{date('d/m/Y', strtotime($docTransacao->updated_at))}} @else N/A @endif</p>
         </div>
-        <br>
-        @foreach ($fases as $fase)
-        <div class="container">
-            @if (count($fase->DocTransacao))
-            @foreach ($fase->DocTransacao as $document)
-            @if ($document->valorRecebido != null)
-            <a href="{{route('charges.edit', [$product, $fase, $document])}}">
-                @else
-                <a href="{{route('charges.showcharge', [$product, $fase])}}">
-                    @endif
-                    @endforeach
-                    @else
-                    <a href="{{route('charges.showcharge', [$product, $fase])}}">
-                        @endif
-                        <div class="row charge-div">
-                            <div class="col-md-1 align-self-center">
-                                <div class="white-circle">
-                                    <ion-icon name="{{$fase->icon}}" id="icon"></ion-icon>
-                                </div>
-                            </div>
-                            <div class="col-md-3 text-truncate align-self-center ml-4">
-                                <p>{{$fase->descricao}}</p>
-                            </div>
-                            <div class="col-md-2 text-truncate align-self-center">
-                                <p @if (count($fase->DocTransacao))
-                                @foreach ($fase->DocTransacao as $document)
-                                @if ($fase->valorFase > $document->valorRecebido)
-                                style="color:#FF3D00;"
-                                @elseif ($fase->valorFase == $document->valorRecebido)
-                                style="color:#47BC00;"
-                                @else
-                                style="color:#FF3D00;"
-                                @endif
-                                @endforeach
-                                @endif
-                                >
-                                @if (count($fase->DocTransacao))
-                                @foreach ($fase->DocTransacao as $document)
-                                @if ($document->valorRecebido != null && $fase->estado != 'Pago' && $fase->estado != 'Pendente')
-                                {{number_format((float) $valorTotal = $document->valorRecebido - $fase->valorFase, 2, ',', '')}}€
-                                @else
-                                {{number_format((float)$fase->valorFase, 2, ',', '')}}€
-                                @endif
-                                @endforeach
-                                @else
-                                {{number_format((float)$fase->valorFase, 2, ',', '')}}€
-                                @endif
-                                </p>
-                            </div>
-                            <div class="col-md-2 text-truncate align-self-center ml-auto">
-                                <?php
-                                $currentdate = date_create(date('d-m-Y'));
-                                $paymentdate = date_create(date('d-m-Y', strtotime($fase->dataVencimento)));
-                                $datediff = (date_diff($currentdate,$paymentdate))->days;
-                              ?>
-                                <p @if ($datediff <= 7 && $fase->verificacaoPago == 0) style="color:#FF3D00;" @endif>
-                                        <?=date('d/m/Y', strtotime($fase->dataVencimento))?>
-                                        </p>
-                            </div>
-                            <div class="col-md-2 text-truncate align-self-center ml-auto">
-                                <p>
-                                  @php
-                                    switch ($fase->estado) {
-                                      case 'Pendente':
-                                      printf('Pendente');
-                                      break;
-
-                                      case 'Pago':
-                                      printf('Pago');
-                                      break;
-
-                                      case 'Dívida':
-                                      printf('Dívida');
-                                      break;
-
-                                      case 'Crédito':
-                                      printf('Crédito');
-                                      break;
-                                    }
-                                  @endphp
-                                </p>
-                            </div>
-                        </div>
-                    </a>
-        </div>
-        @endforeach
     </div>
 </div>
-@section('scripts')
-<script src="{{asset('/js/charges.js')}}"></script>
+<!-- End of container-fluid -->
+
+<!-- Modal Info -->
+<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header pl-4 pb-1 pt-4">
+                <h5 class="modal-title text-gray-800 font-weight-bold">Para que serve?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close-button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-gray-800 pl-4 pr-5">
+                Aqui apenas pode visualizar os detalhes da cobrança. Para editar os dados da cobrança, clique no botão <b>Editar cobrança</b>.
+            </div>
+            <div class="modal-footer mt-3">
+                <a data-dismiss="modal" class="mr-4 font-weight-bold" id="close-option">Fechar</a>
+                <button type="button" data-dismiss="modal" class="btn btn-primary font-weight-bold mr-2">Entendido!</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Modal Info -->
 @endsection
-@endsection
+<!-- End of Page Content -->

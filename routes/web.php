@@ -124,17 +124,19 @@ Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
     Route::get('/pagamentos/nota-pagamento/{pagoresponsabilidade}/transferir', 'PaymentController@download')->name('payments.download');
 
     /* Cobranças */
-    Route::get('/cobrancas', 'ChargesController@index')->name('charges.index');
+    Route::get('/cobrancas', 'ChargesController@listProducts')->name('charges.listproducts');
       // Transferir comprovativo de pagamento
-      Route::get('/cobrancas/{document}/download', 'ChargesController@download')->name('charges.download');
-      // Visualizar cobranças
-      Route::get('/cobrancas/{product}', 'ChargesController@show')->name('charges.show');
-      Route::get('/cobrancas/{product}/{fase}', 'ChargesController@showcharge')->name('charges.showcharge');
+      Route::get('/cobrancas/{docTransacao}/download', 'ChargesController@download')->name('charges.download');
+      // Visualizar listagens de cobranças
+      Route::get('/cobrancas/{product}', 'ChargesController@listFases')->name('charges.listfases');
+      Route::get('/cobrancas/{product}/{fase}', 'ChargesController@create')->name('charges.create');
+      // Visualizar cobrança
+      Route::get('/cobrancas/{product}/{fase}/{docTransacao}', 'ChargesController@show')->name('charges.show');
       // Adicionar cobrança
       Route::post('/cobrancas/{product}/{fase}', 'ChargesController@store')->name('charges.store');
       // Editar cobrança
-      Route::get('/cobrancas/{product}/{fase}/{document}/editar', 'ChargesController@edit')->name('charges.edit');
-      Route::put('/cobrancas/{product}/{document}', 'ChargesController@update')->name('charges.update');
+      Route::get('/cobrancas/{product}/{fase}/{docTransacao}/editar', 'ChargesController@edit')->name('charges.edit');
+      Route::put('/cobrancas/{product}/{docTransacao}', 'ChargesController@update')->name('charges.update');
 
     /* Utilizadores */
     Route::resource('/administradores', 'AdminController')->parameters([
@@ -223,9 +225,6 @@ Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
       'destroy' => 'provider.destroy',
       'edit' => 'provider.edit',
     ]);
-
-    /* Ajuda */
-    Route::get('/ajuda', 'HelpController@show')->name('ajuda');
 
     /* Listagens */
     Route::resource('/listagens', 'ListagemController');
