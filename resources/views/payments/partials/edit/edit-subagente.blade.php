@@ -1,9 +1,10 @@
 <div class="card-header py-3">
-    <h6 class="m-0 font-weight-bold text-primary">Formulário - Registo de pagamento sobre o subagente {{$fase->produto->subagente->nome.' '.$fase->produto->subagente->apelido}}</h6>
+    <h6 class="m-0 font-weight-bold text-primary">Formulário de edição de um pagamento sobre o subagente {{$fase->produto->subagente->nome.' '.$fase->produto->subagente->apelido}}</h6>
 </div>
 <div class="card-body">
     <form method="POST" class="form-group needs-validation" id="registar-pagamento-form" novalidate>
         @csrf
+        @method("PUT")
         <div class="container-fluid">
             <div class="form-row mb-3">
                 <div class="col-md-6 mb-3">
@@ -35,8 +36,8 @@
                         <div class="input-group-prepend">
                             <div class="input-group-text"><i class="fas fa-calendar-alt"></i></div>
                         </div>
-                        <input type="date" class="form-control" name="dataSubAgente" id="dataSubAgente" value="{{old('dataSubAgente', $pagoResponsabilidade->dataPagamento)}}" required>
-                    </div>
+                    <input type="date" class="form-control" name="dataSubAgente" id="dataSubAgente" value="{{old('dataSubAgente', $pagoResponsabilidade->dataPagamento)}}" required>
+                </div>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="contaSubAgente" class="text-gray-900">Conta bancária <sup class="text-danger small">&#10033;</sup></label>
@@ -67,7 +68,7 @@
             </div>
             <div class="text-right mt-3" id="groupBtn">
                 <span class="mr-4 font-weight-bold" onclick="window.history.back();" id="cancelBtn" style="cursor:pointer;">Cancelar</span>
-                <button type="submit" name="button" class="btn btn-primary text-white font-weight-bold" id="submitbtn">Registar pagamento</button>
+                <button type="submit" name="button" class="btn btn-primary text-white font-weight-bold" id="submitbtn">Editar pagamento</button>
             </div>
         </div>
     </form>

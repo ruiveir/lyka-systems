@@ -9,7 +9,6 @@ use Illuminate\Console\Command;
 class AccountVerification extends Command
 {
     protected $signature = 'account:verification';
-
     protected $description = 'Check if some account is inactive';
 
     public function __construct()
