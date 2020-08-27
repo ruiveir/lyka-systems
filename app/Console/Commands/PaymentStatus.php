@@ -10,7 +10,6 @@ use Illuminate\Console\Command;
 class PaymentStatus extends Command
 {
     protected $signature = 'payment:update';
-
     protected $description = 'Update the payment status on database';
 
     public function __construct()
