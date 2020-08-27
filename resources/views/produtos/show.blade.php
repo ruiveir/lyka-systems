@@ -435,7 +435,7 @@
                                     @foreach($DocsTransacao as $documento)
                                         <div>
                                             <span class="text-secondary">{{$documento->descricao}}:</span>
-                                            <a class="" href="#" id="yui_3_17_2_1_1589215110643_49">
+                                            <a class="" href="{{route('charges.show',[$produto,$fase,$documento])}}" id="yui_3_17_2_1_1589215110643_49">
                                                 <img src="../../storage/default-photos/pdf.png" class="iconlarge activityicon" alt="" role="presentation" aria-hidden="true">
                                                 <span class="instancename">Abrir Transação</span>
                                             </a>
