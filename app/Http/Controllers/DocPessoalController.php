@@ -138,6 +138,29 @@ class DocPessoalController extends Controller
         }
     }
 
+
+
+
+
+
+    public function show(DocPessoal $documento)
+    {
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)){
+            $infoDoc = (array)json_decode($documento->info);
+            $infoKeys = array_keys($infoDoc);
+            $tipoPAT = 'Pessoal';
+            $tipo = $documento->tipo;
+            return view('documentos.show',compact('documento','infoDoc','infoKeys','tipo','tipoPAT'));
+        }else{
+            abort(403);
+        }
+    }
+
+
+
+
+
+
     public function store(StoreDocumentoRequest $request,Fase $fase, DocNecessario $docnecessario){
 
         $produts = null;

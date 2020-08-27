@@ -381,7 +381,7 @@
                                 <i class="far fa-address-card mr-2"></i>
 
                                 <a class="font-weight-bold" target="_blank"
-                                    href="{{Storage::disk('public')->url('client-documents/'.$client->idCliente .'/'. $docpessoal->imagem)}}">{{$docpessoal->tipo}}</a>
+                                    href="{{route('documento-pessoal.show',$docpessoal)}}">{{$docpessoal->tipo}}</a>
 
                                 <span
                                     class=""><small>({{ date('d-M-y', strtotime($docpessoal->created_at)) }})</small></span>
@@ -478,7 +478,7 @@
                                 @if ($docAcademico->imagem != null)
                                 <i class="far fa-address-card mr-2"></i>
                                 <a class="font-weight-bold" target="_blank"
-                                    href="{{Storage::disk('public')->url('client-documents/'.$client->idCliente .'/'. $docAcademico->imagem)}}">{{$docAcademico->tipo}}</a>
+                                    href="{{route('documento-academico.show',$docacademico)}}">{{$docAcademico->tipo}}</a>
                                 <span
                                     class=""><small>({{ date('d-M-y', strtotime($docAcademico->created_at)) }})</small></span>
 
