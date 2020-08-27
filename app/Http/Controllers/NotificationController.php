@@ -32,18 +32,17 @@ class NotificationController extends Controller
         if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
             $Admin = Auth()->user()->admin;
             $dataNasc = new DateTime($Admin->dataNasc);
-            $Assunto = 'PARABÉNS '.Auth()->user()->admin->nome.' '.Auth()->user()->admin->apelido;
-            //dd($dataNasc);
+            $Assunto = 'Parabéns '.Auth()->user()->admin->nome.' '.Auth()->user()->admin->apelido.'!';
         }
         if(Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null){
             $Agente = Auth()->user()->agente;
             $dataNasc = new DateTime($Agente->dataNasc);
-            $Assunto = 'PARABÉNS '.Auth()->user()->agente->nome.' '.Auth()->user()->agente->apelido;
+            $Assunto = 'Parabéns '.Auth()->user()->agente->nome.' '.Auth()->user()->agente->apelido.'!';
         }
         if(Auth()->user()->tipo == 'cliente' && Auth()->user()->idCliente != null){
             $Cliente = Auth()->user()->cliente;
             $dataNasc = new DateTime($Cliente->dataNasc);
-            $Assunto = 'PARABÉNS '.Auth()->user()->cliente->nome.' '.Auth()->user()->cliente->apelido;
+            $Assunto = 'Parabéns '.Auth()->user()->cliente->nome.' '.Auth()->user()->cliente->apelido.'!';
         }
         $DataHoje = new DateTime();
         if($dataNasc){
@@ -51,7 +50,7 @@ class NotificationController extends Controller
             $mes = $dataNasc->format("m");
             $dia =$dataNasc->format("d");
             $newDate = new DateTime($ano.'-'.$mes.'-'.$dia);
-            
+
             $diff = (date_diff($newDate,$DataHoje))->format("%R%a");
             //dd($diff);
             if($diff > 0){
@@ -60,7 +59,7 @@ class NotificationController extends Controller
             $diff = (date_diff($DataHoje,$newDate))->format("%R%a");
             if($diff >= 0 && $diff <= 20){
                 $Descricao = 'Hoje um ciclo de sua vida se finaliza e outro recomeça. Faça deste novo recomeço uma nova oportunidade para fazer tudo o que sempre sonhou! \nParabéns!';
-                
+
                 $date = $DataHoje;
                 if($diff != 0){
                     $date = (new DateTime())->add(new DateInterval('P'.str_replace('+','',$diff).'D'));
@@ -96,7 +95,7 @@ class NotificationController extends Controller
         if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
             $relatorios = RelatorioProblema::where("estado","!=","Resolvido")->get();
             $notificacoes = Auth()->user()->unreadNotifications;
-            
+
             foreach($relatorios as $relatorio){
                 $notExiste = false;
                 foreach($notificacoes as $not){
@@ -124,13 +123,13 @@ class NotificationController extends Controller
                 }
             }
         }
-        
+
     }
     public function getNotificacaoFaseAcaba()
     {
         $notificacoes = Auth()->user()->unreadNotifications;
         $Fases = null;
-        $Assunto = 'Clientes com documentos ou pagamentos em atraso';
+        $Assunto = 'Clientes com documentos ou pagamentos em atraso!';
         $Descricao = null;
         if(Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null){
             $todasFases = Fase::where('dataVencimento','<=',(new DateTime())->add(new DateInterval('P7D')))
@@ -358,8 +357,8 @@ class NotificationController extends Controller
             }
         }
     }
-    
-    
+
+
     public function index()
     {
         if (Auth()->user()->tipo == "admin" && Auth()->user()->idAdmin != null){
@@ -370,7 +369,7 @@ class NotificationController extends Controller
             abort(403);
         }
     }
-    
+
     public function show($notif_id)
     {
         if (Auth()->user()->tipo == "admin" && Auth()->user()->idAdmin != null){
@@ -389,4 +388,3 @@ class NotificationController extends Controller
         }
     }
 }
-

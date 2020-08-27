@@ -98,15 +98,13 @@
                         @if($notification->type == "App\Notifications\Aniversario" && $numNotificacao < 3)
                             <a class="dropdown-item d-flex align-items-center" href="{{route("notification.show", $notification)}}">
                                 <div class="mr-3">
-                                    <div class="icon-circle bg-gradient-primary text-white">
+                                    <div class="icon-circle bg-primary text-white">
                                         <i class="fas fa-birthday-cake"></i>
                                     </div>
                                 </div>
-                                <div class="info-not">
-                                    <div class="col p-2 assunto">
-                                        <b>{{$notification->data['assunto']}}</b>
-                                        <br>
-                                    </div>
+                                <div>
+                                    <div class="small text-gray-500">{{date('d/m/Y', strtotime($notification->created_at))}}</div>
+                                    <span class="font-weight-bold">{{$notification->data['assunto']}}</span>
                                 </div>
                             </a>
                             @php
@@ -116,17 +114,16 @@
                     @endforeach
                     @foreach ($notifications as $notification)
                         @if(($notification->type == "App\Notifications\Atraso" || $notification->type == 'App\Notifications\AtrasoCliente') && $notification->data['urgencia'] && $numNotificacao < 3)
-                            
+
                             <a class="dropdown-item d-flex align-items-center" href="{{route("notification.show", $notification)}}">
                                 <div class="mr-3">
-                                    <div class="icon-circle bg-gradient-danger text-white">
+                                    <div class="icon-circle bg-warning text-white">
                                         <i class="fas fa-exclamation-triangle"></i>
                                     </div>
                                 </div>
-                                <div class="info-not">
-                                    <div class="col p-2 assunto">
-                                        <b>{{$notification->data['assunto']}}</b>
-                                    </div>
+                                <div>
+                                    <div class="small text-gray-500">{{date('d/m/Y', strtotime($notification->created_at))}}</div>
+                                    <span class="font-weight-bold">{{$notification->data['assunto']}}</span>
                                 </div>
                             </a>
                             @php
@@ -136,32 +133,29 @@
                     @endforeach
                     @foreach ($notifications as $notification)
                         @if(($notification->type == "App\Notifications\Atraso" || $notification->type == 'App\Notifications\AtrasoCliente') && !$notification->data['urgencia'] && $numNotificacao < 3)
-                            
                             <a class="dropdown-item d-flex align-items-center" href="{{route("notification.show", $notification)}}">
                                 <div class="mr-3">
-                                    <div class="icon-circle bg-gradient-warning text-white">
+                                    <div class="icon-circle bg-warning text-white">
                                         <i class="fas fa-exclamation-triangle"></i>
                                     </div>
                                 </div>
-                                <div class="info-not">
-                                    <div class="col p-2 assunto">
-                                        <b>{{$notification->data['assunto']}}</b>
-                                        <br>
-                                    </div>
+                                <div>
+                                    <div class="small text-gray-500">{{date('d/m/Y', strtotime($notification->created_at))}}</div>
+                                    <span class="font-weight-bold">{{$notification->data['assunto']}}</span>
                                 </div>
                             </a>
                         @endif
                     @endforeach
                 @endif
-                                        
-                
+
+
 
                 @if ($notifications)
                     @if (count($notifications)>3)
                         <a class="dropdown-item text-center small text-gray-500" href="{{route('notification.index')}}">Ver mais</a>
                     @endif
                 @else
-                    <p class="text-center mt-3 text-gray-800">Não há notificações</p>
+                    <p class="text-center mt-3 text-gray-800">Não existem notificações :(</p>
                 @endif
             </div>
         </li>

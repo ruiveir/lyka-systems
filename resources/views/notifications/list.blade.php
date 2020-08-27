@@ -1,50 +1,33 @@
 @extends('layout.master')
-
-
-{{-- Titulo da Página --}}
+<!-- Page Title -->
 @section('title', 'Notificações')
-
-
-{{-- Estilos de CSS --}}
-@section('styleLinks')
-
-<link href="{{asset('/css/datatables_general.css')}}" rel="stylesheet">
-<link href="{{asset('/css/inputs.css')}}" rel="stylesheet">
-
-
-@endsection
-
-
-{{-- Conteudo da Página --}}
+<!-- Page Content -->
 @section('content')
-
+<!-- Begin Page Content -->
 <div class="container-fluid">
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h4 mb-0 text-gray-800">Notificações</h1>
+        <h1 class="h4 mb-0 text-gray-800">Central de notificações</h1>
+        <a href="#" data-toggle="modal" data-target="#infoModal" class="btn btn-secondary btn-icon-split btn-sm" title="Informações">
+            <span class="icon text-white-50">
+                <i class="fas fa-info-circle"></i>
+            </span>
+            <span class="text">Informações</span>
+        </a>
     </div>
     <!-- Approach -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">
-                @if($notifications)
-                    @if(count($notifications)==1)
-                        Existe {{count($notifications)}} notificação existente
-                    @else
-                        Existe {{count($notifications)}} notificações existentes
-                    @endif
-                @endif
-            </h6>
+            <h6 class="m-0 font-weight-bold text-primary">Listagem - Notificações</h6>
         </div>
         <div class="card-body">
             <div class="table-responsive p-1">
-                @if($notifications)
                 <table class="table table-bordered table-striped" id="table" width="100%">
                     <thead>
                         <tr>
-                            <th></th>
                             <th>Tipo</th>
                             <th>Assunto</th>
+                            <th>Estado</th>
                             <th style="max-width:100px; min-width:100px;">Opções</th>
                         </tr>
                     </thead>
@@ -52,38 +35,10 @@
                         @foreach ($notifications as $notification)
                         <tr>
                             <td>
-                                <div class="align-middle mx-auto rounded bg-white" style="overflow:hidden;">
-                                    @if($notification->type == "App\Notifications\BugReportSend")
-                                        <div class="icon-circle bg-danger">
-                                            <i class="fas fa-bug text-white"></i>
-                                        </div>
-                                    @elseif($notification->type == "App\Notifications\Aniversario")
-                                        <div class="icon-circle bg-gradient-primary text-white">
-                                            <i class="fa fa-birthday-cake"></i>
-                                        </div>
-                                    @elseif(($notification->type == "App\Notifications\Atraso" || $notification->type == 'App\Notifications\AtrasoCliente') 
-                                        && $notification->data['urgencia'])
-                                        <div class="icon-circle bg-gradient-danger text-white">
-                                            <i class="fas fa-exclamation-triangle"></i>
-                                        </div>
-                                    @elseif(($notification->type == "App\Notifications\Atraso" || $notification->type == 'App\Notifications\AtrasoCliente')
-                                        && !$notification->data['urgencia'])
-                                        <div class="icon-circle bg-gradient-warning text-white">
-                                            <i class="fas fa-exclamation-triangle"></i>
-                                        </div>
-                                    @else
-                                        <div class="icon-circle bg-gradient-success text-white">
-                                            <i class="fas fa-bug"></i>
-                                        </div>
-                                    @endif
-                                </div>
-                            </td>
-                                
-                            <td>
                                 @if($notification->type == "App\Notifications\BugReportSend")
-                                    <span>BugReportSend</span>
+                                    <span>Relatório de erro</span>
                                 @elseif($notification->type == "App\Notifications\Aniversario")
-                                    <span>Aniversario</span>
+                                    <span>Aniversário</span>
                                 @elseif($notification->type == "App\Notifications\Atraso")
                                     <span>Atraso<span>
                                 @elseif($notification->type == 'App\Notifications\AtrasoCliente')
@@ -91,13 +46,19 @@
                                 @else
                                     <span>Abertura</span>
                                 @endif
-                                </a>
                             </td>
                             <td>
                                 @if($notification->type == "App\Notifications\BugReportSend")
                                     {{$notification->data["subject"]}}
                                 @else
                                     {{$notification->data["assunto"]}}
+                                @endif
+                            </td>
+                            <td>
+                                @if($notification->data['urgencia'])
+                                    <span class="font-weight-bold text-danger">Urgente</span>
+                                @else
+                                    <span>Regular</span>
                                 @endif
                             </td>
                             <td class="text-center align-middle">
@@ -114,27 +75,66 @@
                         @endforeach
                     </tbody>
                 </table>
-                @else
-                    <div class="border rounded bg-light p-2 mt-4" >
-                        <span class="text-muted"><small>(sem notificações)</small></span>
-                    </div>
-                @endif
             </div>
         </div>
     </div>
 </div>
+<!-- End of container-fluid -->
 
+<!-- Modal for more information -->
+<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header pl-4 pb-1 pt-4">
+                <h5 class="modal-title text-gray-800 font-weight-bold">Para que serve?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close-button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-gray-800 pl-4 pr-5">
+                Nesta secção encontram-se a listagem das notificações do sistema. Caso a notificação for <span class="font-weight-bold text-danger">Urgente</span>, significa que há algum atraso relativo ao tipo de notificação.
+            </div>
+            <div class="modal-footer mt-3">
+                <a data-dismiss="modal" class="mr-4 font-weight-bold" id="close-option">Fechar</a>
+                <button type="button" data-dismiss="modal" class="btn btn-primary font-weight-bold mr-2">Entendido!</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Modal for more information  -->
 
-
-
-
-
-
-@endsection
-
-{{-- Utilização de scripts: --}}
+<!-- Begin of Scripts -->
 @section('scripts')
-
-<script src="{{asset('/js/contacts.js')}}"></script>
-
+<script>
+    $(document).ready(function() {
+        $('#table').DataTable({
+            "language": {
+                "sEmptyTable": "Não foi encontrado nenhum registo",
+                "sLoadingRecords": "A carregar...",
+                "sProcessing": "A processar...",
+                "sLengthMenu": "Mostrar _MENU_ registos",
+                "sZeroRecords": "Não foram encontrados resultados",
+                "sInfo": "Mostrando _END_ de _TOTAL_ registos",
+                "sInfoEmpty": "Mostrando de 0 de 0 registos",
+                "sInfoFiltered": "(filtrado de _MAX_ registos no total)",
+                "sInfoPostFix": "",
+                "sSearch": "Procurar:",
+                "sUrl": "",
+                "oPaginate": {
+                    "sFirst": "Primeiro",
+                    "sPrevious": "Anterior",
+                    "sNext": "Seguinte",
+                    "sLast": "Último"
+                },
+                "oAria": {
+                    "sSortAscending": ": Ordenar colunas de forma ascendente",
+                    "sSortDescending": ": Ordenar colunas de forma descendente"
+                }
+            }
+        });
+    });
+</script>
 @endsection
+<!-- End of Scripts -->
+@endsection
+<!-- End of Page Content -->
