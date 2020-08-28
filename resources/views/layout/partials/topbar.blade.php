@@ -23,7 +23,7 @@
 
         <!-- Nav Item - Contacts Search -->
         <li class="nav-item mx-1">
-            <a class="nav-link" href="#" title="Procurar contacto" data-toggle="modal" data-target="#modalContacts">
+            <a class="nav-link" href="#" id="procurar-contactos" title="Procurar contacto">
                 <i class="fas fa-phone fa-fw"></i>
             </a>
         </li>
