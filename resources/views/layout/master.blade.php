@@ -36,10 +36,10 @@
     @php
     use App\Cliente;
     $clientesNotificacao = Cliente::all();
-
     $notifications = Auth()->user()->getNotifications();
     @endphp
 </head>
+
 <body id="page-top">
     {{-- Modal de contactos --}}
     @include('layout.partials.modal-contactos')
@@ -53,36 +53,36 @@
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
 
-          <!-- Main Content -->
-          <div id="content">
-            <!-- Topbar -->
-            @include('layout.partials.topbar')
+            <!-- Main Content -->
+            <div id="content">
+                <!-- Topbar -->
+                @include('layout.partials.topbar')
 
-            <!-- Success message on forms -->
-            @if (!empty(session('success')))
-            @include('layout.msg-error-message.partials.success')
-            @endif
+                <!-- Success message on forms -->
+                @if (!empty(session('success')))
+                @include('layout.msg-error-message.partials.success')
+                @endif
 
-            <!-- Error message on forms -->
-            @if ($errors->any())
-            @include ('layout.msg-error-message.partials.errors')
-            @endif
+                <!-- Error message on forms -->
+                @if ($errors->any())
+                @include ('layout.msg-error-message.partials.errors')
+                @endif
 
-            <!-- Content -->
-            @yield('content')
+                <!-- Content -->
+                @yield('content')
 
-          </div>
-          <!-- End of Main Content -->
-
-          <!-- Footer -->
-          <footer class="sticky-footer bg-white">
-            <div class="container my-auto">
-              <div class="copyright text-center my-auto">
-                <span>Copyright &copy; Estudar Portugal {{date("Y")}}</span>
-              </div>
             </div>
-          </footer>
-          <!-- End of Footer -->
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; Estudar Portugal {{date("Y")}}</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
 
         </div>
         <!-- End of Content Wrapper -->
@@ -92,157 +92,167 @@
     @include('layout.partials.footer')
 
     <script>
-        $("#procurar-contactos-icon").click(function(event) {
-            event.preventDefault();
-            $('#modalContacts').modal('show');
-        });
-
-        $("#user-type").change(function() {
-            $("#error").remove();
-            $("#length").remove();
-            $("#prepend-div").remove();
-            value = $("#user-type").find(":selected").val();
-            switch (value) {
-                case "clientes":
-                    $("#first-div").remove();
-                    $("#second-div").remove();
-                    input =
-                        "<div class='col-md-4' id='first-div'><label for='name'>Nome do cliente:</label><br><input id='name' type='text' name='name' placeholder='Inserir nome do cliente'></div><div class='col-md-4' id='second-div'><label for='surname'>Apelido do cliente:</label><br><input id='surname' type='text' name='surname' placeholder='Inserir apelido do cliente'></div>";
-                    $("#contact-row").append(input);
-                    break;
-
-                case "agentes":
-                    $("#first-div").remove();
-                    $("#second-div").remove();
-                    input =
-                        "<div class='col-md-4' id='first-div'><label for='name'>Nome do agente:</label><br><input id='name' type='text' name='name' placeholder='Inserir nome do agente'></div><div class='col-md-4' id='second-div'><label for='surname'>Apelido do agente:</label><br><input id='surname' type='text' name='surname' placeholder='Inserir apelido do agente'></div>";
-                    $("#contact-row").append(input);
-                    break;
-
-                case "universidades":
-                    $("#first-div").remove();
-                    $("#second-div").remove();
-                    input = "<div class='col-md-4' id='first-div'><label for='name'>Nome da universidade:</label><br><input id='name' type='text' name='name' placeholder='Inserir nome da universidade'></div>";
-                    $("#contact-row").append(input);
-                    break;
-
-                case "fornecedores":
-                    $("#first-div").remove();
-                    $("#second-div").remove();
-                    input = "<div class='col-md-4' id='first-div'><label for='name'>Nome do fornecedor:</label><br><input id='name' type='text' name='name' placeholder='Inserir nome do fornecedor'></div>";
-                    $("#contact-row").append(input);
-                    break;
-
-                default:
-                    $("#first-div").remove();
-                    $("#second-div").remove();
-                    break;
-            }
-        });
-
-        $("#procurar-contactos-icon").click(function(event) {
-            event.preventDefault();
-            $("#error").remove();
-            $("#first-div").remove();
-            $("#second-div").remove();
-            $("#length").remove();
-            $("#prepend-div").remove();
-            $("#modalContacts").modal("show");
-        });
-
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': "{{csrf_token()}}"
-            }
-        });
-
-        $('#form-contact').submit(function(event) {
-            event.preventDefault();
-            info = {
-                user: $("#user-type").find(":selected").val(),
-                name: $("#name").val(),
-                surname: $("#surname").val()
-            };
-            $.ajax({
-                type: "post",
-                url: "{{route('search.contact')}}",
-                context: this,
-                data: info,
-                success: function(data) {
-                    $("#error").remove();
-                    $("#length").remove();
-                    $("#prepend-div").remove();
-
-                    if (data.length == 1) {
-                        length = "<div class='mt-4' id='length'><p>Foi encontrado " + data.length + " contacto no sistema.</p></div>";
-                    } else {
-                        length = "<div class='mt-4' id='length'><p>Foram encontrados " + data.length + " contactos no sistema.</p></div>";
-                    }
-
-                    div = "<div class='container mt-2' id='prepend-div'></div>";
-                    $("#modal-body-contact").append(div);
-
-                    $("#prepend-div").before(length);
-
-                    user = $("#user-type").find(":selected").val();
-
-                    switch (user) {
-                        case 'clientes':
-                            for (var i = 0; i < data.length; i++) {
-                                html = "<a href='/clients/" + data[i].slug +
-                                    "'><div class='row charge-div'><div class='col-md-1 align-self-center'><div class='white-circle'><img src='{{Storage::disk('public')->url('default-photos/M.jpg')}}' width='100%' class='mx-auto'></div></div><div class='col-md-3 text-truncate align-self-center ml-4'><p class='text-truncate'>" +
-                                    data[i].nome + ' ' + data[i].apelido + "</p></div><div class='col-md-3 align-self-center'><p class='text-truncate'>" + data[i].telefone1 +
-                                    "</p></div><div class='col-md-4 text-truncate align-self-center ml-2'><p class='text-truncate'>" + data[i].email + "</p></div></div></a>";
-                                $("#prepend-div").append(html);
-                            }
-                            break;
-
-                        case 'agentes':
-                            for (var i = 0; i < data.length; i++) {
-                                html = "<a href='/agents/" + data[i].slug +
-                                    "'><div class='row charge-div'><div class='col-md-1 align-self-center'><div class='white-circle'><img src='{{Storage::disk('public')->url('default-photos/M.jpg')}}' width='100%' class='mx-auto'></div></div><div class='col-md-3 text-truncate align-self-center ml-4'><p class='text-truncate'>" +
-                                    data[i].nome + ' ' + data[i].apelido + "</p></div><div class='col-md-3 align-self-center'><p class='text-truncate'>" + data[i].telefone1 +
-                                    "</p></div><div class='col-md-4 text-truncate align-self-center ml-2'><p class='text-truncate'>" + data[i].email + "</p></div></div></a>";
-                                $("#prepend-div").append(html);
-                            }
-                            break;
-
-                        case 'universidades':
-                            for (var i = 0; i < data.length; i++) {
-                                html = "<a href='/universities/" + data[i].slug +
-                                    "'><div class='row charge-div'><div class='col-md-1 align-self-center'><div class='white-circle'><img src='{{Storage::disk('public')->url('default-photos/M.jpg')}}' width='100%' class='mx-auto'></div></div><div class='col-md-3 text-truncate align-self-center ml-4'><p class='text-truncate'>" +
-                                    data[i].nome + "</p></div><div class='col-md-3 align-self-center'><p class='text-truncate'>" + data[i].telefone +
-                                    "</p></div><div class='col-md-4 text-truncate align-self-center ml-2'><p class='text-truncate'>" + data[i].email + "</p></div></div></a>";
-                                $("#prepend-div").append(html);
-                            }
-                            break;
-
-                        case 'fornecedores':
-                            for (var i = 0; i < data.length; i++) {
-                                html = "<a href='/fornecedores/" + data[i].slug +
-                                    "'><div class='row charge-div'><div class='col-md-1 align-self-center'><div class='white-circle'><img src='{{Storage::disk('public')->url('default-photos/M.jpg')}}' width='100%' class='mx-auto'></div></div><div class='col-md-3 text-truncate align-self-center ml-4'><p class='text-truncate'>" +
-                                    data[i].nome + "</p></div><div class='col-md-3 align-self-center'><p class='text-truncate'>" + data[i].contacto +
-                                    "</p></div><div class='col-md-4 text-truncate align-self-center ml-2'><p class='text-truncate'>" + data[i].morada + "</p></div></div></a>";
-                                $("#prepend-div").append(html);
-                            }
-                            break;
-                    }
+        $(document).ready(function() {
+            var table = $('#table-contactos').DataTable({
+                "language": {
+                    "sEmptyTable": "Não foi encontrado nenhum registo",
+                    "sLoadingRecords": "A carregar...",
+                    "sProcessing": "A processar...",
+                    "sLengthMenu": "Mostrar _MENU_ registos",
+                    "sZeroRecords": "Não foram encontrados resultados",
+                    "sInfo": "Mostrando _END_ de _TOTAL_ registos",
+                    "sInfoEmpty": "Mostrando de 0 de 0 registos",
+                    "sInfoFiltered": "(filtrado de _MAX_ registos no total)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Procurar:",
+                    "sUrl": "",
+                    "oPaginate": {
+                        "sFirst": "Primeiro",
+                        "sPrevious": "Anterior",
+                        "sNext": "Seguinte",
+                        "sLast": "Último"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Ordenar colunas de forma ascendente",
+                        "sSortDescending": ": Ordenar colunas de forma descendente"
+                    },
                 },
-                error: function(error) {
-                    if (error.status == 500) {
-                        $("#error").remove();
-                        $("#length").remove();
-                        $("#prepend-div").remove();
-                        msg = "<strong id='error'>Preencha os campos disponíveis para realizar uma procura.</strong>";
-                        $("#modal-body-contact").prepend(msg);
-                    } else {
-                        $("#error").remove();
-                        $("#length").remove();
-                        $("#prepend-div").remove();
-                        msg = "<strong id='error'>Não foi encontrado nenhum contacto relacionado com o utilizador que inseriu.</strong>";
-                        $("#modal-body-contact").prepend(msg);
-                    }
+                searching: false,
+                paging: false,
+            });
+
+            $("#procurar-contactos").click(function(event) {
+                event.preventDefault();
+                $(".custom-inputs").remove();
+                $('#div-table-contactos').addClass("d-none");
+                $("#form-contact").removeClass("was-validated");
+                $('#modalContacts').modal('show');
+                $("#user-type").prepend("<option disabled hidden selected>Escolher tipo de utilizador</option>");
+            });
+
+            $("#user-type").change(function() {
+                $("#form-contact").removeClass("was-validated");
+                value = $("#user-type").find(":selected").val();
+                switch (value) {
+                    case "clientes":
+                        $(".custom-inputs").remove();
+                        input = "<div class='col-md-4 custom-inputs'><label for='name'>Nome do cliente <sup class='text-danger small'>&#10033;</sup></label><input type='text' class='form-control' id='name' name='name' placeholder='Inserir um nome...' required><div class='invalid-feedback'>Oops, parece que algo não está bem...</div></div><div class='col-md-4 custom-inputs'><label for='surname'>Apelido do cliente</label><input type='text' class='form-control' id='surname' name='surname' placeholder='Inserir um apelido...'></div>";
+                        $("#contactos-form-row").append(input);
+                        break;
+
+                    case "agentes":
+                        $(".custom-inputs").remove();
+                        input = "<div class='col-md-4 custom-inputs'><label for='name'>Nome do agente <sup class='text-danger small'>&#10033;</sup></label><input type='text' class='form-control' id='name' name='name' placeholder='Inserir um nome...' required><div class='invalid-feedback'>Oops, parece que algo não está bem...</div></div><div class='col-md-4 custom-inputs'><label for='surname'>Apelido do agente</label><input type='text' class='form-control' id='surname' name='surname' placeholder='Inserir um apelido...'></div>";
+                        $("#contactos-form-row").append(input);
+                        break;
+
+                    case "universidades":
+                        $(".custom-inputs").remove();
+                        input = "<div class='col-md-8 custom-inputs'><label for='name'>Nome da universidade <sup class='text-danger small'>&#10033;</sup></label><input type='text' class='form-control' id='name' name='name' placeholder='Inserir um nome...' required><div class='invalid-feedback'>Oops, parece que algo não está bem...</div></div>";
+                        $("#contactos-form-row").append(input);
+                        break;
+
+                    case "fornecedores":
+                        $(".custom-inputs").remove();
+                        input = "<div class='col-md-8 custom-inputs'><label for='name'>Nome do fornecedor <sup class='text-danger small'>&#10033;</sup></label><input type='text' class='form-control' id='name' name='name' placeholder='Inserir um nome...' required><div class='invalid-feedback'>Oops, parece que algo não está bem...</div></div>";
+                        $("#contactos-form-row").append(input);
+                        break;
+
+                    default:
+                        $(".custom-inputs").remove();
+                        break;
                 }
+            });
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': "{{csrf_token()}}"
+                }
+            });
+
+            $('#form-contact').submit(function(event) {
+                if (this.checkValidity() === false) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                } else {
+                    event.preventDefault();
+                    button = "<button class='btn btn-primary' type='submit' disabled id='spin-button'><span class='spinner-border spinner-border-sm' role='status' aria-hidden='true' style='position:relative; bottom:4px; right:3px;'></span>A procurar contacto...</button>";
+                    $("#groupBtn").append(button);
+                    $("#submitbtn").addClass("d-none");
+
+                    info = {
+                        user: $("#user-type").find(":selected").val(),
+                        name: $("#name").val(),
+                        surname: $("#surname").val()
+                    };
+
+                    $.ajax({
+                        type: "post",
+                        url: "{{route('search.contact')}}",
+                        context: this,
+                        data: info,
+                        success: function(data) {
+                            $("#submitbtn").removeClass("d-none");
+                            $("#spin-button").remove();
+                            table.clear().draw();
+                            user = $("#user-type").find(":selected").val();
+                            switch (user) {
+                                case 'clientes':
+                                    for (var i = 0; i < data.length; i++) {
+                                        table.row.add([
+                                            data[i].nome + ' ' + data[i].apelido,
+                                            data[i].email,
+                                            data[i].telefone1
+                                        ]).draw();
+                                        $('#div-table-contactos').removeClass("d-none");
+                                    }
+                                break;
+
+                                case 'agentes':
+                                    for (var i = 0; i < data.length; i++) {
+                                        table.row.add([
+                                            data[i].nome + ' ' + data[i].apelido,
+                                            data[i].email,
+                                            data[i].telefone1
+                                        ]).draw();
+                                        $('#div-table-contactos').removeClass("d-none");
+                                    }
+                                    break;
+
+                                case 'universidades':
+                                    for (var i = 0; i < data.length; i++) {
+                                        table.row.add([
+                                            data[i].nome,
+                                            data[i].email,
+                                            data[i].telefone
+                                        ]).draw();
+                                        $('#div-table-contactos').removeClass("d-none");
+                                    }
+                                    break;
+
+                                case 'fornecedores':
+                                    for (var i = 0; i < data.length; i++) {
+                                        table.row.add([
+                                            data[i].nome,
+                                            "N/A",
+                                            data[i].contacto
+                                        ]).draw();
+                                        $('#div-table-contactos').removeClass("d-none");
+                                    }
+                                    break;
+                            }
+                        },
+                        error: function(error) {
+                            if (error.status == 404) {
+                                $("#submitbtn").removeClass("d-none");
+                                $("#spin-button").remove();
+                                table.clear().draw();
+                                $('#div-table-contactos').removeClass("d-none");
+                            }
+                        }
+                    });
+                }
+                $("#form-contact").addClass("was-validated");
             });
         });
     </script>
