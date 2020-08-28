@@ -380,7 +380,10 @@ class NotificationController extends Controller
                     $notification = $not;
                 }
             }
-
+            if($notification){
+                $deleteNot = $notification;
+                $deleteNot->delete();
+            }
             $clientesNotificacao = Cliente::all();
             return view('notifications.show', compact('notification','clientesNotificacao'));
         }else{
