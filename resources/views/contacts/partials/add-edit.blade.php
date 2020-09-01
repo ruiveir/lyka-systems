@@ -77,12 +77,12 @@
         <!-- Verifica se a imagem já existe-->
         <div class="text-center" style="max-height:300px; overflow:hidden;">
             @if ($contact->fotografia!=null)
-            <img src="{{Storage::disk('public')->url('contact-photos/').$contact->fotografia}}" id="preview"
-                class="m-2 p-1 border rounded bg-white shadow-sm" style="width:80%; height:auto; cursor:pointer; min-width:118px;
+            <img src="{{url('/storage/contact-photos/').$contact->fotografia}}" id="preview"
+                class="m-2 p-1 border rounded bg-white shadow-sm" style="width:80%; height:auto; cursor:pointer; min-width:118px;"
                 alt=" Imagem de apresentação" title="Clique para mudar a imagem de apresentação" />
             @else
-            <img src="{{Storage::disk('public')->url('default-photos/addImg.png')}}" id="preview"
-                class="m-2 p-1 border rounded bg-white shadow-sm" style="width:80%; height:auto; cursor:pointer; min-width:118px;
+            <img src="{{url('/storage/default-photos/addImg.png')}}" id="preview"
+                class="m-2 p-1 border rounded bg-white shadow-sm" style="width:80%; height:auto; cursor:pointer; min-width:118px;"
                 alt=" Imagem de apresentação" title="Clique para mudar a imagem de apresentação" />
             @endif
         </div>

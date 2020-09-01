@@ -2,7 +2,6 @@
 
 <!-- Page Title -->
 @section('title', 'Página Inicial')
-
 <!-- CSS Style Link -->
 @section('styleLinks')
 <link href="{{asset('/css/dashboard.css')}}" rel="stylesheet">

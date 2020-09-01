@@ -68,10 +68,10 @@
 
                 @if($contact->fotografia)
                 <img class="p-1 rounded border bg-white shadow-sm"
-                    src="{{Storage::disk('public')->url('contact-photos/').$contact->fotografia}}" style="width:90%">
+                    src="{{url('/storage/contact-photos/').$contact->fotografia}}" style="width:90%">
                 @else
                 <img class="p-1 rounded border bg-white shadow-sm"
-                    src="{{Storage::disk('public')->url('default-photos/M.jpg')}}" style="width:90%">
+                    src="{{url('/storage/default-photos/M.jpg')}}" style="width:90%">
                 @endif
 
             </div>

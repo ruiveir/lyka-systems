@@ -104,7 +104,7 @@
                                 @if ($library->acesso =="Privado")
                                 <small><i class="fas fa-lock text-warning ml-1" title="Ficheiro Privado"></i></small>
                                 @endif
-                                <a download href="{{Storage::disk('public')->url('library/'.$library->ficheiro)}}"
+                                <a download href="{{url('/storage/library/'.$library->ficheiro)}}"
                                     class="name_link ml-2">{{ \Illuminate\Support\Str::limit($library->descricao, 50, $end=' (...)') }}</a>
 
                             </td>
@@ -124,7 +124,7 @@
                             <td class="text-center align-middle align-content-center">
 
                                 {{-- Download --}}
-                                <a download href="{{Storage::disk('public')->url('library/'.$library->ficheiro)}}"
+                                <a download href="{{url('/storage/library/'.$library->ficheiro)}}"
                                     class="btn btn-sm btn-outline-primary " title="Fazer download do ficheiro"><i
                                         class="fas fa-download"></i></a>
 

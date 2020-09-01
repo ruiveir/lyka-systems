@@ -294,7 +294,7 @@ $data = $Notificacoes[0]->data['dataComeco'];
                     <div class="row charge-div">
                         <div class="col-md-1 align-self-center">
                             <div class="white-circle">
-                                <img src="{{Storage::disk('public')->url('default-photos/M.jpg')}}" width="100%" class="mx-auto">
+                                <img src="{{url('/storage/default-photos/M.jpg')}}" width="100%" class="mx-auto">
                             </div>
                         </div>
                         <div class="col-md-3 text-truncate align-self-center ml-4">
@@ -327,7 +327,7 @@ $data = $Notificacoes[0]->data['dataComeco'];
                     <div class="row charge-div">
                         <div class="col-md-1 align-self-center">
                             <div class="white-circle">
-                                <img src="{{Storage::disk('public')->url('default-photos/M.jpg')}}" width="100%" class="mx-auto">
+                                <img src="{{url('/storage/default-photos/M.jpg')}}" width="100%" class="mx-auto">
                             </div>
                         </div>
                         <div class="col-md-3 text-truncate align-self-center ml-4">
@@ -360,7 +360,7 @@ $data = $Notificacoes[0]->data['dataComeco'];
                     <div class="row charge-div">
                         <div class="col-md-1 align-self-center">
                             <div class="white-circle">
-                                <img src="{{Storage::disk('public')->url('default-photos/M.jpg')}}" width="100%" class="mx-auto">
+                                <img src="{{url('/storage/default-photos/M.jpg')}}" width="100%" class="mx-auto">
                             </div>
                         </div>
                         <div class="col-md-3 text-truncate align-self-center ml-4">
@@ -393,7 +393,7 @@ $data = $Notificacoes[0]->data['dataComeco'];
                     <div class="row charge-div">
                         <div class="col-md-1 align-self-center">
                             <div class="white-circle">
-                                <img src="{{Storage::disk('public')->url('default-photos/M.jpg')}}" width="100%" class="mx-auto">
+                                <img src="{{url('/storage/default-photos/M.jpg')}}" width="100%" class="mx-auto">
                             </div>
                         </div>
                         <div class="col-md-3 text-truncate align-self-center ml-4">
@@ -426,7 +426,7 @@ $data = $Notificacoes[0]->data['dataComeco'];
                     <div class="row charge-div">
                         <div class="col-md-1 align-self-center">
                             <div class="white-circle">
-                                <img src="{{Storage::disk('public')->url('default-photos/M.jpg')}}" width="100%" class="mx-auto">
+                                <img src="{{url('/storage/default-photos/M.jpg')}}" width="100%" class="mx-auto">
                             </div>
                         </div>
                         <div class="col-md-3 text-truncate align-self-center ml-4">
@@ -459,7 +459,7 @@ $data = $Notificacoes[0]->data['dataComeco'];
                     <div class="row charge-div">
                         <div class="col-md-1 align-self-center">
                             <div class="white-circle">
-                                <img src="{{Storage::disk('public')->url('default-photos/M.jpg')}}" width="100%" class="mx-auto">
+                                <img src="{{url('/storage/default-photos/M.jpg')}}" width="100%" class="mx-auto">
                             </div>
                         </div>
                         <div class="col-md-3 text-truncate align-self-center ml-4">

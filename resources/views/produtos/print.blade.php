@@ -85,10 +85,10 @@
             <div class="col col-3">
                 @if ($client->fotografia==null)
                 <img class="m-2 p-1 rounded bg-white shadow-sm"
-                    src="{{Storage::disk('public')->url('client-photos/default.png')}}" style="width:90%">
+                    src="{{url('/storage/client-photos/default.png')}}" style="width:90%">
                 @else
                 <img class="m-2 p-1 rounded bg-white shadow-sm"
-                    src="{{Storage::disk('public')->url('client-photos/').$client->fotografia}}" style="width:90%">
+                    src="{{url('/storage/client-photos/').$client->fotografia}}" style="width:90%">
                 @endif
 
             </div>

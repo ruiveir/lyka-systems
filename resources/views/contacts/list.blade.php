@@ -108,11 +108,11 @@
                                         style="overflow:hidden; width:50px; height:50px">
                                         <a class="name_link" href="{{route('contacts.show',$contact)}}">
                                             @if($contact->fotografia)
-                                            <img src="{{Storage::disk('public')->url('contact-photos/').$contact->fotografia}}"
+                                            <img src="{{url('/storage/contact-photos/').$contact->fotografia}}"
                                                 width="100%" class="mx-auto">
-                                                            @else
-                                                                <img src="
-                                                {{Storage::disk('public')->url('default-photos/M.jpg')}}" width="100%"
+                                            @else
+                                                <img src="
+                                                {{url('/storage/default-photos/M.jpg')}}" width="100%"
                                                 class="mx-auto">
                                             @endif
                                         </a>

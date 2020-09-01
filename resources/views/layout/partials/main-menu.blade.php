@@ -4,11 +4,11 @@
         <div class="col">
             <div class="user-image">
                 @if(Auth()->user()->admin->fotografia)
-                    <img src="{{Storage::disk('public')->url('admin-photos/').Auth()->user()->admin->fotografia}}" alt="Imagem de apresentação" width="100%">
+                    <img src="{{url('/storage/admin-photos/').Auth()->user()->admin->fotografia}}" alt="Imagem de apresentação" width="100%">
                     @elseif(Auth()->user()->admin->genero == 'F')
-                        <img src="{{Storage::disk('public')->url('default-photos/F.jpg')}}" alt="Imagem de apresentação" width="100%">
+                        <img src="{{url('/storage/default-photos/F.jpg')}}" alt="Imagem de apresentação" width="100%">
                         @else
-                        <img src="{{Storage::disk('public')->url('default-photos/M.jpg')}}" alt="Imagem de apresentação" width="100%">
+                        <img src="{{url('/storage/default-photos/M.jpg')}}" alt="Imagem de apresentação" width="100%">
                         @endif
             </div>
         </div>

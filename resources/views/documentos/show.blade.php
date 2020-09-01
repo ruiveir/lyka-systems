@@ -30,7 +30,7 @@
                 <h1 class="h4 mb-0 text-gray-800">Informação do {{$tipo}}</h1>
             </div>
             <div class="col-md-8">
-                <a class="" onclick="window.open('{{Storage::disk('public')->url('client-documents/'.$documento->idCliente .'/'. $documento->imagem)}}', '', 'width=620,height=450,toolbar=no,location=no,menubar=no,copyhistory=no,status=no,directories=no,scrollbars=yes,resizable=yes'); return false;" href="{{Storage::disk('public')->url('client-documents/'.$documento->idCliente .'/'. $documento->imagem)}}" id="yui_3_17_2_1_1589215110643_49">
+                <a class="" onclick="window.open('{{url('/storage/client-documents/'.$documento->idCliente .'/'. $documento->imagem)}}', '', 'width=620,height=450,toolbar=no,location=no,menubar=no,copyhistory=no,status=no,directories=no,scrollbars=yes,resizable=yes'); return false;" href="{{url('/storage/client-documents/'.$documento->idCliente .'/'. $documento->imagem)}}" id="yui_3_17_2_1_1589215110643_49">
                     <img src="../../storage/default-photos/pdf.png" class="iconlarge activityicon" alt="" role="presentation" aria-hidden="true">
                     <span class="instancename">Abrir Imagem do {{$documento->tipo}}</span>
                 </a>

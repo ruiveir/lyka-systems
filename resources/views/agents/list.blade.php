@@ -100,13 +100,13 @@
                                         style="overflow:hidden; width:50px; height:50px">
                                         <a class="name_link" href="{{route('agents.show',$agent)}}">
                                             @if($agent->fotografia)
-                                            <img src="{{Storage::disk('public')->url('agent-documents/'.$agent->idAgente.'/').$agent->fotografia}}"
+                                            <img src="{{url('/storage/agent-documents/'.$agent->idAgente.'/').$agent->fotografia}}"
                                                 width="100%" class="mx-auto">
                                             @elseif($agent->genero == 'F')
-                                            <img src="{{Storage::disk('public')->url('default-photos/F.jpg')}}"
+                                            <img src="{{url('/storage/default-photos/F.jpg')}}"
                                                 width="100%" class="mx-auto">
                                             @else
-                                            <img src="{{Storage::disk('public')->url('default-photos/M.jpg')}}"
+                                            <img src="{{url('/storage/default-photos/M.jpg')}}"
                                                 width="100%" class="mx-auto">
                                             @endif
                                         </a>

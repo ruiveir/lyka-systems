@@ -64,14 +64,14 @@
 
                     @if($client->fotografia)
                     <img class="align-middle p-1 rounded bg-white shadow-sm border"
-                        src="{{Storage::disk('public')->url('client-documents/'.$client->idCliente.'/').$client->fotografia}}"
+                        src="{{url('/storage/client-documents/'.$client->idCliente.'/').$client->fotografia}}"
                         style="width:100%; ">
                     @elseif($client->genero == 'F')
                     <img class="align-middle p-1 rounded bg-white shadow-sm border"
-                        src="{{Storage::disk('public')->url('default-photos/F.jpg')}}" style="width:100%">
+                        src="{{url('/storage/default-photos/F.jpg')}}" style="width:100%">
                     @else
                     <img class="align-middle p-1 rounded bg-white shadow-sm border"
-                        src="{{Storage::disk('public')->url('default-photos/M.jpg')}}" style="width:100%">
+                        src="{{url('/storage/default-photos/M.jpg')}}" style="width:100%">
                     @endif
 
                 </div>

@@ -210,13 +210,13 @@
 
                     <!-- Verifica se a imagem já existe-->
                     @if ($agent->fotografia!=null)
-                    <img src="{{Storage::disk('public')->url('agent-documents/'.$agent->idAgente.'/').$agent->fotografia}}"
+                    <img src="{{url('/storage/agent-documents/'.$agent->idAgente.'/').$agent->fotografia}}"
                         id="preview" class="m-2 p-1 border rounded bg-white shadow-sm"
                         style="width:80%;cursor:pointer;min-width:118px;" alt="Imagem de apresentação"
                         title="Clique para mudar a imagem de apresentação" />
 
                     @else
-                    <img src="{{Storage::disk('public')->url('default-photos/addImg.png')}}" id="preview"
+                    <img src="{{url('/storage/default-photos/addImg.png')}}" id="preview"
                         class="m-2 p-1 border rounded bg-white shadow-sm"
                         style="width:80%;cursor:pointer;min-width:118px;" alt="Imagem de apresentação"
                         title="Clique para mudar a imagem de apresentação" />

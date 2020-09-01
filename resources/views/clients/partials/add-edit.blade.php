@@ -177,13 +177,13 @@
                     <div class="text-center align-self-center align-middle mx-auto" style="width:300px; max-height:300px; overflow:hidden;">
                         <!-- Verifica se a imagem já existe-->
                         @if ($client->fotografia!=null)
-                        <img src="{{Storage::disk('public')->url('client-documents/'.$client->idCliente.'/').$client->fotografia}}"
+                        <img src="{{url('/storage/client-documents/'.$client->idCliente.'/').$client->fotografia}}"
                             id="preview" class="m-2 p-1 border rounded bg-white shadow-sm"
                             style="width:80%; height:auto; cursor:pointer; min-width:118px;" alt="Imagem de apresentação"
                             title="Clique para mudar a imagem de apresentação" />
                         @else
 
-                        <img src="{{Storage::disk('public')->url('default-photos/m.jpg')}}" id="preview"
+                        <img src="{{url('/storage/default-photos/m.jpg')}}" id="preview"
                             class="p-1 border rounded bg-white shadow-sm " style="width:80%; cursor:pointer; min-width:118px; max-height:300px;"
                             alt="Imagem de apresentação" title="Clique para mudar a imagem de apresentação" />
                         @endif
