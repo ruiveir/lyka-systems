@@ -193,6 +193,5 @@
 
 {{-- Utilização de scripts: --}}
 @section('scripts')
-
 <script src="{{asset('/js/clients.js')}}"></script>
 @endsection

@@ -316,7 +316,7 @@ $('#search-form').submit(function(event) {
                         color = "#747474"; // CINZENTO (DEFAULT)
                     }
 
-                    html = "<a href='/pagamentos/cliente/" + data[i].cliente.slug + "/fase/" + data[i].fase.slug + "/" + data[i].idResponsabilidade + "'><div class='row charge-div'> <div class='col-md-1 align-self-center'><div class='white-circle'><img src='http://lykasystems.test/storage/default-photos/M.jpg' width='100%' class='mx-auto'></div></div> <div class='col-md-3 text-truncate align-self-center ml-4'><p class='text-truncate' title='" + data[i].cliente.nome + ' ' + data[i].cliente.apelido + "'>" + data[i].cliente.nome + ' ' + data[i].cliente.apelido + "</p></div> <div class='col-md-2 text-truncate align-self-center'><p class='text-truncate'>" + data[i].valorCliente.split('.').join(',') + "€</p></div> <div class='col-md-2 align-self-center ml-4'><p class='text-truncate' title='" + duedate + "'>" + duedate + "</p></div> <div class='col-md-2 text-truncate align-self-center ml-auto'><p class='text-truncate' style='color:" + color + ";'>" + status + "</p></div> </div></a>";
+                    html = "<a href='/pagamentos/cliente/" + data[i].cliente.slug + "/fase/" + data[i].fase.slug + "/" + data[i].idResponsabilidade + "'><div class='row charge-div'> <div class='col-md-1 align-self-center'><div class='white-circle'><img src='"+'"{{url(/storage/default-photos/M.jpg)}}"'+" width='100%' class='mx-auto'></div></div> <div class='col-md-3 text-truncate align-self-center ml-4'><p class='text-truncate' title='" + data[i].cliente.nome + ' ' + data[i].cliente.apelido + "'>" + data[i].cliente.nome + ' ' + data[i].cliente.apelido + "</p></div> <div class='col-md-2 text-truncate align-self-center'><p class='text-truncate'>" + data[i].valorCliente.split('.').join(',') + "€</p></div> <div class='col-md-2 align-self-center ml-4'><p class='text-truncate' title='" + duedate + "'>" + duedate + "</p></div> <div class='col-md-2 text-truncate align-self-center ml-auto'><p class='text-truncate' style='color:" + color + ";'>" + status + "</p></div> </div></a>";
                     $(".payments").append(html);
                 }
 
@@ -347,7 +347,7 @@ $('#search-form').submit(function(event) {
                         color = "#747474"; // CINZENTO (DEFAULT)
                     }
 
-                    html = "<a href='/pagamentos/agente/" + data[i].agente.slug + "/fase/" + data[i].fase.slug + "/" + data[i].idResponsabilidade + "'><div class='row charge-div'> <div class='col-md-1 align-self-center'><div class='white-circle'><img src='http://lykasystems.test/storage/default-photos/M.jpg' width='100%' class='mx-auto'></div></div> <div class='col-md-3 text-truncate align-self-center ml-4'><p class='text-truncate' title='" + data[i].agente.nome + ' ' + data[i].agente.apelido + "'>" + data[i].agente.nome + ' ' + data[i].agente.apelido + "</p></div> <div class='col-md-2 text-truncate align-self-center'><p class='text-truncate'>" + data[i].valorAgente.split('.').join(',') + "€</p></div> <div class='col-md-2 align-self-center ml-4'><p class='text-truncate' title='" + duedate + "'>" + duedate + "</p></div> <div class='col-md-2 text-truncate align-self-center ml-auto'><p class='text-truncate' style='color:" + color + ";'>" + status + "</p></div> </div></a>";
+                    html = "<a href='/pagamentos/agente/" + data[i].agente.slug + "/fase/" + data[i].fase.slug + "/" + data[i].idResponsabilidade + "'><div class='row charge-div'> <div class='col-md-1 align-self-center'><div class='white-circle'><img src='"+'"{{url(/storage/default-photos/M.jpg)}}"'+" width='100%' class='mx-auto'></div></div> <div class='col-md-3 text-truncate align-self-center ml-4'><p class='text-truncate' title='" + data[i].agente.nome + ' ' + data[i].agente.apelido + "'>" + data[i].agente.nome + ' ' + data[i].agente.apelido + "</p></div> <div class='col-md-2 text-truncate align-self-center'><p class='text-truncate'>" + data[i].valorAgente.split('.').join(',') + "€</p></div> <div class='col-md-2 align-self-center ml-4'><p class='text-truncate' title='" + duedate + "'>" + duedate + "</p></div> <div class='col-md-2 text-truncate align-self-center ml-auto'><p class='text-truncate' style='color:" + color + ";'>" + status + "</p></div> </div></a>";
                     $(".payments").append(html);
                 }
 
@@ -378,7 +378,7 @@ $('#search-form').submit(function(event) {
                         color = "#747474"; // CINZENTO (DEFAULT)
                     }
 
-                    html = "<a href='/pagamentos/subagente/" + data[i].sub_agente.slug + "/fase/" + data[i].fase.slug + "/" + data[i].idResponsabilidade + "'><div class='row charge-div'> <div class='col-md-1 align-self-center'><div class='white-circle'><img src='http://lykasystems.test/storage/default-photos/M.jpg' width='100%' class='mx-auto'></div></div> <div class='col-md-3 text-truncate align-self-center ml-4'><p class='text-truncate' title='" + data[i].sub_agente.nome + ' ' + data[i].sub_agente.apelido + "'>" + data[i].sub_agente.nome + ' ' + data[i].sub_agente.apelido + "</p></div> <div class='col-md-2 text-truncate align-self-center'><p class='text-truncate'>" + data[i].valorSubAgente.split('.').join(',') + "€</p></div> <div class='col-md-2 align-self-center ml-4'><p class='text-truncate' title='" + duedate + "'>" + duedate + "</p></div> <div class='col-md-2 text-truncate align-self-center ml-auto'><p class='text-truncate' style='color:" + color + ";'>" + status + "</p></div> </div></a>";
+                    html = "<a href='/pagamentos/subagente/" + data[i].sub_agente.slug + "/fase/" + data[i].fase.slug + "/" + data[i].idResponsabilidade + "'><div class='row charge-div'> <div class='col-md-1 align-self-center'><div class='white-circle'><img src='"+'"{{url(/storage/default-photos/M.jpg)}}"'+" width='100%' class='mx-auto'></div></div> <div class='col-md-3 text-truncate align-self-center ml-4'><p class='text-truncate' title='" + data[i].sub_agente.nome + ' ' + data[i].sub_agente.apelido + "'>" + data[i].sub_agente.nome + ' ' + data[i].sub_agente.apelido + "</p></div> <div class='col-md-2 text-truncate align-self-center'><p class='text-truncate'>" + data[i].valorSubAgente.split('.').join(',') + "€</p></div> <div class='col-md-2 align-self-center ml-4'><p class='text-truncate' title='" + duedate + "'>" + duedate + "</p></div> <div class='col-md-2 text-truncate align-self-center ml-auto'><p class='text-truncate' style='color:" + color + ";'>" + status + "</p></div> </div></a>";
                     $(".payments").append(html);
                 }
 
@@ -409,7 +409,7 @@ $('#search-form').submit(function(event) {
                         color = "#747474"; // CINZENTO (DEFAULT)
                     }
 
-                    html = "<a href='/pagamentos/universidade-principal/" + data[i].universidade1.slug + "/fase/" + data[i].fase.slug + "/" + data[i].idResponsabilidade + "'><div class='row charge-div'> <div class='col-md-1 align-self-center'><div class='white-circle'><img src='http://lykasystems.test/storage/default-photos/M.jpg' width='100%' class='mx-auto'></div></div> <div class='col-md-3 text-truncate align-self-center ml-4'><p class='text-truncate' title='" + data[i].universidade1.nome + "'>" + data[i].universidade1.nome + "</p></div> <div class='col-md-2 text-truncate align-self-center'><p class='text-truncate'>" + data[i].valorUniversidade1.split('.').join(',') + "€</p></div> <div class='col-md-2 align-self-center ml-4'><p class='text-truncate' title='" + duedate + "'>" + duedate + "</p></div> <div class='col-md-2 text-truncate align-self-center ml-auto'><p class='text-truncate' style='color:" + color + ";'>" + status + "</p></div> </div></a>";
+                    html = "<a href='/pagamentos/universidade-principal/" + data[i].universidade1.slug + "/fase/" + data[i].fase.slug + "/" + data[i].idResponsabilidade + "'><div class='row charge-div'> <div class='col-md-1 align-self-center'><div class='white-circle'><img src='"+'"{{url(/storage/default-photos/M.jpg)}}"'+" width='100%' class='mx-auto'></div></div> <div class='col-md-3 text-truncate align-self-center ml-4'><p class='text-truncate' title='" + data[i].universidade1.nome + "'>" + data[i].universidade1.nome + "</p></div> <div class='col-md-2 text-truncate align-self-center'><p class='text-truncate'>" + data[i].valorUniversidade1.split('.').join(',') + "€</p></div> <div class='col-md-2 align-self-center ml-4'><p class='text-truncate' title='" + duedate + "'>" + duedate + "</p></div> <div class='col-md-2 text-truncate align-self-center ml-auto'><p class='text-truncate' style='color:" + color + ";'>" + status + "</p></div> </div></a>";
                     $(".payments").append(html);
                 }
 
@@ -440,7 +440,7 @@ $('#search-form').submit(function(event) {
                         color = "#747474"; // CINZENTO (DEFAULT)
                     }
 
-                    html = "<a href='/pagamentos/universidade-secundaria/" + data[i].universidade2.slug + "/fase/" + data[i].fase.slug + "/" + data[i].idResponsabilidade + "'><div class='row charge-div'> <div class='col-md-1 align-self-center'><div class='white-circle'><img src='http://lykasystems.test/storage/default-photos/M.jpg' width='100%' class='mx-auto'></div></div> <div class='col-md-3 text-truncate align-self-center ml-4'><p class='text-truncate' title='" + data[i].universidade2.nome + "'>" + data[i].universidade2.nome + "</p></div> <div class='col-md-2 text-truncate align-self-center'><p class='text-truncate'>" + data[i].valorUniversidade2.split('.').join(',') + "€</p></div> <div class='col-md-2 align-self-center ml-4'><p class='text-truncate' title='" + duedate + "'>" + duedate + "</p></div> <div class='col-md-2 text-truncate align-self-center ml-auto'><p class='text-truncate' style='color:" + color + ";'>" + status + "</p></div> </div></a>";
+                    html = "<a href='/pagamentos/universidade-secundaria/" + data[i].universidade2.slug + "/fase/" + data[i].fase.slug + "/" + data[i].idResponsabilidade + "'><div class='row charge-div'> <div class='col-md-1 align-self-center'><div class='white-circle'><img src='"+'"{{url(/storage/default-photos/M.jpg)}}"'+" width='100%' class='mx-auto'></div></div> <div class='col-md-3 text-truncate align-self-center ml-4'><p class='text-truncate' title='" + data[i].universidade2.nome + "'>" + data[i].universidade2.nome + "</p></div> <div class='col-md-2 text-truncate align-self-center'><p class='text-truncate'>" + data[i].valorUniversidade2.split('.').join(',') + "€</p></div> <div class='col-md-2 align-self-center ml-4'><p class='text-truncate' title='" + duedate + "'>" + duedate + "</p></div> <div class='col-md-2 text-truncate align-self-center ml-auto'><p class='text-truncate' style='color:" + color + ";'>" + status + "</p></div> </div></a>";
                     $(".payments").append(html);
                 }
 
@@ -471,12 +471,14 @@ $('#search-form').submit(function(event) {
                         color = "#747474"; // CINZENTO (DEFAULT)
                     }
 
-                    html = "<a href='/pagamentos/fornecedor/" + data[i].fornecedor.slug + "/fase/" + data[i].responsabilidade.fase.slug + "/" + data[i].idRelacao + "'><div class='row charge-div'> <div class='col-md-1 align-self-center'><div class='white-circle'><img src='http://lykasystems.test/storage/default-photos/M.jpg' width='100%' class='mx-auto'></div></div> <div class='col-md-3 text-truncate align-self-center ml-4'><p class='text-truncate' title='" + data[i].fornecedor.nome + "'>" + data[i].fornecedor.nome + "</p></div> <div class='col-md-2 text-truncate align-self-center'><p class='text-truncate'>" + data[i].valor.split('.').join(',') + "€</p></div> <div class='col-md-2 align-self-center ml-4'><p class='text-truncate' title='" + duedate + "'>" + duedate + "</p></div> <div class='col-md-2 text-truncate align-self-center ml-auto'><p class='text-truncate' style='color:" + color + ";'>" + status + "</p></div> </div></a>";
+                    html = "<a href='/pagamentos/fornecedor/" + data[i].fornecedor.slug + "/fase/" + data[i].responsabilidade.fase.slug + "/" + data[i].idRelacao + "'><div class='row charge-div'> <div class='col-md-1 align-self-center'><div class='white-circle'><img src='"+'"{{url(/storage/default-photos/M.jpg)}}"'+" width='100%' class='mx-auto'></div></div> <div class='col-md-3 text-truncate align-self-center ml-4'><p class='text-truncate' title='" + data[i].fornecedor.nome + "'>" + data[i].fornecedor.nome + "</p></div> <div class='col-md-2 text-truncate align-self-center'><p class='text-truncate'>" + data[i].valor.split('.').join(',') + "€</p></div> <div class='col-md-2 align-self-center ml-4'><p class='text-truncate' title='" + duedate + "'>" + duedate + "</p></div> <div class='col-md-2 text-truncate align-self-center ml-auto'><p class='text-truncate' style='color:" + color + ";'>" + status + "</p></div> </div></a>";
                     $(".payments").append(html);
                 }
             }
 
-            window.location.assign("http://lykasystems.test/pagamentos#append-payment");
+            linkSite = window.location.origin;
+            window.location.assign(linkSite+"/pagamentos#append-payment");
+            //window.location.assign("http://lykasystems.test/pagamentos#append-payment");
             history.pushState("", document.title, window.location.pathname);
         },
         error: function(data) {
@@ -490,7 +492,9 @@ $('#search-form').submit(function(event) {
                 $("#append-payment").append(div);
                 error = "<div class='row' id='error404' style='padding: 0px 18px;'><div class='container no-data-div text-center mt-3'><p style='color:#e3342f;'>Não existem pagamentos registados no sistema perante a sua pesquisa.</p></div></div>";
                 $(".payments").append(error);
-                window.location.assign("http://lykasystems.test/pagamentos#append-payment");
+                linkSite = window.location.origin;
+                window.location.assign(linkSite+"/pagamentos#append-payment");
+                //window.location.assign("http://lykasystems.test/pagamentos#append-payment");
                 history.pushState("", document.title, window.location.pathname);
             } else {
                 if ($('#error404').text() != '' || $('#error500').text() != '') {

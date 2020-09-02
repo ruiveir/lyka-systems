@@ -98,7 +98,9 @@
                         $("#anchor-stream").attr("href", "/pagamentos/nota-pagamento/" + data.idPagoResp + "/transferir");
                         $("#anchor-stream").click(function() {
                             setTimeout(function() {
-                                window.location.assign("http://lykasystems.test/pagamentos");
+                                linkSite = window.location.origin;
+                                window.location.assign(linkSite+"/pagamentos");
+                                //window.location.assign("http://lykasystems.test/pagamentos");
                             }, 500);
                         });
                     },
