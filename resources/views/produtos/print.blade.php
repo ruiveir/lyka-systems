@@ -88,7 +88,7 @@
                     src="{{url('/storage/client-photos/default.png')}}" style="width:90%">
                 @else
                 <img class="m-2 p-1 rounded bg-white shadow-sm"
-                    src="{{url('/storage/client-photos/').$client->fotografia}}" style="width:90%">
+                    src="{{url('/storage/client-photos/'.$client->fotografia)}}" style="width:90%">
                 @endif
 
             </div>

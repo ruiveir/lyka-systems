@@ -4,7 +4,7 @@
         <div class="col">
             <div class="user-image">
                 @if(Auth()->user()->admin->fotografia)
-                    <img src="{{url('/storage/admin-photos/').Auth()->user()->admin->fotografia}}" alt="Imagem de apresentação" width="100%">
+                    <img src="{{url('/storage/admin-photos/'.Auth()->user()->admin->fotografia)}}" alt="Imagem de apresentação" width="100%">
                     @elseif(Auth()->user()->admin->genero == 'F')
                         <img src="{{url('/storage/default-photos/F.jpg')}}" alt="Imagem de apresentação" width="100%">
                         @else

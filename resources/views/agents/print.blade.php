@@ -109,7 +109,7 @@
 
                 @if($agent->fotografia)
                 <img class="m-2 p-1 rounded bg-white shadow-sm"
-                    src="{{url('/storage/agent-documents/'.$agent->idAgente.'/').$agent->fotografia}}" style="width:90%">
+                    src="{{url('/storage/agent-documents/'.$agent->idAgente.'/'.$agent->fotografia)}}" style="width:90%">
                 @elseif($agent->genero == 'F')
                 <img class="m-2 p-1 rounded bg-white shadow-sm"
                     src="{{url('/storage/default-photos/F.jpg')}}" style="width:90%">
@@ -131,7 +131,7 @@
 
                 @if ($agent->img_doc)
                     <div><span class="text-secondary font-weight-bold">Documento de identificação:</div><br>
-                        <embed src="{{url('/storage/agent-docs/').$agent->img_doc}}#toolbar=0" width="70%" height="900px">
+                        <embed src="{{url('/storage/agent-docs/'.$agent->img_doc)}}#toolbar=0" width="70%" height="900px">
 
                 @endif
 

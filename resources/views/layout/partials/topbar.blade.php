@@ -176,7 +176,7 @@
                 </span>
                 @if(Auth()->user()->tipo == "admin")
                     @if(Auth()->user()->admin->fotografia)
-                        <img class="img-profile rounded-circle" src="{{url('/storage/admin-photos/').Auth()->user()->admin->fotografia}}" alt="Imagem de apresentação">
+                        <img class="img-profile rounded-circle" src="{{url('/storage/admin-photos/'.Auth()->user()->admin->fotografia)}}" alt="Imagem de apresentação">
                     @elseif(Auth()->user()->admin->genero == 'F')
                         <img class="img-profile rounded-circle" src="{{url('/storage/default-photos/F.jpg')}}" alt="Imagem de apresentação">
                     @else
@@ -184,7 +184,7 @@
                     @endif
                 @elseif(Auth()->user()->tipo == "agente")
                     @if(Auth()->user()->agente->fotografia)
-                        <img class="img-profile rounded-circle" src="{{url('/storage/agent-photos/').Auth()->user()->agente->fotografia}}" alt="Imagem de apresentação">
+                        <img class="img-profile rounded-circle" src="{{url('/storage/agent-photos/'.Auth()->user()->agente->fotografia)}}" alt="Imagem de apresentação">
                     @elseif(Auth()->user()->agente->genero == 'F')
                         <img class="img-profile rounded-circle" src="{{url('/storage/default-photos/F.jpg')}}" alt="Imagem de apresentação">
                     @else
@@ -192,7 +192,7 @@
                     @endif
                 @else
                     @if(Auth()->user()->cliente->fotografia)
-                        <img class="img-profile rounded-circle" src="{{url('/storage/client-photos/').Auth()->user()->cliente->fotografia}}" alt="Imagem de apresentação">
+                        <img class="img-profile rounded-circle" src="{{url('/storage/client-photos/'.Auth()->user()->cliente->fotografia)}}" alt="Imagem de apresentação">
                     @elseif(Auth()->user()->cliente->genero == 'F')
                         <img class="img-profile rounded-circle" src="{{url('/storage/default-photos/F.jpg')}}" alt="Imagem de apresentação">
                     @else

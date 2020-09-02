@@ -64,7 +64,7 @@
 
                     @if($client->fotografia)
                     <img class="align-middle p-1 rounded bg-white shadow-sm border"
-                        src="{{url('/storage/client-documents/'.$client->idCliente.'/').$client->fotografia}}"
+                        src="{{url('/storage/client-documents/'.$client->idCliente.'/'.$client->fotografia)}}"
                         style="width:100%; ">
                     @elseif($client->genero == 'F')
                     <img class="align-middle p-1 rounded bg-white shadow-sm border"

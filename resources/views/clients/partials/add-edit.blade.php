@@ -177,7 +177,7 @@
                     <div class="text-center align-self-center align-middle mx-auto" style="width:300px; max-height:300px; overflow:hidden;">
                         <!-- Verifica se a imagem já existe-->
                         @if ($client->fotografia!=null)
-                        <img src="{{url('/storage/client-documents/'.$client->idCliente.'/').$client->fotografia}}"
+                        <img src="{{url('/storage/client-documents/'.$client->idCliente.'/'.$client->fotografia)}}"
                             id="preview" class="m-2 p-1 border rounded bg-white shadow-sm"
                             style="width:80%; height:auto; cursor:pointer; min-width:118px;" alt="Imagem de apresentação"
                             title="Clique para mudar a imagem de apresentação" />

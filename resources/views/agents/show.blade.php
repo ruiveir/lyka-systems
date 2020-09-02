@@ -62,7 +62,7 @@
 
                 @if($agent->fotografia)
                 <img class="align-middle p-1 rounded bg-white shadow-sm border"
-                    src="{{url('/storage/agent-documents/'.$agent->idAgente.'/').$agent->fotografia}}"
+                    src="{{url('/storage/agent-documents/'.$agent->idAgente.'/'.$agent->fotografia)}}"
                     style="width:100%; height:auto ">
                 @elseif($agent->genero == 'F')
                 <img class="align-middle p-1 rounded bg-white shadow-sm border"
@@ -196,7 +196,7 @@
                                 <div style="width: 130px; height:120px; overflow:hidden">
                                     @if($agentx->fotografia)
                                     <img class="align-middle p-1 rounded bg-white shadow-sm border"
-                                        src="{{url('/storage/agent-documents/'.$agentx->idAgente.'/').$agentx->fotografia}}"
+                                        src="{{url('/storage/agent-documents/'.$agentx->idAgente.'/'.$agentx->fotografia)}}"
                                         style="width:100%; height:auto">
                                     @elseif($agentx->genero == 'F')
                                     <img class="align-middle p-1 rounded bg-white shadow-sm border"
@@ -344,7 +344,7 @@
                             <div class="card rounded shadow-sm m-2 p-3 h-100">
                                 @if ($agent->img_doc)
                                 <a class="name_link my-auto" target="_blank"
-                                    href="{{url('/storage/agent-documents/'.$agent->idAgente.'/').$agent->img_doc}}">
+                                    href="{{url('/storage/agent-documents/'.$agent->idAgente.'/'.$agent->img_doc)}}">
 
                                     <i class="far fa-id-card" style="font-size:40px"></i><br>
                                     <div>Ver documento de identificação</div>

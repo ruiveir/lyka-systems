@@ -77,7 +77,7 @@
         <!-- Verifica se a imagem já existe-->
         <div class="text-center" style="max-height:300px; overflow:hidden;">
             @if ($contact->fotografia!=null)
-            <img src="{{url('/storage/contact-photos/').$contact->fotografia}}" id="preview"
+            <img src="{{url('/storage/contact-photos/'.$contact->fotografia)}}" id="preview"
                 class="m-2 p-1 border rounded bg-white shadow-sm" style="width:80%; height:auto; cursor:pointer; min-width:118px;"
                 alt=" Imagem de apresentação" title="Clique para mudar a imagem de apresentação" />
             @else

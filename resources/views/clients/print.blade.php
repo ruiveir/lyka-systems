@@ -93,7 +93,7 @@
             <div class="col col-3">
 
             @if($client->fotografia)
-                <img class="m-2 p-1 rounded bg-white shadow-sm" src="{{url('/storage/client-documents/'.$client->idCliente.'/').$client->fotografia}}" style="width:90%">
+                <img class="m-2 p-1 rounded bg-white shadow-sm" src="{{url('/storage/client-documents/'.$client->idCliente.'/'.$client->fotografia)}}" style="width:90%">
             @elseif($client->genero == 'F')
                 <img class="m-2 p-1 rounded bg-white shadow-sm" src="{{url('/storage/default-photos/F.jpg')}}" style="width:90%">
             @else
