@@ -28,7 +28,7 @@ class UpdateClienteRequest extends FormRequest
             'num_docOficial'=> ['nullable', Rule::unique('Cliente')->ignore($this->client)],
             'validade_docOficial'=> 'nullable',
             'img_docOficial'=> 'nullable',
-            'NIF' => 'nullable|unique:Cliente',
+            'NIF' => ['nullable', Rule::unique('Cliente')->ignore($this->client)],
 
             'numPassaporte'=> ['nullable', Rule::unique('Cliente')->ignore($this->client)],
             'dataValidPP'=> 'nullable',
