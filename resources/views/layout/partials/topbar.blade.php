@@ -117,7 +117,7 @@
 
                             <a class="dropdown-item d-flex align-items-center" href="{{route("notification.show", $notification)}}">
                                 <div class="mr-3">
-                                    <div class="icon-circle bg-warning text-white">
+                                    <div class="icon-circle bg-gradient-danger text-white">
                                         <i class="fas fa-exclamation-triangle"></i>
                                     </div>
                                 </div>
@@ -135,7 +135,7 @@
                         @if(($notification->type == "App\Notifications\Atraso" || $notification->type == 'App\Notifications\AtrasoCliente') && !$notification->data['urgencia'] && $numNotificacao < 3)
                             <a class="dropdown-item d-flex align-items-center" href="{{route("notification.show", $notification)}}">
                                 <div class="mr-3">
-                                    <div class="icon-circle bg-warning text-white">
+                                    <div class="icon-circle bg-gradient-warning text-white">
                                         <i class="fas fa-exclamation-triangle"></i>
                                     </div>
                                 </div>

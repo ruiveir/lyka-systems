@@ -26,7 +26,7 @@
                 <span class="icon text-white-50">
                     <i class="fas fa-pencil-alt"></i>
                 </span>
-                <span class="text">Editar cobrança</span>
+                <span class="text">Editar produto</span>
             </a>
             @endif
             @if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)

@@ -276,7 +276,7 @@ class ProdutoController extends Controller
             $permissao = true;
         }
 
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != nul)|| $permissao ){
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)|| $permissao ){
             $Fornecedores = Fornecedor::all();
             $Agentes = Agente::where('tipo','=','Agente')->orderBy('nome')->get();
             $SubAgentes = Agente::where('tipo','=','Subagente')->orderBy('nome')->get();

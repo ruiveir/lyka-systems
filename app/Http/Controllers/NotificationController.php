@@ -375,12 +375,14 @@ class NotificationController extends Controller
         if (Auth()->user()->tipo == "admin" && Auth()->user()->idAdmin != null){
             $notifications = Auth()->user()->getNotifications();
             $notification = null;
-            foreach($notifications as $not){
-                if($not->id == $notif_id){
-                    $notification = $not;
+            if($notifications){
+                foreach($notifications as $not){
+                    if($not->id == $notif_id){
+                        $notification = $not;
+                    }
                 }
             }
-            if($notification){
+            if($notification && $notification->type == "App\Notifications\Aniversario"){
                 $deleteNot = $notification;
                 $deleteNot->delete();
             }
