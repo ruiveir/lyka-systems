@@ -24,6 +24,7 @@
         </div>
         <div class="card-body">
             <div class="table-responsive p-1">
+                @if($responsabilidades)
                 <table class="table table-bordered table-striped" id="table" width="100%">
                     <thead>
                         <tr>
@@ -225,6 +226,7 @@
                         @endforeach
                     </tbody>
                 </table>
+                @endif
             </div>
         </div>
     </div>
