@@ -17,14 +17,14 @@
                                     <h1 class="h4 text-gray-900 mb-4">Bem-vindo de volta!</h1>
                                 </div>
                                 @if ($errors->has('active'))
-                                    <div class="mb-3 text-danger text-center" id="active-error">
+                                    <div class="mb-3 text-danger text-center" id="error">
                                         <i class="fas fa-exclamation-circle"></i>
                                         <span class="font-weight-bold">{{$errors->first('active')}}</span>
                                     </div>
                                 @endif
 
                                 @if ($errors->has('email'))
-                                    <div class="mb-3 text-danger text-center" id="active-error">
+                                    <div class="mb-3 text-danger text-center" id="error">
                                         <i class="fas fa-exclamation-circle"></i>
                                         <span class="font-weight-bold">{{$errors->first('email')}}</span>
                                     </div>
@@ -33,7 +33,7 @@
                                 <form class="user needs-validation" novalidate method="POST" action="{{route("login")}}">
                                     @csrf
                                     <div class="form-group">
-                                        <input id="email" type="email" class="form-control form-control-user" value="{{old('email')}}" name="email" id="email" aria-describedby="emailHelp" placeholder="Endereço eletrónico" autofocus>
+                                        <input id="email" type="email" class="form-control form-control-user" value="{{old('email')}}" name="email" aria-describedby="emailHelp" placeholder="Endereço eletrónico" autofocus>
                                         <div class="invalid-feedback">
                                             Oops, parece que algo não está bem...
                                         </div>
@@ -62,7 +62,11 @@
 @section('scripts')
 <script>
     $("#email").change(function(){
-        $("#active-error").remove();
+        $("#error").remove();
+    });
+
+    $("#password").change(function(){
+        $("#error").remove();
     });
 </script>
 @endsection
