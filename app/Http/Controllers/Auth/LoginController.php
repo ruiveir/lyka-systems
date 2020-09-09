@@ -34,8 +34,8 @@ class LoginController extends Controller{
                 $this->incrementLoginAttempts($request);
                 return redirect()
                     ->back()
-                    ->withInput($request->only($this->username(), 'remember'))
-                    ->withErrors(['active' => 'You must be active to login.']);
+                    ->withInput($request->only($this->username()))
+                    ->withErrors(['active' => 'Oops, o utilizador têm que estar ativo...']);
             }
         }
         $this->incrementLoginAttempts($request);

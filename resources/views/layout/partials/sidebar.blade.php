@@ -79,7 +79,7 @@
                     <h6 class="collapse-header">Outras Páginas:</h6>
                     <a class="collapse-item {{Route::is('conta.*') ? 'active' : ''}}" href="{{route("conta.index")}}">Conta bancária</a>
                 @else
-                    <a class="collapse-item {{Route::is('charges.*') ? 'active' : ''}}" href="{{route('charges.index')}}">Cobranças</a>
+                    <a class="collapse-item {{Route::is('charges.*') ? 'active' : ''}}" href="{{route('charges.listproducts')}}">Cobranças</a>
                 @endif
             </div>
         </div>
