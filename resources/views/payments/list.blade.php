@@ -101,7 +101,7 @@
                         <!-- End of payments for AGENTS -->
 
                         <!-- Begin of payments for SUGAGENTS -->
-                        @if ($responsabilidade->valorSubAgente != null)
+                        @if ($responsabilidade->valorSubAgente != null && $responsabilidade->subAgente)
                         <tr>
                             <td>{{$responsabilidade->subAgente->nome.' '.$responsabilidade->subAgente->apelido}}</td>
                             <td>Subagente</td>
@@ -163,7 +163,7 @@
                         <!-- End of payments for UNI1 -->
 
                         <!-- Begin of payments for UNI2 -->
-                        @if ($responsabilidade->valorUniversidade2 != null)
+                        @if ($responsabilidade->valorUniversidade2 != null && $responsabilidade->universidade2)
                         <tr>
                             <td>{{$responsabilidade->universidade2->nome.' '.$responsabilidade->universidade2->apelido}}</td>
                             <td>Universidade</td>
