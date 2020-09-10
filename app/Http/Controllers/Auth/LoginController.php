@@ -16,12 +16,23 @@ class LoginController extends Controller{
         $this->middleware('guest')->except('logout');
     }
 
+    protected $maxAttempts = 3;
+    protected $decayMinutes = 5;
+
     public function login(\Illuminate\Http\Request $request) {
         $this->validateLogin($request);
 
         if ($this->hasTooManyLoginAttempts($request)) {
             $this->fireLockoutEvent($request);
-            return $this->sendLockoutResponse($request);
+
+            $seconds = $this->limiter()->availableIn(
+                $this->throttleKey($request)
+            );
+
+            return redirect()
+            ->back()
+            ->withInput($request->only($this->username()))
+            ->withErrors(['throttle' => 'Hum, já fez algumas tentativas... Tente outra vez daqui a '.$seconds.' segundos.']);
         }
 
         if ($this->guard()->validate($this->credentials($request))) {

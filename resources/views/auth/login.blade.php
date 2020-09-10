@@ -30,19 +30,20 @@
                                     </div>
                                 @endif
 
+                                @if ($errors->has('throttle'))
+                                    <div class="mb-3 text-danger text-center" id="error">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                        <span class="font-weight-bold">{{$errors->first('throttle')}}</span>
+                                    </div>
+                                @endif
+
                                 <form class="user needs-validation" novalidate method="POST" action="{{route("login")}}">
                                     @csrf
                                     <div class="form-group">
                                         <input id="email" type="email" class="form-control form-control-user" value="{{old('email')}}" name="email" aria-describedby="emailHelp" placeholder="Endereço eletrónico" autofocus>
-                                        <div class="invalid-feedback">
-                                            Oops, parece que algo não está bem...
-                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <input type="password" class="form-control form-control-user" name="password" id="password" placeholder="Password">
-                                        <div class="invalid-feedback">
-                                            Oops, parece que algo não está bem...
-                                        </div>
                                     </div>
                                     <button class="btn btn-primary btn-user btn-block" type="submit" name="button">Iniciar Sessão</button>
                                 </form>
