@@ -20,8 +20,8 @@ class AgendController extends Controller
     {
         $agends = Agenda::where('idUser', Auth::user()->idUser)->get();
 
-        $todayAgends = Agenda:: whereDate('dataInicio', '<=',Carbon::now())
-        ->whereDate('dataFim', '>=',Carbon::now())
+        $todayAgends = Agenda:: whereDate('dataInicio', '<=', Carbon::now())
+        ->whereDate('dataFim', '>=', Carbon::now())
         ->get();
 
         return view('agends.list', compact('agends', 'todayAgends'));

@@ -350,7 +350,7 @@ class ClientController extends Controller
             $agents = Agente::
             whereIn('idAgente', function ($query) use ($client) {
                 $query->select('idAgente')
-                ->from('Produto')
+                ->from('produto')
                 ->where('idCliente', $client->idCliente);
             })->get();
 
@@ -359,7 +359,7 @@ class ClientController extends Controller
             $subagents = Agente::
             whereIn('idAgente', function ($query) use ($client) {
                 $query->select('idSubAgente')
-                ->from('Produto')
+                ->from('produto')
                 ->where('idCliente', $client->idCliente);
             })->get();
 
@@ -888,25 +888,10 @@ class ClientController extends Controller
             $agents= Agente::all();
             $universidades = Universidade::all();
 
-
-
             return view('clients.search',compact('clients','nomeCampo','valor','paises','cidadesOrigem','instituicoesOrigem','agents','universidades'));
         }else{
             abort(401);
         }
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
