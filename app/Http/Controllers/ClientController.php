@@ -783,9 +783,9 @@ class ClientController extends Controller
             $client->delete();
 
             /* "Apaga" dos utilizadores */
-            DB::table('User')
-            ->where('idCliente', $client->idCliente)
-            ->update(['deleted_at' => $client->deleted_at]);
+            $utilizador = User::where('idCliente', $client->idCliente)->get();
+            $utilizador->deleted_at = $client->deleted_at;
+            $utilizador->save();
 
             return redirect()->route('clients.index')->with('success', 'Estudante eliminado com sucesso');
         }else{
