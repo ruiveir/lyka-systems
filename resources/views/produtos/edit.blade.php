@@ -11,13 +11,13 @@
 {{-- Page Content --}}
 @section('content')
 
-    <div class="container-fluid">
+<div class="container-fluid">
 
-        <div class="cards-navigation">
-            <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                <h1 class="h4 mb-0 text-gray-800">Edição do produto</h1>
-            </div>
-            <br>
+    <div class="cards-navigation">
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h4 mb-0 text-gray-800">Edição do produto</h1>
+        </div>
+        <br>
         
     </div>
     <!-- Approach -->
@@ -226,7 +226,7 @@
                                         value="{{date_create(old('dataVencimento',$fase->dataVencimento))->format('Y-m-d')}}" style="width:250px" required><br>
                                     </div>
                                 @else
-                                    <div class="col-md-5">
+                                    <div class="col-md-3">
                                         <label for="valor-fase{{$fase->idFase}}">Valor da fase:</label><br>
                                         <input type="number" min="0" class="form-control" name="valor-fase{{$fase->idFase}}" id="valor-fase{{$fase->idFase}}"
                                         value="{{old('valorFase',$fase->valorFase)}}" style="width:250px" readonly/><br>

@@ -11,71 +11,49 @@
 {{-- Page Content --}}
 @section('content')
 
-<div class="container mt-2">
-    {{-- Navegação --}}
-    <div class="float-left">
-        <a href="javascript:history.go(-1)" title="Voltar"><i
-                class="fas fa-arrow-left rounded-circle p-2 nav_btns mr-3"></i></a>
-        <a href="javascript:window.history.forward();" title="Avançar"><i
-                class="fas fa-arrow-right rounded-circle p-2 nav_btns"></i></a>
-    </div>
 
-    <br><br>
+<div class="container-fluid">
+
     <div class="cards-navigation">
-        <div class="title">
-            <h6>Adicionar produto</h6>
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h4 mb-0 text-gray-800">Criação de um produto</h1>
         </div>
-        <br>
+        
+    </div>
+    <!-- Approach -->
+    <div class="card shadow mb-4">
+
         <form method="POST" action="{{route('produtos.store', $produtoStock)}}" class="form-group needs-validation pt-3" id="form_produto"
             enctype="multipart/form-data" novalidate>
-            @csrf<div class="tab-content p-2 mt-3" id="myTabContent">
+            @csrf
+            <div class="tab-content p-2 mt-3" id="myTabContent">
 
                 {{-- Conteudo: Informação pessoal --}}
-                <div>
-                    <div class="row">
-                        <div class="col">
-                            {{-- INPUT nome --}}
-                            <label for="nome">Cliente:
-                                <a class="name_link" href="{{route('clients.show',$cliente)}}">
-                                    {{$cliente->nome.' '.$cliente->apelido}}
-                                </a>
-                                <input type="text" class="form-control" name="idCliente" id="idCliente"
-                                value="{{$cliente->idCliente}}"  maxlength="20"
-                                style="display:none;" readonly><br>
-                            </label>
-                        </div>
-                    </div>
-                    <br>
-                    {{--<div class="row">
-                        <div class="col">
-                            <label for="nome">Escolha o produto: <span class="text-danger">*</span></label>
-                            <select class="form-control" id="produto" onchange="AtualizaProduto(this.value, $(this).closest('#form_produto'))" required>
-                                <option value="0" selected></option>
-                                @foreach($produtoStock as $prodS)
-                                    @php
-                                        $faseS = $prodS->faseStock->toArray();
-                                    @endphp
-                                    <option value="{{$prodS->idProdutoStock}}">{{$prodS->tipo."\t".$prodS->descricao."\t".count($faseS).' fases'}}</option>
-                                @endforeach
-                            </select><br><br>
-                        </div>
-                    </div>--}}
-                    <div class="row" id="formulario-produto">
-                        <div class="col">
-                            <div><span><b>Produto</b></span></div><br>
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Edição do produto do cliente {{$cliente->nome.' '.$cliente->apelido}}</h6>
+                </div>
+                <br>
 
+                <div class="card-body" id="formulario-produto">
+                    <div><p class="text-gray-800"><b>Produto</b></p></div>
+                    <div class="row">
+
+                        <div class="col-md-4">
                             <label for="tipo">Tipo:</label><br>
                             <input type="text" class="form-control" name="tipo" id="tipo"
                             value="{{old('tipo',$produto->tipo)}}" placeholder="Tipo" maxlength="20" readonly><br>
-
+                        </div>
+                        <div class="col-md-6">
                             <label for="descricao">Descrição:</label><br>
                             <input type="text" class="form-control" name="descricao" id="descricao"
                             value="{{old('descricao',$produto->descricao)}}" placeholder="Descricao" maxlength="20" readonly><br>
-
+                        </div>
+                        <div class="col-md-2">
                             <label for="AnoAcademico">Ano académico: <span class="text-danger">*</span></label><br>
                             <input type="text" class="form-control" name="anoAcademico" id="anoAcademico"
                             value="{{old('anoAcademico',$produto->anoAcademico)}}" placeholder="Ano Academico" maxlength="20" required><br>
-
+                        </div>
+                        <div class="col-md-6">
                             <label for="agente">Agente: <span class="text-danger">*</span></label><br>
                             <select id="agente" name="agente" class="form-control" required>
                                 <option value="" selected></option>
@@ -83,6 +61,8 @@
                                     <option {{old('idAgente',$produto->idAgente)}} value="{{$agente->idAgente}}">{{$agente->nome.' '.$agente->apelido.' -> '.$agente->email}}</option>
                                 @endforeach
                             </select><br>
+                        </div>
+                        <div class="col-md-6">
                             <label for="subagente">Sub-Agente:</label><br>
                             <select id="subagente" name="subagente" class="form-control">
                                 <option value="" selected></option>
@@ -90,6 +70,8 @@
                                     <option {{old('idSubAgente',$produto->idSubAgente)}} value="{{$subagente->idAgente}}">{{$subagente->nome.' '.$subagente->apelido.' -> '.$subagente->email}}</option>
                                 @endforeach
                             </select><br>
+                        </div>
+                        <div class="col-md-6">
                             <label for="uni1">Universidade Principal: <span class="text-danger">*</span></label><br>
                             <select id="uni1" name="uni1" class="form-control" required>
                                 <option value="" selected></option>
@@ -98,6 +80,8 @@
                                 @endforeach
                             </select><br>
 
+                        </div>
+                        <div class="col-md-6">
                             <label for="uni2">Universidade Secundária:</label><br>
                             <select id="uni2" name="uni2" class="form-control">
                                 <option value="" selected></option>
@@ -105,8 +89,8 @@
                                     <option {{old('idUniversidade2',$produto->idUniversidade2)}} value="{{$uni->idUniversidade}}">{{$uni->nome.' -> '.$uni->email}}</option>
                                 @endforeach
                             </select><br>
-
                         </div>
+
                     </div>
                 </div>
                 <div id="formulario-fases">
@@ -145,77 +129,96 @@
                             @else
                                 <div class="tab-pane fade" id="fase{{$num}}" role="tabpanel" aria-labelledby="fase{{$num}}-tab">
                             @endif
+
+                                <div><p class="text-gray-800"><b>Fase {{$num}}</b></p></div>
                                 <div class="row">
-                                    <div class="row col-md-12">
 
-                                        <div><span><b>Fase {{$num}}</b></span></div><br><br>
-
-                                        <div class="col-md-12">
-                                            <label for="descricao-fase{{$num}}">Descrição:</label><br>
-                                            <input type="text" class="form-control" name="descricao-fase{{$num}}" id="descricao-fase{{$num}}"
-                                            value="{{old('descricao',$fase->descricao)}}" placeholder="descricao" maxlength="20" readonly><br>
-                                        </div>
-
-                                        <div class="col-md-5">
-                                            <label for="data-fase{{$num}}">Data de vencimento: <span class="text-danger">*</span></label><br>
-                                            <input type="date" class="form-control" name="data-fase{{$num}}" id="data-fase{{$num}}"
-                                            value="{{date_create(old('dataVencimento',$fase->dataVencimento))->format('Y-m-d')}}" style="width:250px" required/><br>
-                                        </div>
-                                        <div class="col-md-5">
-                                            <label for="valor-fase{{$num}}">Valor total da fase: <span class="text-danger">*</span></label><br>
-                                            <input type="number" min="0" class="form-control form-required" name="valor-fase{{$num}}" id="valor-fase{{$num}}"
-                                            value="{{old('valorFase',$fase->valorFase)}}" style="width:250px" required/><br>
-                                        </div>
+                                    <div class="col-md-6">
+                                        <label for="descricao-fase{{$num}}">Descrição:</label><br>
+                                        <input type="text" class="form-control" name="descricao-fase{{$num}}" id="descricao-fase{{$num}}"
+                                        value="{{old('descricao',$fase->descricao)}}" placeholder="descricao" maxlength="20" readonly><br>
                                     </div>
 
-                                    <div class="col mr-3">
-                                        <div><span><b>Responsabilidades</b></span></div><br>
+                                    <div class="col-md-3">
+                                        <label for="data-fase{{$num}}">Data de vencimento: <span class="text-danger">*</span></label><br>
+                                        <input type="date" class="form-control" name="data-fase{{$num}}" id="data-fase{{$num}}"
+                                        value="{{date_create(old('dataVencimento',$fase->dataVencimento))->format('Y-m-d')}}" style="width:250px" required/><br>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="valor-fase{{$num}}">Valor total da fase: <span class="text-danger">*</span></label><br>
+                                        <input type="number" min="0" class="form-control form-required" name="valor-fase{{$num}}" id="valor-fase{{$num}}"
+                                        value="{{old('valorFase',$fase->valorFase)}}" style="width:250px" required/><br>
+                                    </div>
+                                </div>
+
+                                <div><p class="text-gray-800"><b>Responsabilidades</b></p></div>
+                                <div class="row">
+                                    <div class="col-md-6">
                                         <label for="resp-cliente-fase{{$num}}">PickPocket para cliente: <span class="text-danger">*</span></label><br>
                                         <input type="number" min="0" class="form-control" name="resp-cliente-fase{{$num}}" id="resp-cliente-fase{{$num}}"
                                         value="{{old('valorCliente',$Responsabilidades[$num-1]->valorCliente)}}" style="width:250px" required><br>
-
+                                    </div>
+                                    <div class="col-md-6">
                                         <label for="resp-data-cliente-fase{{$num}}">Data de vencimento do pagamento ao cliente:</label><br>
                                         <input type="date" class="form-control" name="resp-data-cliente-fase{{$num}}" id="resp-data-cliente-fase{{$num}}"
                                         value="" style="width:250px" ><br>
 
+                                    </div>
+                                    <div class="col-md-6">
                                         <label for="resp-agente-fase{{$num}}">Valor a pagar ao agente: <span class="text-danger">*</span></label><br>
                                         <input type="number" min="0" class="form-control" name="resp-agente-fase{{$num}}" id="resp-agente-fase{{$num}}"
                                         value="{{old('valorAgente',$Responsabilidades[$num-1]->valorAgente)}}" style="width:250px" required><br>
 
+                                    </div>
+                                    <div class="col-md-6">
                                         <label for="resp-data-agente-fase{{$num}}">Data de vencimento do pagamento ao agente:</label><br>
                                         <input type="date" class="form-control" name="resp-data-agente-fase{{$num}}" id="resp-data-agente-fase{{$num}}"
                                         value="" style="width:250px" ><br>
 
+                                    </div>
+                                    <div class="col-md-6">
                                         <label for="resp-subagente-fase{{$fase->idFase}}">Valor a pagar ao sub-agente:</label><br>
                                         <input type="number" class="form-control valor-pagar-subagente" name="resp-subagente-fase{{$fase->idFase}}" id="resp-subagente-fase{{$fase->idFase}}"
                                         value="{{old('valorSubAgente',$Responsabilidades[$num-1]->valorSubAgente)}}" style="width:250px"><br>
 
+                                    </div>
+                                    <div class="col-md-6">
                                         <label for="resp-data-subagente-fase{{$num}}">Data de vencimento do pagamento ao subagente:</label><br>
                                         <input type="date" class="form-control" name="resp-data-subagente-fase{{$num}}" id="resp-data-subagente-fase{{$num}}"
                                         value="" style="width:250px" ><br>
 
+                                    </div>
+                                    <div class="col-md-6">
                                         <label for="resp-uni1-fase{{$num}}">Valor a pagar á universidade principal: <span class="text-danger">*</span></label><br>
                                         <input type="number" min="0" class="form-control" name="resp-uni1-fase{{$num}}" id="resp-uni1-fase{{$num}}"
                                         value="{{old('valorUniversidade1',$Responsabilidades[$num-1]->valorUniversidade1)}}" style="width:250px" required><br>
 
+                                    </div>
+                                    <div class="col-md-6">
                                         <label for="resp-data-uni1-fase{{$num}}">Data de vencimento do pagamento à universidade principal:</label><br>
                                         <input type="date" class="form-control" name="resp-data-uni1-fase{{$num}}" id="resp-data-uni1-fase{{$num}}"
                                         value="" style="width:250px" ><br>
 
+                                    </div>
+                                    <div class="col-md-6">
                                         <label for="resp-uni2-fase{{$num}}">Valor a pagar á universidade secundária:</label><br>
                                         <input type="number" min="0" class="form-control" name="resp-uni2-fase{{$num}}" id="resp-uni2-fase{{$num}}"
                                         value="{{old('valorUniversidade2',$Responsabilidades[$num-1]->valorUniversidade2)}}" style="width:250px"><br>
 
+                                    </div>
+                                    <div class="col-md-6">
                                         <label for="resp-data-uni2-fase{{$num}}">Data de vencimento do pagamento à universidade secundária:</label><br>
                                         <input type="date" class="form-control" name="resp-data-uni2-fase{{$num}}" id="resp-data-uni2-fase{{$num}}"
                                         value="" style="width:250px" ><br>
                                     </div>
+                                </div>
 
-                                    <div class="col list-fornecedores" style="min-width:225px">
-                                        <div><span><b>Fornecedores</b></span></div><br>
-                                        <span class="numF" style="display: none;">1</span>
-                                        <div class="fornecedor">
-                                            <div id="clonar">
+                                <div class="list-fornecedores" style="min-width:225px">
+                                    <div><p class="text-gray-800"><b>Fornecedores</b></p></div>
+                                    <span class="numF" style="display: none;">1</span>
+                                    <div class="fornecedor">
+                                        <div class="row" id="clonar">
+                                            <div class="col-md-6">
                                                 <label id="label1" for="fornecedor-fase{{$num}}">Fornecedor 1:</label><br>
                                                 <select id="fornecedor-fase{{$num}}" name="fornecedor-fase{{$num}}" class="form-control" required>
                                                     <option value="" selected></option>
@@ -223,14 +226,21 @@
                                                         <option {{old('idFornecedor',$relacao->idFornecedor)}} value="{{$fornecedor->idFornecedor}}">{{$fornecedor->nome.' -> '.$fornecedor->descricao}}</option>
                                                     @endforeach
                                                 </select><br>
+                                            </div>
+                                            <div class="col-md-6">
                                                 <label id="label2" for="valor-fornecedor-fase{{$num}}">Valor a pagar:</label><br>
                                                 <input type="number" min="0" class="form-control" name="valor-fornecedor-fase{{$num}}" id="valor-fornecedor-fase{{$num}}"
                                                 value="{{old('valor',$relacao->valor)}}" style="width:250px" required><br>
 
+                                            </div>
+                                            <div class="col-md-6">
                                                 <label id="label3" for="data-fornecedor-fase{{$num}}">Data de vencimento do pagamento ao fornecedor:</label><br>
                                                 <input type="date" class="form-control" name="data-fornecedor-fase{{$num}}" id="data-fornecedor-fase{{$num}}"
                                                 value="" style="width:250px" ><br>
-                                                <div class="float-right">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <br>
+                                                <div class="float-left">
                                                     <a id="button" style="color: white;" onclick="" class="btn btn-danger btn-icon-split btn-sm" title="remove">
                                                         <span class="icon text-white-50">
                                                             <i class="fas fa-trash-alt"></i>
@@ -241,12 +251,12 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div>
-                                            <a style="color: white;" onclick="addFornecedor({{$num}},$(this).closest('.list-fornecedores'))" class="btn btn-primary btn-icon-split btn-sm" title="Editar">
-                                                <span class="text">Adicionar fornecedor</span>
-                                            </a>
-                                            {{--<button type="button" onclick="addFornecedor({{$num}},$(this).closest('.list-fornecedores'))" class="top-button">Adicionar fornecedor</button>--}}
-                                        </div>
+                                    </div>
+                                    <div>
+                                        <a style="color: white;" onclick="addFornecedor({{$num}},$(this).closest('.list-fornecedores'))" class="btn btn-primary btn-icon-split btn-sm" title="Editar">
+                                            <span class="text">Adicionar fornecedor</span>
+                                        </a>
+                                        {{--<button type="button" onclick="addFornecedor({{$num}},$(this).closest('.list-fornecedores'))" class="top-button">Adicionar fornecedor</button>--}}
                                     </div>
                                 </div>
                             </div>
