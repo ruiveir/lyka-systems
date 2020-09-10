@@ -5,7 +5,6 @@
 
 {{-- CSS Style Link --}}
 @section('styleLinks')
-<link href="{{asset('/css/datatables_general.css')}}" rel="stylesheet">
 <link href="{{asset('/css/inputs.css')}}" rel="stylesheet">
 
 <style>
@@ -176,9 +175,7 @@
             <a class="nav-item nav-link border p-3 m-1 bg-white rounded shadow-sm name_link" id="estudantes-tab"
                 data-toggle="tab" href="#estudantes" role="tab" aria-controls="estudantes" aria-selected="false">
                 <div class="col">
-                    <ion-icon name="person-circle-outline" class="mr-2"
-                        style="font-size: 16pt; --ionicon-stroke-width: 40px; position: relative; top: 5px; right: 0px;">
-                    </ion-icon>
+                    <i class="fas fa-user mr-2"></i>
                     Estudantes
                 </div>
             </a>
@@ -216,7 +213,7 @@
 
                                 <div class="row p-0 m-0" style="margin-top:-30px!important">
                                     <div class="col text-right p-0">
-                                        
+
                                         @if (Auth::user()->tipo == "admin")
                                         {{-- APAGAR --}}
                                         <form method="POST" role="form" id="#"
@@ -493,6 +490,7 @@
     </div>
 </div>
 
+</div>
 </div>
 </div>
 
