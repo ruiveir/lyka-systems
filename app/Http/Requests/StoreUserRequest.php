@@ -12,7 +12,7 @@ class StoreUserRequest extends FormRequest
     public function rules()
     {
         return [
-          'email' => 'required|unique:User'
+            'email' => 'required|unique:user'
         ];
     }
 }

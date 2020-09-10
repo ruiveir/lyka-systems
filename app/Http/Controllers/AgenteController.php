@@ -107,7 +107,7 @@ class AgenteController extends Controller
             $user->save();
 
             /* Envia o e-mail para ativação */
-            $name = $agent->nome .' '. $agent->apelido;
+            $name = $agent->nome.' '.$agent->apelido;
             $email = $agent->email;
             $auth_key = $user->auth_key;
             dispatch(new SendWelcomeEmail($email, $name, $auth_key));
@@ -157,12 +157,12 @@ class AgenteController extends Controller
 
             /* lista de alunos do agente Através de produtos  */
         $clients = Cliente::
-            selectRaw("Cliente.*")
-            ->join('Produto', 'Cliente.idCliente', '=', 'Produto.idCliente')
-            ->where('Produto.idAgente', '=', $agent->idAgente)
-            ->orWhere('Produto.idSubAgente', '=', $agent->idAgente)
-            ->groupBy('Cliente.idCliente')
-            ->orderBy('Cliente.idCliente','asc')
+            selectRaw("cliente.*")
+            ->join('produto', 'cliente.idCliente', '=', 'produto.idCliente')
+            ->where('produto.idAgente', '=', $agent->idAgente)
+            ->orWhere('produto.idSubAgente', '=', $agent->idAgente)
+            ->groupBy('cliente.idCliente')
+            ->orderBy('cliente.idCliente','asc')
             ->get();
 
 

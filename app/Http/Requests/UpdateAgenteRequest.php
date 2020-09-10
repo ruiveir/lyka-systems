@@ -21,17 +21,17 @@ class UpdateAgenteRequest extends FormRequest
             'apelido' => 'required',
             'genero'=>'required',
             'tipo' => 'required|in:Agente,Subagente',
-            'email' => ['required', Rule::unique('Agente')->ignore($this->agent), Rule::unique('Cliente'), Rule::unique('Administrador')],
+            'email' => ['required', Rule::unique('agente')->ignore($this->agent), Rule::unique('cliente'), Rule::unique('administrador')],
             'dataNasc' => 'required',
             'fotografia' => 'nullable',
             'morada' => 'required',
             'pais' => 'required',
-            'NIF' => ['required', Rule::unique('Agente')->ignore($this->agent)],
-            'num_doc'=> ['required', Rule::unique('Agente')->ignore($this->agent)],
+            'NIF' => ['required', Rule::unique('agente')->ignore($this->agent)],
+            'num_doc'=> ['required', Rule::unique('agente')->ignore($this->agent)],
             'img_doc' => 'nullable',
             'telefone1' => 'required',
             'telefone2' => 'nullable',
-            'IBAN' => ['nullable', Rule::unique('Agente')->ignore($this->agent)],
+            'IBAN' => ['nullable', Rule::unique('agente')->ignore($this->agent)],
             'observacoes'=> 'nullable'
         ];
     }

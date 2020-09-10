@@ -20,17 +20,17 @@ class StoreAgenteRequest extends FormRequest
             'apelido' => 'required',
             'genero'=>'required',
             'tipo' => 'required|in:Agente,Subagente',
-            'email' => 'required|unique:Agente|unique:Cliente|unique:Administrador|unique:User',
+            'email' => 'required|unique:agente|unique:cliente|unique:administrador|unique:user',
             'dataNasc' => 'required',
             'fotografia' => 'nullable',
             'morada' => 'required',
             'pais' => 'required',
-            'NIF' => 'required|unique:Agente',
-            'num_doc'=> 'required|unique:Agente',
+            'NIF' => 'required|unique:agente',
+            'num_doc'=> 'required|unique:agente',
             'img_doc' => 'nullable',
             'telefone1' => 'required',
             'telefone2' => 'nullable',
-            'IBAN' => 'nullable|unique:Agente',
+            'IBAN' => 'nullable|unique:agente',
             'observacoes'=> 'nullable'
         ];
     }

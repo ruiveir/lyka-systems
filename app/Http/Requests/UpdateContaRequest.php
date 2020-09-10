@@ -19,9 +19,9 @@ class UpdateContaRequest extends FormRequest
           'instituicao' => 'required',
           'titular' => 'required',
           'morada' => 'nullable',
-          'numConta' => ['required', Rule::unique('Conta')->ignore($this->conta)],
-          'IBAN' => ['required', Rule::unique('Conta')->ignore($this->conta)],
-          'SWIFT' => ['required', Rule::unique('Conta')->ignore($this->conta)],
+          'numConta' => ['required', Rule::unique('conta')->ignore($this->conta)],
+          'IBAN' => ['required', Rule::unique('conta')->ignore($this->conta)],
+          'SWIFT' => ['required', Rule::unique('conta')->ignore($this->conta)],
           'contacto' => 'required',
           'obsConta' => 'nullable'
         ];

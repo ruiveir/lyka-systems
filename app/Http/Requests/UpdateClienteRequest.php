@@ -25,12 +25,12 @@ class UpdateClienteRequest extends FormRequest
             'obsAgente'=> 'nullable',
             'fotografia' => 'nullable',
 
-            'num_docOficial'=> ['nullable', Rule::unique('Cliente')->ignore($this->client)],
+            'num_docOficial'=> ['nullable', Rule::unique('cliente')->ignore($this->client)],
             'validade_docOficial'=> 'nullable',
             'img_docOficial'=> 'nullable',
-            'NIF' => ['nullable', Rule::unique('Cliente')->ignore($this->client)],
+            'NIF' => ['nullable', Rule::unique('cliente')->ignore($this->client)],
 
-            'numPassaporte'=> ['nullable', Rule::unique('Cliente')->ignore($this->client)],
+            'numPassaporte'=> ['nullable', Rule::unique('cliente')->ignore($this->client)],
             'dataValidPP'=> 'nullable',
             'passaportPaisEmi'=> 'nullable',
             'localEmissaoPP'=> 'nullable',
@@ -43,7 +43,7 @@ class UpdateClienteRequest extends FormRequest
 
             'telefone1' => 'nullable',
             'telefone2' => 'nullable',
-            'email' => ['required', Rule::unique('Cliente')->ignore($this->client), Rule::unique('Agente'), Rule::unique('Administrador')],
+            'email' => ['required', Rule::unique('cliente')->ignore($this->client), Rule::unique('agente'), Rule::unique('administrador')],
             'moradaResidencia' => 'nullable',
             'morada' => 'nullable',
             'cidade' => 'nullable',
@@ -54,7 +54,7 @@ class UpdateClienteRequest extends FormRequest
             'telefoneMae' => 'nullable',
             'emailMae' => 'nullable',
 
-            'IBAN' => ['nullable', Rule::unique('Cliente')->ignore($this->client), Rule::unique('Agente'), Rule::unique('Conta')],
+            'IBAN' => ['nullable', Rule::unique('cliente')->ignore($this->client), Rule::unique('agente'), Rule::unique('conta')],
             'obsFinanceiras' => 'nullable',
 
             'refCliente' => 'nullable',

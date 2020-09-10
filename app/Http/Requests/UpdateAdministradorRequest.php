@@ -19,7 +19,7 @@ class UpdateAdministradorRequest extends FormRequest
             'nome' => 'required',
             'apelido' => 'required',
             'genero' => 'required|in:F,M',
-            'email' => ['required', Rule::unique('User')->ignore($this->admin->user)],
+            'email' => ['required', Rule::unique('user')->ignore($this->admin->user)],
             'dataNasc' => 'required',
             'telefone1' => 'required',
             'telefone2' => 'nullable',

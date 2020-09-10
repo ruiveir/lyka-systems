@@ -25,12 +25,12 @@ class StoreClientRequest extends FormRequest
             'obsAgente'=> 'nullable',
             'fotografia' => 'nullable',
 
-            'num_docOficial'=> 'nullable|unique:Cliente',
+            'num_docOficial'=> 'nullable|unique:cliente',
             'validade_docOficial'=> 'nullable',
             'img_docOficial'=> 'nullable',
-            'NIF' => 'nullable|unique:Cliente',
+            'NIF' => 'nullable|unique:cliente',
 
-            'numPassaporte'=> 'nullable|unique:Cliente',
+            'numPassaporte'=> 'nullable|unique:cliente',
             'dataValidPP'=> 'nullable',
             'passaportPaisEmi'=> 'nullable',
             'localEmissaoPP'=> 'nullable',
@@ -43,7 +43,7 @@ class StoreClientRequest extends FormRequest
 
             'telefone1' => 'nullable',
             'telefone2' => 'nullable',
-            'email' => 'nullable|unique:Cliente|unique:Agente|unique:User',
+            'email' => 'nullable|unique:cliente|unique:agente|unique:user',
             'moradaResidencia' => 'nullable',
             'morada' => 'nullable',
             'cidade' => 'nullable',
@@ -54,7 +54,7 @@ class StoreClientRequest extends FormRequest
             'telefoneMae' => 'nullable',
             'emailMae' => 'nullable',
 
-            'IBAN' => 'nullable|unique:Cliente|unique:Agente|unique:Conta',
+            'IBAN' => 'nullable|unique:cliente|unique:agente|unique:conta',
             'obsFinanceiras' => 'nullable',
 
             'refCliente' => 'nullable',

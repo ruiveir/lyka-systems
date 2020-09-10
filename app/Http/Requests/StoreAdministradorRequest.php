@@ -16,7 +16,7 @@ class StoreAdministradorRequest extends FormRequest
             'nome' => 'required',
             'apelido' => 'required',
             'genero' => 'required|in:F,M',
-            'email' => 'required|unique:Administrador|unique:User',
+            'email' => 'required|unique:administrador|unique:user',
             'dataNasc' => 'required',
             'telefone1' => 'required',
             'telefone2' => 'nullable',

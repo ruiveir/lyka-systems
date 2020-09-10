@@ -18,9 +18,9 @@ class StoreContaRequest extends FormRequest
             'instituicao' => 'required',
             'titular' => 'required',
             'morada' => 'nullable',
-            'numConta' => 'required|unique:Conta',
-            'IBAN' => 'required|unique:Conta',
-            'SWIFT' => 'required|unique:Conta',
+            'numConta' => 'required|unique:conta',
+            'IBAN' => 'required|unique:conta',
+            'SWIFT' => 'required|unique:conta',
             'contacto' => 'nullable',
             'obsConta' => 'nullable'
         ];
