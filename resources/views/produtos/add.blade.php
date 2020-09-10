@@ -231,12 +231,21 @@
                                                 <input type="date" class="form-control" name="data-fornecedor-fase{{$num}}" id="data-fornecedor-fase{{$num}}"
                                                 value="" style="width:250px" ><br>
                                                 <div class="float-right">
-                                                    <button type="button" onclick="" class="top-button">Remover fornecedor</button>
+                                                    <a id="button" style="color: white;" onclick="" class="btn btn-danger btn-icon-split btn-sm" title="remove">
+                                                        <span class="icon text-white-50">
+                                                            <i class="fas fa-trash-alt"></i>
+                                                        </span>
+                                                        <span id="a_button" class="text">Remover fornecedor</span>
+                                                    </a>
+                                                    {{--<button type="button" onclick="" class="top-button">Remover fornecedor</button>--}}
                                                 </div>
                                             </div>
                                         </div>
                                         <div>
-                                            <button type="button" onclick="addFornecedor({{$num}},$(this).closest('.list-fornecedores'))" class="top-button">Adicionar fornecedor</button>
+                                            <a style="color: white;" onclick="addFornecedor({{$num}},$(this).closest('.list-fornecedores'))" class="btn btn-primary btn-icon-split btn-sm" title="Editar">
+                                                <span class="text">Adicionar fornecedor</span>
+                                            </a>
+                                            {{--<button type="button" onclick="addFornecedor({{$num}},$(this).closest('.list-fornecedores'))" class="top-button">Adicionar fornecedor</button>--}}
                                         </div>
                                     </div>
                                 </div>
@@ -247,8 +256,10 @@
             </div>
             <div class="form-group text-right">
                 <br><br>
-                <button type="submit" class="top-button mr-2" name="ok" id="buttonSubmit">Adicionar produto</button>
-                <a href="javascript:history.go(-1)" class="top-button">Cancelar</a>
+                <div class="col text-right" style="min-width:285px">
+                    <button type="submit" class="btn btn-sm btn-success m-1 mr-2 px-3" name="submit"><i class="fas fa-check-circle mr-2"></i>Adicionar produto</button>
+                    <a href="javascript:history.go(-2)" class="btn btn-sm btn-secondary px-3">Cancelar</a>
+                </div>
             </div>
         </form>
     </div>
@@ -305,8 +316,8 @@
 			$('#label3', clone).attr('for','data-fornecedor'+numF+'-fase'+idFase);
 			$('#data-fornecedor-fase'+idFase, clone).attr('name','data-fornecedor'+numF+'-fase'+idFase);
 			$('#data-fornecedor-fase'+idFase, clone).attr('id','data-fornecedor'+numF+'-fase'+idFase);
-			$('button', clone).attr('onclick','removerFornecedor('+numF+','+idFase+',$(this).closest("#div-fornecedor'+numF+'-fase'+idFase+'"))');
-			$('button', clone).text('Remover fornecedor '+numF);
+			$('#button', clone).attr('onclick','removerFornecedor('+numF+','+idFase+',$(this).closest("#div-fornecedor'+numF+'-fase'+idFase+'"))');
+			$('#a_button', clone).text('Remover fornecedor '+numF);
 	        closest.find('.fornecedor').first().append(clone);
         }
 
