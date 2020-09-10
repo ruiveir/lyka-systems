@@ -11,45 +11,31 @@
 {{-- Page Content --}}
 @section('content')
 
-
-    <div class="container mt-2">
-        {{-- Navegação --}}
-        <div class="float-left">
-            <a href="javascript:history.go(-1)" title="Voltar"><i
-                    class="fas fa-arrow-left rounded-circle p-2 nav_btns mr-3"></i></a>
-            <a href="javascript:window.history.forward();" title="Avançar"><i
-                    class="fas fa-arrow-right rounded-circle p-2 nav_btns"></i></a>
-        </div>
-
-        <br><br>
+    <div class="container-fluid">
 
         <div class="cards-navigation">
-            <div class="title">
-                <h6>Editar informações</h6>
+            <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                <h1 class="h4 mb-0 text-gray-800">Edição do produto</h1>
             </div>
             <br>
-
+        
+    </div>
+    <!-- Approach -->
+    <div class="card shadow mb-4">
 
             <form method="POST" action="{{route('produtos.update',$produto)}}" class="form-group needs-validation pt-3" id="form_produto"
                   enctype="multipart/form-data" novalidate>
                 @csrf
                 @method("PUT")
-                <div class="row">
-                    <div class="col">
-                        {{-- INPUT nome --}}
-                        <label for="nome">Cliente:
-                            <a class="name_link" href="{{route('clients.show',$produto->cliente)}}">
-                                {{$produto->cliente->nome.' '.$produto->cliente->apelido}}
-                            </a>
-                        </label>
-                    </div>
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Edição do produto do cliente {{$produto->cliente->nome.' '.$produto->cliente->apelido}}</h6>
                 </div>
-                <br>
+                <div class="card-body">
                 <div class="row">
                     <div class="col">
-                        <div><span><b>Produto</b></span></div><br>
+                        <div><p class="text-gray-800"><b>Produto</b></p></div>
 
-                        <label for="tipo">Tipo:</label><br>
+                        <label for="tipo"><b>Tipo:</b></label><br>
                         <input type="text" class="form-control" name="tipo" id="tipo"
                         value="{{old('tipo',$produto->tipo)}}" placeholder="Tipo" maxlength="20" readonly><br>
 
@@ -217,14 +203,14 @@
                                         <input type="text" class="form-control" name="descricao-fase{{$fase->idFase}}" id="descricao-fase{{$fase->idFase}}"
                                         value="{{old('descricao',$fase->descricao)}}" placeholder="descricao" maxlength="20" readonly><br>
                                     </div>
-                                    <div class="col-md-5">
+                                    <div class="col-md-6">
                                     <label for="data-fase{{$fase->idFase}}">Data de vencimento: <span class="text-danger">*</span></label><br>
                                     @if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)
                                         <input type="date" class="form-control" name="data-fase{{$fase->idFase}}" id="data-fase{{$fase->idFase}}"
                                         value="{{date_create(old('dataVencimento',$fase->dataVencimento))->format('Y-m-d')}}" style="width:250px" required><br>
                                         </div>
 
-                                        <div class="col-md-5">
+                                        <div class="col-md-6">
                                             <label for="valor-fase{{$fase->idFase}}">Valor da fase: <span class="text-danger">*</span></label><br>
                                             <input type="number" min="0" class="form-control" name="valor-fase{{$fase->idFase}}" id="valor-fase{{$fase->idFase}}"
                                             value="{{old('valorFase',$fase->valorFase)}}" style="width:250px" required><br>
@@ -450,6 +436,7 @@
                 </div>
             </form>
 
+        </div>
 
         </div>
     </div>
