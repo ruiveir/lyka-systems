@@ -1,7 +1,7 @@
 @component('mail::message')
 Saudações!
 
-O seguinte e-mail foi enviado através da platafora Lyka Systems pelo utilizador **{{$name}}**.
+O seguinte e-mail foi enviado através da plataforma Lyka Systems pelo utilizador **{{$name}}**.
 Abaixo pode verificar alguns dos contactos que o cliente disponibilizou.
 
 Endereço eletrónico: **{{$email}}**
