@@ -17,11 +17,9 @@ class UniversityController extends Controller
     {
         if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null) || (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)){
             $universities = Universidade::all();
-
             if($universities->isEmpty()){
                 $universities = null;
             }
-
             return view('universities.list', compact('universities'));
         }else{
             abort(403);
@@ -63,11 +61,11 @@ class UniversityController extends Controller
                 $eventos = null;
             }
 
-            $clients = Cliente::distinct('Cliente.idCliente')
-            ->join('Produto', 'Produto.idCliente', '=', 'Cliente.idCliente')
-            ->where('Produto.idUniversidade1', '=',$university->idUniversidade )
-            ->orWhere('Produto.idUniversidade2', '=',$university->idUniversidade)
-            ->select('Cliente.*')
+            $clients = Cliente::distinct('cliente.idCliente')
+            ->join('produto', 'produto.idCliente', '=', 'cliente.idCliente')
+            ->where('produto.idUniversidade1', '=',$university->idUniversidade )
+            ->orWhere('produto.idUniversidade2', '=',$university->idUniversidade)
+            ->select('cliente.*')
             ->get();
 
             if ($clients->isEmpty()) {
@@ -86,9 +84,6 @@ class UniversityController extends Controller
         }
     }
 
-
-
-
     public function edit(Universidade $university)
     {
         if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
@@ -97,8 +92,6 @@ class UniversityController extends Controller
             abort(403);
         }
     }
-
-
 
     public function update(UpdateUniversidadeRequest $request, Universidade $university)
     {

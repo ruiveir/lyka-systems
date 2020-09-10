@@ -1,83 +1,85 @@
 @extends('layout.master')
-
-{{-- Titulo da Página --}}
-@section('title', 'Adicionar Universidade')
-
-{{-- Estilos de CSS --}}
-@section('styleLinks')
-<link href="{{asset('css/inputs.css')}}" rel="stylesheet">
-@endsection
-
-{{-- Conteudo da Página --}}
+<!-- Page Title -->
+@section('title', 'Adicionar universidade')
+<!-- Page Content -->
 @section('content')
-
-
-<div class="container-fluid my-4">
-
-    <div class="bg-white shadow-sm mb-4 p-4 ">
-
-
-        <div class="row">
-
-            <div class="col">
-                <div class="title">
-                    <h4><strong>Adicionar Universidade</strong></h4>
-                </div>
-            </div>
-        </div>
-
-        <hr>
-
-        <form method="POST" action="{{route('universities.store')}}" class="form-group needs-validation"
-            id="form_university" enctype="multipart/form-data" novalidate>
-            @csrf
-            @include('universities.partials.add-edit')
-
+<!-- Begin Page Content -->
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h4 mb-0 text-gray-800">Novo registo de universidade</h1>
+        <a href="#" data-toggle="modal" data-target="#infoModal" class="btn btn-secondary btn-icon-split btn-sm" title="Informações">
+            <span class="icon text-white-50">
+                <i class="fas fa-info-circle"></i>
+            </span>
+            <span class="text">Informações</span>
+        </a>
     </div>
-    <div class="text-right mt-4">
-
-        <button type="submit" class="btn btn-sm btn-success px-2 m-1 mr-2" name="ok" id="buttonSubmit"><i
-            class="fas fa-plus mr-2"></i>Adicionar
-            universidade</button>
-        <a href="{{route('universities.index')}}" class="btn btn-sm btn-secondary m-1 px-2">Cancelar</a>
-
-        </form>
+    <!-- Approach -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Formulário de criação de uma universidade</h6>
+        </div>
+        <div class="card-body">
+            <form class="form-group needs-validation" action="{{route('universities.store')}}" method="POST" novalidate>
+                @csrf
+                <div class="container-fluid">
+                    @include('universities.partials.add-edit')
+                    <div class="text-right mt-3" id="groupBtn">
+                        <span class="mr-4 font-weight-bold" onclick="window.history.back();" id="cancelBtn" style="cursor:pointer;">Cancelar</span>
+                        <button type="submit" name="button" class="btn btn-primary text-white font-weight-bold" id="submitbtn">Registar universidade</button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
+<!-- End of container-fluid -->
 
+<!-- Modal Info -->
+<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header pl-4 pb-1 pt-4">
+                <h5 class="modal-title text-gray-800 font-weight-bold">Para que serve?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close-button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-gray-800 pl-4 pr-5">
+                Ao preencher o formulário irá criar uma nova universidade. Os campos com o asterisco de cor vermelha são de preenchimento obrigatório.
+            </div>
+            <div class="modal-footer mt-3">
+                <a data-dismiss="modal" class="mr-4 font-weight-bold" id="close-option">Fechar</a>
+                <button type="button" data-dismiss="modal" class="btn btn-primary font-weight-bold mr-2">Entendido!</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Modal Info -->
 
-@endsection
-
-
-
-{{-- Scripts --}}
+<!-- Begin of Scripts -->
 @section('scripts')
-
-{{-- script contem: datatable configs, input configs, validações --}}
-<script src="{{asset('/js/university.js')}}"></script>
-
-{{-- script permite definir se um input recebe só numeros OU so letras --}}
-<script src="{{asset('/js/jquery-key-restrictions.min.js')}}"></script>
-
 <script>
-    
     $(document).ready(function() {
         bsCustomFileInput.init();
         $(".needs-validation").submit(function(event) {
-            var nif = $('#inputNIF').val();
-            var link = "/api/unique/uni/"+nif;
-            $.ajax({
-                method:"GET",
-                url:link
-            })
-            .done(function(response){
-                if(response != null){
-                    if(response.nif == true){
-                        alert("Já existe uma universidade com esse nif");
-                    }
-                }
-            })
+            var nif = $('#NIF').val();
+            if (this.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+            } else {
+                $("#cancelBtn").removeAttr("onclick");
+                button =
+                    "<button class='btn btn-primary' type='submit' disabled><span class='spinner-border spinner-border-sm' role='status' aria-hidden='true' style='position:relative; bottom:4px; right:3px;'></span>A fazer o registo...</button>";
+                $("#groupBtn").append(button);
+                $("#submitbtn").remove();
+            }
+            $(".needs-validation").addClass("was-validated");
         });
     });
 </script>
 @endsection
+<!-- End of Scripts -->
+@endsection
+<!-- End of Page Content -->
