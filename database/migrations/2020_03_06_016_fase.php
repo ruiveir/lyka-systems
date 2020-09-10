@@ -8,7 +8,7 @@ class Fase extends Migration
 {
     public function up()
     {
-        Schema::create('Fase', function (Blueprint $table) {
+        Schema::create('fase', function (Blueprint $table) {
             $table->charset = 'latin1';
             $table->collation = 'latin1_swedish_ci';
             $table->bigIncrements('idFase');
@@ -19,7 +19,7 @@ class Fase extends Migration
             $table->enum('estado', ['Pendente', 'Pago', 'Dívida', 'Crédito'])->default('Pendente');
             $table->string('slug')->nullable();
             $table->unsignedBigInteger('idProduto');
-                $table->foreign('idProduto')->references('idProduto')->on('Produto');
+                $table->foreign('idProduto')->references('idProduto')->on('produto');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -27,6 +27,6 @@ class Fase extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('Fase');
+        Schema::dropIfExists('fase');
     }
 }

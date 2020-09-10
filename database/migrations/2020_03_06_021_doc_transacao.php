@@ -8,7 +8,7 @@ class DocTransacao extends Migration
 {
     public function up()
     {
-        Schema::create('DocTransacao', function (Blueprint $table) {
+        Schema::create('doc_transacao', function (Blueprint $table) {
             $table->charset = 'latin1';
             $table->collation = 'latin1_swedish_ci';
             $table->bigIncrements('idDocTransacao');
@@ -21,15 +21,15 @@ class DocTransacao extends Migration
             $table->string('comprovativoPagamento',255)->nullable();
             $table->string('slug')->nullable();
             $table->unsignedBigInteger('idConta');
-                $table->foreign('idConta')->references('idConta')->on('Conta');
+                $table->foreign('idConta')->references('idConta')->on('conta');
             $table->unsignedBigInteger('idFase');
-                $table->foreign('idFase')->references('idFase')->on('Fase');
+                $table->foreign('idFase')->references('idFase')->on('fase');
             $table->timestamps();
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('DocTransacao');
+        Schema::dropIfExists('doc_transacao');
     }
 }

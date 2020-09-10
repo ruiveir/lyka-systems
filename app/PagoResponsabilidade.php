@@ -6,8 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class PagoResponsabilidade extends Model
 {
-    protected $table = 'PagoResponsabilidade';
-
+    protected $table = 'pago_responsabilidade';
     protected $primaryKey = 'idPagoResp';
 
     protected $fillable = [

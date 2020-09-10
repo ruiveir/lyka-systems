@@ -10,17 +10,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Fornecedor extends Model
 {
     use SoftDeletes, HasSlug;
-
-    protected $table = 'Fornecedor';
-
+    protected $table = 'fornecedor';
     protected $primaryKey = 'idFornecedor';
 
     protected $fillable = [
-      'nome',
-      'morada',
-      'contacto',
-      'descricao',
-      'observacoes'
+        'nome',
+        'morada',
+        'contacto',
+        'descricao',
+        'observacoes'
     ];
 
     public function relacao(){

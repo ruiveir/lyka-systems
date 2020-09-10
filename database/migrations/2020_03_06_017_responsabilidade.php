@@ -8,7 +8,7 @@ class Responsabilidade extends Migration
 {
     public function up()
     {
-        Schema::create('Responsabilidade', function (Blueprint $table) {
+        Schema::create('responsabilidade', function (Blueprint $table) {
             $table->charset = 'latin1';
             $table->collation = 'latin1_swedish_ci';
             $table->bigIncrements('idResponsabilidade');
@@ -32,22 +32,22 @@ class Responsabilidade extends Migration
             $table->boolean('verificacaoPagoUni2')->default(false);
 
             $table->unsignedBigInteger('idCliente');
-                $table->foreign('idCliente')->references('idCliente')->on('Cliente');
+                $table->foreign('idCliente')->references('idCliente')->on('cliente');
 
             $table->unsignedBigInteger('idAgente');
-                $table->foreign('idAgente')->references('idAgente')->on('Agente');
+                $table->foreign('idAgente')->references('idAgente')->on('agente');
 
             $table->unsignedBigInteger('idSubAgente')->nullable();
-                $table->foreign('idSubAgente')->references('idAgente')->on('Agente');
+                $table->foreign('idSubAgente')->references('idAgente')->on('agente');
 
             $table->unsignedBigInteger('idUniversidade1');
-                $table->foreign('idUniversidade1')->references('idUniversidade')->on('Universidade');
+                $table->foreign('idUniversidade1')->references('idUniversidade')->on('universidade');
 
             $table->unsignedBigInteger('idUniversidade2')->nullable();
-                $table->foreign('idUniversidade2')->references('idUniversidade')->on('Universidade');
+                $table->foreign('idUniversidade2')->references('idUniversidade')->on('universidade');
 
             $table->unsignedBigInteger('idFase');
-                $table->foreign('idFase')->references('idFase')->on('Fase');
+                $table->foreign('idFase')->references('idFase')->on('fase');
 
             $table->enum('estado', ['Pendente', 'Pago', 'Dívida'])->default('Pendente');
             $table->timestamps();
@@ -57,6 +57,6 @@ class Responsabilidade extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('Responsabilidade');
+        Schema::dropIfExists('responsabilidade');
     }
 }

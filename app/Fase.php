@@ -10,9 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Fase extends Model
 {
     use SoftDeletes, HasSlug;
-
-    protected $table = 'Fase';
-
+    protected $table = 'fase';
     protected $primaryKey = 'idFase';
 
     protected $fillable = [

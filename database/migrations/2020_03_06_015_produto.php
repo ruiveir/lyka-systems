@@ -6,14 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class Produto extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
-        Schema::create('Produto', function (Blueprint $table) {
+        Schema::create('produto', function (Blueprint $table) {
             $table->charset = 'latin1';
             $table->collation = 'latin1_swedish_ci';
             $table->bigIncrements('idProduto');
@@ -26,31 +21,26 @@ class Produto extends Migration
             $table->enum('estado', ['Pendente', 'Pago', 'Dívida', 'Crédito'])->default('Pendente');
             $table->string('slug')->nullable();
             $table->unsignedBigInteger('idAgente');
-                $table->foreign('idAgente')->references('idAgente')->on('Agente');
+                $table->foreign('idAgente')->references('idAgente')->on('agente');
 
             $table->unsignedBigInteger('idSubAgente')->nullable();
-                $table->foreign('idSubAgente')->references('idAgente')->on('Agente');
+                $table->foreign('idSubAgente')->references('idAgente')->on('agente');
 
             $table->unsignedBigInteger('idCliente');
-                $table->foreign('idCliente')->references('idCliente')->on('Cliente');
+                $table->foreign('idCliente')->references('idCliente')->on('cliente');
 
             $table->unsignedBigInteger('idUniversidade1');
-                $table->foreign('idUniversidade1')->references('idUniversidade')->on('Universidade');
+                $table->foreign('idUniversidade1')->references('idUniversidade')->on('universidade');
 
             $table->unsignedBigInteger('idUniversidade2')->nullable();
-                $table->foreign('idUniversidade2')->references('idUniversidade')->on('Universidade');
+                $table->foreign('idUniversidade2')->references('idUniversidade')->on('universidade');
             $table->timestamps();
             $table->softDeletes();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
-        Schema::dropIfExists('Produto');
+        Schema::dropIfExists('produto');
     }
 }

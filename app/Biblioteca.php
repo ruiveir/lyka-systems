@@ -6,13 +6,10 @@ use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Illuminate\Database\Eloquent\Model;
 
-
 class Biblioteca extends Model
 {
     use HasSlug;
-
-    protected $table = 'Biblioteca';
-
+    protected $table = 'biblioteca';
     protected $primaryKey = 'idBiblioteca';
 
     protected $fillable = [
@@ -22,7 +19,6 @@ class Biblioteca extends Model
         'tipo',
         'tamanho'
     ];
-
 
     public function getSlugOptions() : SlugOptions
     {

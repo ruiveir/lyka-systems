@@ -9,13 +9,18 @@ use Spatie\Sluggable\SlugOptions;
 class DocAcademico extends Model
 {
     use HasSlug;
-    protected $table = 'DocAcademico';
-
+    protected $table = 'doc_academico';
     protected $primaryKey = 'idDocAcademico';
 
     protected $fillable = [
-        'idCliente','nome','tipo','imagem','info','verificacao','$idFase'
-        ];
+        'idCliente',
+        'nome',
+        'tipo',
+        'imagem',
+        'info',
+        'verificacao',
+        '$idFase'
+    ];
 
     public function fase(){
         return $this->belongsTo("App\Fase","idFase","idFase")->withTrashed();

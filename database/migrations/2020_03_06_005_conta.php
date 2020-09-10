@@ -8,7 +8,7 @@ class Conta extends Migration
 {
     public function up()
     {
-        Schema::create('Conta', function (Blueprint $table) {
+        Schema::create('conta', function (Blueprint $table) {
             $table->charset = 'latin1';
             $table->collation = 'latin1_swedish_ci';
             $table->bigIncrements('idConta');
@@ -29,6 +29,6 @@ class Conta extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('Conta');
+        Schema::dropIfExists('conta');
     }
 }

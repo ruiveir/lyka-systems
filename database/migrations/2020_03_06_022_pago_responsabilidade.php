@@ -8,7 +8,7 @@ class PagoResponsabilidade extends Migration
 {
     public function up()
     {
-        Schema::create('PagoResponsabilidade', function (Blueprint $table) {
+        Schema::create('pago_responsabilidade', function (Blueprint $table) {
             $table->charset = 'latin1';
             $table->collation = 'latin1_swedish_ci';
             $table->bigIncrements('idPagoResp');
@@ -19,15 +19,15 @@ class PagoResponsabilidade extends Migration
             $table->date('dataPagamento');
             $table->string('comprovativoPagamento',255)->nullable();
             $table->unsignedBigInteger('idResponsabilidade');
-                $table->foreign('idResponsabilidade')->references('idResponsabilidade')->on('Responsabilidade');
+                $table->foreign('idResponsabilidade')->references('idResponsabilidade')->on('responsabilidade');
             $table->unsignedBigInteger('idConta');
-                $table->foreign('idConta')->references('idConta')->on('Conta');
+                $table->foreign('idConta')->references('idConta')->on('conta');
             $table->timestamps();
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('PagoResponsabilidade');
+        Schema::dropIfExists('pago_responsabilidade');
     }
 }

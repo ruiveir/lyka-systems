@@ -6,14 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class ProdutoStock extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
-        Schema::create('ProdutoStock', function (Blueprint $table) {
+        Schema::create('produto_stock', function (Blueprint $table) {
             $table->charset = 'latin1';
             $table->collation = 'latin1_swedish_ci';
             $table->bigIncrements('idProdutoStock');
@@ -24,13 +19,8 @@ class ProdutoStock extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
-        Schema::dropIfExists('ProdutoStock');
+        Schema::dropIfExists('produto_stock');
     }
 }

@@ -6,14 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class Universidade extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
-        Schema::create('Universidade', function (Blueprint $table) {
+        Schema::create('universidade', function (Blueprint $table) {
             $table->charset = 'latin1';
             $table->collation = 'latin1_swedish_ci';
             $table->bigIncrements('idUniversidade');
@@ -26,20 +21,14 @@ class Universidade extends Migration
             $table->longText('observacoes')->nullable();
             $table->longText('obsCursos')->nullable();
             $table->longText('obsCandidaturas')->nullable();
-
             $table->string('slug')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
-        Schema::dropIfExists('Universidade');
+        Schema::dropIfExists('universidade');
     }
 }

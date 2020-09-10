@@ -10,9 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Conta extends Model
 {
     use SoftDeletes, HasSlug;
-
-    protected $table = 'Conta';
-
+    protected $table = 'conta';
     protected $primaryKey = 'idConta';
 
     protected $fillable = [

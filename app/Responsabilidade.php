@@ -8,9 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Responsabilidade extends Model
 {
     use SoftDeletes;
-
-    protected $table = 'Responsabilidade';
-
+    protected $table = 'responsabilidade';
     protected $primaryKey = 'idResponsabilidade';
 
     protected $fillable = [

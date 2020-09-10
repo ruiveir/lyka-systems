@@ -6,23 +6,18 @@ use Illuminate\Support\Facades\Schema;
 
 class Agenda extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
-        Schema::create('Agenda', function (Blueprint $table) {
+        Schema::create('agenda', function (Blueprint $table) {
             $table->charset = 'latin1';
             $table->collation = 'latin1_swedish_ci';
             $table->bigIncrements('idAgenda');
 
             $table->unsignedBigInteger('idUser');
-                $table->foreign('idUser')->references('idUser')->on('User');
+                $table->foreign('idUser')->references('idUser')->on('user');
 
             $table->unsignedBigInteger('idUniversidade')->nullable();
-                $table->foreign('idUniversidade')->references('idUniversidade')->on('Universidade');
+                $table->foreign('idUniversidade')->references('idUniversidade')->on('universidade');
 
             $table->string('titulo');
             $table->text('descricao')->nullable();
@@ -32,18 +27,11 @@ class Agenda extends Migration
             $table->string('cor', 7);
             $table->timestamps();
             $table->softDeletes();
-
-
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
-        Schema::dropIfExists('Agenda');
+        Schema::dropIfExists('agenda');
     }
 }

@@ -2,20 +2,15 @@
 
 namespace App;
 
-
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-
 class Cliente extends Model
 {
-    use HasSlug;
-    use SoftDeletes;
-
-    protected $table = 'Cliente';
-
+    use HasSlug, SoftDeletes;
+    protected $table = 'cliente';
     protected $primaryKey = 'idCliente';
 
     protected $fillable = [
@@ -24,8 +19,7 @@ class Cliente extends Model
         'emailPai','nomeMae','telefoneMae','emailMae','fotografia','NIF','IBAN',
         'nivEstudoAtual','nomeInstituicaoOrigem','cidadeInstituicaoOrigem',
         'num_docOficial','validade_docOficial','numPassaporte','estado','editavel','obsPessoais','obsFinanceiras','obsAcademicas','obsAgente','refCliente'
-        ];
-
+    ];
 
     public function user(){
         return $this->belongsTo("App\User","idUser","idUser");
@@ -44,20 +38,15 @@ class Cliente extends Model
         return $this->hasMany("App\Produto","idCliente","idCliente");
     }
 
+    public function getSlugOptions() : SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom(['nome','apelido'])
+            ->saveSlugsTo('slug');
+    }
 
-        /* URL */
-
-        public function getSlugOptions() : SlugOptions
-        {
-          return SlugOptions::create()
-              ->generateSlugsFrom(['nome','apelido'])
-              ->saveSlugsTo('slug');
-        }
-
-        public function getRouteKeyName()
-        {
-            return 'slug';
-        }
-
-
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 }

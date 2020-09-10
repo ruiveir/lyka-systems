@@ -1,4 +1,5 @@
 <?php
+
 namespace App;
 
 use Spatie\Sluggable\HasSlug;
@@ -9,9 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Universidade extends Model
 {
     use HasSlug, SoftDeletes;
-
-    protected $table = 'Universidade';
-
+    protected $table = 'universidade';
     protected $primaryKey = 'idUniversidade';
 
     protected $fillable = [

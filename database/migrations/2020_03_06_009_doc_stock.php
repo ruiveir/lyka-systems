@@ -6,14 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class DocStock extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
-        Schema::create('DocStock', function (Blueprint $table) {
+        Schema::create('doc_stock', function (Blueprint $table) {
             $table->charset = 'latin1';
             $table->collation = 'latin1_swedish_ci';
             $table->bigIncrements('idDocStock');
@@ -21,18 +16,12 @@ class DocStock extends Migration
             $table->string('tipoDocumento', 255);
             $table->timestamps();
             $table->unsignedBigInteger('idFaseStock');
-                $table->foreign('idFaseStock')->references('idFaseStock')->on('FaseStock');
-
+                $table->foreign('idFaseStock')->references('idFaseStock')->on('fase_stock');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
-        Schema::dropIfExists('DocStock');
+        Schema::dropIfExists('doc_stock');
     }
 }

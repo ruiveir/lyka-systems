@@ -6,23 +6,18 @@ use Illuminate\Support\Facades\Schema;
 
 class Contacto extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
-        Schema::create('Contacto', function (Blueprint $table) {
+        Schema::create('contacto', function (Blueprint $table) {
             $table->charset = 'latin1';
             $table->collation = 'latin1_swedish_ci';
             $table->bigIncrements('idContacto');
+
             $table->unsignedBigInteger('idUser')->nullable();
-                $table->foreign('idUser')->references('idUser')->on('User');
-
+                $table->foreign('idUser')->references('idUser')->on('user');
             $table->unsignedBigInteger('idUniversidade')->nullable();
-                $table->foreign('idUniversidade')->references('idUniversidade')->on('Universidade');
-
+                $table->foreign('idUniversidade')->references('idUniversidade')->on('universidade');
+                
             $table->string('nome',255);
             $table->string('fotografia',255)->nullable();
             $table->string('telefone1',255)->nullable();
@@ -38,14 +33,8 @@ class Contacto extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
-        Schema::dropIfExists('Contacto');
+        Schema::dropIfExists('contacto');
     }
 }
-

@@ -8,13 +8,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class DocNecessario extends Model
 {
     use SoftDeletes;
-    protected $table = 'DocNecessario';
-
+    protected $table = 'doc_necessario';
     protected $primaryKey = 'idDocNecessario';
 
     protected $fillable = [
-        'tipo','tipoPessoal','tipoAcademico','$idFase'
-        ];
+        'tipo',
+        'tipoPessoal',
+        'tipoAcademico',
+        '$idFase'
+    ];
 
     public function fase(){
         return $this->belongsTo("App\Fase","idFase","idFase")->withTrashed();

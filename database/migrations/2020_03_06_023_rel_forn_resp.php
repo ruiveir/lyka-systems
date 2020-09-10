@@ -8,7 +8,7 @@ class RelFornResp extends Migration
 {
     public function up()
     {
-        Schema::create('RelFornResp', function (Blueprint $table) {
+        Schema::create('rel_forn_resp', function (Blueprint $table) {
             $table->charset = 'latin1';
             $table->collation = 'latin1_swedish_ci';
             $table->bigIncrements('idRelacao');
@@ -17,15 +17,15 @@ class RelFornResp extends Migration
             $table->enum('estado', ['Pendente', 'Pago', 'Dívida'])->default('Pendente');
             $table->dateTime('dataVencimento')->nullable();
             $table->unsignedBigInteger('idResponsabilidade');
-                $table->foreign('idResponsabilidade')->references('idResponsabilidade')->on('Responsabilidade');
+                $table->foreign('idResponsabilidade')->references('idResponsabilidade')->on('responsabilidade');
             $table->unsignedBigInteger('idFornecedor');
-                $table->foreign('idFornecedor')->references('idFornecedor')->on('Fornecedor');
+                $table->foreign('idFornecedor')->references('idFornecedor')->on('fornecedor');
             $table->timestamps();
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('RelFornResp');
+        Schema::dropIfExists('rel_forn_resp');
     }
 }

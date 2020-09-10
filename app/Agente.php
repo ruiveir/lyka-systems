@@ -7,19 +7,16 @@ use Spatie\Sluggable\SlugOptions;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-
 class Agente extends Model
 {
     use HasSlug, SoftDeletes;
-
-    protected $table = 'Agente';
-
+    protected $table = 'agente';
     protected $primaryKey = 'idAgente';
 
     protected $fillable = [
         'idAgenteAssociado','nome','apelido','genero','tipo','exepcao','email','dataNasc',
         'fotografia','morada','pais','NIF','num_doc','img_doc','telefone1','telefone2','IBAN','observacoes','slug'
-        ];
+    ];
 
     public function user(){
         return $this->belongsTo("App\User","idUser","idUser");

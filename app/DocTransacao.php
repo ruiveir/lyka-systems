@@ -9,9 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class DocTransacao extends Model
 {
     use HasSlug;
-
-    protected $table = 'DocTransacao';
-
+    protected $table = 'doc_transacao';
     protected $primaryKey = 'idDocTransacao';
 
     protected $fillable = [

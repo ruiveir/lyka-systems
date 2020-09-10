@@ -8,7 +8,7 @@ class Fornecedor extends Migration
 {
     public function up()
     {
-        Schema::create('Fornecedor', function (Blueprint $table) {
+        Schema::create('fornecedor', function (Blueprint $table) {
             $table->charset = 'latin1';
             $table->collation = 'latin1_swedish_ci';
             $table->bigIncrements('idFornecedor');
@@ -25,6 +25,6 @@ class Fornecedor extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('Fornecedor');
+        Schema::dropIfExists('fornecedor');
     }
 }

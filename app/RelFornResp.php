@@ -7,8 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class RelFornResp extends Model
 {
-    protected $table = 'RelFornResp';
-
+    protected $table = 'rel_forn_resp';
     protected $primaryKey = 'idRelacao';
 
     protected $fillable = [

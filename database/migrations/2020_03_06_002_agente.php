@@ -6,20 +6,15 @@ use Illuminate\Support\Facades\Schema;
 
 class Agente extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
-        Schema::create('Agente', function (Blueprint $table) {
+        Schema::create('agente', function (Blueprint $table) {
             $table->charset = 'latin1';
             $table->collation = 'latin1_swedish_ci';
             $table->bigIncrements('idAgente');
 
             $table->unsignedBigInteger('idAgenteAssociado')->nullable();
-                $table->foreign('idAgenteAssociado')->references('idAgente')->on('Agente');
+                $table->foreign('idAgenteAssociado')->references('idAgente')->on('agente');
 
             $table->string('nome',255);
             $table->string('apelido',255);
@@ -51,13 +46,8 @@ class Agente extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
-        Schema::dropIfExists('Agente');
+        Schema::dropIfExists('agente');
     }
 }

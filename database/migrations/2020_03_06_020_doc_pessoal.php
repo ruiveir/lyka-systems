@@ -6,14 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class DocPessoal extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
-        Schema::create('DocPessoal', function (Blueprint $table) {
+        Schema::create('doc_pessoal', function (Blueprint $table) {
             $table->charset = 'latin1';
             $table->collation = 'latin1_swedish_ci';
             $table->bigIncrements('idDocPessoal');
@@ -26,17 +21,12 @@ class DocPessoal extends Migration
             $table->string('slug')->nullable();
             $table->timestamps();
             $table->unsignedBigInteger('idFase')->nullable();
-                $table->foreign('idFase')->references('idFase')->on('Fase');
+                $table->foreign('idFase')->references('idFase')->on('fase');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
-        Schema::dropIfExists('DocPessoal');
+        Schema::dropIfExists('doc_pessoal');
     }
 }

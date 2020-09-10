@@ -6,14 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class Biblioteca extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
-        Schema::create('Biblioteca', function (Blueprint $table) {
+        Schema::create('biblioteca', function (Blueprint $table) {
             $table->charset = 'latin1';
             $table->collation = 'latin1_swedish_ci';
             $table->bigIncrements('idBiblioteca');
@@ -27,13 +22,8 @@ class Biblioteca extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
-        Schema::dropIfExists('Biblioteca');
+        Schema::dropIfExists('biblioteca');
     }
 }

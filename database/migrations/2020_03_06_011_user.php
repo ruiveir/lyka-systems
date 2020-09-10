@@ -8,7 +8,7 @@ class User extends Migration
 {
     public function up()
     {
-        Schema::create('User', function (Blueprint $table) {
+        Schema::create('user', function (Blueprint $table) {
             $table->charset = 'latin1';
             $table->collation = 'latin1_swedish_ci';
             $table->bigIncrements('idUser');
@@ -16,19 +16,17 @@ class User extends Migration
             $table->enum('tipo',['admin', 'agente', 'cliente']);
             $table->string('password',255)->nullable();
             $table->string('auth_key', 5)->nullable();
-            $table->bigInteger('loginCount')->default(0);
-            $table->string('login_key')->nullable();
             $table->boolean('estado')->default(false);
             $table->string('slug')->nullable();
 
             $table->unsignedBigInteger('idAdmin')->nullable();
-                $table->foreign('idAdmin')->references('idAdmin')->on('Administrador');
+                $table->foreign('idAdmin')->references('idAdmin')->on('administrador');
 
             $table->unsignedBigInteger('idAgente')->nullable();
-                $table->foreign('idAgente')->references('idAgente')->on('Agente');
+                $table->foreign('idAgente')->references('idAgente')->on('agente');
 
             $table->unsignedBigInteger('idCliente')->nullable();
-                $table->foreign('idCliente')->references('idCliente')->on('Cliente');
+                $table->foreign('idCliente')->references('idCliente')->on('cliente');
 
             $table->timestamps();
             $table->softDeletes();
@@ -40,11 +38,11 @@ class User extends Migration
         array('idUser'=>'1', 'email'=>'admin@test.com', 'password'=> $password, 'tipo'=>'admin', 'auth_key' => strtoupper(random_str(5)), 'estado' => true, 'slug' => 'senhor-administrador', 'idAdmin'=>'1', 'created_at'=>'2020-02-12 00:00:00', 'updated_at'=>'2020-02-12 00:00:00'),
     );
 
-    DB::table('User')->insert($data);
+    DB::table('user')->insert($data);
 
   }
     public function down()
     {
-        Schema::dropIfExists('User');
+        Schema::dropIfExists('user');
     }
 }

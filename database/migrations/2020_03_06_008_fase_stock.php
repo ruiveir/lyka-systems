@@ -6,32 +6,22 @@ use Illuminate\Support\Facades\Schema;
 
 class FaseStock extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
-        Schema::create('FaseStock', function (Blueprint $table) {
+        Schema::create('fase_stock', function (Blueprint $table) {
             $table->charset = 'latin1';
             $table->collation = 'latin1_swedish_ci';
             $table->bigIncrements('idFaseStock');
             $table->string('descricao',255);
             $table->timestamps();
             $table->unsignedBigInteger('idProdutoStock');
-                $table->foreign('idProdutoStock')->references('idProdutoStock')->on('ProdutoStock');
+                $table->foreign('idProdutoStock')->references('idProdutoStock')->on('produto_stock');
 
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
-        Schema::dropIfExists('FaseStock');
+        Schema::dropIfExists('fase_stock');
     }
 }

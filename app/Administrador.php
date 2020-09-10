@@ -9,9 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Administrador extends Model
 {
     use HasSlug;
-
-    protected $table = 'Administrador';
-
+    protected $table = 'administrador';
     protected $primaryKey = 'idAdmin';
 
     protected $fillable = [

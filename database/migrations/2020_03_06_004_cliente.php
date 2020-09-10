@@ -8,7 +8,7 @@ class Cliente extends Migration
 {
     public function up()
     {
-        Schema::create('Cliente', function (Blueprint $table) {
+        Schema::create('cliente', function (Blueprint $table) {
             $table->charset = 'latin1';
             $table->collation = 'latin1_swedish_ci';
 
@@ -41,14 +41,9 @@ class Cliente extends Migration
             $table->string('nomeInstituicaoOrigem',255)->nullable();
             $table->string('cidadeInstituicaoOrigem',255)->nullable();
 
-
             $table->string('num_docOficial',255)->unique()->nullable();
-
-            $table->longText('validade_docOficial')->nullable(); /* data de validade */
-
+            $table->longText('validade_docOficial')->nullable();
             $table->longText('numPassaporte')->nullable();
-
-
             $table->longText('refCliente')->nullable();
             $table->longText('obsPessoais')->nullable();
             $table->longText('obsFinanceiras')->nullable();
@@ -66,6 +61,6 @@ class Cliente extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('Cliente');
+        Schema::dropIfExists('cliente');
     }
 }

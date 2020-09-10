@@ -6,13 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class FaseStock extends Model
 {
-    protected $table = 'FaseStock';
-
+    protected $table = 'fase_stock';
     protected $primaryKey = 'idFaseStock';
 
     protected $fillable = [
-        'descricao','$idProdutoStock'
-        ];
+        'descricao',
+        '$idProdutoStock'
+    ];
 
     public function produtoStock(){
         return $this->belongsTo("App\ProdutoStock","idProdutoStock","idProdutoStock");
@@ -21,6 +21,7 @@ class FaseStock extends Model
     public function docStock(){
         return $this->hasMany("App\DocStock","idFaseStock","idFaseStock");
     }
+
     public function fase(){
         return $this->hasMany("App\Fase","idFaseStock","idFaseStock")->withTrashed();
     }

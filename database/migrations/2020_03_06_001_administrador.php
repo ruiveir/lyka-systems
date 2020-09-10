@@ -8,7 +8,7 @@ class Administrador extends Migration
 {
     public function up()
     {
-        Schema::create('Administrador', function (Blueprint $table) {
+        Schema::create('administrador', function (Blueprint $table) {
             $table->charset = 'latin1';
             $table->collation = 'latin1_swedish_ci';
             $table->bigIncrements('idAdmin');
@@ -29,11 +29,11 @@ class Administrador extends Migration
             array('idAdmin'=>'1', 'nome'=>'Senhor', 'apelido'=>'Administrador', 'genero' => 'M','email' => 'admin@test.com', 'dataNasc'=>'2000-01-01', 'telefone1'=>'912345678', 'superAdmin' => true, 'slug' => 'senhor-administrador', 'created_at'=>'2020-02-12 00:00:00', 'updated_at'=>'2020-02-12 00:00:00'),
         );
 
-        DB::table('Administrador')->insert($data);
+        DB::table('administrador')->insert($data);
     }
 
     public function down()
     {
-        Schema::dropIfExists('Administrador');
+        Schema::dropIfExists('administrador');
     }
 }

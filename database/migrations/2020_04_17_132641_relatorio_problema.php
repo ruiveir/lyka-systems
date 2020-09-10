@@ -8,7 +8,7 @@ class RelatorioProblema extends Migration
 {
     public function up()
     {
-        Schema::create('RelatorioProblema', function (Blueprint $table) {
+        Schema::create('relatorio_problema', function (Blueprint $table) {
             $table->charset = 'latin1';
             $table->collation = 'latin1_swedish_ci';
             $table->bigIncrements('idRelatorioProblema');
@@ -24,6 +24,6 @@ class RelatorioProblema extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('RelatorioProblema');
+        Schema::dropIfExists('relatorio_problema');
     }
 }
