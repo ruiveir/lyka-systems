@@ -16,19 +16,34 @@
                                 <div class="text-center">
                                     <h1 class="h4 text-gray-900 mb-4">Bem-vindo de volta!</h1>
                                 </div>
+                                @if ($errors->has('active'))
+                                    <div class="mb-3 text-danger text-center" id="error">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                        <span class="font-weight-bold">{{$errors->first('active')}}</span>
+                                    </div>
+                                @endif
+
+                                @if ($errors->has('email'))
+                                    <div class="mb-3 text-danger text-center" id="error">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                        <span class="font-weight-bold">{{$errors->first('email')}}</span>
+                                    </div>
+                                @endif
+
+                                @if ($errors->has('throttle'))
+                                    <div class="mb-3 text-danger text-center" id="error">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                        <span class="font-weight-bold">{{$errors->first('throttle')}}</span>
+                                    </div>
+                                @endif
+
                                 <form class="user needs-validation" novalidate method="POST" action="{{route("login")}}">
                                     @csrf
                                     <div class="form-group">
-                                        <input id="email" type="email" class="form-control form-control-user {{$errors->has('email') ? ' is-invalid' : ''}}" name="email" id="email" aria-describedby="emailHelp" placeholder="Endereço eletrónico" autofocus>
-                                        <div class="invalid-feedback">
-                                            Oops, parece que algo não está bem...
-                                        </div>
+                                        <input id="email" type="email" class="form-control form-control-user" value="{{old('email')}}" name="email" aria-describedby="emailHelp" placeholder="Endereço eletrónico" autofocus>
                                     </div>
                                     <div class="form-group">
-                                        <input type="password" class="form-control form-control-user {{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" id="password" placeholder="Password">
-                                        <div class="invalid-feedback">
-                                            Oops, parece que algo não está bem...
-                                        </div>
+                                        <input type="password" class="form-control form-control-user" name="password" id="password" placeholder="Password">
                                     </div>
                                     <button class="btn btn-primary btn-user btn-block" type="submit" name="button">Iniciar Sessão</button>
                                 </form>
@@ -48,7 +63,11 @@
 @section('scripts')
 <script>
     $("#email").change(function(){
-        $("#email").removeClass("is-invalid is-valid");
+        $("#error").remove();
+    });
+
+    $("#password").change(function(){
+        $("#error").remove();
     });
 </script>
 @endsection
