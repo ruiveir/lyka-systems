@@ -304,9 +304,7 @@ class AgenteController extends Controller
 
             // Caso se mude o  agente para subagente, garante que nenhum agente não tem id de subagente
             if($request->idAgenteAssociado == null){
-                $agente = Agente::where('idAgente', $agent->idAgente)->get();
-                $agente->idAgenteAssociado = null;
-                $agente->save();
+                $agente = Agente::where('idAgente', $agent->idAgente)->first()->update(['idAgenteAssociado' => null]);
             }
 
 
@@ -316,10 +314,7 @@ class AgenteController extends Controller
             $agent->save();
 
             /* update do user->email */
-            $utilizador = User::where('idAgente', $agent->idAgente)->get();
-            $utilizador->email = $agent->email;
-            $utilizador->save();
-
+            $utilizador = User::where('idAgente', $agent->idAgente)->first()->update(['email' => $agent->email]);
 
             return redirect()->route('agents.index')->with('success', 'Dados do agente modificados com sucesso');
             }else{
@@ -328,12 +323,7 @@ class AgenteController extends Controller
             }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Agente  $agent
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy(Agente $agent)
     {
         if (Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
@@ -354,13 +344,8 @@ class AgenteController extends Controller
                 }
             }
 
-
-
             /* "Apaga" dos utilizadores */
-            $utilizador = User::where('idAgente', $agent->idAgente)->get();
-            $utilizador->deleted_at = $agent->deleted_at;
-            $utilizador->save();
-
+            $utilizador = User::where('idAgente', $agent->idAgente)->first()->update(['deleted_at' => $agent->deleted_at]);
 
             /* "Apaga" dos utilizadores os subagentes que tiveram o seu agente apagado */
 
