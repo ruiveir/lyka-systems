@@ -38,7 +38,8 @@
                             <th>Nome</th>
                             <th>Tipo</th>
                             <th>E-Mail</th>
-                            <th style="max-width:200px; min-width:200px;">País</th>
+                            <th>País</th>
+                            <th style="max-width:100px; min-width:100px;">Estado</th>
                             <th style="max-width:100px; min-width:100px;">Opções</th>
                         </tr>
                     </thead>
@@ -49,6 +50,7 @@
                             <td>{{$agent->tipo}}</td>
                             <td>{{$agent->email}}</td>
                             <td>{{$agent->pais}}</td>
+                            <td class="@if($agent->user && $agent->user->estado) text-success font-weight-bold @else text-danger font-weight-bold @endif">@if($agent->user && $agent->user->estado) Ativo @else Inativo @endif</td>
                             <td class="text-center align-middle">
                                 <a href="{{route("agents.show", $agent)}}" class="btn btn-sm btn-outline-primary" title="Ficha completa"><i class="far fa-eye"></i></a>
                                 <a href="{{route("agents.edit", $agent)}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
