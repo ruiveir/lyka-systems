@@ -31,6 +31,9 @@
                 {{-- Conteudo: Informação pessoal --}}
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">Edição do produto do cliente {{$cliente->nome.' '.$cliente->apelido}}</h6>
+                    
+                    <input type="text" class="form-control" name="idCliente" id="idCliente"
+                    value="{{old('idCliente',$cliente->idCliente)}}" readonly style="display:none;"><br>
                 </div>
                 <br>
 

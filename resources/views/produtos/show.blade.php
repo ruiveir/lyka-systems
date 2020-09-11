@@ -30,17 +30,12 @@
             </a>
             @endif
             @if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)
-                <form method="POST" role="form" id="{{ $produto->idCliente }}" action="{{route('produtos.destroy',$produto)}}" class="d-inline-block form_produto_id">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger btn-icon-split btn-sm" title="Eliminar Produto" data-toggle="modal" data-target="#deleteModal">
-                        <span class="icon text-white-50">
-                            <i class="fas fa-trash-alt"></i>
-                        </span>
-                        <span class="text">Eliminar Produto</span>
-                        
-                    </button>
-                </form>
+                <button data-toggle="modal" data-target="#deleteModal" data-slug="{{$produto->slug}}" class="btn btn-danger btn-icon-split btn-sm" title="Eliminar">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-trash-alt"></i>
+                    </span>
+                    <span class="text">Eliminar produto</span>
+                </button>
             @endif
         </div>
     </div>
@@ -540,9 +535,49 @@
     </div>
 </div>
 <!-- End of container-fluid -->
+
+<!-- Modal for delete admin -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header pl-4 pb-1 pt-4">
+                <h5 class="modal-title text-gray-800 font-weight-bold">Pretende eliminar o produto?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close-button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-gray-800 pl-4 pr-5">
+                Ao apagar o registo do produto, <b>irá eliminar o mesmo para todo o sempre!</b> Pense duas vezes antes de proceder com a ação.
+            </div>
+            <div class="modal-footer mt-3">
+                <form method="post">
+                    @csrf
+                    @method('DELETE')
+                    <a data-dismiss="modal" class="mr-4 font-weight-bold" id="close-option">Cancelar</a>
+                    <button type="submit" class="btn btn-danger font-weight-bold mr-2">Eliminar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Modal for delete report -->
+
 @endsection
 
 {{-- Scripts --}}
 @section('scripts')
+<script>
+    
+    $(document).ready(function() {
+
+        // Modal for DELETE
+        $('#deleteModal').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget);
+            var modal = $(this);
+            modal.find("form").attr('action', '/produtos/' + button.data('slug'));
+        });
+        
+    });
+</script>
     {{-- <script src="{{asset('/js/NOME_DO_FICHEIR.js')}}"></script> --}}
 @endsection
