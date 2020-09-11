@@ -13,11 +13,11 @@ class ListagemController extends Controller
     {
         $this->middleware('admin');
     }
-    
+
     public function index()
     {
-            $agentes = Agente::where('tipo','=','Agente')->get();
-            $subagentes = Agente::where('tipo','=','Subagente')->get();
+            $agentes = Agente::where('tipo', 'Agente')->get();
+            $subagentes = Agente::where('tipo', 'Subagente')->get();
             $clientes = Cliente::all();
             $universidades = Universidade::all();
             $produtos = Produto::orderBy('tipo')->get();
