@@ -147,9 +147,7 @@
                 id="clients-tab" data-toggle="tab" href="#clients" role="tab" aria-controls="clients"
                 aria-selected="false">
                 <div class="col">
-                    <ion-icon name="person-circle-outline" class="mr-2"
-                        style="font-size: 16pt; --ionicon-stroke-width: 40px; position: relative; top: 5px; right: 0px;">
-                    </ion-icon>Estudantes
+                    <i class="fas fa-user mr-2"></i>Estudantes
                 </div>
             </a>
 
