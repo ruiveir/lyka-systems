@@ -208,7 +208,7 @@ class DataController extends Controller
         $contacto->idUser = 1;
         $contacto->nome = 'Pedro Costa';
         $contacto->fotografia = null;
-        $contacto->telefone1 = null;
+        $contacto->telefone1 = 913568921;
         $contacto->telefone2 = null;
         $contacto->email = 'jonh@gmail.com';
         $contacto->fax = null;

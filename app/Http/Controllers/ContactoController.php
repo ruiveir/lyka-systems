@@ -27,12 +27,12 @@ class ContactoController extends Controller
 
     public function favoritos()
     {
-        $contacts = Contacto::where("favorito","=","1")->get();
+        $contacts = Contacto::where("favorito", "1")->get();
         $favorito = true;
         return view('contacts.list', compact('contacts','favorito'));
     }
 
-    public function create(Universidade $university=null)
+    public function create(Universidade $university = null)
     {
         $contact = new Contacto;
         return view('contacts.add',compact('contact','university'));
@@ -53,22 +53,22 @@ class ContactoController extends Controller
 
         $contact->idUser = Auth::user()->idUser;
 
-        if($request->idUniversidade!=null){
+        if($request->idUniversidade != null){
             $contact->idUser = null;
-            $contact->idUniversidade=$request->idUniversidade;
+            $contact->idUniversidade = $request->idUniversidade;
         }
 
         $contact->save();
 
-        if($request->idUniversidade!=null){
-            $university=Universidade::where('idUniversidade', $request->idUniversidade)->first();
-            return redirect()->route('universities.show',$university)->with('success', 'Novo contacto criado com sucesso');
+        if($request->idUniversidade != null){
+            $university = Universidade::where('idUniversidade', $request->idUniversidade)->first();
+            return redirect()->route('universities.show', $university)->with('success', 'Novo contacto criado com sucesso!');
         }else{
-            return redirect()->route('contacts.index',$contact)->with('success', 'Novo contacto criado com sucesso');
+            return redirect()->route('contacts.index', $contact)->with('success', 'Novo contacto criado com sucesso!');
         }
     }
 
-    public function show(contacto $contact, Universidade $university=null)
+    public function show(contacto $contact)
     {
         $university = Universidade::where("idUniversidade", $contact->idUniversidade)->first();
         return view('contacts.show',compact('contact','university'));
@@ -85,7 +85,6 @@ class ContactoController extends Controller
         $contact->fill($fields);
 
         if ($request->hasFile('fotografia')) {
-            /* Verifica se o ficheiro antigo existe e apaga do storage*/
             $oldfile=Contacto::where('idContacto', '=',$contact->idContacto)->first();
 
             if(Storage::disk('public')->exists('contact-photos/'. $oldfile->fotografia)){
@@ -107,15 +106,15 @@ class ContactoController extends Controller
 
         if($request->idUniversidade!=null){
             $university=Universidade::where('idUniversidade', $request->idUniversidade)->first();
-            return redirect()->route('universities.show',$university)->with('success', 'Informações do contacto alteradas com sucesso');
+            return redirect()->route('universities.show',$university)->with('success', 'Informações do contacto alteradas com sucesso!');
         }else{
-            return redirect()->route('contacts.index',$contact)->with('success', 'Informações do contacto alteradas com sucesso');
+            return redirect()->route('contacts.index',$contact)->with('success', 'Informações do contacto alteradas com sucesso!');
         }
     }
 
     public function destroy(contacto $contact)
     {
         $contact->delete();
-        return back()->with('success', 'Contacto eliminado com sucesso');
+        return back()->with('success', 'Contacto eliminado com sucesso!');
     }
 }

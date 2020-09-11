@@ -17,7 +17,7 @@ class StoreContactoRequest extends FormRequest
             'idUniversidade	'=> 'nullable',
             'fotografia'=> 'nullable',
             'nome' => 'required',
-            'telefone1' => 'nullable',
+            'telefone1' => 'required',
             'telefone2' => 'nullable',
             'email' => 'nullable',
             'fax' => 'nullable',
