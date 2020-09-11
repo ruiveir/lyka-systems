@@ -58,7 +58,7 @@
                             <th>E-Mail</th>
                             <th>Telefone</th>
                             <th>País</th>
-                            <th style="max-width:200px; min-width:200px;">Estado</th>
+                            <th style="max-width:100px; min-width:100px;">Estado</th>
                             <th style="max-width:100px; min-width:100px;">Opções</th>
                         </tr>
                     </thead>
@@ -171,7 +171,7 @@
                     "sSortDescending": ": Ordenar colunas de forma descendente"
                 }
             },
-            "order": [ 3, 'asc' ]
+            "order": [ 4, 'asc' ]
         });
 
         // Modal for DELETE
