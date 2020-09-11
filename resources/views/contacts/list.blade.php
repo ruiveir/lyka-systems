@@ -1,211 +1,178 @@
 @extends('layout.master')
-
-
-{{-- Titulo da Página --}}
-@section('title', 'Lista de contactos')
-
-
-{{-- Estilos de CSS --}}
-@section('styleLinks')
-
-<link href="{{asset('/css/datatables_general.css')}}" rel="stylesheet">
-<link href="{{asset('/css/inputs.css')}}" rel="stylesheet">
-
-
-@endsection
-
-
-{{-- Conteudo da Página --}}
+<!-- Page Title -->
+@section('title', 'Contactos')
+<!-- Page Content -->
 @section('content')
-
-<!-- MODAL DE INFORMAÇÔES -->
-@include('contacts.partials.modal')
-
-
-
-<div class="container-fluid my-4">
-    {{-- Conteúdo --}}
-    <div class="bg-white shadow-sm mb-4 p-4 ">
-
-
-        <div class="row">
-
-            <div class="col">
-                <div class="title">
-                    <h4><strong>Lista Telefónica</strong></h4>
-                </div>
-            </div>
-
-            {{-- Opções --}}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h4 mb-0 text-gray-800">Listagem de contactos</h1>
+        <div>
             @if($favorito)
-                <div class="col text-right">
-                    <a href="{{route('contacts.index')}}" class="btn btn-sm btn-info px-2" style="color:black;font-weight: bold; width: 35%">Mostrar Todos</a>
-                </div>
+                <a href="{{route('contacts.index')}}" class="btn btn-success btn-icon-split btn-sm" title="Mostrar todos">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-phone"></i>
+                    </span>
+                    <span class="text">Mostrar todos</span>
+                </a>
             @else
-                <div class="col text-right">
-                    <a href="{{route('contacts.favoritos')}}" class="btn btn-sm btn-danger px-2" style="color:black;font-weight: bold;"><i class="fas fa-star text-warning mr-2" title="Contacto favorito"
-                        style="font-size:12px"></i>Mostrar Favoritos</a>
-                </div>
+                <a href="{{route('contacts.favoritos')}}" class="btn btn-success btn-icon-split btn-sm" title="Mostrar favoritos">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-star"></i>
+                    </span>
+                    <span class="text">Mostrar favoritos</span>
+                </a>
             @endif
-            <div class="col text-right">
-                <a href="{{route('contacts.create')}}" class="btn btn-sm btn-success px-2"><i
-                        class="fas fa-plus mr-2"></i>Adicionar Contacto</a>
-            </div>
-
+            <a href="{{route('contacts.create')}}" class="btn btn-primary btn-icon-split btn-sm" title="Adicionar">
+                <span class="icon text-white-50">
+                    <i class="fas fa-plus"></i>
+                </span>
+                <span class="text">Adicionar contacto</span>
+            </a>
+            <a href="#" data-toggle="modal" data-target="#infoModal" class="btn btn-secondary btn-icon-split btn-sm" title="Informações">
+                <span class="icon text-white-50">
+                    <i class="fas fa-info-circle"></i>
+                </span>
+                <span class="text">Informações</span>
+            </a>
         </div>
-
-        <hr>
-
-        <div class="row my-2">
-            <div class="col">
-                @if($contacts)
-                <div class="text-secondary"><strong>Existe {{count($contacts)}} contacto(s) registados</strong>
-                </div>
-                @endif
-            </div>
+    </div>
+    <!-- Approach -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Listagem de contactos</h6>
         </div>
-
-
-        <div class="row my-2">
-            <div class="col ">
-                {{-- Input para pesquisa na datatable --}}
-                <input type="text" class="shadow-sm" id="customSearchBox" placeholder="Procurar nos resultados..."
-                    aria-label="Procurar" style="width: 100%">
-            </div>
-        </div>
-
-
-        <div class="row mt-4">
-
-
-            @if($contacts)
-
-            <div class="col">
-                <div class="table-responsive">
-                    <table id="dataTable" class="table table-bordered table-hover " style="width:100%">
-
-                        {{-- Cabeçalho da tabela --}}
-                        <thead>
-                            <tr>
-
-                                <th class="text-center align-content-center ">Foto
-                                    {{-- <input class="table-check" type="checkbox" value="" id="check_all"> --}}
-                                </th>
-
-                                <th>Nome</th>
-                                <th>E-mail</th>
-                                <th>Telefone</th>
-                                <th class="text-center">Opções</th>
-                            </tr>
-                        </thead>
-
-                        {{-- Corpo da tabela --}}
-                        <tbody>
-                            @foreach ($contacts as $contact)
-                            <tr>
-                                <td>
-                                    <div class="align-middle mx-auto shadow-sm rounded bg-white"
-                                        style="overflow:hidden; width:50px; height:50px">
-                                        <a class="name_link" href="{{route('contacts.show',$contact)}}">
-                                            @if($contact->fotografia)
-                                            <img src="{{url('/storage/contact-photos/'.$contact->fotografia)}}"
-                                                width="100%" class="mx-auto">
-                                            @else
-                                                <img src="
-                                                {{url('/storage/default-photos/M.jpg')}}" width="100%"
-                                                class="mx-auto">
-                                            @endif
-                                        </a>
-                                    </div>
-
-                                </td>
-
-                                {{-- Nome e Apelido --}}
-                                <td class="align-middle">
-                                    @if($contact->favorito)
-                                    <i class="fas fa-star text-warning mr-2" title="Contacto favorito"
-                                        style="font-size:12px"></i>
+        <div class="card-body">
+            <div class="table-responsive p-1">
+                <table class="table table-bordered table-striped" id="table" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Foto</th>
+                            <th>Nome</th>
+                            <th>E-mail</th>
+                            <th>Telefone</th>
+                            <th style="max-width:100px; min-width:100px;">Opções</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($contacts as $contact)
+                        <tr>
+                            <td>
+                                <div class="align-middle mx-auto shadow-sm rounded bg-white" style="overflow:hidden; width:50px; height:50px">
+                                    @if($contact->fotografia)
+                                        <img src="{{url('/storage/contact-photos/'.$contact->fotografia)}}" width="100%" class="mx-auto">
+                                    @else
+                                        <img src=" {{url('/storage/default-photos/M.jpg')}}" width="100%" class="mx-auto">
                                     @endif
-
-                                    <a class="name_link" href="{{route('contacts.show',$contact)}}">
-                                        {{$contact->nome}}</a>
-                                </td>
-
-                                {{-- e-mail --}}
-                                <td class="align-middle">
-                                    @if ($contact->email==null)
-                                    <span class="text-muted" style="font-weight:normal"><small>(sem
-                                            informação)</small><span>
-                                            @else
-                                            {{$contact->email}}
-                                            @endif
-                                </td>
-
-                                {{-- Telefone(1) --}}
-                                <td class="align-middle">
-                                    @if ($contact->telefone1==null)
-                                    <span class="text-muted" style="font-weight:normal"><small>(sem
-                                            informação)</small><span>
-                                            @else
-                                            {{$contact->telefone1}}
-                                            @endif
-                                </td>
-
-
-                                {{-- OPÇÔES --}}
-                                <td class="text-center align-middle">
-                                    <a href="{{route('contacts.show',$contact)}}" class="btn btn-sm btn-outline-primary "
-                                        title="Ver ficha completa"><i class="far fa-eye"></i></a>
-
-
-                                    <a href="{{route('contacts.edit',$contact)}}" class="btn btn-sm btn-outline-warning"
-                                        title="Editar"><i class="fas fa-pencil-alt"></i></a>
-
-                                    <form method="POST" role="form" id="{{ $contact->idContacto }}"
-                                        action="{{route('contacts.destroy',$contact)}}" data="{{ $contact->nome }}"
-                                        class="d-inline-block form_contact_id">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar contacto"
-                                            data-toggle="modal" data-target="#staticBackdrop"><i
-                                                class="fas fa-trash-alt"></i></button>
-                                    </form>
-                                </td>
-                            </tr>
-                            @endforeach
-
-                        </tbody>
-                    </table>
-
-                </div>
-
-                @else
-
-                <div class="border rounded bg-light p-2 mt-4" >
-                    <span class="text-muted"><small>(sem dados para mostrar)</small></span>
-                </div>
-
-                @endif
-            </div>
-
+                                </div>
+                            </td>
+                            <td class="align-middle">{{$contact->nome}} @if($contact->favorito) <i class="fas fa-star text-warning"></i> @endif</td>
+                            <td class="align-middle">@if($contact->email) {{$contact->email}} @else N/A @endif</td>
+                            <td class="align-middle">{{$contact->telefone1}}</td>
+                            <td class="text-center align-middle">
+                                <a href="{{route("contacts.show", $contact)}}" class="btn btn-sm btn-outline-primary" title="Ficha completa"><i class="far fa-eye"></i></a>
+                                <a href="{{route("contacts.edit", $contact)}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                <button data-toggle="modal" data-target="#deleteModal" data-slug="{{$contact->slug}}" class="btn btn-sm btn-outline-danger" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 </div>
+<!-- End of container-fluid -->
 
+<!-- Modal for more information -->
+<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header pl-4 pb-1 pt-4">
+                <h5 class="modal-title text-gray-800 font-weight-bold">Para que serve?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close-button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-gray-800 pl-4 pr-5">
+                Nesta secção encontram-se a listagem dos contactos da Estudar Portugal. Pode acrescentar mais clicando no botão <b>Adicionar contacto</b>.
+            </div>
+            <div class="modal-footer mt-3">
+                <a data-dismiss="modal" class="mr-4 font-weight-bold" id="close-option">Fechar</a>
+                <button type="button" data-dismiss="modal" class="btn btn-primary font-weight-bold mr-2">Entendido!</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Modal for more information  -->
 
+<!-- Modal for delete admin -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header pl-4 pb-1 pt-4">
+                <h5 class="modal-title text-gray-800 font-weight-bold">Pretende eliminar o contacto?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close-button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-gray-800 pl-4 pr-5">
+                Ao apagar o registo do contacto, <b>irá eliminar o mesmo para todo o sempre!</b> Pense duas vezes antes de proceder com a ação.
+            </div>
+            <div class="modal-footer mt-3">
+                <form method="post">
+                    @csrf
+                    @method('DELETE')
+                    <a data-dismiss="modal" class="mr-4 font-weight-bold" id="close-option">Cancelar</a>
+                    <button type="submit" class="btn btn-danger font-weight-bold mr-2">Eliminar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Modal for delete report -->
 
-
-
-
-
-
-
-@endsection
-
-{{-- Utilização de scripts: --}}
+<!-- Begin of Scripts -->
 @section('scripts')
+<script>
+    $(document).ready(function() {
+        $('#table').DataTable({
+            "language": {
+                "sEmptyTable": "Não foi encontrado nenhum registo",
+                "sLoadingRecords": "A carregar...",
+                "sProcessing": "A processar...",
+                "sLengthMenu": "Mostrar _MENU_ registos",
+                "sZeroRecords": "Não foram encontrados resultados",
+                "sInfo": "Mostrando _END_ de _TOTAL_ registos",
+                "sInfoEmpty": "Mostrando de 0 de 0 registos",
+                "sInfoFiltered": "(filtrado de _MAX_ registos no total)",
+                "sInfoPostFix": "",
+                "sSearch": "Procurar:",
+                "sUrl": "",
+                "oPaginate": {
+                    "sFirst": "Primeiro",
+                    "sPrevious": "Anterior",
+                    "sNext": "Seguinte",
+                    "sLast": "Último"
+                },
+                "oAria": {
+                    "sSortAscending": ": Ordenar colunas de forma ascendente",
+                    "sSortDescending": ": Ordenar colunas de forma descendente"
+                }
+            },
+            "order": [ 3, 'asc' ]
+        });
 
-<script src="{{asset('/js/contacts.js')}}"></script>
-
+        // Modal for DELETE
+        $('#deleteModal').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget);
+            var modal = $(this);
+            modal.find("form").attr('action', '/contactos/' + button.data('slug'));
+        });
+    });
+</script>
 @endsection
+<!-- End of Scripts -->
+@endsection
+<!-- End of Page Content -->

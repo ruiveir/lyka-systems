@@ -1,181 +1,157 @@
 @extends('layout.master')
-
-
-{{-- Titulo da Página --}}
-@section('title', 'Lista de Agentes')
-
-
-{{-- Estilos de CSS --}}
-@section('styleLinks')
-
-<link href="{{asset('/css/datatables_general.css')}}" rel="stylesheet">
-<link href="{{asset('/css/inputs.css')}}" rel="stylesheet">
-
-@endsection
-
-
-{{-- Conteudo da Página --}}
+<!-- Page Title -->
+@section('title', 'Agentes')
+<!-- Page Content -->
 @section('content')
-@include('agents.partials.modal')
-<!-- MODAL DE INFORMAÇÔES -->
-
-
-
-<div class="container-fluid my-4">
-
-    {{-- Conteúdo --}}
-    <div class="bg-white shadow-sm mb-4 p-4 ">
-
-
-        <div class="row">
-
-            <div class="col">
-                <div class="title">
-                    <h4><strong>Listagem de @if (Auth::user()->tipo == "agente")
-                            {{-- se for agente --}}
-                            Sub agentes
-                            @else
-                            {{-- se for admin --}}
-                            Agentes
-                            @endif</strong>
-                    </h4>
-                </div>
-            </div>
-
-            {{-- Opções --}}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h4 mb-0 text-gray-800">Listagem de agentes</h1>
+        <div>
             @if (Auth::user()->tipo == "admin")
-            <div class="col text-right">
-                <a href="{{route('agents.create')}}" class="btn btn-sm btn-success px-3"><i
-                        class="fas fa-plus mr-2"></i>Adicionar Agente</a>
-            </div>
+                <a href="{{route('agents.create')}}" class="btn btn-primary btn-icon-split btn-sm" title="Adicionar">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-plus"></i>
+                    </span>
+                    <span class="text">Adicionar agente</span>
+                </a>
             @endif
-
+            <a href="#" data-toggle="modal" data-target="#infoModal" class="btn btn-secondary btn-icon-split btn-sm" title="Informações">
+                <span class="icon text-white-50">
+                    <i class="fas fa-info-circle"></i>
+                </span>
+                <span class="text">Informações</span>
+            </a>
         </div>
-
-        <hr>
-
-        @if($agents)
-
-        <div class="row">
-            <div class="col">
-                {{-- Contagem dos Agentes --}}
-                <span class="text-muted font-weight-bold">Existe {{count($agents)}} registo(s) no sistema</span>
-            </div>
-        </div>
-
-        <div class="row mt-3">
-            <div class="col">
-            {{-- Input de procura nos resultados da dataTable --}}
-            <input type="text" class="shadow-sm" id="customSearchBox" placeholder="Procurar nos resultados..."
-                aria-label="Procurar" style="width:100%;">
-            </div>
-        </div>
-
-
-        <div class="row mt-4">
-
-            <div class="col">
-                <div class="table-responsive">
-                    <table id="dataTable" class="table table-bordered table-hover " style="width:100%">
-
-                        {{-- Cabeçalho da tabela --}}
-                        <thead>
-                            <tr>
-                                <th class="text-center align-content-center ">Foto</th>
-                                <th>Nome</th>
-                                <th>Tipo</th>
-                                {{-- <th>E-mail</th> --}}
-                                <th>País</th>
-                                <th class="text-center">Opções</th>
-                            </tr>
-                        </thead>
-
-                        {{-- Corpo da tabela --}}
-                        <tbody>
-
-                            @foreach ($agents as $agent)
-                            <tr>
-                                <td>
-                                    <div class="align-middle mx-auto shadow-sm rounded  bg-white"
-                                        style="overflow:hidden; width:50px; height:50px">
-                                        <a class="name_link" href="{{route('agents.show',$agent)}}">
-                                            @if($agent->fotografia)
-                                            <img src="{{url('/storage/agent-documents/'.$agent->idAgente.'/'.$agent->fotografia)}}"
-                                                width="100%" class="mx-auto">
-                                            @elseif($agent->genero == 'F')
-                                            <img src="{{url('/storage/default-photos/F.jpg')}}"
-                                                width="100%" class="mx-auto">
-                                            @else
-                                            <img src="{{url('/storage/default-photos/M.jpg')}}"
-                                                width="100%" class="mx-auto">
-                                            @endif
-                                        </a>
-                                    </div>
-
-                                </td>
-
-                                {{-- Nome e Apelido --}}
-                                <td class="align-middle"><a class="name_link"
-                                        href="{{route('agents.show',$agent)}}">{{ $agent->nome }}
-                                        {{ $agent->apelido }}</a>
-                                </td>
-
-                                {{-- Tipo --}}
-                                <td class="align-middle">{{ $agent->tipo }}</td>
-
-                                {{-- e-mail --}}
-                                {{-- <td class="align-middle">{{ $agent->email }}</td> --}}
-
-                                {{-- País --}}
-                                <td class="align-middle">{{ $agent->pais }}</td>
-
-
-                                {{-- OPÇÔES --}}
-                                <td class="text-center align-middle">
-                                    <a href="{{route('agents.show',$agent)}}" class="btn btn-sm btn-outline-primary"
-                                        title="Ver ficha completa"><i class="far fa-eye"></i></a>
-
-
-                                    @if (Auth::user()->tipo == "admin")
-                                    <a href="{{route('agents.edit',$agent)}}" class="btn btn-sm btn-outline-warning"
-                                        title="Editar"><i class="fas fa-pencil-alt"></i></a>
-
-                                    <form method="POST" role="form" id="{{ $agent->idAgente }}"
-                                        action="{{route('agents.destroy',$agent)}}"
-                                        data="{{ $agent->nome }} {{ $agent->apelido }}"
-                                        class="d-inline-block form_agent_id">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar agente"
-                                            data-toggle="modal" data-target="#deleteModal"><i
-                                                class="fas fa-trash-alt"></i></button>
-                                    </form>
-                                    @endif
-                                </td>
-                            </tr>
-                            @endforeach
-
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-
-            @else
-                <div class="border rounded bg-light p-3 text-muted"><small>(sem registos)</small></div>
-            @endif
-
-        </div>
-
     </div>
+    <!-- Approach -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Listagem de agentes da Estudar Portugal</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive p-1">
+                <table class="table table-bordered table-striped" id="table" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Tipo</th>
+                            <th>E-Mail</th>
+                            <th style="max-width:200px; min-width:200px;">País</th>
+                            <th style="max-width:100px; min-width:100px;">Opções</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($agents as $agent)
+                        <tr>
+                            <td>{{$agent->nome.' '.$agent->apelido}}</td>
+                            <td>{{$agent->tipo}}</td>
+                            <td>{{$agent->email}}</td>
+                            <td>{{$agent->pais}}</td>
+                            <td class="text-center align-middle">
+                                <a href="{{route("agents.show", $agent)}}" class="btn btn-sm btn-outline-primary" title="Ficha completa"><i class="far fa-eye"></i></a>
+                                <a href="{{route("agents.edit", $agent)}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                <button data-toggle="modal" data-target="#deleteModal" data-slug="{{$agent->slug}}" class="btn btn-sm btn-outline-danger" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of container-fluid -->
 
+<!-- Modal for more information -->
+<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header pl-4 pb-1 pt-4">
+                <h5 class="modal-title text-gray-800 font-weight-bold">Para que serve?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close-button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-gray-800 pl-4 pr-5">
+                Nesta secção encontram-se a listagem dos agentes e sub-agentes da Estudar Portugal. Pode acrescentar mais clicando no botão <b>Adicionar agente</b>.
+            </div>
+            <div class="modal-footer mt-3">
+                <a data-dismiss="modal" class="mr-4 font-weight-bold" id="close-option">Fechar</a>
+                <button type="button" data-dismiss="modal" class="btn btn-primary font-weight-bold mr-2">Entendido!</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Modal for more information  -->
 
+<!-- Modal for delete admin -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header pl-4 pb-1 pt-4">
+                <h5 class="modal-title text-gray-800 font-weight-bold">Pretende eliminar o agente?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close-button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-gray-800 pl-4 pr-5">
+                Ao apagar o registo do agente ou sub-agente, <b>irá eliminar o mesmo para todo o sempre!</b> Pense duas vezes antes de proceder com a ação.
+            </div>
+            <div class="modal-footer mt-3">
+                <form method="post">
+                    @csrf
+                    @method('DELETE')
+                    <a data-dismiss="modal" class="mr-4 font-weight-bold" id="close-option">Cancelar</a>
+                    <button type="submit" class="btn btn-danger font-weight-bold mr-2">Eliminar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Modal for delete report -->
 
-    @endsection
+<!-- Begin of Scripts -->
+@section('scripts')
+<script>
+    $(document).ready(function() {
+        $('#table').DataTable({
+            "language": {
+                "sEmptyTable": "Não foi encontrado nenhum registo",
+                "sLoadingRecords": "A carregar...",
+                "sProcessing": "A processar...",
+                "sLengthMenu": "Mostrar _MENU_ registos",
+                "sZeroRecords": "Não foram encontrados resultados",
+                "sInfo": "Mostrando _END_ de _TOTAL_ registos",
+                "sInfoEmpty": "Mostrando de 0 de 0 registos",
+                "sInfoFiltered": "(filtrado de _MAX_ registos no total)",
+                "sInfoPostFix": "",
+                "sSearch": "Procurar:",
+                "sUrl": "",
+                "oPaginate": {
+                    "sFirst": "Primeiro",
+                    "sPrevious": "Anterior",
+                    "sNext": "Seguinte",
+                    "sLast": "Último"
+                },
+                "oAria": {
+                    "sSortAscending": ": Ordenar colunas de forma ascendente",
+                    "sSortDescending": ": Ordenar colunas de forma descendente"
+                }
+            },
+            "order": [3, 'asc']
+        });
 
-    {{-- Utilização de scripts: --}}
-    @section('scripts')
-
-    <script src="{{asset('/js/agent.js')}}"></script>
-
-    @endsection
+        // Modal for DELETE
+        $('#deleteModal').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget);
+            var modal = $(this);
+            modal.find("form").attr('action', '/agentes/' + button.data('slug'));
+        });
+    });
+</script>
+@endsection
+<!-- End of Scripts -->
+@endsection
+<!-- End of Page Content -->
