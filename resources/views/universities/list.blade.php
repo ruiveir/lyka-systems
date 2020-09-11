@@ -40,18 +40,20 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($universities as $university)
-                        <tr>
-                            <td>{{$university->nome}}</td>
-                            <td>{{$university->email}}</td>
-                            <td>{{$university->telefone}}</td>
-                            <td class="text-center align-middle">
-                                <a href="{{route("universities.show", $university)}}" class="btn btn-sm btn-outline-primary" title="Visualizar"><i class="far fa-eye"></i></a>
-                                <a href="{{route("universities.edit", $university)}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
-                                <button data-toggle="modal" data-target="#deleteModal" data-slug="{{$university->slug}}" class="btn btn-sm btn-outline-danger" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
-                            </td>
-                        </tr>
-                        @endforeach
+                        @if (isset($universities))
+                            @foreach ($universities as $university)
+                                <tr>
+                                    <td>{{$university->nome}}</td>
+                                    <td>{{$university->email}}</td>
+                                    <td>{{$university->telefone}}</td>
+                                    <td class="text-center align-middle">
+                                        <a href="{{route("universities.show", $university)}}" class="btn btn-sm btn-outline-primary" title="Visualizar"><i class="far fa-eye"></i></a>
+                                        <a href="{{route("universities.edit", $university)}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                        <button data-toggle="modal" data-target="#deleteModal" data-slug="{{$university->slug}}" class="btn btn-sm btn-outline-danger" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @endif
                     </tbody>
                 </table>
             </div>

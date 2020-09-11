@@ -38,15 +38,17 @@
                 <div class="col-md-6">
                     <h6 class="m-0 font-weight-bold text-primary align-middle">Listagem de estudantes</h6>
                 </div>
-                <div class="mr-3">
-                    <span class="p-2 px-3 border bg-light">
-                        <small>
-                            <span class="mx-1">{{ $clients->where("estado", "Ativo")->count() }} Ativos</span><span class="mx-1">|</span>
-                            <span class="mx-1">{{ $clients->where("estado", "Proponente")->count() }} Proponentes</span><span class="mx-1">|</span>
-                            <span class="mx-1">{{ $clients->where("estado", "Inativo")->count() }} Inativos</span>
-                        </small>
-                    </span>
-                </div>
+                @if (isset($clients))
+                    <div class="mr-3">
+                        <span class="p-2 px-3 border bg-light">
+                            <small>
+                                <span class="mx-1">{{ $clients->where("estado", "Ativo")->count() }} Ativos</span><span class="mx-1">|</span>
+                                <span class="mx-1">{{ $clients->where("estado", "Proponente")->count() }} Proponentes</span><span class="mx-1">|</span>
+                                <span class="mx-1">{{ $clients->where("estado", "Inativo")->count() }} Inativos</span>
+                            </small>
+                        </span>
+                    </div>
+                @endif
             </div>
         </div>
         <div class="card-body">
@@ -63,30 +65,32 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($clients as $client)
-                            @if ($client->estado == "Ativo" || $client->estado == "Proponente")
-                                <tr>
-                                    <td>{{$client->nome.' '.$client->apelido}}</td>
-                                    <td>{{$client->email}}</td>
-                                    <td>{{$client->telefone1}}</td>
-                                    <td>{{$client->paisNaturalidade}}</td>
-                                    <td class="font-weight-bold @if($client->estado == "Ativo") text-success @else text-danger @endif">@if($client->estado) Ativo @else Proponente @endif</td>
-                                    <td class="text-center align-middle">
-                                        <a href="{{route("clients.show", $client)}}" class="btn btn-sm btn-outline-primary" title="Ficha completa"><i class="far fa-eye"></i></a>
-                                        @if(Auth::user()->tipo == "admin" || Auth::user()->tipo == "agente" && $client->editavel == 1)
-                                            <a href="{{route("clients.edit", $client)}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
-                                        @else
-                                            <button disabled href="{{route("clients.edit", $client)}}" class="btn btn-sm btn-outline-dark text-gray-900" title="Editar"><i class="fas fa-pencil-alt"></i></button>
-                                        @endif
-                                        @if (Auth::user()->tipo == "admin")
-                                            <button data-toggle="modal" data-target="#deleteModal" data-slug="{{$client->slug}}" class="btn btn-sm btn-outline-danger" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
-                                        @else
-                                            <button disabled class="btn btn-sm btn-outline-dark text-gray-900" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
-                                        @endif
-                                    </td>
-                                </tr>
-                            @endif
-                        @endforeach
+                        @if (isset($clients))
+                            @foreach ($clients as $client)
+                                @if ($client->estado == "Ativo" || $client->estado == "Proponente")
+                                    <tr>
+                                        <td>{{$client->nome.' '.$client->apelido}}</td>
+                                        <td>{{$client->email}}</td>
+                                        <td>{{$client->telefone1}}</td>
+                                        <td>{{$client->paisNaturalidade}}</td>
+                                        <td class="font-weight-bold @if($client->estado == "Ativo") text-success @else text-danger @endif">@if($client->estado) Ativo @else Proponente @endif</td>
+                                        <td class="text-center align-middle">
+                                            <a href="{{route("clients.show", $client)}}" class="btn btn-sm btn-outline-primary" title="Ficha completa"><i class="far fa-eye"></i></a>
+                                            @if(Auth::user()->tipo == "admin" || Auth::user()->tipo == "agente" && $client->editavel == 1)
+                                                <a href="{{route("clients.edit", $client)}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                            @else
+                                                <button disabled href="{{route("clients.edit", $client)}}" class="btn btn-sm btn-outline-dark text-gray-900" title="Editar"><i class="fas fa-pencil-alt"></i></button>
+                                            @endif
+                                            @if (Auth::user()->tipo == "admin")
+                                                <button data-toggle="modal" data-target="#deleteModal" data-slug="{{$client->slug}}" class="btn btn-sm btn-outline-danger" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+                                            @else
+                                                <button disabled class="btn btn-sm btn-outline-dark text-gray-900" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endif
+                            @endforeach
+                        @endif
                     </tbody>
                 </table>
             </div>

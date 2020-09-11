@@ -22,7 +22,6 @@
         </div>
         <div class="card-body">
             <div class="table-responsive p-1">
-                @if($notifications)
                 <table class="table table-bordered table-striped" id="table" width="100%">
                     <thead>
                         <tr>
@@ -33,50 +32,51 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($notifications as $notification)
-                        <tr>
-                            <td>
-                                @if($notification->type == "App\Notifications\BugReportSend")
-                                    <span>Relatório de erro</span>
-                                @elseif($notification->type == "App\Notifications\Aniversario")
-                                    <span>Aniversário</span>
-                                @elseif($notification->type == "App\Notifications\Atraso")
-                                    <span>Atraso<span>
-                                @elseif($notification->type == 'App\Notifications\AtrasoCliente')
-                                    <span>AtrasoCliente</span>
-                                @else
-                                    <span>Abertura</span>
-                                @endif
-                            </td>
-                            <td>
-                                @if($notification->type == "App\Notifications\BugReportSend")
-                                    {{$notification->data["subject"]}}
-                                @else
-                                    {{$notification->data["assunto"]}}
-                                @endif
-                            </td>
-                            <td>
-                                @if($notification->data['urgencia'])
-                                    <span class="font-weight-bold text-danger">Urgente</span>
-                                @else
-                                    <span>Regular</span>
-                                @endif
-                            </td>
-                            <td class="text-center align-middle">
-                                @if($notification->type == "App\Notifications\BugReportSend")
-                                <a href="{{route("bugreport.show", $notification->data["idReport"])}}" class="btn btn-sm btn-outline-primary" title="Ficha completa"><i class="far fa-eye"></i></a>
-                                @else
-                                <a href="{{route('notification.show',$notification)}}" class="btn btn-sm btn-outline-primary" title="Ficha completa"><i class="far fa-eye"></i></a>
-                                @endif
-                                @if($notification->type == "App\Notifications\Aniversario")
-                                <button onclick="{{$notification->delete()}}" class="btn btn-sm btn-outline-danger" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
-                                @endif
-                            </td>
-                        </tr>
-                        @endforeach
+                        @if($notifications)
+                            @foreach ($notifications as $notification)
+                            <tr>
+                                <td>
+                                    @if($notification->type == "App\Notifications\BugReportSend")
+                                        <span>Relatório de erro</span>
+                                    @elseif($notification->type == "App\Notifications\Aniversario")
+                                        <span>Aniversário</span>
+                                    @elseif($notification->type == "App\Notifications\Atraso")
+                                        <span>Atraso<span>
+                                    @elseif($notification->type == 'App\Notifications\AtrasoCliente')
+                                        <span>AtrasoCliente</span>
+                                    @else
+                                        <span>Abertura</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($notification->type == "App\Notifications\BugReportSend")
+                                        {{$notification->data["subject"]}}
+                                    @else
+                                        {{$notification->data["assunto"]}}
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($notification->data['urgencia'])
+                                        <span class="font-weight-bold text-danger">Urgente</span>
+                                    @else
+                                        <span>Regular</span>
+                                    @endif
+                                </td>
+                                <td class="text-center align-middle">
+                                    @if($notification->type == "App\Notifications\BugReportSend")
+                                    <a href="{{route("bugreport.show", $notification->data["idReport"])}}" class="btn btn-sm btn-outline-primary" title="Ficha completa"><i class="far fa-eye"></i></a>
+                                    @else
+                                    <a href="{{route('notification.show',$notification)}}" class="btn btn-sm btn-outline-primary" title="Ficha completa"><i class="far fa-eye"></i></a>
+                                    @endif
+                                    @if($notification->type == "App\Notifications\Aniversario")
+                                    <button onclick="{{$notification->delete()}}" class="btn btn-sm btn-outline-danger" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+                                    @endif
+                                </td>
+                            </tr>
+                            @endforeach
+                        @endif
                     </tbody>
                 </table>
-                @endif
             </div>
         </div>
     </div>
