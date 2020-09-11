@@ -23,7 +23,7 @@ class AgenteController extends Controller
     public function index()
     {
         if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null) || (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)){
-            $agents =null;
+            $agents = null;
             if(Auth()->user()->tipo == 'admin'){
                 $agents = Agente::all();
             }else{
@@ -112,7 +112,7 @@ class AgenteController extends Controller
             $auth_key = $user->auth_key;
             dispatch(new SendWelcomeEmail($email, $name, $auth_key));
 
-            return redirect()->route('agents.index')->with('success', 'Registo criado com sucesso. Aguarda Ativação');
+            return redirect()->route('agents.index')->with('success', 'Registo criado com sucesso! Aguarda ativação de conta.');
 
         }else{
             abort(403);

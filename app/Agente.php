@@ -18,8 +18,9 @@ class Agente extends Model
         'fotografia','morada','pais','NIF','num_doc','img_doc','telefone1','telefone2','IBAN','observacoes','slug'
     ];
 
-    public function user(){
-        return $this->belongsTo("App\User","idUser","idUser");
+    public function user()
+    {
+        return $this->belongsTo("App\User","idAgente","idAgente");
     }
 
     public function produtoA(){
