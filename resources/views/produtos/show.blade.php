@@ -193,7 +193,7 @@
                             @endif
 
                             <div>
-                                <p class="text-gray-800"><b>Para agente: </b>
+                                <p class="text-gray-800"><b>Valor para agente: </b>
                                     @if($responsabilidade->valorAgente)
                                         {{$responsabilidade->valorAgente.'€'}}
                                     @else
@@ -218,7 +218,7 @@
 
                             @if($responsabilidade->valorSubAgente)
                                 <div>
-                                    <p class="text-gray-800"><b>Para sub-agente: </b>
+                                    <p class="text-gray-800"><b>Valor para sub-agente: </b>
                                         @if($responsabilidade->valorSubAgente)
                                             {{$responsabilidade->valorSubAgente.'€'}}
                                         @else
@@ -243,7 +243,7 @@
                             @endif
 
                             <div>
-                                <p class="text-gray-800"><b>Para universidade: </b>
+                                <p class="text-gray-800"><b>Valor para universidade: </b>
                                     @if($responsabilidade->valorUniversidade1)
                                         {{$responsabilidade->valorUniversidade1.'€'}}
                                     @else
@@ -268,7 +268,7 @@
 
                             @if($responsabilidade->valorUniversidade2)
                                 <div>
-                                    <p class="text-gray-800"><b>Para 2ª universidade: </b>
+                                    <p class="text-gray-800"><b>Valor para 2ª universidade: </b>
                                         @if($responsabilidade->valorUniversidade2)
                                             {{$responsabilidade->valorUniversidade2.'€'}}
                                         @else
