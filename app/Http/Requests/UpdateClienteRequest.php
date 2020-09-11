@@ -19,7 +19,7 @@ class UpdateClienteRequest extends FormRequest
             'nome' => 'required',
             'apelido' => 'required',
             'genero'=>'required',
-            'paisNaturalidade' => 'nullable',
+            'paisNaturalidade' => 'required',
             'dataNasc' => 'nullable',
             'obsPessoais' => 'nullable',
             'obsAgente'=> 'nullable',
@@ -43,7 +43,7 @@ class UpdateClienteRequest extends FormRequest
 
             'telefone1' => 'nullable',
             'telefone2' => 'nullable',
-            'email' => ['required', Rule::unique('cliente')->ignore($this->client), Rule::unique('agente'), Rule::unique('administrador')],
+            'email' => ['nullable', Rule::unique('cliente')->ignore($this->client), Rule::unique('agente'), Rule::unique('administrador')],
             'moradaResidencia' => 'nullable',
             'morada' => 'nullable',
             'cidade' => 'nullable',

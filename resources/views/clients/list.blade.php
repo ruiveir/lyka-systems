@@ -70,8 +70,8 @@
                                 @if ($client->estado == "Ativo" || $client->estado == "Proponente")
                                     <tr>
                                         <td>{{$client->nome.' '.$client->apelido}}</td>
-                                        <td>{{$client->email}}</td>
-                                        <td>{{$client->telefone1}}</td>
+                                        <td>@if($client->email != null){{$client->email}} @else N/A @endif</td>
+                                        <td>@if($client->telefone1 != null){{$client->telefone1}} @else N/A @endif</td>
                                         <td>{{$client->paisNaturalidade}}</td>
                                         <td class="font-weight-bold @if($client->estado == "Ativo") text-success @else text-danger @endif">@if($client->estado) Ativo @else Proponente @endif</td>
                                         <td class="text-center align-middle">

@@ -358,23 +358,6 @@
 
 
 
-            /* Valida se tem agente associado */
-            if ($('#idAgente').val() == "0") {
-                $("#wait_screen").hide();
-                $("#idAgente").addClass("is-invalid");
-                $("#div_agente").addClass("border border-danger text-danger ");
-                $("#idAgente").removeClass("is-valid");
-                $("#idAgente").addClass("is-invalid");
-                $("#idAgente").css("background-image", "none");
-                $("#warning_msg").show();
-                validated = false;
-            } else {
-                $("#div_agente").removeClass("border-danger text-danger");
-                $("#idAgente").removeClass("is-invalid");
-            }
-
-
-
 
             if (validated==true) {
                 return true;
