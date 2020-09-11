@@ -292,25 +292,32 @@
                                     </div>
                                 @endIf
 
-                                @if($produto->idSubAgente)
-                                    <div class="valor-responsabilidade-subagente">
-                                @else
-                                    <div class="valor-responsabilidade-subagente" style="display: none;">
-                                @endif
                                     @if(Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null && (Auth()->user()->agente->tipo == "Agente" ||
                                         (Auth()->user()->agente->tipo == "Subagente" && $permissao_subagente)))
-                                        <div class="col-md-6">
+                                        @if($produto->idSubAgente)
+                                            <div class="col-md-6 valor-responsabilidade-subagente">
+                                        @else
+                                            <div class="col-md-6 valor-responsabilidade-subagente" style="display: none;">
+                                        @endif
                                             <label for="resp-subagente-fase{{$fase->idFase}}">Valor a pagar ao sub-agente:</label><br>
                                             <input type="number" class="form-control valor-pagar-subagente" name="resp-subagente-fase{{$fase->idFase}}" id="resp-subagente-fase{{$fase->idFase}}"
                                             value="{{old('valorSubAgente',$responsabilidade->valorSubAgente)}}" style="width:250px"><br>
                                         </div>
-                                        <div class="col-md-6">
+                                        @if($produto->idSubAgente)
+                                            <div class="col-md-6 valor-responsabilidade-subagente">
+                                        @else
+                                            <div class="col-md-6 valor-responsabilidade-subagente" style="display: none;">
+                                        @endif
                                             <label for="resp-data-subagente-fase{{$fase->idFase}}">Data de vencimento do pagamento ao sub-agente:</label><br>
                                             <input type="date" class="form-control" name="resp-data-subagente-fase{{$fase->idFase}}" id="resp-data-subagente-fase{{$fase->idFase}}"
                                             value="" style="width:250px" ><br>
                                         </div>
                                     @else
-                                        <div class="col-md-6">
+                                        @if($produto->idSubAgente)
+                                            <div class="col-md-6 valor-responsabilidade-subagente">
+                                        @else
+                                            <div class="col-md-6 valor-responsabilidade-subagente" style="display: none;">
+                                        @endif
                                             <label for="resp-subagente-fase{{$fase->idFase}}">Valor a pagar ao sub-agente:</label><br>
                                             @if(Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)
                                                 <input type="number" class="form-control" name="resp-subagente-fase{{$fase->idFase}}" id="resp-subagente-fase{{$fase->idFase}}"
@@ -322,13 +329,16 @@
                                                 {{$responsabilidade->valorAgente + $responsabilidade->valorSubAgente}})"><br>
                                             @endif
                                         </div>
-                                        <div class="col-md-6">
+                                        @if($produto->idSubAgente)
+                                            <div class="col-md-6 valor-responsabilidade-subagente">
+                                        @else
+                                            <div class="col-md-6 valor-responsabilidade-subagente" style="display: none;">
+                                        @endif
                                             <label for="resp-data-subagente-fase{{$fase->idFase}}">Data de vencimento do pagamento ao sub-agente:</label><br>
                                             <input type="date" class="form-control" name="resp-data-subagente-fase{{$fase->idFase}}" id="resp-data-subagente-fase{{$fase->idFase}}"
                                             value="" style="width:250px"><br>
                                         </div>
-                                    @endIf
-                                </div>
+                                    @endif
 
                                 
                                 @if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)
