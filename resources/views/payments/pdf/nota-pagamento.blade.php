@@ -92,7 +92,7 @@
         }
 
         .values #taxa {
-            left: 40%;
+            left: 39%;
             position: relative;
         }
 
@@ -185,7 +185,7 @@
         <br>
         <div id="taxa" class="mt-2">
             <p>N/A</p>
-            <p style="margin-right:8.5rem;">Taxas adicionais</p>
+            <p style="margin-right:8rem;">Taxas adicionais</p>
         </div>
         <br><br><br>
         <div id="hl"></div>
