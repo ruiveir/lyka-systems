@@ -42,7 +42,7 @@
                         <div class="col-md-6 mb-3">
                             <label for="comprovativoPagamento" class="text-gray-900">Comprovativo de pagamento</label>
                             <div class="custom-file mb-3">
-                                <input type="file" class="custom-file-input" name="comprovativoPagamento" id="comprovativoPagamento" value="{{old("comprovativoPagamento", $docTransacao->comprovativoPagamento)}}">
+                                <input type="file" class="custom-file-input" name="comprovativoPagamento" id="comprovativoPagamento">
                                 <small class="form-text text-muted">O comprovativo não deve ultrupassar 2MB.</small>
                                 @if($docTransacao->comprovativoPagamento)
                                     <label class="custom-file-label" for="comprovativoPagamento" data-browse="Escolher">{{old("comprovativoPagamento", $docTransacao->comprovativoPagamento)}}</label>

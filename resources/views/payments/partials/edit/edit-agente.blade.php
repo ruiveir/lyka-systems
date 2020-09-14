@@ -24,7 +24,11 @@
                     <div class="custom-file mb-3">
                         <input type="file" class="custom-file-input" name="comprovativoPagamentoAgente" id="comprovativoPagamentoAgente">
                         <small class="form-text text-muted">O comprovativo não deve ultrupassar 2MB.</small>
-                        <label class="custom-file-label" for="screenshot" data-browse="Escolher">Escolher ficheiro...</label>
+                        @if($pagoResponsabilidade->comprovativoPagamento)
+                            <label class="custom-file-label" for="comprovativoPagamento" data-browse="Escolher">{{old("comprovativoPagamento", $pagoResponsabilidade->comprovativoPagamento)}}</label>
+                        @else
+                            <label class="custom-file-label" for="comprovativoPagamento" data-browse="Escolher">Escolher um comprovativo...</label>
+                        @endif
                     </div>
                 </div>
             </div>

@@ -422,7 +422,7 @@ class PaymentController extends Controller
             $pagoResponsabilidade->dataPagamento = $dataCliente;
             if ($comprovativoCliente != null) {
                 $ficheiroPagamento = $comprovativoCliente;
-                $nomeFicheiro = post_slug($responsabilidade->fase->produto->cliente->nome.' '.$responsabilidade->fase->descricao).'-comprovativo-'.post_slug($responsabilidade->fase->idFase).'.'.$ficheiroPagamento->getClientOriginalExtension();
+                $nomeFicheiro = 'pagamento-'.post_slug($responsabilidade->fase->produto->cliente->nome.' '.$responsabilidade->fase->descricao).'-comprovativo-'.post_slug($responsabilidade->fase->idFase).'.'.$ficheiroPagamento->getClientOriginalExtension();
                 Storage::disk('public')->putFileAs('comprovativos-pagamento/', $ficheiroPagamento, $nomeFicheiro);
                 $pagoResponsabilidade->comprovativoPagamento = $nomeFicheiro;
             }else {
@@ -448,7 +448,7 @@ class PaymentController extends Controller
             $pagoResponsabilidade->observacoes = $observacoesAgente;
             if ($comprovativoAgente != null) {
                 $ficheiroPagamento = $comprovativoAgente;
-                $nomeFicheiro = post_slug($responsabilidade->fase->produto->agente->nome.' '.$responsabilidade->fase->descricao).'-comprovativo-'.post_slug($responsabilidade->fase->idFase).'.'.$ficheiroPagamento->getClientOriginalExtension();
+                $nomeFicheiro = 'pagamento-'.post_slug($responsabilidade->fase->produto->agente->nome.' '.$responsabilidade->fase->descricao).'-comprovativo-'.post_slug($responsabilidade->fase->idFase).'.'.$ficheiroPagamento->getClientOriginalExtension();
                 Storage::disk('public')->putFileAs('comprovativos-pagamento/', $ficheiroPagamento, $nomeFicheiro);
                 $pagoResponsabilidade->comprovativoPagamento = $nomeFicheiro;
             }else {
@@ -474,7 +474,7 @@ class PaymentController extends Controller
             $pagoResponsabilidade->observacoes = $observacoesSubAgente;
             if ($comprovativoSubAgente != null) {
                 $ficheiroPagamento = $comprovativoSubAgente;
-                $nomeFicheiro = post_slug($responsabilidade->fase->produto->subAgente->nome.' '.$responsabilidade->fase->descricao).'-comprovativo-'.post_slug($responsabilidade->fase->idFase).'.'.$ficheiroPagamento->getClientOriginalExtension();
+                $nomeFicheiro = 'pagamento-'.post_slug($responsabilidade->fase->produto->subAgente->nome.' '.$responsabilidade->fase->descricao).'-comprovativo-'.post_slug($responsabilidade->fase->idFase).'.'.$ficheiroPagamento->getClientOriginalExtension();
                 Storage::disk('public')->putFileAs('comprovativos-pagamento/', $ficheiroPagamento, $nomeFicheiro);
                 $pagoResponsabilidade->comprovativoPagamento = $nomeFicheiro;
             }else {
@@ -500,7 +500,7 @@ class PaymentController extends Controller
             $pagoResponsabilidade->observacoes = $observacoesUni1;
             if ($comprovativoUni1 != null) {
                 $ficheiroPagamento = $comprovativoUni1;
-                $nomeFicheiro = post_slug($responsabilidade->fase->produto->universidade1->nome.' '.$responsabilidade->fase->descricao).'-comprovativo-'.post_slug($responsabilidade->fase->idFase).'.'.$ficheiroPagamento->getClientOriginalExtension();
+                $nomeFicheiro = 'pagamento-'.post_slug($responsabilidade->fase->produto->universidade1->nome.' '.$responsabilidade->fase->descricao).'-comprovativo-'.post_slug($responsabilidade->fase->idFase).'.'.$ficheiroPagamento->getClientOriginalExtension();
                 Storage::disk('public')->putFileAs('comprovativos-pagamento/', $ficheiroPagamento, $nomeFicheiro);
                 $pagoResponsabilidade->comprovativoPagamento = $nomeFicheiro;
             }else {
@@ -526,7 +526,7 @@ class PaymentController extends Controller
             $pagoResponsabilidade->observacoes = $observacoesUni2;
             if ($comprovativoUni2 != null) {
                 $ficheiroPagamento = $comprovativoUni2;
-                $nomeFicheiro = post_slug($responsabilidade->fase->produto->universidade2->nome.' '.$responsabilidade->fase->descricao).'-comprovativo-'.post_slug($responsabilidade->fase->idFase).'.'.$ficheiroPagamento->getClientOriginalExtension();
+                $nomeFicheiro = 'pagamento-'.post_slug($responsabilidade->fase->produto->universidade2->nome.' '.$responsabilidade->fase->descricao).'-comprovativo-'.post_slug($responsabilidade->fase->idFase).'.'.$ficheiroPagamento->getClientOriginalExtension();
                 Storage::disk('public')->putFileAs('comprovativos-pagamento/', $ficheiroPagamento, $nomeFicheiro);
                 $pagoResponsabilidade->comprovativoPagamento = $nomeFicheiro;
             }else {
@@ -553,7 +553,7 @@ class PaymentController extends Controller
             $pagoResponsabilidade->observacoes = $observacoesFornecedor;
             if ($comprovativoFornecedor != null) {
                 $ficheiroPagamento = $comprovativoFornecedor;
-                $nomeFicheiro = post_slug($nomeFornecedor.' '.$responsabilidade->fase->descricao).'-comprovativo-'.post_slug($responsabilidade->fase->idFase).'.'.$ficheiroPagamento->getClientOriginalExtension();
+                $nomeFicheiro = 'pagamento'.post_slug($nomeFornecedor.' '.$responsabilidade->fase->descricao).'-comprovativo-'.post_slug($responsabilidade->fase->idFase).'.'.$ficheiroPagamento->getClientOriginalExtension();
                 Storage::disk('public')->putFileAs('comprovativos-pagamento/', $ficheiroPagamento, $nomeFicheiro);
                 $pagoResponsabilidade->comprovativoPagamento = $nomeFicheiro;
             }else {
