@@ -23,10 +23,10 @@
     <div class="card-body">
         <div class="row">
             <div class="col-md-6">
-                <p class="text-gray-800"><b>Beneficiário:</b> @if($pagoResponsabilidade->beneficiario != null) {{$pagoResponsabilidade->beneficiario}} @else N/A @endif </p>
+                <p class="text-gray-800 text-truncate"><b>Beneficiário:</b> @if($pagoResponsabilidade->beneficiario != null) {{$pagoResponsabilidade->beneficiario}} @else N/A @endif </p>
             </div>
             <div class="col-md-6">
-                <p class="text-gray-800"><b>Descrição do pagamento:</b> @if($pagoResponsabilidade->descricao != null) {{$pagoResponsabilidade->descricao}} @else N/A @endif </p>
+                <p class="text-gray-800 text-truncate"><b>Descrição do pagamento:</b> @if($pagoResponsabilidade->descricao != null) {{$pagoResponsabilidade->descricao}} @else N/A @endif </p>
             </div>
         </div>
         <div class="row">
@@ -34,15 +34,15 @@
                 <p class="text-gray-800"><b>Valor pago:</b> @if($pagoResponsabilidade->valorPago != null) {{number_format((float)$pagoResponsabilidade->valorPago, 2, ',', '').'€'}} @else N/A @endif</p>
             </div>
             <div class="col-md-6">
-                <p class="text-gray-800"><b>Data da operação:</b> @if($pagoResponsabilidade->dataPagamento != null) {{date('d/m/Y', strtotime($pagoResponsabilidade->dataPagamento))}} @else N/A @endif</p>
+                <p class="text-gray-800 text-truncate"><b>Data da operação:</b> @if($pagoResponsabilidade->dataPagamento != null) {{date('d/m/Y', strtotime($pagoResponsabilidade->dataPagamento))}} @else N/A @endif</p>
             </div>
         </div>
         <div class="row">
             <div class="col-md-6">
-                <p class="text-gray-800"><b>Conta bancária:</b> @if($pagoResponsabilidade->idConta != null) {{$pagoResponsabilidade->conta->descricao}} @else N/A @endif</p>
+                <p class="text-gray-800"><b>Comprovativo de pagamento:</b> @if($pagoResponsabilidade->comprovativoPagamento != null) <a href="{{route("payments.downloadComprovativo", $pagoResponsabilidade)}}">{{$pagoResponsabilidade->comprovativoPagamento}}</a> @else N/A @endif</p>
             </div>
             <div class="col-md-6">
-                <p class="text-gray-800"><b>Comprovativo de pagamento:</b> @if($pagoResponsabilidade->comprovativoPagamento != null) <a href="{{route("payments.downloadComprovativo", $pagoResponsabilidade)}}">{{$pagoResponsabilidade->comprovativoPagamento}}</a> @else N/A @endif</p>
+                <p class="text-gray-800"><b>Conta bancária:</b> @if($pagoResponsabilidade->idConta != null) {{$pagoResponsabilidade->conta->descricao}} @else N/A @endif</p>
             </div>
         </div>
         <div class="row">

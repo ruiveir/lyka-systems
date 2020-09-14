@@ -8,7 +8,7 @@
 <div class="container-fluid">
     @if (isset($cliente))
     <!-- Registar pagamento CLIENTE -->
-    @include('payments.partials.show.add-cliente')
+    @include('payments.partials.show.show-cliente')
     @elseif (isset($agente))
     <!-- Registar pagamento AGENTE -->
     @include('payments.partials.show.show-agente')

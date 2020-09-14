@@ -13,6 +13,7 @@ class PagoResponsabilidade extends Migration
             $table->collation = 'latin1_swedish_ci';
             $table->bigIncrements('idPagoResp');
             $table->string('beneficiario',255);
+            $table->enum('tipo_beneficiario', ['Cliente', 'Agente', 'Subagente', 'UniPrincipal', 'UniSecundaria', 'Fornecedor']);
             $table->decimal('valorPago', 18, 2);
             $table->string('descricao', 150);
             $table->text('observacoes')->nullable();

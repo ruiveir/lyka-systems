@@ -417,6 +417,7 @@ class PaymentController extends Controller
             $valorCliente = number_format((float) $valorCliente,2 ,'.' ,'');
             $pagoResponsabilidade->valorPago = $valorCliente;
             $pagoResponsabilidade->beneficiario = $responsabilidade->fase->produto->cliente->nome.' '.$responsabilidade->fase->produto->cliente->apelido;
+            $pagoResponsabilidade->tipo_beneficiario = "Cliente";
             $pagoResponsabilidade->descricao = $descricaoCliente;
             $pagoResponsabilidade->observacoes = $observacoesCliente;
             $pagoResponsabilidade->dataPagamento = $dataCliente;
@@ -443,6 +444,7 @@ class PaymentController extends Controller
             $valorAgente = number_format((float) $valorAgente,2 ,'.' ,'');
             $pagoResponsabilidade->valorPago = $valorAgente;
             $pagoResponsabilidade->beneficiario = $responsabilidade->fase->produto->agente->nome.' '.$responsabilidade->fase->produto->agente->apelido;
+            $pagoResponsabilidade->tipo_beneficiario = "Agente";
             $pagoResponsabilidade->dataPagamento = $dataAgente;
             $pagoResponsabilidade->descricao = $descricaoAgente;
             $pagoResponsabilidade->observacoes = $observacoesAgente;
@@ -469,6 +471,7 @@ class PaymentController extends Controller
             $valorSubAgente = number_format((float) $valorSubAgente,2 ,'.' ,'');
             $pagoResponsabilidade->valorPago = $valorSubAgente;
             $pagoResponsabilidade->beneficiario = $responsabilidade->fase->produto->subAgente->nome.' '.$responsabilidade->fase->produto->subAgente->apelido;
+            $pagoResponsabilidade->tipo_beneficiario = "Subagente";
             $pagoResponsabilidade->dataPagamento = $dataSubAgente;
             $pagoResponsabilidade->descricao = $descricaoSubAgente;
             $pagoResponsabilidade->observacoes = $observacoesSubAgente;
@@ -495,6 +498,7 @@ class PaymentController extends Controller
             $valorUni1 = number_format((float) $valorUni1,2 ,'.' ,'');
             $pagoResponsabilidade->valorPago = $valorUni1;
             $pagoResponsabilidade->beneficiario = $responsabilidade->fase->produto->universidade1->nome;
+            $pagoResponsabilidade->tipo_beneficiario = "UniPrincipal";
             $pagoResponsabilidade->dataPagamento = $dataUni1;
             $pagoResponsabilidade->descricao = $descricaoUni1;
             $pagoResponsabilidade->observacoes = $observacoesUni1;
@@ -521,6 +525,7 @@ class PaymentController extends Controller
             $valorUni2 = number_format((float) $valorUni2,2 ,'.' ,'');
             $pagoResponsabilidade->valorPago = $valorUni2;
             $pagoResponsabilidade->beneficiario = $responsabilidade->fase->produto->universidade2->nome;
+            $pagoResponsabilidade->tipo_beneficiario = "UniSecundaria";
             $pagoResponsabilidade->dataPagamento = $dataUni2;
             $pagoResponsabilidade->descricao = $descricaoUni2;
             $pagoResponsabilidade->observacoes = $observacoesUni2;
@@ -548,6 +553,7 @@ class PaymentController extends Controller
             $valorFornecedor = number_format((float) $valorFornecedor,2 ,'.' ,'');
             $pagoResponsabilidade->valorPago = $valorFornecedor;
             $pagoResponsabilidade->beneficiario = $nomeFornecedor;
+            $pagoResponsabilidade->tipo_beneficiario = "Fornecedor";
             $pagoResponsabilidade->dataPagamento = $dataFornecedor;
             $pagoResponsabilidade->descricao = $descricaoFornecedor;
             $pagoResponsabilidade->observacoes = $observacoesFornecedor;
@@ -828,26 +834,31 @@ class PaymentController extends Controller
     // As funções são diferentes pois as vistas são diferentes, bem como a informção que contêm.
     public function showcliente(Cliente $cliente, Fase $fase, Responsabilidade $responsabilidade, PagoResponsabilidade $pagoResponsabilidade)
     {
+        $pagoResponsabilidade = $pagoResponsabilidade->where([["tipo_beneficiario", "Cliente"], ["idResponsabilidade", $responsabilidade->idResponsabilidade]])->first();
         return view("payments.show", compact("cliente", "fase", "responsabilidade", "pagoResponsabilidade"));
     }
 
     public function showagente(Agente $agente, Fase $fase, Responsabilidade $responsabilidade, PagoResponsabilidade $pagoResponsabilidade)
     {
+        $pagoResponsabilidade = $pagoResponsabilidade->where([["tipo_beneficiario", "Agente"], ["idResponsabilidade", $responsabilidade->idResponsabilidade]])->first();
         return view("payments.show", compact("agente", "fase", "responsabilidade", "pagoResponsabilidade"));
     }
 
     public function showsubagente(Agente $subagente, Fase $fase, Responsabilidade $responsabilidade, PagoResponsabilidade $pagoResponsabilidade)
     {
+        $pagoResponsabilidade = $pagoResponsabilidade->where([["tipo_beneficiario", "Subagente"], ["idResponsabilidade", $responsabilidade->idResponsabilidade]])->first();
         return view("payments.show", compact("subagente", "fase", "responsabilidade", "pagoResponsabilidade"));
     }
 
     public function showuni1(Universidade $universidade1, Fase $fase, Responsabilidade $responsabilidade, PagoResponsabilidade $pagoResponsabilidade)
     {
+        $pagoResponsabilidade = $pagoResponsabilidade->where([["tipo_beneficiario", "UniPrincipal"], ["idResponsabilidade", $responsabilidade->idResponsabilidade]])->first();
         return view('payments.show', compact('universidade1', 'fase', 'responsabilidade', 'pagoResponsabilidade'));
     }
 
     public function showuni2(Universidade $universidade2, Fase $fase, Responsabilidade $responsabilidade, PagoResponsabilidade $pagoResponsabilidade)
     {
+        $pagoResponsabilidade = $pagoResponsabilidade->where([["tipo_beneficiario", "UniSecundaria"], ["idResponsabilidade", $responsabilidade->idResponsabilidade]])->first();
         return view('payments.show', compact('universidade2', 'fase', 'responsabilidade', 'pagoResponsabilidade'));
     }
 
@@ -855,6 +866,7 @@ class PaymentController extends Controller
     {
         $responsabilidade = $relacao->responsabilidade;
         $fase = Fase::where('idFase', $fase->idFase)->with(["produto", "produto.agente", "produto.cliente", "produto.universidade1", "responsabilidade"])->first();
+        $pagoResponsabilidade = $pagoResponsabilidade->where([["tipo_beneficiario", "Fornecedor"], ["idResponsabilidade", $responsabilidade->idResponsabilidade]])->first();
         return view('payments.show', compact('fornecedor', 'fase', 'relacao', 'pagoResponsabilidade', 'responsabilidade'));
     }
 
