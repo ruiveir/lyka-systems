@@ -126,7 +126,7 @@ Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
         Route::get('/pagamentos/fornecedor/{fornecedor}/fase/{fase}/{relacao}', 'PaymentController@createfornecedor')->name('payments.fornecedor');
         Route::get('/pagamentos/fornecedor/{fornecedor}/fase/{fase}/{relacao}/{pagoResponsabilidade}/editar', 'PaymentController@editfornecedor')->name('payments.editfornecedor');
     Route::post('/pagamentos/{responsabilidade}/registar', 'PaymentController@store')->name('payments.store');
-    Route::put('/pagamentos/{responsabilidade}', 'PaymentController@update')->name('payments.update');
+    Route::post('/pagamentos/{responsabilidade}/{pagoResponsabilidade}/atualizar', 'PaymentController@update')->name('payments.update');
     Route::get('/pagamentos/nota-pagamento/{pagoresponsabilidade}/transferir', 'PaymentController@download')->name('payments.download');
 
     /* Cobranças */

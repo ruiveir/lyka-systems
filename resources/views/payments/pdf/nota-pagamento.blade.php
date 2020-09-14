@@ -155,19 +155,15 @@
             <td class="y-border">{{date('d/m/Y', strtotime($pagoresponsabilidade->dataPagamento))}}</td>
             <td>{{number_format((float)$pagoresponsabilidade->valorPago, 2, ',', '')}}&euro;</td>
         </tr>
-        <tr>
-            <td class="y-border">Matrícula <br>
-                <p class="descricao mb-1">Nulla tempora voluptatem nam aperiam.</p>
-            </td>
-            <td class="y-border">12/05/2020</td>
-            <td>75,00&euro;</td>
+        <tr class="none">
+            <td class="y-border"></td>
+            <td class="y-border"></td>
+            <td></td>
         </tr>
-        <tr>
-            <td class="y-border">Outras importâncias <br>
-                <p class="descricao mb-1">Nulla tempora voluptatem nam aperiam.</p>
-            </td>
-            <td class="y-border">02/05/2020</td>
-            <td>625,00&euro;</td>
+        <tr class="none">
+            <td class="y-border"></td>
+            <td class="y-border"></td>
+            <td></td>
         </tr>
         <tr class="none">
             <td class="y-border"></td>
@@ -183,7 +179,7 @@
     <br>
     <div class="values">
         <div id="subtotal">
-            <p>1200,00&euro;</p>
+            <p>{{number_format((float)$pagoresponsabilidade->valorPago, 2, ',', '')}}&euro;</p>
             <p style="margin-right:9rem;">Sub Total</p>
         </div>
         <br>
@@ -194,7 +190,7 @@
         <br><br><br>
         <div id="hl"></div>
         <div id="total" class="mt-2">
-            <p>1200,00&euro;</p>
+            <p>{{number_format((float)$pagoresponsabilidade->valorPago, 2, ',', '')}}&euro;</p>
             <p style="margin-right:8.5rem;">Valor total</p>
         </div>
         <br><br><br>

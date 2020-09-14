@@ -37,6 +37,10 @@
         <!-- Registar pagamento FORNECEDOR -->
         @include('payments.partials.edit.edit-fornecedor')
         @endif
+
+        <!-- Mensagens informativas - MODAL -->
+        @include('payments.partials.modal.modal-success')
+        @include('payments.partials.modal.modal-error')
     </div>
 </div>
 <!-- End of container-fluid -->
@@ -68,7 +72,7 @@
 <script>
     $(document).ready(function() {
         bsCustomFileInput.init();
-        $("#registar-pagamento-form").submit(function(event) {
+        $("#editar-pagamento-form").submit(function(event) {
             if (this.checkValidity() === false) {
                 event.preventDefault();
                 event.stopPropagation();
@@ -80,9 +84,9 @@
                 $("#submitbtn").remove();
                 var info = new FormData(this);
                 $.ajax({
-                    type: "put",
+                    type: "post",
                     enctype: "multipart/form-data",
-                    url: "{{route('payments.update', $responsabilidade->idResponsabilidade)}}",
+                    url: "{{route('payments.update', [$responsabilidade->idResponsabilidade, $pagoResponsabilidade->idPagoResp])}}",
                     data: info,
                     context: this,
                     cache: false,
@@ -93,9 +97,8 @@
                         $("#anchor-stream").attr("href", "/pagamentos/nota-pagamento/" + data.idPagoResp + "/transferir");
                         $("#anchor-stream").click(function() {
                             setTimeout(function() {
-                                linkSite = window.location.origin;
-                                window.location.assign(linkSite+"/pagamentos");
-                                //window.location.assign("http://lykasystems.test/pagamentos");
+                                link = window.location.origin;
+                                window.location.assign(link + "/pagamentos");
                             }, 500);
                         });
                     },

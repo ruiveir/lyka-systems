@@ -428,10 +428,10 @@ class PaymentController extends Controller
             $pagoResponsabilidade->idConta = $contaCliente;
             $pagoResponsabilidade->save();
 
-        if ($valorCliente >= $responsabilidade->valorCliente) {
-            Responsabilidade::where('idResponsabilidade', $responsabilidade->idResponsabilidade)
-            ->update(['verificacaoPagoCliente' => '1']);
-        }
+            if ($valorCliente >= $responsabilidade->valorCliente) {
+                Responsabilidade::where('idResponsabilidade', $responsabilidade->idResponsabilidade)
+                ->update(['verificacaoPagoCliente' => '1']);
+            }
         }
 
         if ($valorAgente != null) {
@@ -454,10 +454,10 @@ class PaymentController extends Controller
             $pagoResponsabilidade->idConta = $contaAgente;
             $pagoResponsabilidade->save();
 
-        if ($valorAgente >= $responsabilidade->valorAgente) {
-                Responsabilidade::where('idResponsabilidade', $responsabilidade->idResponsabilidade)
-                ->update(['verificacaoPagoAgente' => '1']);
-        }
+            if ($valorAgente >= $responsabilidade->valorAgente) {
+                    Responsabilidade::where('idResponsabilidade', $responsabilidade->idResponsabilidade)
+                    ->update(['verificacaoPagoAgente' => '1']);
+            }
         }
 
         if ($valorSubAgente != null) {
@@ -559,12 +559,12 @@ class PaymentController extends Controller
             $pagoResponsabilidade->idConta = $contaFornecedor;
             $pagoResponsabilidade->save();
 
-        if ($valorFornecedor >= $relacao->valor) {
-            $relacao->update([
-                'verificacaoPago' => '1',
-                'estado' => 'Pago'
-            ]);
-        }
+            if ($valorFornecedor >= $relacao->valor) {
+                $relacao->update([
+                    'verificacaoPago' => '1',
+                    'estado' => 'Pago'
+                ]);
+            }
         }
 
         $responsabilidade = Responsabilidade::where('idResponsabilidade', $responsabilidade->idResponsabilidade)->first();
@@ -610,9 +610,210 @@ class PaymentController extends Controller
         return view('payments.edit', compact('fornecedor', 'fase', 'contas', 'relacao', 'pagoResponsabilidade', 'responsabilidade'));
     }
 
-    public function update(Request $request, Responsabilidade $responsabilidade)
+    public function update(Request $request, Responsabilidade $responsabilidade, PagoResponsabilidade $pagoResponsabilidade)
     {
-        dd("hey");
+        $responsabilidade = Responsabilidade::where('idResponsabilidade', $responsabilidade->idResponsabilidade)->with(["cliente", "agente", "subAgente", "universidade1", "universidade2", "fase"])->first();
+        // Campos de CLIENTE
+        $valorCliente = ($request->input('valorPagoCliente') != null ? $request->input('valorPagoCliente') : null);
+        $comprovativoCliente = ($request->file('comprovativoPagamentoCliente') != null ? $request->file('comprovativoPagamentoCliente') : null);
+        $dataCliente = ($request->input('dataCliente') != null ? $request->input('dataCliente') : null);
+        $contaCliente = ($request->input('contaCliente') != null ? $request->input('contaCliente') : null);
+        $descricaoCliente = ($request->input('descricaoCliente') != null ? $request->input('descricaoCliente') : null);
+        $observacoesCliente = ($request->input('observacoes') != null ? $request->input('observacoes') : null);
+        // Campos de AGENTE
+        $valorAgente = ($request->input('valorPagoAgente') != null ? $request->input('valorPagoAgente') : null);
+        $comprovativoAgente = ($request->file('comprovativoPagamentoAgente') != null ? $request->file('comprovativoPagamentoAgente') : null);
+        $dataAgente = ($request->input('dataAgente') != null ? $request->input('dataAgente') : null);
+        $contaAgente = ($request->input('contaAgente') != null ? $request->input('contaAgente') : null);
+        $descricaoAgente = ($request->input('descricaoAgente') != null ? $request->input('descricaoAgente') : null);
+        $observacoesAgente = ($request->input('observacoes') != null ? $request->input('observacoes') : null);
+        // Campos de SUBAGENTE
+        $valorSubAgente = ($request->input('valorPagoSubAgente') != null ? $request->input('valorPagoSubAgente') : null);
+        $comprovativoSubAgente = ($request->file('comprovativoPagamentoSubAgente') != null ? $request->file('comprovativoPagamentoSubAgente') : null);
+        $dataSubAgente = ($request->input('dataSubAgente') != null ? $request->input('dataSubAgente') : null);
+        $contaSubAgente = ($request->input('contaSubAgente') != null ? $request->input('contaSubAgente') : null);
+        $descricaoSubAgente = ($request->input('descricaoSubAgente') != null ? $request->input('descricaoSubAgente') : null);
+        $observacoesSubAgente = ($request->input('observacoes') != null ? $request->input('observacoes') : null);
+        // Campos de UNIVERSIDADE1
+        $valorUni1 = ($request->input('valorPagoUni1') != null ? $request->input('valorPagoUni1') : null);
+        $comprovativoUni1 = ($request->file('comprovativoPagamentoUni1') != null ? $request->file('comprovativoPagamentoUni1') : null);
+        $dataUni1 = ($request->input('dataUni1') != null ? $request->input('dataUni1') : null);
+        $contaUni1 = ($request->input('contaUni1') != null ? $request->input('contaUni1') : null);
+        $descricaoUni1 = ($request->input('descricaoUni1') != null ? $request->input('descricaoUni1') : null);
+        $observacoesUni1 = ($request->input('observacoes') != null ? $request->input('observacoes') : null);
+        // Campos de UNIVERSIDADE2
+        $valorUni2 = ($request->input('valorPagoUni2') != null ? $request->input('valorPagoUni2') : null);
+        $comprovativoUni2 = ($request->file('comprovativoPagamentoUni2') != null ? $request->file('comprovativoPagamentoUni2') : null);
+        $dataUni2 = ($request->input('dataUni2') != null ? $request->input('dataUni2') : null);
+        $contaUni2 = ($request->input('contaUni2') != null ? $request->input('contaUni2') : null);
+        $descricaoUni2 = ($request->input('descricaoUni2') != null ? $request->input('descricaoUni2') : null);
+        $observacoesUni2 = ($request->input('observacoes') != null ? $request->input('observacoes') : null);
+        // Campos de FORNECEDOR
+        $valorFornecedor = ($request->input('valorPagoFornecedor') != null ? $request->input('valorPagoFornecedor') : null);
+        $comprovativoFornecedor = ($request->file('comprovativoPagamentoForn') != null ? $request->file('comprovativoPagamentoForn') : null);
+        $dataFornecedor = ($request->input('dataFornecedor') != null ? $request->input('dataFornecedor') : null);
+        $contaFornecedor = ($request->input('contaFornecedor') != null ? $request->input('contaFornecedor') : null);
+        $descricaoFornecedor = ($request->input('descricaoFornecedor') != null ? $request->input('descricaoFornecedor') : null);
+        $observacoesFornecedor = ($request->input('observacoes') != null ? $request->input('observacoes') : null);
+        $idRelacao = ($request->input('idRelacao') != null ? $request->input('idRelacao') : null);
+        $nomeFornecedor = ($request->input('nomeFornecedor') != null ? $request->input('nomeFornecedor') : null);
+
+        if ($valorCliente != null) {
+            $valorCliente = number_format((float) $valorCliente,2 ,'.' ,'');
+            $pagoResponsabilidade->valorPago = $valorCliente;
+            $pagoResponsabilidade->beneficiario = $responsabilidade->fase->produto->cliente->nome.' '.$responsabilidade->fase->produto->cliente->apelido;
+            $pagoResponsabilidade->descricao = $descricaoCliente;
+            $pagoResponsabilidade->observacoes = $observacoesCliente;
+            $pagoResponsabilidade->dataPagamento = $dataCliente;
+            if ($comprovativoCliente != null) {
+                $ficheiroPagamento = $comprovativoCliente;
+                $nomeFicheiro = post_slug($responsabilidade->fase->produto->cliente->nome.' '.$responsabilidade->fase->descricao).'-comprovativo-'.post_slug($responsabilidade->fase->idFase).'.'.$ficheiroPagamento->getClientOriginalExtension();
+                Storage::disk('public')->putFileAs('comprovativos-pagamento/', $ficheiroPagamento, $nomeFicheiro);
+                $pagoResponsabilidade->comprovativoPagamento = $nomeFicheiro;
+            }else {
+                $pagoResponsabilidade->comprovativoPagamento = null;
+            }
+            $pagoResponsabilidade->idResponsabilidade = $responsabilidade->idResponsabilidade;
+            $pagoResponsabilidade->idConta = $contaCliente;
+            $pagoResponsabilidade->save();
+
+            if ($valorCliente >= $responsabilidade->valorCliente) {
+                Responsabilidade::where('idResponsabilidade', $responsabilidade->idResponsabilidade)
+                ->update(['verificacaoPagoCliente' => '1']);
+            }
+        }
+
+        if ($valorAgente != null) {
+            $valorAgente = number_format((float) $valorAgente,2 ,'.' ,'');
+            $pagoResponsabilidade->valorPago = $valorAgente;
+            $pagoResponsabilidade->beneficiario = $responsabilidade->fase->produto->agente->nome.' '.$responsabilidade->fase->produto->agente->apelido;
+            $pagoResponsabilidade->dataPagamento = $dataAgente;
+            $pagoResponsabilidade->descricao = $descricaoAgente;
+            $pagoResponsabilidade->observacoes = $observacoesAgente;
+            if ($comprovativoAgente != null) {
+                $ficheiroPagamento = $comprovativoAgente;
+                $nomeFicheiro = post_slug($responsabilidade->fase->produto->agente->nome.' '.$responsabilidade->fase->descricao).'-comprovativo-'.post_slug($responsabilidade->fase->idFase).'.'.$ficheiroPagamento->getClientOriginalExtension();
+                Storage::disk('public')->putFileAs('comprovativos-pagamento/', $ficheiroPagamento, $nomeFicheiro);
+                $pagoResponsabilidade->comprovativoPagamento = $nomeFicheiro;
+            }else {
+                $pagoResponsabilidade->comprovativoPagamento = null;
+            }
+            $pagoResponsabilidade->idResponsabilidade = $responsabilidade->idResponsabilidade;
+            $pagoResponsabilidade->idConta = $contaAgente;
+            $pagoResponsabilidade->save();
+
+            if ($valorAgente >= $responsabilidade->valorAgente) {
+                    Responsabilidade::where('idResponsabilidade', $responsabilidade->idResponsabilidade)
+                    ->update(['verificacaoPagoAgente' => '1']);
+            }
+        }
+
+        if ($valorSubAgente != null) {
+            $valorSubAgente = number_format((float) $valorSubAgente,2 ,'.' ,'');
+            $pagoResponsabilidade->valorPago = $valorSubAgente;
+            $pagoResponsabilidade->beneficiario = $responsabilidade->fase->produto->subAgente->nome.' '.$responsabilidade->fase->produto->subAgente->apelido;
+            $pagoResponsabilidade->dataPagamento = $dataSubAgente;
+            $pagoResponsabilidade->descricao = $descricaoSubAgente;
+            $pagoResponsabilidade->observacoes = $observacoesSubAgente;
+            if ($comprovativoSubAgente != null) {
+                $ficheiroPagamento = $comprovativoSubAgente;
+                $nomeFicheiro = post_slug($responsabilidade->fase->produto->subAgente->nome.' '.$responsabilidade->fase->descricao).'-comprovativo-'.post_slug($responsabilidade->fase->idFase).'.'.$ficheiroPagamento->getClientOriginalExtension();
+                Storage::disk('public')->putFileAs('comprovativos-pagamento/', $ficheiroPagamento, $nomeFicheiro);
+                $pagoResponsabilidade->comprovativoPagamento = $nomeFicheiro;
+            }else {
+                $pagoResponsabilidade->comprovativoPagamento = null;
+            }
+            $pagoResponsabilidade->idResponsabilidade = $responsabilidade->idResponsabilidade;
+            $pagoResponsabilidade->idConta = $contaSubAgente;
+            $pagoResponsabilidade->save();
+
+            if ($valorSubAgente >= $responsabilidade->valorSubAgente) {
+                Responsabilidade::where('idResponsabilidade', $responsabilidade->idResponsabilidade)
+                ->update(['verificacaoPagoSubAgente' => '1']);
+            }
+        }
+
+        if ($valorUni1 != null) {
+            $valorUni1 = number_format((float) $valorUni1,2 ,'.' ,'');
+            $pagoResponsabilidade->valorPago = $valorUni1;
+            $pagoResponsabilidade->beneficiario = $responsabilidade->fase->produto->universidade1->nome;
+            $pagoResponsabilidade->dataPagamento = $dataUni1;
+            $pagoResponsabilidade->descricao = $descricaoUni1;
+            $pagoResponsabilidade->observacoes = $observacoesUni1;
+            if ($comprovativoUni1 != null) {
+                $ficheiroPagamento = $comprovativoUni1;
+                $nomeFicheiro = post_slug($responsabilidade->fase->produto->universidade1->nome.' '.$responsabilidade->fase->descricao).'-comprovativo-'.post_slug($responsabilidade->fase->idFase).'.'.$ficheiroPagamento->getClientOriginalExtension();
+                Storage::disk('public')->putFileAs('comprovativos-pagamento/', $ficheiroPagamento, $nomeFicheiro);
+                $pagoResponsabilidade->comprovativoPagamento = $nomeFicheiro;
+            }else {
+                $pagoResponsabilidade->comprovativoPagamento = null;
+            }
+            $pagoResponsabilidade->idResponsabilidade = $responsabilidade->idResponsabilidade;
+            $pagoResponsabilidade->idConta = $contaUni1;
+            $pagoResponsabilidade->save();
+
+            if ($valorUni1 >= $responsabilidade->valorUniversidade1) {
+                Responsabilidade::where('idResponsabilidade', $responsabilidade->idResponsabilidade)
+                ->update(['verificacaoPagoUni1' => '1']);
+            }
+        }
+
+        if ($valorUni2 != null) {
+            $valorUni2 = number_format((float) $valorUni2,2 ,'.' ,'');
+            $pagoResponsabilidade->valorPago = $valorUni2;
+            $pagoResponsabilidade->beneficiario = $responsabilidade->fase->produto->universidade2->nome;
+            $pagoResponsabilidade->dataPagamento = $dataUni2;
+            $pagoResponsabilidade->descricao = $descricaoUni2;
+            $pagoResponsabilidade->observacoes = $observacoesUni2;
+            if ($comprovativoUni2 != null) {
+                $ficheiroPagamento = $comprovativoUni2;
+                $nomeFicheiro = post_slug($responsabilidade->fase->produto->universidade2->nome.' '.$responsabilidade->fase->descricao).'-comprovativo-'.post_slug($responsabilidade->fase->idFase).'.'.$ficheiroPagamento->getClientOriginalExtension();
+                Storage::disk('public')->putFileAs('comprovativos-pagamento/', $ficheiroPagamento, $nomeFicheiro);
+                $pagoResponsabilidade->comprovativoPagamento = $nomeFicheiro;
+            }else {
+                $pagoResponsabilidade->comprovativoPagamento = null;
+            }
+            $pagoResponsabilidade->idResponsabilidade = $responsabilidade->idResponsabilidade;
+            $pagoResponsabilidade->idConta = $contaUni2;
+            $pagoResponsabilidade->save();
+
+            if ($valorUni2 >= $responsabilidade->valorUniversidade2) {
+                Responsabilidade::where('idResponsabilidade', $responsabilidade->idResponsabilidade)
+                ->update(['verificacaoPagoUni2' => '1']);
+            }
+        }
+
+        if ($valorFornecedor != null) {
+            $relacao = RelFornResp::where('idRelacao', $idRelacao)->first();
+            $valorFornecedor = number_format((float) $valorFornecedor,2 ,'.' ,'');
+            $pagoResponsabilidade->valorPago = $valorFornecedor;
+            $pagoResponsabilidade->beneficiario = $nomeFornecedor;
+            $pagoResponsabilidade->dataPagamento = $dataFornecedor;
+            $pagoResponsabilidade->descricao = $descricaoFornecedor;
+            $pagoResponsabilidade->observacoes = $observacoesFornecedor;
+            if ($comprovativoFornecedor != null) {
+                $ficheiroPagamento = $comprovativoFornecedor;
+                $nomeFicheiro = post_slug($nomeFornecedor.' '.$responsabilidade->fase->descricao).'-comprovativo-'.post_slug($responsabilidade->fase->idFase).'.'.$ficheiroPagamento->getClientOriginalExtension();
+                Storage::disk('public')->putFileAs('comprovativos-pagamento/', $ficheiroPagamento, $nomeFicheiro);
+                $pagoResponsabilidade->comprovativoPagamento = $nomeFicheiro;
+            }else {
+                $pagoResponsabilidade->comprovativoPagamento = null;
+            }
+            $pagoResponsabilidade->idResponsabilidade = $responsabilidade->idResponsabilidade;
+            $pagoResponsabilidade->idConta = $contaFornecedor;
+            $pagoResponsabilidade->save();
+
+            if ($valorFornecedor >= $relacao->valor) {
+                $relacao->update([
+                    'verificacaoPago' => '1',
+                    'estado' => 'Pago'
+                ]);
+            }
+        }
+
+        $responsabilidade = Responsabilidade::where('idResponsabilidade', $responsabilidade->idResponsabilidade)->first();
+        event(new StorePayment($responsabilidade));
+        return response()->json($pagoResponsabilidade, 200);
     }
 
     public function download(PagoResponsabilidade $pagoresponsabilidade)

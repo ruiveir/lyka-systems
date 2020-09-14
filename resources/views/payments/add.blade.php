@@ -100,7 +100,6 @@
                             setTimeout(function() {
                                 linkSite = window.location.origin;
                                 window.location.assign(linkSite+"/pagamentos");
-                                //window.location.assign("http://lykasystems.test/pagamentos");
                             }, 500);
                         });
                     },

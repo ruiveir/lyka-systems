@@ -2,15 +2,14 @@
     <h6 class="m-0 font-weight-bold text-primary">Formulário de edição de um pagamento sobre o cliente {{$fase->produto->cliente->nome.' '.$fase->produto->cliente->apelido}}</h6>
 </div>
 <div class="card-body">
-    <form method="POST" class="form-group needs-validation" id="registar-pagamento-form" novalidate>
+    <form method="POST" class="form-group needs-validation" id="editar-pagamento-form" novalidate>
         @csrf
-        @method("PUT")
         <div class="container-fluid">
             <div class="form-row mb-3">
                 <div class="col-md-6 mb-3">
                     <label for="valorPagoCliente" class="text-gray-900">Valor pago ao cliente <sup class="text-danger small">&#10033;</sup> </label>
                     <div class="input-group">
-                        <input type="text" class="form-control" name="valorPagoCliente" id="valorPagoCliente" aria-describedby="validatedInputGroupPrepend" value="{{old('valorPagoCliente', number_format((float)$responsabilidade->valorCliente, 2, ',', ''))}}" required>
+                        <input type="text" class="form-control" name="valorPagoCliente" id="valorPagoCliente" aria-describedby="validatedInputGroupPrepend" value="{{old('valorPagoCliente', number_format((float)$pagoResponsabilidade->valorPago, 2, ',', ''))}}" required>
                         <div class="input-group-append">
                             <span class="input-group-text">€</span>
                         </div>
@@ -45,7 +44,7 @@
                         @foreach ($contas as $conta)
                         <option value="{{$conta->idConta}}">{{$conta->descricao}}</option>
                         @endforeach
-                        <option selected disabled hidden>Escolher conta bancária</option>
+                        <option hidden value="{{$pagoResponsabilidade->idConta}}" selected>{{$pagoResponsabilidade->conta->descricao}}</option>
                     </select>
                 </div>
             </div>

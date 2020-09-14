@@ -16,11 +16,8 @@ class PagoResponsabilidade extends Model
         'comprovativoPagamento',
         'observacoes',
         '$idResponsabilidade',
+        'dataPagamento',
         '$idConta'
-    ];
-
-    protected $dates = [
-        'dataPagamento'
     ];
 
     public function responsabilidade(){
