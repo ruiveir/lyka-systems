@@ -70,7 +70,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header pl-4 pb-1 pt-4">
-                <h5 class="modal-title text-gray-800 font-weight-bold">Aeee, conta ativada 🎉🎉</h5>
+                <h5 class="modal-title text-gray-800 font-weight-bold">Hurray, conta ativada 🎉🎉</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close-button">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -111,8 +111,8 @@
             data: info,
             success: function(data) {
                 $("#form").addClass("was-validated");
-                $("#title > p").text("Insira uma password segura e de seguida confirme a mesma para ativar a sua conta.");
                 $("#form").remove();
+                $("#title > p").text("Insira uma password que contenha, pelo menos, 8 caracteres, uma letra maiúscula, uma minúscula e um número.");
                 $("#passform").css("display", "block");
             },
             error: function() {
