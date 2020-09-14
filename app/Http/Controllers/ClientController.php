@@ -137,7 +137,7 @@ class ClientController extends Controller
             /* mostra a lista */
             return view('clients.list', compact('clients'));
         }else{
-            abort(401);
+            abort(403);
         }
     }
 
@@ -163,7 +163,7 @@ class ClientController extends Controller
             return view('clients.add',compact('client','agents','instituicoes','cidadesInstituicoes'));
         }else{
             /* não tem permissões */
-            abort (401);
+            abort (403);
         }
 
 
@@ -295,7 +295,7 @@ class ClientController extends Controller
             return redirect()->route('clients.show',$client)->with('success', 'Ficha de estudante criada com sucesso');
         }else{
             /* não tem permissões */
-            abort (401);
+            abort (403);
         }
     }
 
@@ -413,7 +413,7 @@ class ClientController extends Controller
 
         }else{
             /* não tem permissões */
-            abort (401);
+            abort (403);
         }
     }
 
@@ -467,7 +467,7 @@ class ClientController extends Controller
             return view('clients.print',compact("client","produtos","infosPassaporte"));
         }else{
             /* não tem permissões */
-            abort (401);
+            abort (403);
         }
     }
 
@@ -544,7 +544,7 @@ class ClientController extends Controller
             }
         }else{
             /* não tem permissões */
-            abort (401);
+            abort (403);
         }
 
     }
@@ -579,6 +579,7 @@ class ClientController extends Controller
             $fields = $request->validated();
             $client->fill($fields);
 
+
             /* (Tratamento de strings, casos especificos) */
             $client->nomeInstituicaoOrigem = ucwords(mb_strtolower($request->nomeInstituicaoOrigem,'UTF-8'));
             $client->cidadeInstituicaoOrigem = ucwords(mb_strtolower($request->cidadeInstituicaoOrigem,'UTF-8'));
@@ -602,9 +603,6 @@ class ClientController extends Controller
 
             // data em que foi modificado
             $client->updated_at == date("Y-m-d",$t);
-
-            /* Slugs */
-            $client->slug = post_slug($client->nome.' '.$client->apelido);
 
 
             if($client->nomeInstituicaoOrigem == ""){
@@ -754,11 +752,10 @@ class ClientController extends Controller
 
                 }
 
-
             return redirect()->route('clients.show',$client)->with('success', 'Dados do estudante modificados com sucesso');
         }else{
             /* não tem permissões */
-            abort (401);
+            abort (403);
         }
 
     }
@@ -789,7 +786,7 @@ class ClientController extends Controller
 
             return redirect()->route('clients.index')->with('success', 'Estudante eliminado com sucesso');
         }else{
-            abort(401);
+            abort(403);
         }
 
     }
@@ -812,7 +809,7 @@ class ClientController extends Controller
 
             return view('clients.search',compact('paises','cidadesOrigem','instituicoesOrigem','agents','universidades'));
         }else{
-            abort(401);
+            abort(403);
         }
 
     }
@@ -890,7 +887,7 @@ class ClientController extends Controller
 
             return view('clients.search',compact('clients','nomeCampo','valor','paises','cidadesOrigem','instituicoesOrigem','agents','universidades'));
         }else{
-            abort(401);
+            abort(403);
         }
 
     }

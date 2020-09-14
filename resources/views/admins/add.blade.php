@@ -18,7 +18,7 @@
     <!-- Approach -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Formulário - Criação de um administrador</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Formulário de criação de um administrador</h6>
         </div>
         <div class="card-body">
             <form class="form-group needs-validation" action="{{route('admin.store')}}" method="POST" novalidate>
@@ -140,7 +140,6 @@
     $(document).ready(function() {
         bsCustomFileInput.init();
         $(".needs-validation").submit(function(event) {
-            var nif = $('#NIF').val();
             if (this.checkValidity() === false) {
                 event.preventDefault();
                 event.stopPropagation();

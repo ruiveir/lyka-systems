@@ -64,8 +64,6 @@ class ExtraFunctionsController extends Controller
                 $link = Storage::disk('public')->url('report-errors/'.$errorimg);
             }
         }
-        //$file = File::get($path);
-
         dispatch(new SendReportMail($name, $email, $phone, $text, $link));
 
         return redirect()->route('report')->with('success', 'Relatório enviado com sucesso. Obrigado pela sua contribuição!');
@@ -124,6 +122,18 @@ class ExtraFunctionsController extends Controller
             return response()->json($result, 200);
         }else {
             return response()->json("nok", 404);
+        }
+    }
+
+    /* Relatório e Contas -> Vista principal */
+    public function relatoriocontas()
+    {
+        if (Auth()->user()->tipo == "admin") {
+            if (Auth()->user()->admin->superAdmin) {
+                return view('relatorio-contas.index');
+            }
+        }else {
+            abort(403);
         }
     }
 }

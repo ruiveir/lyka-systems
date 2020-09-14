@@ -74,7 +74,7 @@
                 @if (Auth()->user()->tipo == "admin" && Auth()->user()->idAdmin != null)
                     <a class="collapse-item {{Route::is('payments.*') ? 'active' : ''}}" href="{{route('payments.index')}}">Pagamentos</a>
                     <a class="collapse-item {{Route::is('charges.*') ? 'active' : ''}}" href="{{route('charges.listproducts')}}">Cobranças</a>
-                    <a class="collapse-item" href="#">Relatório e Contas</a>
+                    <a class="collapse-item {{Route::is('relatorio.*') ? 'active' : ''}}" href="{{route('relatorio.contas')}}">Relatório e contas</a>
                     <div class="collapse-divider"></div>
                     <h6 class="collapse-header">Outras Páginas:</h6>
                     <a class="collapse-item {{Route::is('conta.*') ? 'active' : ''}}" href="{{route("conta.index")}}">Conta bancária</a>
