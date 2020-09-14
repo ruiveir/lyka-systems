@@ -58,7 +58,7 @@
                     <p class="text-gray-800"><b>Conta bancária:</b> @if($docTransacao->idConta != null) {{$docTransacao->conta->descricao}} @else N/A @endif</p>
                 </div>
                 <div class="col-md-6">
-                    <p class="text-gray-800"><b>Observações:</b> @if($docTransacao->telefone1 != null) {{$docTransacao->telefone1}} @else N/A @endif</p>
+                    <p class="text-gray-800"><b>Observações:</b> @if($docTransacao->observacoes != null) {{$docTransacao->observacoes}} @else N/A @endif</p>
                 </div>
             </div>
             <hr>

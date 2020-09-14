@@ -51,7 +51,7 @@
             <div class="form-row mb-3">
                 <div class="col-md-6 mb-3">
                     <label for="descricaoAgente" class="text-gray-900">Descrição do pagamento <sup class="text-danger small">&#10033;</sup></label>
-                    <input type="text" class="form-control" name="descricaoAgente" id="descricaoAgente" value="Pagamento ao agente {{$fase->produto->cliente->nome.' '.$fase->produto->cliente->apelido}}." required>
+                    <input type="text" class="form-control" name="descricaoAgente" id="descricaoAgente" value="Pagamento ao agente {{$fase->produto->agente->nome.' '.$fase->produto->agente->apelido}}." required>
                     <small class="form-text text-muted">Esta descrição irá ser utilizada na nota de pagamento.</small>
                     <div class="invalid-feedback">
                         Oops, parece que algo não está bem...

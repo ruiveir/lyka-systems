@@ -1,5 +1,5 @@
 <div class="card-header py-3">
-    <h6 class="m-0 font-weight-bold text-primary">Formulário - Registo de pagamento sobre o agente {{$fase->produto->agente->nome.' '.$fase->produto->agente->apelido}}</h6>
+    <h6 class="m-0 font-weight-bold text-primary">Formulário de registo de um pagamento sobre o agente {{$fase->produto->agente->nome.' '.$fase->produto->agente->apelido}}.</h6>
 </div>
 <div class="card-body">
     <form method="POST" class="form-group needs-validation" id="registar-pagamento-form" novalidate>
@@ -51,7 +51,7 @@
             <div class="form-row mb-3">
                 <div class="col-md-6 mb-3">
                     <label for="descricaoAgente" class="text-gray-900">Descrição do pagamento <sup class="text-danger small">&#10033;</sup></label>
-                    <input type="text" class="form-control" name="descricaoAgente" id="descricaoAgente" value="Pagamento ao agente {{$fase->produto->cliente->nome.' '.$fase->produto->cliente->apelido}}." required>
+                    <input type="text" class="form-control" name="descricaoAgente" id="descricaoAgente" value="Pagamento ao agente {{$fase->produto->agente->nome.' '.$fase->produto->agente->apelido}}." required>
                     <small class="form-text text-muted">Esta descrição irá ser utilizada na nota de pagamento.</small>
                     <div class="invalid-feedback">
                         Oops, parece que algo não está bem...

@@ -107,27 +107,41 @@ Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
     /* Pagamentos */
     Route::get('/pagamentos', 'PaymentController@index')->name('payments.index');
     Route::post('/pagamentos/pesquisa', 'PaymentController@search')->name('payments.search');
-        // Registar/Editar pagamento CLIENTE
+
+        // Registar/Editar/Visualizar pagamento CLIENTE
         Route::get('/pagamentos/cliente/{cliente}/fase/{fase}/{responsabilidade}', 'PaymentController@createcliente')->name('payments.cliente');
         Route::get('/pagamentos/cliente/{cliente}/fase/{fase}/{responsabilidade}/{pagoResponsabilidade}/editar', 'PaymentController@editcliente')->name('payments.editcliente');
-        // Registar/Editar pagamento AGENTE
+        Route::get('/pagamentos/cliente/{cliente}/fase/{fase}/{responsabilidade}/{pagoResponsabilidade}', 'PaymentController@showcliente')->name('payments.showcliente');
+
+        // Registar/Editar/Visualizar pagamento AGENTE
         Route::get('/pagamentos/agente/{agente}/fase/{fase}/{responsabilidade}', 'PaymentController@createagente')->name('payments.agente');
         Route::get('/pagamentos/agente/{agente}/fase/{fase}/{responsabilidade}/{pagoResponsabilidade}/editar', 'PaymentController@editagente')->name('payments.editagente');
-        // Registar/Editar pagamento SUBAGENTE
+        Route::get('/pagamentos/agente/{agente}/fase/{fase}/{responsabilidade}/{pagoResponsabilidade}', 'PaymentController@showagente')->name('payments.showagente');
+
+        // Registar/Editar/Visualizar pagamento SUBAGENTE
         Route::get('/pagamentos/subagente/{subagente}/fase/{fase}/{responsabilidade}', 'PaymentController@createsubagente')->name('payments.subagente');
         Route::get('/pagamentos/subagente/{subagente}/fase/{fase}/{responsabilidade}/{pagoResponsabilidade}/editar', 'PaymentController@editsubagente')->name('payments.editsubagente');
-        // Registar/Editar pagamento UNIVERSIDADE PRINCIPAL
+        Route::get('/pagamentos/subagente/{subagente}/fase/{fase}/{responsabilidade}/{pagoResponsabilidade}', 'PaymentController@showsubagente')->name('payments.showsubagente');
+
+        // Registar/Editar/Visualizar pagamento UNIVERSIDADE PRINCIPAL
         Route::get('/pagamentos/universidade-principal/{universidade1}/fase/{fase}/{responsabilidade}', 'PaymentController@createuni1')->name('payments.uni1');
         Route::get('/pagamentos/universidade-principal/{universidade1}/fase/{fase}/{responsabilidade}/{pagoResponsabilidade}/editar', 'PaymentController@edituni1')->name('payments.edituni1');
-        // Registar/Editar pagamento UNIVERSIDADE SECUNDÁRIA
+        Route::get('/pagamentos/universidade-principal/{universidade1}/fase/{fase}/{responsabilidade}/{pagoResponsabilidade}', 'PaymentController@showuni1')->name('payments.showuni1');
+
+        // Registar/Editar/Visualizar pagamento UNIVERSIDADE SECUNDÁRIA
         Route::get('/pagamentos/universidade-secundaria/{universidade2}/fase/{fase}/{responsabilidade}', 'PaymentController@createuni2')->name('payments.uni2');
         Route::get('/pagamentos/universidade-secundaria/{universidade2}/fase/{fase}/{responsabilidade}/{pagoResponsabilidade}/editar', 'PaymentController@edituni2')->name('payments.edituni2');
-        // Registar/Editar pagamento FORNECEDOR
+        Route::get('/pagamentos/universidade-secundaria/{universidade2}/fase/{fase}/{responsabilidade}/{pagoResponsabilidade}', 'PaymentController@showuni2')->name('payments.showuni2');
+
+        // Registar/Editar/Visualizar pagamento FORNECEDOR
         Route::get('/pagamentos/fornecedor/{fornecedor}/fase/{fase}/{relacao}', 'PaymentController@createfornecedor')->name('payments.fornecedor');
         Route::get('/pagamentos/fornecedor/{fornecedor}/fase/{fase}/{relacao}/{pagoResponsabilidade}/editar', 'PaymentController@editfornecedor')->name('payments.editfornecedor');
+        Route::get('/pagamentos/fornecedor/{fornecedor}/fase/{fase}/{relacao}/{pagoResponsabilidade}', 'PaymentController@showfornecedor')->name('payments.showfornecedor');
+
     Route::post('/pagamentos/{responsabilidade}/registar', 'PaymentController@store')->name('payments.store');
     Route::post('/pagamentos/{responsabilidade}/{pagoResponsabilidade}/atualizar', 'PaymentController@update')->name('payments.update');
     Route::get('/pagamentos/nota-pagamento/{pagoresponsabilidade}/transferir', 'PaymentController@download')->name('payments.download');
+    Route::get('/pagamentos/comprovativo-pagamento/{pagoresponsabilidade}/transferir', 'PaymentController@downloadComprovativo')->name('payments.downloadComprovativo');
 
     /* Cobranças */
     Route::get('/cobrancas', 'ChargesController@listProducts')->name('charges.listproducts');

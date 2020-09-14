@@ -311,6 +311,8 @@ class PaymentController extends Controller
         }
     }
 
+    // Criação das vistas com as variáveis necessárias para criar um registo de um pagamento
+    // As funções são diferentes pois as vistas são diferentes, bem como a informção que contêm.
     public function createcliente(Cliente $cliente, Fase $fase, Responsabilidade $responsabilidade)
     {
         $pagoResponsabilidade = new PagoResponsabilidade;
@@ -360,6 +362,8 @@ class PaymentController extends Controller
         return view('payments.add', compact('fornecedor', 'fase', 'contas', 'relacao', 'pagoResponsabilidade', 'responsabilidade'));
     }
 
+    // Função para registar os pagamentos. Funciona com AJAX.
+    // Os requests estão isolados por o tipo de categoria de pagamento (Cliente, Agente, ...)
     public function store(Request $request, Responsabilidade $responsabilidade)
     {
         $responsabilidade = Responsabilidade::where('idResponsabilidade', $responsabilidade->idResponsabilidade)->with(["cliente", "agente", "subAgente", "universidade1", "universidade2", "fase"])->first();
@@ -572,6 +576,8 @@ class PaymentController extends Controller
         return response()->json($pagoResponsabilidade, 200);
     }
 
+    // Criação de vistas e variáveis para editar um pagamento já registados.
+    // As funções estão separadas por razões semelhantes ao do registo de um pagamento.
     public function editcliente(Cliente $cliente, Fase $fase, Responsabilidade $responsabilidade, PagoResponsabilidade $pagoResponsabilidade)
     {
         $contas = Conta::all();
@@ -610,6 +616,8 @@ class PaymentController extends Controller
         return view('payments.edit', compact('fornecedor', 'fase', 'contas', 'relacao', 'pagoResponsabilidade', 'responsabilidade'));
     }
 
+    // Função para editar os pagamentos. Funciona com AJAX.
+    // Os requests estão isolados por o tipo de categoria de pagamento (Cliente, Agente, ...)
     public function update(Request $request, Responsabilidade $responsabilidade, PagoResponsabilidade $pagoResponsabilidade)
     {
         $responsabilidade = Responsabilidade::where('idResponsabilidade', $responsabilidade->idResponsabilidade)->with(["cliente", "agente", "subAgente", "universidade1", "universidade2", "fase"])->first();
@@ -816,11 +824,51 @@ class PaymentController extends Controller
         return response()->json($pagoResponsabilidade, 200);
     }
 
+    // Criação das vistas com as variáveis necessárias para visualizar um pagamento já registado.
+    // As funções são diferentes pois as vistas são diferentes, bem como a informção que contêm.
+    public function showcliente(Cliente $cliente, Fase $fase, Responsabilidade $responsabilidade, PagoResponsabilidade $pagoResponsabilidade)
+    {
+        return view("payments.show", compact("cliente", "fase", "responsabilidade", "pagoResponsabilidade"));
+    }
+
+    public function showagente(Agente $agente, Fase $fase, Responsabilidade $responsabilidade, PagoResponsabilidade $pagoResponsabilidade)
+    {
+        return view("payments.show", compact("agente", "fase", "responsabilidade", "pagoResponsabilidade"));
+    }
+
+    public function showsubagente(Agente $subagente, Fase $fase, Responsabilidade $responsabilidade, PagoResponsabilidade $pagoResponsabilidade)
+    {
+        return view("payments.show", compact("subagente", "fase", "responsabilidade", "pagoResponsabilidade"));
+    }
+
+    public function showuni1(Universidade $universidade1, Fase $fase, Responsabilidade $responsabilidade, PagoResponsabilidade $pagoResponsabilidade)
+    {
+        return view('payments.show', compact('universidade1', 'fase', 'responsabilidade', 'pagoResponsabilidade'));
+    }
+
+    public function showuni2(Universidade $universidade2, Fase $fase, Responsabilidade $responsabilidade, PagoResponsabilidade $pagoResponsabilidade)
+    {
+        return view('payments.show', compact('universidade2', 'fase', 'responsabilidade', 'pagoResponsabilidade'));
+    }
+
+    public function showfornecedor(Fornecedor $fornecedor, Fase $fase, RelFornResp $relacao, PagoResponsabilidade $pagoResponsabilidade)
+    {
+        $responsabilidade = $relacao->responsabilidade;
+        $fase = Fase::where('idFase', $fase->idFase)->with(["produto", "produto.agente", "produto.cliente", "produto.universidade1", "responsabilidade"])->first();
+        return view('payments.show', compact('fornecedor', 'fase', 'relacao', 'pagoResponsabilidade', 'responsabilidade'));
+    }
+
+    // Criação de uma nota de pagamento através do biblioteca DOM PFD.
     public function download(PagoResponsabilidade $pagoresponsabilidade)
     {
         $pagoresponsabilidade = PagoResponsabilidade::where("idPagoResp", $pagoresponsabilidade->idPagoResp)->with(["responsabilidade", "responsabilidade.cliente"])->first();
         $pdf = PDF::loadView('payments.pdf.nota-pagamento', ['pagoresponsabilidade' => $pagoresponsabilidade])->setPaper('a4', 'portrait');
         $file = post_slug($pagoresponsabilidade->responsabilidade->cliente->nome.' '.$pagoresponsabilidade->responsabilidade->fase->descricao);
         return $pdf->stream('nota-pagamento-'.$file.'.pdf');
+    }
+
+    public function downloadComprovativo(PagoResponsabilidade $pagoresponsabilidade)
+    {
+        return Storage::disk('public')->download('comprovativos-pagamento/'.$pagoresponsabilidade->comprovativoPagamento);
     }
 }
