@@ -14,7 +14,7 @@ class Produto extends Model
     protected $primaryKey = 'idProduto';
 
     protected $fillable = [
-        'descricao','tipo','anoAcademico','valorTotal','valorTotalAgente',
+        'descricao','tipo','anoAcademico','valorTotal','valorTotalAgente', 'estado',
         'valorTotalSubAgente','$idAgente','$idSubAgente','$idCliente',
         '$idUniversidade1','$idUniversidade2'
     ];

@@ -29,7 +29,7 @@
                         <tr>
                             <th>Nome</th>
                             <th>Descrição</th>
-                            <th>Valor</th>
+                            <th>Valor total</th>
                             <th style="max-width:200px; min-width:200px;">Estado</th>
                             <th style="max-width:70px; min-width:70px;">Opções</th>
                         </tr>

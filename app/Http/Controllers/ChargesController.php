@@ -7,6 +7,7 @@ use App\Conta;
 use App\Produto;
 use App\DocTransacao;
 use App\Responsabilidade;
+use App\Events\StoreCharge;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreChargeRequest;
@@ -99,10 +100,10 @@ class ChargesController extends Controller
         $docTransacao->save();
 
         if ($requestCharge->hasFile('comprovativoPagamento')) {
-            $fileproof = $requestCharge->file('comprovativoPagamento');
-            $imgproof= post_slug($docTransacao->descricao).'-comprovativo-'.$docTransacao->idDocTransacao.'.'.$fileproof->getClientOriginalExtension();
-            Storage::disk('public')->putFileAs('comprovativos-pagamento/', $fileproof, $imgproof);
-            $docTransacao->comprovativoPagamento = $imgproof;
+            $file = $requestCharge->file('comprovativoPagamento');
+            $filename= post_slug($docTransacao->descricao).'-comprovativo-'.$docTransacao->idDocTransacao.'.'.$file->getClientOriginalExtension();
+            Storage::disk('public')->putFileAs('comprovativos-pagamento/', $file, $filename);
+            $docTransacao->comprovativoPagamento = $filename;
             $docTransacao->save();
         }
 
@@ -129,6 +130,7 @@ class ChargesController extends Controller
             break;
         }
 
+        event(new StoreCharge($product));
         return redirect()->route('charges.listfases', $product)->with('success', 'Estado da cobrança alterado com sucesso!');
       }else{
         abort(403);
@@ -149,17 +151,17 @@ class ChargesController extends Controller
     {
         if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
             $fields = $requestCharge->validated();
-            $oldfilename = $docTransacao->comprovativoPagamento;
+            $oldFile = $docTransacao->comprovativoPagamento;
             $docTransacao->fill($fields);
             $value = number_format((float) $docTransacao->valorRecebido,2 ,'.' ,'');
             $docTransacao->valorRecebido = $value;
 
             if($requestCharge->hasFile('comprovativoPagamento')) {
-                $fileproof = $requestCharge->file('comprovativoPagamento');
-                $imgproof = post_slug($docTransacao->descricao).'-comprovativo-'.$docTransacao->idDocTransacao.'.'.$fileproof->getClientOriginalExtension();
-                Storage::disk('public')->putFileAs('comprovativos-pagamento/', $fileproof, $imgproof);
-                Storage::disk('public')->delete('comprovativos-pagamento/'.$oldfilename);
-                $docTransacao->comprovativoPagamento = $imgproof;
+                $file = $requestCharge->file('comprovativoPagamento');
+                $filename = post_slug($docTransacao->descricao).'-comprovativo-'.$docTransacao->idDocTransacao.'.'.$file->getClientOriginalExtension();
+                Storage::disk('public')->delete('comprovativos-pagamento/'.$oldFile);
+                Storage::disk('public')->putFileAs('comprovativos-pagamento/', $file, $filename);
+                $docTransacao->comprovativoPagamento = $filename;
             }
 
         $docTransacao->save();
@@ -169,7 +171,8 @@ class ChargesController extends Controller
         }else {
           Fase::where('descricao', $docTransacao->fase->descricao)->update(['verificacaoPago' => '0']);
         }
-
+        
+        event(new StoreCharge($product));
         return redirect()->route('charges.listfases', $product)->with('success', 'Cobrança editado com sucesso!');
       }else{
         abort(403);

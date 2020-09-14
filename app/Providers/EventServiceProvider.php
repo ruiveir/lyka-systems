@@ -12,10 +12,13 @@ class EventServiceProvider extends ServiceProvider
 
     protected $listen = [
         'App\Events\StorePayment' => [
-          'App\Listeners\PaymentVerification',
+            'App\Listeners\PaymentVerification',
         ],
         'App\Events\LoginVerification' => [
-          'App\Listeners\UserEventListener',
+            'App\Listeners\UserEventListener',
+        ],
+        'App\Events\StoreCharge' => [
+            'App\Listeners\ChargeVerification',
         ]
     ];
 

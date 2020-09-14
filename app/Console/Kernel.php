@@ -22,7 +22,7 @@ class Kernel extends ConsoleKernel
         ->daily();
 
         $schedule->command('charges:status')
-        ->daily();
+        ->everyMinute();
     }
 
     protected function commands()
