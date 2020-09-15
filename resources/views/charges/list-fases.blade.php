@@ -28,17 +28,17 @@
                     <thead>
                         <tr>
                             <th>Descrição da fase</th>
-                            <th>Valor</th>
+                            <th>Valor total</th>
                             <th>Data de vencimento</th>
-                            <th style="max-width:200px; min-width:200px;">Estado</th>
-                            <th style="max-width:80px; min-width:80px;">Opções</th>
+                            <th style="max-width:100px; min-width:100px;">Estado</th>
+                            <th style="max-width:90px; min-width:90px;">Opções</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($fases as $fase)
                         <tr>
                             <td>{{$fase->descricao}}</td>
-                            <td>{{number_format((float)$fase->valorFase, 2, ',', '')}}€</td>
+                            <td>{{str_replace('.', ',', $fase->valorFase)}}€</td>
                             <td>{{date('d/m/Y', strtotime($fase->dataVencimento))}}</td>
                             <td>
                             @php
@@ -132,7 +132,7 @@
                     "sSortDescending": ": Ordenar colunas de forma descendente"
                 }
             },
-            "order": [ 3, 'desc' ]
+            "order": [ 4, 'asc' ]
         });
     });
 </script>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Fase;
 use App\Conta;
 use App\Produto;
+use Carbon\Carbon;
 use App\DocTransacao;
 use App\Responsabilidade;
 use App\Events\StoreCharge;
@@ -24,32 +25,33 @@ class ChargesController extends Controller
         $numberProducts = null;
 
         if(Auth()->user()->tipo == 'admin'){
-          $products = Produto::orderByRaw("FIELD(estado, \"Crédito\", \"Dívida\", \"Pendente\", \"Pago\")")->get();
+            $products = Produto::orderByRaw("FIELD(estado, \"Crédito\", \"Dívida\", \"Pendente\", \"Pago\")")->get();
         }elseif(Auth()->user()->tipo == 'agente' && Auth()->user()->agente->tipo == "Agente"){
-          $products = Produto::where('idAgente', Auth()->user()->idAgente);
+            $products = Produto::where('idAgente', Auth()->user()->idAgente);
         }elseif(Auth()->user()->tipo == 'agente' && Auth()->user()->agente->tipo == "Subagente"){
-          $products = Produto::where('idSubAgente', Auth()->user()->idAgente);
+            $products = Produto::where('idSubAgente', Auth()->user()->idAgente);
         }else{
-          $products = Produto::where('idCliente', Auth()->user()->idCliente);
+            $products = Produto::where('idCliente', Auth()->user()->idCliente);
         }
 
         foreach($products as $product){
-          $fases = $product->fase;
-          foreach($fases as $fase){
-            if($fase->estado == 'Pendente'){
-              $fasesPendentes[] = $fase;
-            }
-            if($fase->estado == 'Pago'){
-              $fasesPagas[] = $fase;
-            }
-            if($fase->estado == 'Dívida'){
-              $fasesDivida[] = $fase;
-            }
-          }
+            $fases = $product->fase;
 
-          if($product->valorTotal != 0){
-            $numberProducts[] = $product;
-          }
+              foreach($fases as $fase){
+                if($fase->estado == 'Pendente'){
+                  $fasesPendentes[] = $fase;
+                }
+                if($fase->estado == 'Pago'){
+                  $fasesPagas[] = $fase;
+                }
+                if($fase->estado == 'Dívida'){
+                  $fasesDivida[] = $fase;
+                }
+              }
+
+              if($product->valorTotal != 0){
+                $numberProducts[] = $product;
+              }
         }
         return view('charges.list-products', compact('products', 'numberProducts', 'fasesPendentes', 'fasesPagas', 'fasesDivida'));
     }
@@ -87,9 +89,7 @@ class ChargesController extends Controller
         $docTransacao = new DocTransacao;
         $fields = $requestCharge->validated();
         $docTransacao->fill($fields);
-
-        $value = number_format((float) $docTransacao->valorRecebido,2 ,'.' ,'');
-        $docTransacao->valorRecebido = $value;
+        $docTransacao->valorRecebido = str_replace(',', '.', $docTransacao->valorRecebido);
 
         $idConta = $request->input('conta');
         $docTransacao->idConta = $idConta;
@@ -108,25 +108,30 @@ class ChargesController extends Controller
         }
 
         switch ($docTransacao->valorRecebido) {
-          case $docTransacao->valorRecebido == $fase->valorFase:
-            Fase::where('idFase', '=', $fase->idFase)
-            ->update([
-              'verificacaoPago' => '1',
-              'estado' => 'Pago'
-            ]);
+            case $docTransacao->valorRecebido == $fase->valorFase:
+                Fase::where('idFase', $fase->idFase)
+                ->update([
+                    'verificacaoPago' => true,
+                    'estado' => 'Pago'
+                ]);
             break;
 
-          case $docTransacao->valorRecebido > $fase->valorFase:
-            Fase::where('idFase', '=', $fase->idFase)
-            ->update([
-              'verificacaoPago' => '1',
-              'estado' => 'Crédito'
-            ]);
+            case $docTransacao->valorRecebido > $fase->valorFase:
+                Fase::where('idFase', $fase->idFase)
+                ->update([
+                    'verificacaoPago' => true,
+                    'estado' => 'Crédito'
+                ]);
             break;
 
-          case $docTransacao->valorRecebido < $fase->valorFase:
-            Fase::where('idFase', '=', $fase->idFase)
-            ->update(['estado' => 'Dívida']);
+            case $docTransacao->valorRecebido < $fase->valorFase && $docTransacao->fase->dataVencimento < Carbon::now():
+                Fase::where('idFase', $fase->idFase)
+                ->update(['estado' => 'Dívida']);
+            break;
+
+            case $docTransacao->valorRecebido < $fase->valorFase && $docTransacao->fase->dataVencimento > Carbon::now():
+                Fase::where('idFase', $fase->idFase)
+                ->update(['estado' => 'Pendente']);
             break;
         }
 
@@ -153,8 +158,7 @@ class ChargesController extends Controller
             $fields = $requestCharge->validated();
             $oldFile = $docTransacao->comprovativoPagamento;
             $docTransacao->fill($fields);
-            $value = number_format((float) $docTransacao->valorRecebido,2 ,'.' ,'');
-            $docTransacao->valorRecebido = $value;
+            $docTransacao->valorRecebido = str_replace(',', '.', $docTransacao->valorRecebido);
 
             if($requestCharge->hasFile('comprovativoPagamento')) {
                 $file = $requestCharge->file('comprovativoPagamento');
@@ -166,12 +170,28 @@ class ChargesController extends Controller
 
         $docTransacao->save();
 
-        if ($docTransacao->valorRecebido >= $docTransacao->fase->valorFase) {
-          Fase::where('descricao', $docTransacao->fase->descricao)->update(['verificacaoPago' => '1']);
-        }else {
-          Fase::where('descricao', $docTransacao->fase->descricao)->update(['verificacaoPago' => '0']);
+        if ($docTransacao->valorRecebido == $docTransacao->fase->valorFase) {
+            Fase::where('idFase', $docTransacao->fase->idFase)->update([
+                'verificacaoPago' => true,
+                'estado' => 'Pago',
+            ]);
+        }elseif ($docTransacao->valorRecebido > $docTransacao->fase->valorFase) {
+            Fase::where('idFase', $docTransacao->fase->idFase)->update([
+                'verificacaoPago' => true,
+                'estado' => 'Crédito',
+            ]);
+        }elseif ($docTransacao->valorRecebido < $docTransacao->fase->valorFase && $docTransacao->fase->dataVencimento < Carbon::now()) {
+            Fase::where('idFase', $docTransacao->fase->idFase)->update([
+                'verificacaoPago' => false,
+                'estado' => 'Dívida',
+            ]);
+        }elseif ($docTransacao->valorRecebido < $docTransacao->fase->valorFase && $docTransacao->fase->dataVencimento > Carbon::now()) {
+            Fase::where('idFase', $docTransacao->fase->idFase)->update([
+                'verificacaoPago' => false,
+                'estado' => 'Pendente',
+            ]);
         }
-        
+
         event(new StoreCharge($product));
         return redirect()->route('charges.listfases', $product)->with('success', 'Cobrança editado com sucesso!');
       }else{

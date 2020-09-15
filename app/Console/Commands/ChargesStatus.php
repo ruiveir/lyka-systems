@@ -18,7 +18,7 @@ class ChargesStatus extends Command
 
     public function handle()
     {
-        $fases = Fase::where([['verificacaoPago', false], ['estado', '!=', 'Dívida']])->get();
+        $fases = Fase::where([['verificacaoPago', false], ['estado', '!=', 'Dívida'], ['estado', '!=', 'Crédito']])->get();
         foreach ($fases as $fase) {
             if($fase->dataVencimento < Carbon::now()) {
                 $fase->update(["estado" => "Dívida"]);

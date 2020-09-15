@@ -28,7 +28,7 @@
                         <div class="col-md-6 mb-3">
                             <label for="valorRecebido" class="text-gray-900">Valor recebido <sup class="text-danger small">&#10033;</sup> </label>
                             <div class="input-group">
-                                <input type="text" class="form-control" name="valorRecebido" id="valorRecebido" aria-describedby="validatedInputGroupPrepend" value="{{old('valorRecebido', number_format((float)$fase->valorFase, 2, ',', ''))}}" required>
+                                <input type="text" class="form-control" name="valorRecebido" id="valorRecebido" aria-describedby="validatedInputGroupPrepend" value="{{old('valorRecebido', str_replace('.', ',', $fase->valorFase))}}" required>
                                 <div class="input-group-append">
                                     <span class="input-group-text">€</span>
                                 </div>

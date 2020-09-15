@@ -29,21 +29,14 @@ class PaymentController extends Controller
     public function index()
     {
         $responsabilidades = Responsabilidade::orderByRaw("FIELD(estado, \"Dívida\", \"Pendente\", \"Pago\")")
-        ->with(["cliente", "agente", "subAgente", "universidade1", "universidade2", "relacao", "relacao.fornecedor", "fase"])
+        ->with(["cliente", "agente", "subAgente", "universidade1", "universidade2", "relacao", "relacao.fornecedor", "fase", "pagoResponsabilidade"])
         ->get();
 
-        $responsabilidadesPendentes = Responsabilidade::where('estado', '=', 'Pendente')->get();
-        $responsabilidadesPagas = Responsabilidade::where('estado', '=', 'Pago')->get();
-        $responsabilidadesDivida = Responsabilidade::where('estado', '=', 'Dívida')->get();
-
-        $pagoResponsabilidade = PagoResponsabilidade::all();
+        $responsabilidadesPendentes = Responsabilidade::where('estado', 'Pendente')->get();
+        $responsabilidadesPagas = Responsabilidade::where('estado', 'Pago')->get();
+        $responsabilidadesDivida = Responsabilidade::where('estado', 'Dívida')->get();
 
         $relacoes = RelFornResp::all();
-        $estudantes = Cliente::all();
-        $universidades = Universidade::all();
-        $agentes = Agente::where('tipo', 'Agente')->get();
-        $subagentes = Agente::where('tipo', 'Subagente')->get();
-        $fornecedores = Fornecedor::all();
         $currentdate = new DateTime();
 
         $valorTotalPendente = 0;
@@ -52,115 +45,115 @@ class PaymentController extends Controller
 
         // Responsabilidades com estado = PENDENTE
         foreach ($responsabilidadesPendentes as $responsabilidadePendente) {
-          if ($responsabilidadePendente->verificacaoPagoCliente == 0 && $responsabilidadePendente->valorCliente != null) {
+          if ($responsabilidadePendente->verificacaoPagoCliente == false && $responsabilidadePendente->valorCliente != null) {
             $valorTotalPendente++;
-          }elseif ($responsabilidadePendente->verificacaoPagoCliente == 1 && $responsabilidadePendente->valorCliente != null){
+          }elseif ($responsabilidadePendente->verificacaoPagoCliente && $responsabilidadePendente->valorCliente != null){
             $valorTotalPago++;
           }
 
-          if ($responsabilidadePendente->verificacaoPagoAgente == 0 && $responsabilidadePendente->valorAgente != null) {
+          if ($responsabilidadePendente->verificacaoPagoAgente == false && $responsabilidadePendente->valorAgente != null) {
             $valorTotalPendente++;
-          }elseif ($responsabilidadePendente->verificacaoPagoAgente == 1 && $responsabilidadePendente->valorAgente != null) {
+          }elseif ($responsabilidadePendente->verificacaoPagoAgente && $responsabilidadePendente->valorAgente != null) {
             $valorTotalPago++;
           }
 
-          if ($responsabilidadePendente->verificacaoPagoSubAgente == 0 && $responsabilidadePendente->valorSubAgente != null) {
+          if ($responsabilidadePendente->verificacaoPagoSubAgente == false && $responsabilidadePendente->valorSubAgente != null) {
             $valorTotalPendente++;
-          }elseif ($responsabilidadePendente->verificacaoPagoSubAgente == 1 && $responsabilidadePendente->valorSubAgente != null) {
+          }elseif ($responsabilidadePendente->verificacaoPagoSubAgente && $responsabilidadePendente->valorSubAgente != null) {
             $valorTotalPago++;
           }
 
-          if ($responsabilidadePendente->verificacaoPagoUni1 == 0 && $responsabilidadePendente->valorUniversidade1 != null) {
+          if ($responsabilidadePendente->verificacaoPagoUni1 == false && $responsabilidadePendente->valorUniversidade1 != null) {
             $valorTotalPendente++;
-          }elseif ($responsabilidadePendente->verificacaoPagoUni1 == 1 && $responsabilidadePendente->valorUniversidade1 != null) {
+          }elseif ($responsabilidadePendente->verificacaoPagoUni1 && $responsabilidadePendente->valorUniversidade1 != null) {
             $valorTotalPago++;
           }
 
-          if ($responsabilidadePendente->verificacaoPagoUni2 == 0 && $responsabilidadePendente->valorUniversidade2 != null) {
+          if ($responsabilidadePendente->verificacaoPagoUni2 == false && $responsabilidadePendente->valorUniversidade2 != null) {
             $valorTotalPendente++;
-          }elseif ($responsabilidadePendente->verificacaoPagoUni2 == 1 && $responsabilidadePendente->valorUniversidade2 != null) {
+          }elseif ($responsabilidadePendente->verificacaoPagoUni2 && $responsabilidadePendente->valorUniversidade2 != null) {
             $valorTotalPago++;
           }
         }
 
         // Responsabilidades com estado = PAGO
         foreach ($responsabilidadesPagas as $responsabilidadePaga) {
-          if ($responsabilidadePaga->verificacaoPagoCliente == 0 && $responsabilidadePaga->valorCliente != null) {
+          if ($responsabilidadePaga->verificacaoPagoCliente == false && $responsabilidadePaga->valorCliente != null) {
             $valorTotalPendente++;
-          }elseif ($responsabilidadePaga->verificacaoPagoCliente == 1 && $responsabilidadePaga->valorCliente != null){
+          }elseif ($responsabilidadePaga->verificacaoPagoCliente && $responsabilidadePaga->valorCliente != null){
             $valorTotalPago++;
           }
 
-          if ($responsabilidadePaga->verificacaoPagoAgente == 0 && $responsabilidadePaga->valorAgente != null) {
+          if ($responsabilidadePaga->verificacaoPagoAgente == false && $responsabilidadePaga->valorAgente != null) {
             $valorTotalPendente++;
-          }elseif ($responsabilidadePaga->verificacaoPagoAgente == 1 && $responsabilidadePaga->valorAgente != null) {
+          }elseif ($responsabilidadePaga->verificacaoPagoAgente && $responsabilidadePaga->valorAgente != null) {
             $valorTotalPago++;
           }
 
-          if ($responsabilidadePaga->verificacaoPagoSubAgente == 0 && $responsabilidadePaga->valorSubAgente != null) {
+          if ($responsabilidadePaga->verificacaoPagoSubAgente == false && $responsabilidadePaga->valorSubAgente != null) {
             $valorTotalPendente++;
-          }elseif ($responsabilidadePaga->verificacaoPagoSubAgente == 1 && $responsabilidadePaga->valorSubAgente != null) {
+          }elseif ($responsabilidadePaga->verificacaoPagoSubAgente && $responsabilidadePaga->valorSubAgente != null) {
             $valorTotalPago++;
           }
 
-          if ($responsabilidadePaga->verificacaoPagoUni1 == 0 && $responsabilidadePaga->valorUniversidade1 != null) {
+          if ($responsabilidadePaga->verificacaoPagoUni1 == false && $responsabilidadePaga->valorUniversidade1 != null) {
             $valorTotalPendente++;
-          }elseif ($responsabilidadePaga->verificacaoPagoUni1 == 1 && $responsabilidadePaga->valorUniversidade1 != null) {
+          }elseif ($responsabilidadePaga->verificacaoPagoUni1 && $responsabilidadePaga->valorUniversidade1 != null) {
             $valorTotalPago++;
           }
 
-          if ($responsabilidadePaga->verificacaoPagoUni2 == 0 && $responsabilidadePaga->valorUniversidade2 != null) {
+          if ($responsabilidadePaga->verificacaoPagoUni2 == false && $responsabilidadePaga->valorUniversidade2 != null) {
             $valorTotalPendente++;
-          }elseif ($responsabilidadePaga->verificacaoPagoUni2 == 1 && $responsabilidadePaga->valorUniversidade2 != null) {
+          }elseif ($responsabilidadePaga->verificacaoPagoUni2 && $responsabilidadePaga->valorUniversidade2 != null) {
             $valorTotalPago++;
           }
         }
 
         // Responsabilidades com estado = DÍVIDA
         foreach ($responsabilidadesDivida as $responsabilidadeDivida) {
-          if ($responsabilidadeDivida->verificacaoPagoCliente == 0 && $responsabilidadeDivida->valorCliente != null) {
+          if ($responsabilidadeDivida->verificacaoPagoCliente == false && $responsabilidadeDivida->valorCliente != null) {
             $valorTotalDivida++;
-          }elseif ($responsabilidadeDivida->verificacaoPagoCliente == 1 && $responsabilidadeDivida->valorCliente != null){
+          }elseif ($responsabilidadeDivida->verificacaoPagoCliente && $responsabilidadeDivida->valorCliente != null){
             $valorTotalPago++;
           }
 
-          if ($responsabilidadeDivida->verificacaoPagoAgente == 0 && $responsabilidadeDivida->valorAgente != null) {
+          if ($responsabilidadeDivida->verificacaoPagoAgente == false && $responsabilidadeDivida->valorAgente != null) {
             $valorTotalDivida++;
-          }elseif ($responsabilidadeDivida->verificacaoPagoAgente == 1 && $responsabilidadeDivida->valorAgente != null) {
+          }elseif ($responsabilidadeDivida->verificacaoPagoAgente && $responsabilidadeDivida->valorAgente != null) {
             $valorTotalPago++;
           }
 
-          if ($responsabilidadeDivida->verificacaoPagoSubAgente == 0 && $responsabilidadeDivida->valorSubAgente != null) {
+          if ($responsabilidadeDivida->verificacaoPagoSubAgente == false && $responsabilidadeDivida->valorSubAgente != null) {
             $valorTotalDivida++;
-          }elseif ($responsabilidadeDivida->verificacaoPagoSubAgente == 1 && $responsabilidadeDivida->valorSubAgente != null) {
+          }elseif ($responsabilidadeDivida->verificacaoPagoSubAgente && $responsabilidadeDivida->valorSubAgente != null) {
             $valorTotalPago++;
           }
 
-          if ($responsabilidadeDivida->verificacaoPagoUni1 == 0 && $responsabilidadeDivida->valorUniversidade1 != null) {
+          if ($responsabilidadeDivida->verificacaoPagoUni1 == false && $responsabilidadeDivida->valorUniversidade1 != null) {
             $valorTotalDivida++;
-          }elseif ($responsabilidadeDivida->verificacaoPagoUni1 == 1 && $responsabilidadeDivida->valorUniversidade1 != null) {
+          }elseif ($responsabilidadeDivida->verificacaoPagoUni1 && $responsabilidadeDivida->valorUniversidade1 != null) {
             $valorTotalPago++;
           }
 
-          if ($responsabilidadeDivida->verificacaoPagoUni2 == 0 && $responsabilidadeDivida->valorUniversidade2 != null) {
+          if ($responsabilidadeDivida->verificacaoPagoUni2 == false && $responsabilidadeDivida->valorUniversidade2 != null) {
             $valorTotalDivida++;
-          }elseif ($responsabilidadeDivida->verificacaoPagoUni2 == 1 && $responsabilidadeDivida->valorUniversidade2 != null) {
+          }elseif ($responsabilidadeDivida->verificacaoPagoUni2 && $responsabilidadeDivida->valorUniversidade2 != null) {
             $valorTotalPago++;
           }
         }
 
         if (count($relacoes)) {
           foreach ($relacoes as $relacao) {
-            if ($relacao->estado == 'Dívida' && $relacao->verificacaoPago == 0) {
+            if ($relacao->estado == 'Dívida' && $relacao->verificacaoPago == false) {
               $valorTotalDivida++;
-            }elseif($relacao->verificacaoPago == 1) {
+            }elseif($relacao->verificacaoPago) {
               $valorTotalPago++;
             }else {
               $valorTotalPendente++;
             }
           }
         }
-        return view('payments.list', compact('responsabilidades', 'pagoResponsabilidade', 'valorTotalPendente', 'valorTotalPago', 'valorTotalDivida', 'estudantes', 'agentes', 'subagentes', 'universidades', 'fornecedores', 'currentdate'));
+        return view('payments.list', compact('responsabilidades', 'valorTotalPendente', 'valorTotalPago', 'valorTotalDivida', 'currentdate'));
     }
 
     public function search(Request $request)
@@ -414,8 +407,7 @@ class PaymentController extends Controller
 
         if ($valorCliente != null) {
             $pagoResponsabilidade = new PagoResponsabilidade;
-            $valorCliente = number_format((float) $valorCliente,2 ,'.' ,'');
-            $pagoResponsabilidade->valorPago = $valorCliente;
+            $pagoResponsabilidade->valorPago = str_replace(',', '.', $valorCliente);
             $pagoResponsabilidade->beneficiario = $responsabilidade->fase->produto->cliente->nome.' '.$responsabilidade->fase->produto->cliente->apelido;
             $pagoResponsabilidade->tipo_beneficiario = "Cliente";
             $pagoResponsabilidade->descricao = $descricaoCliente;
@@ -441,8 +433,7 @@ class PaymentController extends Controller
 
         if ($valorAgente != null) {
             $pagoResponsabilidade = new PagoResponsabilidade;
-            $valorAgente = number_format((float) $valorAgente,2 ,'.' ,'');
-            $pagoResponsabilidade->valorPago = $valorAgente;
+            $pagoResponsabilidade->valorPago = str_replace(',', '.', $valorAgente);
             $pagoResponsabilidade->beneficiario = $responsabilidade->fase->produto->agente->nome.' '.$responsabilidade->fase->produto->agente->apelido;
             $pagoResponsabilidade->tipo_beneficiario = "Agente";
             $pagoResponsabilidade->dataPagamento = $dataAgente;
@@ -468,8 +459,7 @@ class PaymentController extends Controller
 
         if ($valorSubAgente != null) {
             $pagoResponsabilidade = new PagoResponsabilidade;
-            $valorSubAgente = number_format((float) $valorSubAgente,2 ,'.' ,'');
-            $pagoResponsabilidade->valorPago = $valorSubAgente;
+            $pagoResponsabilidade->valorPago = str_replace(',', '.', $valorSubAgente);
             $pagoResponsabilidade->beneficiario = $responsabilidade->fase->produto->subAgente->nome.' '.$responsabilidade->fase->produto->subAgente->apelido;
             $pagoResponsabilidade->tipo_beneficiario = "Subagente";
             $pagoResponsabilidade->dataPagamento = $dataSubAgente;
@@ -495,8 +485,7 @@ class PaymentController extends Controller
 
         if ($valorUni1 != null) {
             $pagoResponsabilidade = new PagoResponsabilidade;
-            $valorUni1 = number_format((float) $valorUni1,2 ,'.' ,'');
-            $pagoResponsabilidade->valorPago = $valorUni1;
+            $pagoResponsabilidade->valorPago = str_replace(',', '.', $valorUni1);
             $pagoResponsabilidade->beneficiario = $responsabilidade->fase->produto->universidade1->nome;
             $pagoResponsabilidade->tipo_beneficiario = "UniPrincipal";
             $pagoResponsabilidade->dataPagamento = $dataUni1;
@@ -522,8 +511,7 @@ class PaymentController extends Controller
 
         if ($valorUni2 != null) {
             $pagoResponsabilidade = new PagoResponsabilidade;
-            $valorUni2 = number_format((float) $valorUni2,2 ,'.' ,'');
-            $pagoResponsabilidade->valorPago = $valorUni2;
+            $pagoResponsabilidade->valorPago = str_replace(',', '.', $valorUni2);
             $pagoResponsabilidade->beneficiario = $responsabilidade->fase->produto->universidade2->nome;
             $pagoResponsabilidade->tipo_beneficiario = "UniSecundaria";
             $pagoResponsabilidade->dataPagamento = $dataUni2;
@@ -550,8 +538,7 @@ class PaymentController extends Controller
         if ($valorFornecedor != null) {
             $relacao = RelFornResp::where('idRelacao', $idRelacao)->first();
             $pagoResponsabilidade = new PagoResponsabilidade;
-            $valorFornecedor = number_format((float) $valorFornecedor,2 ,'.' ,'');
-            $pagoResponsabilidade->valorPago = $valorFornecedor;
+            $pagoResponsabilidade->valorPago = str_replace(',', '.', $valorFornecedor);
             $pagoResponsabilidade->beneficiario = $nomeFornecedor;
             $pagoResponsabilidade->tipo_beneficiario = "Fornecedor";
             $pagoResponsabilidade->dataPagamento = $dataFornecedor;
@@ -673,8 +660,7 @@ class PaymentController extends Controller
         $nomeFornecedor = ($request->input('nomeFornecedor') != null ? $request->input('nomeFornecedor') : null);
 
         if ($valorCliente != null) {
-            $valorCliente = number_format((float) $valorCliente,2 ,'.' ,'');
-            $pagoResponsabilidade->valorPago = $valorCliente;
+            $pagoResponsabilidade->valorPago = str_replace(',', '.', $valorCliente);
             $pagoResponsabilidade->beneficiario = $responsabilidade->fase->produto->cliente->nome.' '.$responsabilidade->fase->produto->cliente->apelido;
             $pagoResponsabilidade->descricao = $descricaoCliente;
             $pagoResponsabilidade->observacoes = $observacoesCliente;
@@ -698,8 +684,7 @@ class PaymentController extends Controller
         }
 
         if ($valorAgente != null) {
-            $valorAgente = number_format((float) $valorAgente,2 ,'.' ,'');
-            $pagoResponsabilidade->valorPago = $valorAgente;
+            $pagoResponsabilidade->valorPago = str_replace(',', '.', $valorAgente);
             $pagoResponsabilidade->beneficiario = $responsabilidade->fase->produto->agente->nome.' '.$responsabilidade->fase->produto->agente->apelido;
             $pagoResponsabilidade->dataPagamento = $dataAgente;
             $pagoResponsabilidade->descricao = $descricaoAgente;
@@ -723,8 +708,7 @@ class PaymentController extends Controller
         }
 
         if ($valorSubAgente != null) {
-            $valorSubAgente = number_format((float) $valorSubAgente,2 ,'.' ,'');
-            $pagoResponsabilidade->valorPago = $valorSubAgente;
+            $pagoResponsabilidade->valorPago = str_replace(',', '.', $valorSubAgente);
             $pagoResponsabilidade->beneficiario = $responsabilidade->fase->produto->subAgente->nome.' '.$responsabilidade->fase->produto->subAgente->apelido;
             $pagoResponsabilidade->dataPagamento = $dataSubAgente;
             $pagoResponsabilidade->descricao = $descricaoSubAgente;
@@ -748,8 +732,7 @@ class PaymentController extends Controller
         }
 
         if ($valorUni1 != null) {
-            $valorUni1 = number_format((float) $valorUni1,2 ,'.' ,'');
-            $pagoResponsabilidade->valorPago = $valorUni1;
+            $pagoResponsabilidade->valorPago = str_replace(',', '.', $valorUni1);
             $pagoResponsabilidade->beneficiario = $responsabilidade->fase->produto->universidade1->nome;
             $pagoResponsabilidade->dataPagamento = $dataUni1;
             $pagoResponsabilidade->descricao = $descricaoUni1;
@@ -773,8 +756,7 @@ class PaymentController extends Controller
         }
 
         if ($valorUni2 != null) {
-            $valorUni2 = number_format((float) $valorUni2,2 ,'.' ,'');
-            $pagoResponsabilidade->valorPago = $valorUni2;
+            $pagoResponsabilidade->valorPago = str_replace(',', '.', $valorUni2);
             $pagoResponsabilidade->beneficiario = $responsabilidade->fase->produto->universidade2->nome;
             $pagoResponsabilidade->dataPagamento = $dataUni2;
             $pagoResponsabilidade->descricao = $descricaoUni2;
@@ -799,8 +781,7 @@ class PaymentController extends Controller
 
         if ($valorFornecedor != null) {
             $relacao = RelFornResp::where('idRelacao', $idRelacao)->first();
-            $valorFornecedor = number_format((float) $valorFornecedor,2 ,'.' ,'');
-            $pagoResponsabilidade->valorPago = $valorFornecedor;
+            $pagoResponsabilidade->valorPago = str_replace(',', '.', $valorFornecedor);
             $pagoResponsabilidade->beneficiario = $nomeFornecedor;
             $pagoResponsabilidade->dataPagamento = $dataFornecedor;
             $pagoResponsabilidade->descricao = $descricaoFornecedor;

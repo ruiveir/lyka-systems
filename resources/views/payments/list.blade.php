@@ -20,7 +20,22 @@
     <!-- Approach -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Listagem de pagamentos</h6>
+            <div class="row d-flex justify-content-between align-items-center">
+                <div class="col-md-6">
+                    <h6 class="m-0 font-weight-bold text-primary align-middle">Listagem de pagamentos da Estudar Portugal</h6>
+                </div>
+                @if (isset($responsabilidades))
+                    <div class="mr-3">
+                        <span class="p-2 px-3 border bg-light">
+                            <small>
+                                <span class="mx-1">{{$valorTotalPendente}} Pendente(s)</span><span class="mx-1">|</span>
+                                <span class="mx-1">{{$valorTotalPago}} Pago(s)</span><span class="mx-1">|</span>
+                                <span class="mx-1">{{$valorTotalDivida}} Vencido(s)</span>
+                            </small>
+                        </span>
+                    </div>
+                @endif
+            </div>
         </div>
         <div class="card-body">
             <div class="table-responsive p-1">
