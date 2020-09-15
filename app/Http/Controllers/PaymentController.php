@@ -372,7 +372,7 @@ class PaymentController extends Controller
             $pagoResponsabilidade->idConta = $contaCliente;
             $pagoResponsabilidade->save();
 
-            if ($valorCliente >= $responsabilidade->valorCliente) {
+            if ($pagoResponsabilidade->valorPago >= $responsabilidade->valorCliente) {
                 Responsabilidade::where('idResponsabilidade', $responsabilidade->idResponsabilidade)
                 ->update(['verificacaoPagoCliente' => '1']);
             }
@@ -398,7 +398,7 @@ class PaymentController extends Controller
             $pagoResponsabilidade->idConta = $contaAgente;
             $pagoResponsabilidade->save();
 
-            if ($valorAgente >= $responsabilidade->valorAgente) {
+            if ($pagoResponsabilidade->valorPago >= $responsabilidade->valorAgente) {
                 Responsabilidade::where('idResponsabilidade', $responsabilidade->idResponsabilidade)
                     ->update(['verificacaoPagoAgente' => '1']);
             }
@@ -424,7 +424,7 @@ class PaymentController extends Controller
             $pagoResponsabilidade->idConta = $contaSubAgente;
             $pagoResponsabilidade->save();
 
-            if ($valorSubAgente >= $responsabilidade->valorSubAgente) {
+            if ($pagoResponsabilidade->valorPago >= $responsabilidade->valorSubAgente) {
                 Responsabilidade::where('idResponsabilidade', $responsabilidade->idResponsabilidade)
             ->update(['verificacaoPagoSubAgente' => '1']);
             }
@@ -450,7 +450,7 @@ class PaymentController extends Controller
             $pagoResponsabilidade->idConta = $contaUni1;
             $pagoResponsabilidade->save();
 
-            if ($valorUni1 >= $responsabilidade->valorUniversidade1) {
+            if ($pagoResponsabilidade->valorPago >= $responsabilidade->valorUniversidade1) {
                 Responsabilidade::where('idResponsabilidade', $responsabilidade->idResponsabilidade)
             ->update(['verificacaoPagoUni1' => '1']);
             }
@@ -476,7 +476,7 @@ class PaymentController extends Controller
             $pagoResponsabilidade->idConta = $contaUni2;
             $pagoResponsabilidade->save();
 
-            if ($valorUni2 >= $responsabilidade->valorUniversidade2) {
+            if ($pagoResponsabilidade->valorPago >= $responsabilidade->valorUniversidade2) {
                 Responsabilidade::where('idResponsabilidade', $responsabilidade->idResponsabilidade)
             ->update(['verificacaoPagoUni2' => '1']);
             }
@@ -624,7 +624,7 @@ class PaymentController extends Controller
             $pagoResponsabilidade->idConta = $contaCliente;
             $pagoResponsabilidade->save();
 
-            if ($valorCliente >= $responsabilidade->valorCliente) {
+            if (str_replace(',', '.', $valorCliente) >= $responsabilidade->valorCliente) {
                 Responsabilidade::where('idResponsabilidade', $responsabilidade->idResponsabilidade)
                 ->update(['verificacaoPagoCliente' => '1']);
             }

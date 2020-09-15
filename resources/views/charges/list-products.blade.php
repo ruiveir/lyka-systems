@@ -44,7 +44,6 @@
                         <tr>
                             <th>Nome</th>
                             <th>Descrição</th>
-                            <th>Num. de fases</th>
                             <th>Valor total</th>
                             <th style="max-width:130px; min-width:130px;">Estado</th>
                             <th style="max-width:70px; min-width:70px;">Opções</th>
@@ -54,8 +53,7 @@
                         @foreach ($products as $product)
                         <tr>
                             <td>{{$product->cliente->nome.' '.$product->cliente->apelido}}</td>
-                            <td>{{$product->descricao}}</td>
-                            <td>{{$product->fase->count()}}</td>
+                            <td>{{$product->descricao}} ({{$product->fase->count())</td>
                             <td>{{str_replace('.', ',', $product->valorTotal).'€'}}</td>
                             <td>
                             @php

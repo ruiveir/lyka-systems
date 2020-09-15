@@ -85,7 +85,7 @@
         </div>
     </li>
 
-    <li class="nav-item <?php if (Route::is('libraries.*') || Route::is('contacts.*') || Route::is('agenda.*') || Route::is('produtostock.*') || Route::is('admin.*') || Route::is('listagens.*') || Route::is('provider.*')) { echo 'active'; } ?>">
+    <li class="nav-item <?php if (Route::is('libraries.*') || Route::is('contacts.*') || Route::is('agenda.*') || Route::is('produtostock.*') || Route::is('admin.*') || Route::is('listagens.*') || Route::is('provider.*') || Route::is('bugreport.*')) { echo 'active'; } ?>">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseDiversos" aria-expanded="true" aria-controls="collapseDiversos">
             <i class="fas fa-fw fa-folder"></i>
             <span>Diversos</span>
