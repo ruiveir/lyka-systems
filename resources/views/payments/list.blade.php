@@ -28,9 +28,9 @@
                     <div class="mr-3">
                         <span class="p-2 px-3 border bg-light">
                             <small>
-                                <span class="mx-1">{{$valorTotalPendente}} Pendente(s)</span><span class="mx-1">|</span>
-                                <span class="mx-1">{{$valorTotalPago}} Pago(s)</span><span class="mx-1">|</span>
-                                <span class="mx-1">{{$valorTotalDivida}} Vencido(s)</span>
+                                <span class="mx-1">{{$responsabilidadesPendentes}} Pendente(s)</span><span class="mx-1">|</span>
+                                <span class="mx-1">{{$responsabilidadesPagas}} Pago(s)</span><span class="mx-1">|</span>
+                                <span class="mx-1">{{$responsabilidadesDivida}} Vencido(s)</span>
                             </small>
                         </span>
                     </div>

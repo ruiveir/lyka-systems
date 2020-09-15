@@ -9,6 +9,7 @@ use App\Conta;
 use App\Agente;
 use App\Produto;
 use App\Cliente;
+use Carbon\Carbon;
 use App\Fornecedor;
 use App\RelFornResp;
 use App\Universidade;
@@ -32,274 +33,220 @@ class PaymentController extends Controller
         ->with(["cliente", "agente", "subAgente", "universidade1", "universidade2", "relacao", "relacao.fornecedor", "fase", "pagoResponsabilidade"])
         ->get();
 
-        $responsabilidadesPendentes = Responsabilidade::where('estado', 'Pendente')->get();
-        $responsabilidadesPagas = Responsabilidade::where('estado', 'Pago')->get();
-        $responsabilidadesDivida = Responsabilidade::where('estado', 'Dívida')->get();
-
         $relacoes = RelFornResp::all();
         $currentdate = new DateTime();
 
-        $valorTotalPendente = 0;
-        $valorTotalPago = 0;
-        $valorTotalDivida = 0;
+        $responsabilidadesPendentes = 0;
+        $responsabilidadesPagas = 0;
+        $responsabilidadesDivida = 0;
 
-        // Responsabilidades com estado = PENDENTE
-        foreach ($responsabilidadesPendentes as $responsabilidadePendente) {
-          if ($responsabilidadePendente->verificacaoPagoCliente == false && $responsabilidadePendente->valorCliente != null) {
-            $valorTotalPendente++;
-          }elseif ($responsabilidadePendente->verificacaoPagoCliente && $responsabilidadePendente->valorCliente != null){
-            $valorTotalPago++;
-          }
-
-          if ($responsabilidadePendente->verificacaoPagoAgente == false && $responsabilidadePendente->valorAgente != null) {
-            $valorTotalPendente++;
-          }elseif ($responsabilidadePendente->verificacaoPagoAgente && $responsabilidadePendente->valorAgente != null) {
-            $valorTotalPago++;
-          }
-
-          if ($responsabilidadePendente->verificacaoPagoSubAgente == false && $responsabilidadePendente->valorSubAgente != null) {
-            $valorTotalPendente++;
-          }elseif ($responsabilidadePendente->verificacaoPagoSubAgente && $responsabilidadePendente->valorSubAgente != null) {
-            $valorTotalPago++;
-          }
-
-          if ($responsabilidadePendente->verificacaoPagoUni1 == false && $responsabilidadePendente->valorUniversidade1 != null) {
-            $valorTotalPendente++;
-          }elseif ($responsabilidadePendente->verificacaoPagoUni1 && $responsabilidadePendente->valorUniversidade1 != null) {
-            $valorTotalPago++;
-          }
-
-          if ($responsabilidadePendente->verificacaoPagoUni2 == false && $responsabilidadePendente->valorUniversidade2 != null) {
-            $valorTotalPendente++;
-          }elseif ($responsabilidadePendente->verificacaoPagoUni2 && $responsabilidadePendente->valorUniversidade2 != null) {
-            $valorTotalPago++;
-          }
-        }
-
-        // Responsabilidades com estado = PAGO
-        foreach ($responsabilidadesPagas as $responsabilidadePaga) {
-          if ($responsabilidadePaga->verificacaoPagoCliente == false && $responsabilidadePaga->valorCliente != null) {
-            $valorTotalPendente++;
-          }elseif ($responsabilidadePaga->verificacaoPagoCliente && $responsabilidadePaga->valorCliente != null){
-            $valorTotalPago++;
-          }
-
-          if ($responsabilidadePaga->verificacaoPagoAgente == false && $responsabilidadePaga->valorAgente != null) {
-            $valorTotalPendente++;
-          }elseif ($responsabilidadePaga->verificacaoPagoAgente && $responsabilidadePaga->valorAgente != null) {
-            $valorTotalPago++;
-          }
-
-          if ($responsabilidadePaga->verificacaoPagoSubAgente == false && $responsabilidadePaga->valorSubAgente != null) {
-            $valorTotalPendente++;
-          }elseif ($responsabilidadePaga->verificacaoPagoSubAgente && $responsabilidadePaga->valorSubAgente != null) {
-            $valorTotalPago++;
-          }
-
-          if ($responsabilidadePaga->verificacaoPagoUni1 == false && $responsabilidadePaga->valorUniversidade1 != null) {
-            $valorTotalPendente++;
-          }elseif ($responsabilidadePaga->verificacaoPagoUni1 && $responsabilidadePaga->valorUniversidade1 != null) {
-            $valorTotalPago++;
-          }
-
-          if ($responsabilidadePaga->verificacaoPagoUni2 == false && $responsabilidadePaga->valorUniversidade2 != null) {
-            $valorTotalPendente++;
-          }elseif ($responsabilidadePaga->verificacaoPagoUni2 && $responsabilidadePaga->valorUniversidade2 != null) {
-            $valorTotalPago++;
-          }
-        }
-
-        // Responsabilidades com estado = DÍVIDA
-        foreach ($responsabilidadesDivida as $responsabilidadeDivida) {
-          if ($responsabilidadeDivida->verificacaoPagoCliente == false && $responsabilidadeDivida->valorCliente != null) {
-            $valorTotalDivida++;
-          }elseif ($responsabilidadeDivida->verificacaoPagoCliente && $responsabilidadeDivida->valorCliente != null){
-            $valorTotalPago++;
-          }
-
-          if ($responsabilidadeDivida->verificacaoPagoAgente == false && $responsabilidadeDivida->valorAgente != null) {
-            $valorTotalDivida++;
-          }elseif ($responsabilidadeDivida->verificacaoPagoAgente && $responsabilidadeDivida->valorAgente != null) {
-            $valorTotalPago++;
-          }
-
-          if ($responsabilidadeDivida->verificacaoPagoSubAgente == false && $responsabilidadeDivida->valorSubAgente != null) {
-            $valorTotalDivida++;
-          }elseif ($responsabilidadeDivida->verificacaoPagoSubAgente && $responsabilidadeDivida->valorSubAgente != null) {
-            $valorTotalPago++;
-          }
-
-          if ($responsabilidadeDivida->verificacaoPagoUni1 == false && $responsabilidadeDivida->valorUniversidade1 != null) {
-            $valorTotalDivida++;
-          }elseif ($responsabilidadeDivida->verificacaoPagoUni1 && $responsabilidadeDivida->valorUniversidade1 != null) {
-            $valorTotalPago++;
-          }
-
-          if ($responsabilidadeDivida->verificacaoPagoUni2 == false && $responsabilidadeDivida->valorUniversidade2 != null) {
-            $valorTotalDivida++;
-          }elseif ($responsabilidadeDivida->verificacaoPagoUni2 && $responsabilidadeDivida->valorUniversidade2 != null) {
-            $valorTotalPago++;
-          }
-        }
-
-        if (count($relacoes)) {
-          foreach ($relacoes as $relacao) {
-            if ($relacao->estado == 'Dívida' && $relacao->verificacaoPago == false) {
-              $valorTotalDivida++;
-            }elseif($relacao->verificacaoPago) {
-              $valorTotalPago++;
-            }else {
-              $valorTotalPendente++;
+        foreach ($responsabilidades as $responsabilidade) {
+            // Verificação do estado de pagamentos para com o estudante.
+            if ($responsabilidade->valorCliente != null && $responsabilidade->verificacaoPagoCliente) {
+                $responsabilidadesPagas++;
+            } elseif ($responsabilidade->valorCliente != null && !$responsabilidade->verificacaoPagoCliente && $responsabilidade->dataVencimentoCliente > Carbon::now()) {
+                $responsabilidadesPendentes++;
+            } elseif ($responsabilidade->valorCliente != null && !$responsabilidade->verificacaoPagoCliente && $responsabilidade->dataVencimentoCliente < Carbon::now()) {
+                $responsabilidadesDivida++;
             }
-          }
+
+            // Verificação do estado de pagamentos para com o agente.
+            if ($responsabilidade->valorAgente != null && $responsabilidade->verificacaoPagoAgente) {
+                $responsabilidadesPagas++;
+            } elseif ($responsabilidade->valorAgente != null && !$responsabilidade->verificacaoPagoAgente && $responsabilidade->dataVencimentoAgente > Carbon::now()) {
+                $responsabilidadesPendentes++;
+            } elseif ($responsabilidade->valorAgente != null && !$responsabilidade->verificacaoPagoAgente && $responsabilidade->dataVencimentoAgente < Carbon::now()) {
+                $responsabilidadesDivida++;
+            }
+
+            // Verificação do estado de pagamentos para com o subagente.
+            if ($responsabilidade->valorSubAgente != null && $responsabilidade->verificacaoPagoSubAgente) {
+                $responsabilidadesPagas++;
+            } elseif ($responsabilidade->valorSubAgente != null && !$responsabilidade->verificacaoPagoSubAgente && $responsabilidade->dataVencimentoSubAgente > Carbon::now()) {
+                $responsabilidadesPendentes++;
+            } elseif ($responsabilidade->valorSubAgente != null && !$responsabilidade->verificacaoPagoSubAgente && $responsabilidade->dataVencimentoSubAgente < Carbon::now()) {
+                $responsabilidadesDivida++;
+            }
+
+            // Verificação do estado de pagamentos para com a universidade principal.
+            if ($responsabilidade->valorUniversidade1 != null && $responsabilidade->verificacaoPagoUni1) {
+                $responsabilidadesPagas++;
+            } elseif ($responsabilidade->valorUniversidade1 != null && !$responsabilidade->verificacaoPagoUni1 && $responsabilidade->dataVencimentoUni1 > Carbon::now()) {
+                $responsabilidadesPendentes++;
+            } elseif ($responsabilidade->valorUniversidade1 != null && !$responsabilidade->verificacaoPagoUni1 && $responsabilidade->dataVencimentoUni1 < Carbon::now()) {
+                $responsabilidadesDivida++;
+            }
+
+            // Verificação do estado de pagamentos para com a universidade secundária.
+            if ($responsabilidade->valorUniversidade2 != null && $responsabilidade->verificacaoPagoUni2) {
+                $responsabilidadesPagas++;
+            } elseif ($responsabilidade->valorUniversidade2 != null && !$responsabilidade->verificacaoPagoUni2 && $responsabilidade->dataVencimentoUni2 > Carbon::now()) {
+                $responsabilidadesPendentes++;
+            } elseif ($responsabilidade->valorUniversidade2 != null && !$responsabilidade->verificacaoPagoUni2 && $responsabilidade->dataVencimentoUni2 < Carbon::now()) {
+                $responsabilidadesDivida++;
+            }
         }
-        return view('payments.list', compact('responsabilidades', 'valorTotalPendente', 'valorTotalPago', 'valorTotalDivida', 'currentdate'));
+
+        // Verificação do estado de pagamentos para com o fornecedor externo.
+        if (count($relacoes)) {
+            foreach ($relacoes as $relacao) {
+                if ($relacao->estado == 'Dívida' && !$relacao->verificacaoPago) {
+                    $responsabilidadesDivida++;
+                } elseif ($relacao->verificacaoPago) {
+                    $responsabilidadesPagas++;
+                } else {
+                    $responsabilidadesPendentes++;
+                }
+            }
+        }
+
+        return view('payments.list', compact('responsabilidades', 'currentdate', 'responsabilidadesPendentes', 'responsabilidadesPagas', 'responsabilidadesDivida'));
     }
 
     public function search(Request $request)
     {
-      $idEstudante = ($request->input('estudante') != 'default') ? $request->input('estudante') : null;
-      $idAgente = ($request->input('agente') != 'default') ? $request->input('agente') : null;
-      $idSubagente = ($request->input('subagente') != 'default') ? $request->input('subagente') : null;
-      $idUniversidade = ($request->input('universidade') != 'default') ? $request->input('universidade') : null;
-      $idUniversidadeSec = ($request->input('universidadesec') != 'default') ? $request->input('universidadesec') : null;
-      $idFornecedor = ($request->input('fornecedor') != 'default') ? $request->input('fornecedor') : null;
-      $dataInicio = $request->input('datainicio');
-      $dataFim = $request->input('datafim');
+        $idEstudante = ($request->input('estudante') != 'default') ? $request->input('estudante') : null;
+        $idAgente = ($request->input('agente') != 'default') ? $request->input('agente') : null;
+        $idSubagente = ($request->input('subagente') != 'default') ? $request->input('subagente') : null;
+        $idUniversidade = ($request->input('universidade') != 'default') ? $request->input('universidade') : null;
+        $idUniversidadeSec = ($request->input('universidadesec') != 'default') ? $request->input('universidadesec') : null;
+        $idFornecedor = ($request->input('fornecedor') != 'default') ? $request->input('fornecedor') : null;
+        $dataInicio = $request->input('datainicio');
+        $dataFim = $request->input('datafim');
 
-      // Pesquisa de ESTUDANTES
-      if ($idEstudante != null) {
-        if ($idEstudante == 'todos') {
-          $responsabilidades = Responsabilidade::select()->with(['cliente', 'fase']);
-          if ($dataInicio != null) {
-            $responsabilidades->where('dataVencimentoCliente', '>=', $dataInicio);
-          }
-          if ($dataFim != null) {
-            $responsabilidades->where('dataVencimentoCliente', '<=', $dataFim);
-          }
-      }else {
-        $responsabilidades = Responsabilidade::where('idCliente', $idEstudante)->select()->with(['cliente', 'cliente.user', 'fase']);
-        if ($dataInicio != null) {
-          $responsabilidades->where('dataVencimentoCliente', '>=', $dataInicio);
+        // Pesquisa de ESTUDANTES
+        if ($idEstudante != null) {
+            if ($idEstudante == 'todos') {
+                $responsabilidades = Responsabilidade::select()->with(['cliente', 'fase']);
+                if ($dataInicio != null) {
+                    $responsabilidades->where('dataVencimentoCliente', '>=', $dataInicio);
+                }
+                if ($dataFim != null) {
+                    $responsabilidades->where('dataVencimentoCliente', '<=', $dataFim);
+                }
+            } else {
+                $responsabilidades = Responsabilidade::where('idCliente', $idEstudante)->select()->with(['cliente', 'cliente.user', 'fase']);
+                if ($dataInicio != null) {
+                    $responsabilidades->where('dataVencimentoCliente', '>=', $dataInicio);
+                }
+                if ($dataFim != null) {
+                    $responsabilidades->where('dataVencimentoCliente', '<=', $dataFim);
+                }
+            }
         }
-        if ($dataFim != null) {
-          $responsabilidades->where('dataVencimentoCliente', '<=', $dataFim);
-        }
-      }
-      }
 
-      // Pesquisa de AGENTES
-      if ($idAgente != null) {
-        if ($idAgente == 'todos') {
-          $responsabilidades = Responsabilidade::select()->with(["agente", "fase"]);
-        if ($dataInicio != null) {
-          $responsabilidades->where('dataVencimentoAgente', '>=', $dataInicio);
+        // Pesquisa de AGENTES
+        if ($idAgente != null) {
+            if ($idAgente == 'todos') {
+                $responsabilidades = Responsabilidade::select()->with(["agente", "fase"]);
+                if ($dataInicio != null) {
+                    $responsabilidades->where('dataVencimentoAgente', '>=', $dataInicio);
+                }
+                if ($dataFim != null) {
+                    $responsabilidades->where('dataVencimentoAgente', '<=', $dataFim);
+                }
+            } else {
+                $responsabilidades = Responsabilidade::where('idAgente', $idAgente)->select()->with(["agente", "fase"]);
+                if ($dataInicio != null) {
+                    $responsabilidades->where('dataVencimentoAgente', '>=', $dataInicio);
+                }
+                if ($dataFim != null) {
+                    $responsabilidades->where('dataVencimentoAgente', '<=', $dataFim);
+                }
+            }
         }
-        if ($dataFim != null) {
-          $responsabilidades->where('dataVencimentoAgente', '<=', $dataFim);
-        }
-      }else {
-        $responsabilidades = Responsabilidade::where('idAgente', $idAgente)->select()->with(["agente", "fase"]);
-        if ($dataInicio != null) {
-          $responsabilidades->where('dataVencimentoAgente', '>=', $dataInicio);
-        }
-        if ($dataFim != null) {
-          $responsabilidades->where('dataVencimentoAgente', '<=', $dataFim);
-        }
-      }
-      }
 
-      // Pesquisa de SUBAGENTES
-      if ($idSubagente != null) {
-        if ($idSubagente == 'todos') {
-          $responsabilidades = Responsabilidade::select()->with(["subAgente", "fase"]);
-        if ($dataInicio != null) {
-          $responsabilidades->where('dataVencimentoSubAgente', '>=', $dataInicio);
+        // Pesquisa de SUBAGENTES
+        if ($idSubagente != null) {
+            if ($idSubagente == 'todos') {
+                $responsabilidades = Responsabilidade::select()->with(["subAgente", "fase"]);
+                if ($dataInicio != null) {
+                    $responsabilidades->where('dataVencimentoSubAgente', '>=', $dataInicio);
+                }
+                if ($dataFim != null) {
+                    $responsabilidades->where('dataVencimentoSubAgente', '<=', $dataFim);
+                }
+            } else {
+                $responsabilidades = Responsabilidade::where('idSubAgente', $idSubagente)->select()->with(["subAgente", "fase"]);
+                if ($dataInicio != null) {
+                    $responsabilidades->where('dataVencimentoSubAgente', '>=', $dataInicio);
+                }
+                if ($dataFim != null) {
+                    $responsabilidades->where('dataVencimentoSubAgente', '<=', $dataFim);
+                }
+            }
         }
-        if ($dataFim != null) {
-          $responsabilidades->where('dataVencimentoSubAgente', '<=', $dataFim);
-        }
-      }else {
-        $responsabilidades = Responsabilidade::where('idSubAgente', $idSubagente)->select()->with(["subAgente", "fase"]);
-        if ($dataInicio != null) {
-          $responsabilidades->where('dataVencimentoSubAgente', '>=', $dataInicio);
-        }
-        if ($dataFim != null) {
-          $responsabilidades->where('dataVencimentoSubAgente', '<=', $dataFim);
-        }
-      }
-      }
 
-      // Pesquisa de UNIVERSIDADE PRINCIPAL
-      if ($idUniversidade != null) {
-        if ($idUniversidade == 'todos') {
-          $responsabilidades = Responsabilidade::select()->with(["universidade1", "fase"]);
-        if ($dataInicio != null) {
-          $responsabilidades->where('dataVencimentoUni1', '>=', $dataInicio);
+        // Pesquisa de UNIVERSIDADE PRINCIPAL
+        if ($idUniversidade != null) {
+            if ($idUniversidade == 'todos') {
+                $responsabilidades = Responsabilidade::select()->with(["universidade1", "fase"]);
+                if ($dataInicio != null) {
+                    $responsabilidades->where('dataVencimentoUni1', '>=', $dataInicio);
+                }
+                if ($dataFim != null) {
+                    $responsabilidades->where('dataVencimentoUni1', '<=', $dataFim);
+                }
+            } else {
+                $responsabilidades = Responsabilidade::where('idUniversidade1', $idUniversidade)->select()->with(["universidade1", "fase"]);
+                if ($dataInicio != null) {
+                    $responsabilidades->where('dataVencimentoUni1', '>=', $dataInicio);
+                }
+                if ($dataFim != null) {
+                    $responsabilidades>where('dataVencimentoUni1', '<=', $dataFim);
+                }
+            }
         }
-        if ($dataFim != null) {
-          $responsabilidades->where('dataVencimentoUni1', '<=', $dataFim);
-        }
-      }else {
-        $responsabilidades = Responsabilidade::where('idUniversidade1', $idUniversidade)->select()->with(["universidade1", "fase"]);
-        if ($dataInicio != null) {
-          $responsabilidades->where('dataVencimentoUni1', '>=', $dataInicio);
-        }
-        if ($dataFim != null) {
-          $responsabilidades>where('dataVencimentoUni1', '<=', $dataFim);
-        }
-      }
-      }
 
-      // Pesquisa de UNIVERSIDADE SECUNDÁRIA
-      if ($idUniversidadeSec != null) {
-        if ($idUniversidadeSec == 'todos') {
-          $responsabilidades = Responsabilidade::select()->with(["universidade2", "fase"]);
-        if ($dataInicio != null) {
-          $responsabilidades->where('dataVencimentoUni2', '>=', $idUniversidadeSec);
+        // Pesquisa de UNIVERSIDADE SECUNDÁRIA
+        if ($idUniversidadeSec != null) {
+            if ($idUniversidadeSec == 'todos') {
+                $responsabilidades = Responsabilidade::select()->with(["universidade2", "fase"]);
+                if ($dataInicio != null) {
+                    $responsabilidades->where('dataVencimentoUni2', '>=', $idUniversidadeSec);
+                }
+                if ($dataFim != null) {
+                    $responsabilidades->where('dataVencimentoUni2', '<=', $idUniversidadeSec);
+                }
+            } else {
+                $responsabilidades = Responsabilidade::where('idUniversidade2', $idUniversidadeSec)->select()->with(["universidade2", "fase"]);
+                if ($dataInicio != null) {
+                    $responsabilidades->where('dataVencimentoUni2', '>=', $idUniversidadeSec);
+                }
+                if ($dataFim != null) {
+                    $responsabilidades>where('dataVencimentoUni2', '<=', $idUniversidadeSec);
+                }
+            }
         }
-        if ($dataFim != null) {
-          $responsabilidades->where('dataVencimentoUni2', '<=', $idUniversidadeSec);
-        }
-      }else {
-        $responsabilidades = Responsabilidade::where('idUniversidade2', $idUniversidadeSec)->select()->with(["universidade2", "fase"]);
-        if ($dataInicio != null) {
-          $responsabilidades->where('dataVencimentoUni2', '>=', $idUniversidadeSec);
-        }
-        if ($dataFim != null) {
-          $responsabilidades>where('dataVencimentoUni2', '<=', $idUniversidadeSec);
-        }
-      }
-      }
 
-      // Pesquisa de FORNECEDORES
-      if ($idFornecedor != null) {
-        if ($idFornecedor == 'todos') {
-          $responsabilidades = RelFornResp::where('idFornecedor', '!=', null)
+        // Pesquisa de FORNECEDORES
+        if ($idFornecedor != null) {
+            if ($idFornecedor == 'todos') {
+                $responsabilidades = RelFornResp::where('idFornecedor', '!=', null)
           ->with(["fornecedor", "responsabilidade", "responsabilidade.fase"]);
-          if ($dataInicio != null) {
-            $responsabilidades->where('dataVencimento', '>=', $dataInicio);
-          }
-          if ($dataFim != null) {
-            $responsabilidades->where('dataVencimento', '<=', $dataFim);
-          }
-        }else{
-          $responsabilidades = RelFornResp::where('idFornecedor', $idFornecedor)
+                if ($dataInicio != null) {
+                    $responsabilidades->where('dataVencimento', '>=', $dataInicio);
+                }
+                if ($dataFim != null) {
+                    $responsabilidades->where('dataVencimento', '<=', $dataFim);
+                }
+            } else {
+                $responsabilidades = RelFornResp::where('idFornecedor', $idFornecedor)
           ->with(["fornecedor", "responsabilidade", "responsabilidade.fase"]);
-          if ($dataInicio != null) {
-            $responsabilidades->where('dataVencimento', '>=', $dataInicio);
-          }
-          if ($dataFim != null) {
-            $responsabilidades->where('dataVencimento', '<=', $dataFim);
-          }
-        }
+                if ($dataInicio != null) {
+                    $responsabilidades->where('dataVencimento', '>=', $dataInicio);
+                }
+                if ($dataFim != null) {
+                    $responsabilidades->where('dataVencimento', '<=', $dataFim);
+                }
+            }
         }
 
         $responsabilidades = $responsabilidades->get();
 
         if (count($responsabilidades)) {
             return response()->json($responsabilidades, 200);
-        }else {
+        } else {
             return response()->json('NOK', 404);
         }
     }
@@ -418,7 +365,7 @@ class PaymentController extends Controller
                 $nomeFicheiro = 'pagamento-'.post_slug($responsabilidade->fase->produto->cliente->nome.' '.$responsabilidade->fase->descricao).'-comprovativo-'.post_slug($responsabilidade->fase->idFase).'.'.$ficheiroPagamento->getClientOriginalExtension();
                 Storage::disk('public')->putFileAs('comprovativos-pagamento/', $ficheiroPagamento, $nomeFicheiro);
                 $pagoResponsabilidade->comprovativoPagamento = $nomeFicheiro;
-            }else {
+            } else {
                 $pagoResponsabilidade->comprovativoPagamento = null;
             }
             $pagoResponsabilidade->idResponsabilidade = $responsabilidade->idResponsabilidade;
@@ -444,7 +391,7 @@ class PaymentController extends Controller
                 $nomeFicheiro = 'pagamento-'.post_slug($responsabilidade->fase->produto->agente->nome.' '.$responsabilidade->fase->descricao).'-comprovativo-'.post_slug($responsabilidade->fase->idFase).'.'.$ficheiroPagamento->getClientOriginalExtension();
                 Storage::disk('public')->putFileAs('comprovativos-pagamento/', $ficheiroPagamento, $nomeFicheiro);
                 $pagoResponsabilidade->comprovativoPagamento = $nomeFicheiro;
-            }else {
+            } else {
                 $pagoResponsabilidade->comprovativoPagamento = null;
             }
             $pagoResponsabilidade->idResponsabilidade = $responsabilidade->idResponsabilidade;
@@ -452,7 +399,7 @@ class PaymentController extends Controller
             $pagoResponsabilidade->save();
 
             if ($valorAgente >= $responsabilidade->valorAgente) {
-                    Responsabilidade::where('idResponsabilidade', $responsabilidade->idResponsabilidade)
+                Responsabilidade::where('idResponsabilidade', $responsabilidade->idResponsabilidade)
                     ->update(['verificacaoPagoAgente' => '1']);
             }
         }
@@ -470,17 +417,17 @@ class PaymentController extends Controller
                 $nomeFicheiro = 'pagamento-'.post_slug($responsabilidade->fase->produto->subAgente->nome.' '.$responsabilidade->fase->descricao).'-comprovativo-'.post_slug($responsabilidade->fase->idFase).'.'.$ficheiroPagamento->getClientOriginalExtension();
                 Storage::disk('public')->putFileAs('comprovativos-pagamento/', $ficheiroPagamento, $nomeFicheiro);
                 $pagoResponsabilidade->comprovativoPagamento = $nomeFicheiro;
-            }else {
+            } else {
                 $pagoResponsabilidade->comprovativoPagamento = null;
             }
             $pagoResponsabilidade->idResponsabilidade = $responsabilidade->idResponsabilidade;
             $pagoResponsabilidade->idConta = $contaSubAgente;
             $pagoResponsabilidade->save();
 
-        if ($valorSubAgente >= $responsabilidade->valorSubAgente) {
-            Responsabilidade::where('idResponsabilidade', $responsabilidade->idResponsabilidade)
+            if ($valorSubAgente >= $responsabilidade->valorSubAgente) {
+                Responsabilidade::where('idResponsabilidade', $responsabilidade->idResponsabilidade)
             ->update(['verificacaoPagoSubAgente' => '1']);
-        }
+            }
         }
 
         if ($valorUni1 != null) {
@@ -496,17 +443,17 @@ class PaymentController extends Controller
                 $nomeFicheiro = 'pagamento-'.post_slug($responsabilidade->fase->produto->universidade1->nome.' '.$responsabilidade->fase->descricao).'-comprovativo-'.post_slug($responsabilidade->fase->idFase).'.'.$ficheiroPagamento->getClientOriginalExtension();
                 Storage::disk('public')->putFileAs('comprovativos-pagamento/', $ficheiroPagamento, $nomeFicheiro);
                 $pagoResponsabilidade->comprovativoPagamento = $nomeFicheiro;
-            }else {
+            } else {
                 $pagoResponsabilidade->comprovativoPagamento = null;
             }
             $pagoResponsabilidade->idResponsabilidade = $responsabilidade->idResponsabilidade;
             $pagoResponsabilidade->idConta = $contaUni1;
             $pagoResponsabilidade->save();
 
-        if ($valorUni1 >= $responsabilidade->valorUniversidade1) {
-            Responsabilidade::where('idResponsabilidade', $responsabilidade->idResponsabilidade)
+            if ($valorUni1 >= $responsabilidade->valorUniversidade1) {
+                Responsabilidade::where('idResponsabilidade', $responsabilidade->idResponsabilidade)
             ->update(['verificacaoPagoUni1' => '1']);
-        }
+            }
         }
 
         if ($valorUni2 != null) {
@@ -522,17 +469,17 @@ class PaymentController extends Controller
                 $nomeFicheiro = 'pagamento-'.post_slug($responsabilidade->fase->produto->universidade2->nome.' '.$responsabilidade->fase->descricao).'-comprovativo-'.post_slug($responsabilidade->fase->idFase).'.'.$ficheiroPagamento->getClientOriginalExtension();
                 Storage::disk('public')->putFileAs('comprovativos-pagamento/', $ficheiroPagamento, $nomeFicheiro);
                 $pagoResponsabilidade->comprovativoPagamento = $nomeFicheiro;
-            }else {
+            } else {
                 $pagoResponsabilidade->comprovativoPagamento = null;
             }
             $pagoResponsabilidade->idResponsabilidade = $responsabilidade->idResponsabilidade;
             $pagoResponsabilidade->idConta = $contaUni2;
             $pagoResponsabilidade->save();
 
-        if ($valorUni2 >= $responsabilidade->valorUniversidade2) {
-            Responsabilidade::where('idResponsabilidade', $responsabilidade->idResponsabilidade)
+            if ($valorUni2 >= $responsabilidade->valorUniversidade2) {
+                Responsabilidade::where('idResponsabilidade', $responsabilidade->idResponsabilidade)
             ->update(['verificacaoPagoUni2' => '1']);
-        }
+            }
         }
 
         if ($valorFornecedor != null) {
@@ -549,7 +496,7 @@ class PaymentController extends Controller
                 $nomeFicheiro = 'pagamento'.post_slug($nomeFornecedor.' '.$responsabilidade->fase->descricao).'-comprovativo-'.post_slug($responsabilidade->fase->idFase).'.'.$ficheiroPagamento->getClientOriginalExtension();
                 Storage::disk('public')->putFileAs('comprovativos-pagamento/', $ficheiroPagamento, $nomeFicheiro);
                 $pagoResponsabilidade->comprovativoPagamento = $nomeFicheiro;
-            }else {
+            } else {
                 $pagoResponsabilidade->comprovativoPagamento = null;
             }
             $pagoResponsabilidade->idResponsabilidade = $responsabilidade->idResponsabilidade;
@@ -670,7 +617,7 @@ class PaymentController extends Controller
                 $nomeFicheiro = post_slug($responsabilidade->fase->produto->cliente->nome.' '.$responsabilidade->fase->descricao).'-comprovativo-'.post_slug($responsabilidade->fase->idFase).'.'.$ficheiroPagamento->getClientOriginalExtension();
                 Storage::disk('public')->putFileAs('comprovativos-pagamento/', $ficheiroPagamento, $nomeFicheiro);
                 $pagoResponsabilidade->comprovativoPagamento = $nomeFicheiro;
-            }else {
+            } else {
                 $pagoResponsabilidade->comprovativoPagamento = null;
             }
             $pagoResponsabilidade->idResponsabilidade = $responsabilidade->idResponsabilidade;
@@ -694,7 +641,7 @@ class PaymentController extends Controller
                 $nomeFicheiro = post_slug($responsabilidade->fase->produto->agente->nome.' '.$responsabilidade->fase->descricao).'-comprovativo-'.post_slug($responsabilidade->fase->idFase).'.'.$ficheiroPagamento->getClientOriginalExtension();
                 Storage::disk('public')->putFileAs('comprovativos-pagamento/', $ficheiroPagamento, $nomeFicheiro);
                 $pagoResponsabilidade->comprovativoPagamento = $nomeFicheiro;
-            }else {
+            } else {
                 $pagoResponsabilidade->comprovativoPagamento = null;
             }
             $pagoResponsabilidade->idResponsabilidade = $responsabilidade->idResponsabilidade;
@@ -702,7 +649,7 @@ class PaymentController extends Controller
             $pagoResponsabilidade->save();
 
             if ($valorAgente >= $responsabilidade->valorAgente) {
-                    Responsabilidade::where('idResponsabilidade', $responsabilidade->idResponsabilidade)
+                Responsabilidade::where('idResponsabilidade', $responsabilidade->idResponsabilidade)
                     ->update(['verificacaoPagoAgente' => '1']);
             }
         }
@@ -718,7 +665,7 @@ class PaymentController extends Controller
                 $nomeFicheiro = post_slug($responsabilidade->fase->produto->subAgente->nome.' '.$responsabilidade->fase->descricao).'-comprovativo-'.post_slug($responsabilidade->fase->idFase).'.'.$ficheiroPagamento->getClientOriginalExtension();
                 Storage::disk('public')->putFileAs('comprovativos-pagamento/', $ficheiroPagamento, $nomeFicheiro);
                 $pagoResponsabilidade->comprovativoPagamento = $nomeFicheiro;
-            }else {
+            } else {
                 $pagoResponsabilidade->comprovativoPagamento = null;
             }
             $pagoResponsabilidade->idResponsabilidade = $responsabilidade->idResponsabilidade;
@@ -742,7 +689,7 @@ class PaymentController extends Controller
                 $nomeFicheiro = post_slug($responsabilidade->fase->produto->universidade1->nome.' '.$responsabilidade->fase->descricao).'-comprovativo-'.post_slug($responsabilidade->fase->idFase).'.'.$ficheiroPagamento->getClientOriginalExtension();
                 Storage::disk('public')->putFileAs('comprovativos-pagamento/', $ficheiroPagamento, $nomeFicheiro);
                 $pagoResponsabilidade->comprovativoPagamento = $nomeFicheiro;
-            }else {
+            } else {
                 $pagoResponsabilidade->comprovativoPagamento = null;
             }
             $pagoResponsabilidade->idResponsabilidade = $responsabilidade->idResponsabilidade;
@@ -766,7 +713,7 @@ class PaymentController extends Controller
                 $nomeFicheiro = post_slug($responsabilidade->fase->produto->universidade2->nome.' '.$responsabilidade->fase->descricao).'-comprovativo-'.post_slug($responsabilidade->fase->idFase).'.'.$ficheiroPagamento->getClientOriginalExtension();
                 Storage::disk('public')->putFileAs('comprovativos-pagamento/', $ficheiroPagamento, $nomeFicheiro);
                 $pagoResponsabilidade->comprovativoPagamento = $nomeFicheiro;
-            }else {
+            } else {
                 $pagoResponsabilidade->comprovativoPagamento = null;
             }
             $pagoResponsabilidade->idResponsabilidade = $responsabilidade->idResponsabilidade;
@@ -791,7 +738,7 @@ class PaymentController extends Controller
                 $nomeFicheiro = post_slug($nomeFornecedor.' '.$responsabilidade->fase->descricao).'-comprovativo-'.post_slug($responsabilidade->fase->idFase).'.'.$ficheiroPagamento->getClientOriginalExtension();
                 Storage::disk('public')->putFileAs('comprovativos-pagamento/', $ficheiroPagamento, $nomeFicheiro);
                 $pagoResponsabilidade->comprovativoPagamento = $nomeFicheiro;
-            }else {
+            } else {
                 $pagoResponsabilidade->comprovativoPagamento = null;
             }
             $pagoResponsabilidade->idResponsabilidade = $responsabilidade->idResponsabilidade;

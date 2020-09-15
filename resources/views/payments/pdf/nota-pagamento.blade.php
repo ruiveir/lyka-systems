@@ -153,7 +153,7 @@
                 <p class="descricao mb-1">{{$pagoresponsabilidade->descricao}}</p>
             </td>
             <td class="y-border">{{date('d/m/Y', strtotime($pagoresponsabilidade->dataPagamento))}}</td>
-            <td>{{number_format((float)$pagoresponsabilidade->valorPago, 2, ',', '')}}&euro;</td>
+            <td>{{str_replace('.', ',', $pagoresponsabilidade->valorPago)}}&euro;</td>
         </tr>
         <tr class="none">
             <td class="y-border"></td>

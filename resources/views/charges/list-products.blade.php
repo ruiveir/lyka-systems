@@ -20,7 +20,22 @@
     <!-- Approach -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Listagem de produtos com cobranças</h6>
+            <div class="row d-flex justify-content-between align-items-center">
+                <div class="col-md-6">
+                    <h6 class="m-0 font-weight-bold text-primary align-middle">Listagem de cobranças da Estudar Portugal</h6>
+                </div>
+                @if (isset($products))
+                    <div class="mr-3">
+                        <span class="p-2 px-3 border bg-light">
+                            <small>
+                                <span class="mx-1">{{$fasesPendentes}} Pendente(s)</span><span class="mx-1">|</span>
+                                <span class="mx-1">{{$fasesPagas}} Paga(s)</span><span class="mx-1">|</span>
+                                <span class="mx-1">{{$fasesDivida}} Vencida(s)</span>
+                            </small>
+                        </span>
+                    </div>
+                @endif
+            </div>
         </div>
         <div class="card-body">
             <div class="table-responsive p-1">
@@ -29,6 +44,7 @@
                         <tr>
                             <th>Nome</th>
                             <th>Descrição</th>
+                            <th>Num. de fases</th>
                             <th>Valor total</th>
                             <th style="max-width:130px; min-width:130px;">Estado</th>
                             <th style="max-width:70px; min-width:70px;">Opções</th>
@@ -39,7 +55,8 @@
                         <tr>
                             <td>{{$product->cliente->nome.' '.$product->cliente->apelido}}</td>
                             <td>{{$product->descricao}}</td>
-                            <td>{{number_format((float)$product->valorTotal, 2, ',', '').'€'}}</td>
+                            <td>{{$product->fase->count()}}</td>
+                            <td>{{str_replace('.', ',', $product->valorTotal).'€'}}</td>
                             <td>
                             @php
                                 switch ($product->estado) {

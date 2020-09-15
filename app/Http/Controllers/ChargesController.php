@@ -19,10 +19,9 @@ class ChargesController extends Controller
     public function listProducts()
     {
         $products = null;
-        $fasesPendentes = null;
-        $fasesPagas = null;
-        $fasesDivida = null;
-        $numberProducts = null;
+        $fasesPendentes = 0;
+        $fasesPagas = 0;
+        $fasesDivida = 0;
 
         if(Auth()->user()->tipo == 'admin'){
             $products = Produto::orderByRaw("FIELD(estado, \"Crédito\", \"Dívida\", \"Pendente\", \"Pago\")")->get();
@@ -39,21 +38,17 @@ class ChargesController extends Controller
 
               foreach($fases as $fase){
                 if($fase->estado == 'Pendente'){
-                  $fasesPendentes[] = $fase;
+                  $fasesPendentes++;
                 }
                 if($fase->estado == 'Pago'){
-                  $fasesPagas[] = $fase;
+                  $fasesPagas++;
                 }
                 if($fase->estado == 'Dívida'){
-                  $fasesDivida[] = $fase;
+                  $fasesDivida++;
                 }
               }
-
-              if($product->valorTotal != 0){
-                $numberProducts[] = $product;
-              }
         }
-        return view('charges.list-products', compact('products', 'numberProducts', 'fasesPendentes', 'fasesPagas', 'fasesDivida'));
+        return view('charges.list-products', compact('products', 'fasesPendentes', 'fasesPagas', 'fasesDivida'));
     }
 
     public function listFases(Produto $product)
