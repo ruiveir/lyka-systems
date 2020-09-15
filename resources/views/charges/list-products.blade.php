@@ -53,7 +53,7 @@
                         @foreach ($products as $product)
                         <tr>
                             <td>{{$product->cliente->nome.' '.$product->cliente->apelido}}</td>
-                            <td>{{$product->descricao}} ({{$product->fase->count())</td>
+                            <td>{{$product->descricao.' ('.$product->fase->count().')'}}</td>
                             <td>{{str_replace('.', ',', $product->valorTotal).'€'}}</td>
                             <td>
                             @php
@@ -100,7 +100,7 @@
                 </button>
             </div>
             <div class="modal-body text-gray-800 pl-4 pr-5">
-                Nesta secção encontra-se a listagem das cobranças da Estudar Portugal. Pode visualizar em detalhe as cobranças de um pagamento clicando no botão <b>Ver em detalhe</b>.
+                Nesta secção encontra-se a listagem das cobranças da Estudar Portugal. Pode visualizar em detalhe as cobranças de um produto clicando no botão <b>Ver em detalhe</b>.
             </div>
             <div class="modal-footer mt-3">
                 <a data-dismiss="modal" class="mr-4 font-weight-bold" id="close-option">Fechar</a>

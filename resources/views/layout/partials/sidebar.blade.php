@@ -68,7 +68,7 @@
             <i class="fas fa-fw fa-chart-area"></i>
             <span>Finanças</span>
         </a>
-        <div id="collapseFinance" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+        <div id="collapseFinance" class="collapse <?php if (Route::is('payments.*') || Route::is('charges.*') || Route::is('conta.*')) { echo 'show'; } ?>" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Páginas principais:</h6>
                 @if (Auth()->user()->tipo == "admin" && Auth()->user()->idAdmin != null)
@@ -90,7 +90,7 @@
             <i class="fas fa-fw fa-folder"></i>
             <span>Diversos</span>
         </a>
-        <div id="collapseDiversos" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+        <div id="collapseDiversos" class="collapse <?php if (Route::is('libraries.*') || Route::is('contacts.*') || Route::is('agenda.*') || Route::is('produtostock.*') || Route::is('admin.*') || Route::is('listagens.*') || Route::is('provider.*') || Route::is('bugreport.*')) { echo 'show'; } ?>" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Páginas principais:</h6>
                 @if (Auth()->user()->tipo == "admin" && Auth()->user()->idAdmin != null)
