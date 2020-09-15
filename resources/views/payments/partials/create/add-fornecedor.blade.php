@@ -1,5 +1,5 @@
 <div class="card-header py-3">
-    <h6 class="m-0 font-weight-bold text-primary">Formulário - Registo de pagamento sobre o fornecedor {{$fase->produto->cliente->nome.' '.$fase->produto->cliente->apelido}}</h6>
+    <h6 class="m-0 font-weight-bold text-primary">Formulário de registo de pagamento sobre a fase {{$fase->descricao}} do fornecedor {{$fase->produto->cliente->nome.' '.$fase->produto->cliente->apelido}}.</h6>
 </div>
 <div class="card-body">
     <form method="POST" class="form-group needs-validation" id="registar-pagamento-form" novalidate>

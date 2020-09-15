@@ -18,7 +18,7 @@
     <!-- Approach -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Formulário de edição da cobrança sobre a fase {{$fase->descricao}} do cliente {{$product->cliente->nome.' '.$product->cliente->apelido}}</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Formulário de edição da cobrança sobre a fase {{$fase->descricao}} do cliente {{$product->cliente->nome.' '.$product->cliente->apelido}}.</h6>
         </div>
         <div class="card-body">
             <form class="form-group needs-validation" action="{{route('charges.update', [$product, $docTransacao])}}" method="POST" enctype="multipart/form-data" novalidate>

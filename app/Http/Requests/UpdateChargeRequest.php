@@ -22,4 +22,11 @@ class UpdateChargeRequest extends FormRequest
             'observacoes' => 'nullable'
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'valorRecebido.regex' => 'O formato do Valor recebido está incorreto. Utilize um formato correto, sendo que para separar decimais, utilize uma vírgula.'
+        ];
+    }
 }

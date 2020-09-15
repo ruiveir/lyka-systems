@@ -131,7 +131,7 @@ class ChargesController extends Controller
         }
 
         event(new StoreCharge($product));
-        return redirect()->route('charges.listfases', $product)->with('success', 'Estado da cobrança alterado com sucesso!');
+        return redirect()->route('charges.listfases', $product)->with('success', 'Cobrança registada com sucesso!');
       }else{
         abort(403);
       }
@@ -188,7 +188,7 @@ class ChargesController extends Controller
         }
 
         event(new StoreCharge($product));
-        return redirect()->route('charges.listfases', $product)->with('success', 'Cobrança editado com sucesso!');
+        return redirect()->route('charges.listfases', $product)->with('success', 'Cobrança atualizada com sucesso!');
       }else{
         abort(403);
       }

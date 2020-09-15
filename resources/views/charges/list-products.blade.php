@@ -22,7 +22,7 @@
         <div class="card-header py-3">
             <div class="row d-flex justify-content-between align-items-center">
                 <div class="col-md-6">
-                    <h6 class="m-0 font-weight-bold text-primary align-middle">Listagem de cobranças da Estudar Portugal</h6>
+                    <h6 class="m-0 font-weight-bold text-primary align-middle">Listagem de cobranças da Estudar Portugal.</h6>
                 </div>
                 @if (isset($products))
                     <div class="mr-3">
@@ -43,7 +43,7 @@
                     <thead>
                         <tr>
                             <th>Nome</th>
-                            <th>Descrição</th>
+                            <th>Descrição (Num. Fases)</th>
                             <th>Valor total</th>
                             <th style="max-width:130px; min-width:130px;">Estado</th>
                             <th style="max-width:70px; min-width:70px;">Opções</th>

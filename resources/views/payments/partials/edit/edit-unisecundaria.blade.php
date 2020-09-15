@@ -1,5 +1,5 @@
 <div class="card-header py-3">
-    <h6 class="m-0 font-weight-bold text-primary">Formulário de edição de um pagamento sobre a universidade {{$fase->produto->universidade2->nome}}</h6>
+    <h6 class="m-0 font-weight-bold text-primary">Formulário de edição do pagamento sobre a fase {{$fase->descricao}} da universidade {{$fase->produto->universidade2->nome}}.</h6>
 </div>
 <div class="card-body">
     <form method="POST" class="form-group needs-validation" id="editar-pagamento-form" novalidate>
