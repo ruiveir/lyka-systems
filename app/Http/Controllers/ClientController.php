@@ -100,11 +100,11 @@ class ClientController extends Controller
 
                     /* Lista todos os produtos registados em nome do agente que está logado */
                     $clients_produto = Cliente::
-                    selectRaw("Cliente.*")
-                    ->join('Produto', 'Cliente.idCliente', '=', 'Produto.idCliente')
-                    ->where('Produto.idAgente', '=', Auth::user()->agente->idAgente)
-                    ->groupBy('Cliente.idCliente')
-                    ->orderBy('Cliente.idCliente','desc')
+                    selectRaw("cliente.*")
+                    ->join('produto', 'cliente.idCliente', '=', 'produto.idCliente')
+                    ->where('produto.idAgente', '=', Auth::user()->agente->idAgente)
+                    ->groupBy('cliente.idCliente')
+                    ->orderBy('cliente.idCliente','desc')
                     ->get();
 
                     /* Junta as duas listas */
@@ -120,11 +120,11 @@ class ClientController extends Controller
 
                 /* Lista todos os produtos registados em nome do subagente que está logado */
                 $clients_produto = Cliente::
-                selectRaw("Cliente.*")
-                ->join('Produto', 'Cliente.idCliente', '=', 'Produto.idCliente')
-                ->where('Produto.idSubAgente', '=', Auth::user()->agente->idAgente)
-                ->groupBy('Cliente.idCliente')
-                ->orderBy('Cliente.idCliente','desc')
+                selectRaw("cliente.*")
+                ->join('produto', 'cliente.idCliente', '=', 'produto.idCliente')
+                ->where('produto.idSubAgente', '=', Auth::user()->agente->idAgente)
+                ->groupBy('cliente.idCliente')
+                ->orderBy('cliente.idCliente','desc')
                 ->get();
 
                 /* Junta as duas listas */

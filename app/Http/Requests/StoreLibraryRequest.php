@@ -16,8 +16,8 @@ class StoreLibraryRequest extends FormRequest
         return [
             'acesso'=>'required|in:Privado,Público',
             'descricao' => 'required',
-            'file_name'=>'required',
             'ficheiro' => 'required',
+            'file_name' => 'required',
             'tipo'=> 'required',
             'tamanho' => 'required'
         ];

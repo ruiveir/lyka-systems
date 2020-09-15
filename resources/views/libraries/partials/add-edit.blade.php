@@ -34,7 +34,7 @@
     </div>
 
 
-    
+
     <div class="col" style="min-width: 300px">
 
         <div class="row">

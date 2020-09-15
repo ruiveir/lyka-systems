@@ -16,8 +16,8 @@ class UpdateLibraryRequest extends FormRequest
         return [
             'acesso' => 'required|in:Privado,Público',
             'descricao' => 'required',
-            'file_name'=>'required',
             'ficheiro' => 'nullable',
+            'file_name' => 'required',
             'tipo'=> 'required',
             'tamanho' => 'required',
         ];
@@ -27,7 +27,7 @@ class UpdateLibraryRequest extends FormRequest
     {
        return [
            'file_name.required' => 'É necessária um nome para o ficheiro',
-            'descricao.required' => 'É necessária uma descrição para o ficheiro',
+           'descricao.required' => 'É necessária uma descrição para o ficheiro',
        ];
     }
 }
