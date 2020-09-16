@@ -54,7 +54,7 @@ class UniversityController extends Controller
     {
         if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null) || (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)){
             $eventos = Agenda::where('idUniversidade', $university->idUniversidade)
-            ->orderBy('dataInicio', 'asc')
+            ->orderBy('data_inicio', 'asc')
             ->get();
 
             if ($eventos->isEmpty()) {

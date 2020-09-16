@@ -145,7 +145,7 @@
         </div>
     </div>
 </div>
-<!-- End of Modal for more information  -->
+<!-- End of Modal for create a new event  -->
 
 <!-- Modal for edit or delete a event -->
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -284,6 +284,7 @@
             // Aqui é onde se coloca os eventos.
             events: [
                 @foreach ($events as $event)
+                @if ($event->idUser == Auth()->user()->idUser && !$event->visibilidade)
                     {
                         title: '{{$event->titulo}}',
                         @if ($event->descricao)
@@ -299,6 +300,24 @@
                             id: {{$event->agenda_id}}
                         }
                     },
+                @endif
+                @if ($event->visibilidade)
+                    {
+                        title: '{{$event->titulo}}',
+                        @if ($event->descricao)
+                            description: '{{$event->descricao}}',
+                        @endif
+                        start: '{{date('Y-m-d', strtotime($event->data_inicio))}}',
+                        @if ($event->data_fim)
+                            end: '{{date('Y-m-d', strtotime($event->data_fim))}}',
+                        @endif
+                        color: '{{$event->cor}}',
+                        extendedProps: {
+                            visibilidade: '{{$event->visibilidade}}',
+                            id: {{$event->agenda_id}}
+                        }
+                    },
+                @endif
                 @endforeach
             ],
             // Ao clicar num evento, irá correr o seguinte código (Modal para editar e apagar um evento).

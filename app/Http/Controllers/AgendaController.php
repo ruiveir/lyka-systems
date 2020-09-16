@@ -20,7 +20,7 @@ class AgendaController extends Controller
 
     public function index()
     {
-        $events = Agenda::where([['idUser', Auth()->user()->idUser], ['visibilidade', true]])->get();
+        $events = Agenda::all();
         return view('agenda.list', compact('events'));
     }
 

@@ -3,8 +3,6 @@
 @section('title', 'Visualização de uma universidade')
 <!-- Page Content -->
 @section('content')
-
-@include('agends.partials.modal')
 @include('contacts.partials.modal')
 @include('universities.partials.modal-events')
 
@@ -14,17 +12,11 @@
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h4 mb-0 text-gray-800">Visualização de uma universidade</h1>
         <div>
-            <a href="{{route('contacts.create',$university)}}" class="btn btn-primary btn-icon-split btn-sm" title="Criar contacto">
+            <a href="{{route('contacts.create', $university)}}" class="btn btn-primary btn-icon-split btn-sm" title="Criar contacto">
                 <span class="icon text-white-50">
                     <i class="fas fa-address-book"></i>
                 </span>
                 <span class="text">Criar contacto</span>
-            </a>
-            <a href="#" data-toggle="modal" data-target="#modalCalendar" class="btn btn-primary btn-icon-split btn-sm" title="Adicionar evento">
-                <span class="icon text-white-50">
-                    <i class="fas fa-calendar-alt"></i>
-                </span>
-                <span class="text">Adicionar evento</span>
             </a>
             <a href="{{route('universities.edit', $university)}}" class="btn btn-success btn-icon-split btn-sm" title="Editar">
                 <span class="icon text-white-50">
