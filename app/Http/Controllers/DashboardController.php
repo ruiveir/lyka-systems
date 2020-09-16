@@ -1,17 +1,17 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Agenda;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Auth;
 use Mail;
+use App\Agenda;
 use App\Agente;
 use App\Cliente;
+use Carbon\Carbon;
 use App\Notificacao;
 use App\Universidade;
 use App\RelatorioProblema;
 use Illuminate\Http\Request;
 use App\Mail\ReportProblemMail;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class DashboardController extends Controller{
@@ -24,9 +24,10 @@ class DashboardController extends Controller{
     }
 
     public function index(){
-        $agentes = Agente::all();
+        $agentes = Agente::all()->count();
         $clientes = Cliente::all();
-        $universidades = Universidade::all();
+        $universidades = Universidade::all()->count();
+        $events = Agenda::all();
 
         $this->NotController->getNotificacaoAniversario();
         $this->NotController->getNotificacaoInicioProduto();
@@ -34,6 +35,6 @@ class DashboardController extends Controller{
         $this->NotController->getNotificacaoDocFalta();
         $this->NotController->getNotificacaoBugReport();
 
-        return view('dashboard.index', compact('agentes', 'clientes', 'universidades'));
+        return view('dashboard.index', compact('agentes', 'clientes', 'universidades', 'events'));
     }
 }

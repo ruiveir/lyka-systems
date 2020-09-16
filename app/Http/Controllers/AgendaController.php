@@ -15,7 +15,7 @@ class AgendaController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('admin');
+        $this->middleware('agente');
     }
 
     public function index()

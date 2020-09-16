@@ -54,7 +54,7 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Agentes</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{count($agentes)}}</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{$agentes}}</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-users fa-2x text-gray-300"></i>
@@ -71,7 +71,7 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Universidades</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{count($universidades)}}</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{$universidades}}</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-university fa-2x text-gray-300"></i>
@@ -122,11 +122,40 @@
             <!-- Approach -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Development Approach</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Calendário de eventos da Estudar Portugal</h6>
                 </div>
                 <div class="card-body">
-                    <p>SB Admin 2 makes extensive use of Bootstrap 4 utility classes in order to reduce CSS bloat and poor page performance. Custom CSS classes are used to create custom components and custom utility classes.</p>
-                    <p class="mb-0">Before working with this theme, you should become familiar with the Bootstrap framework, especially the utility classes.</p>
+                    @isset($events)
+                        @foreach ($events as $event)
+                            @if ($event->idUser == Auth()->user()->idUser && !$event->visibilidade)
+                                <a href="{{route("agenda.index")}}">
+                                    <div class="mb-2">
+                                        <div class="rounded-circle d-inline-block" style="background-color:{{$event->cor}}; width:10px; height:10px;"></div>
+                                        @isset($event->data_fim)
+                                            <p class="d-inline ml-2">{{$event->titulo}} ({{date('d/m/Y', strtotime($event->data_inicio))}} - {{date('d/m/Y', strtotime($event->data_fim))}})</p>
+                                        @else
+                                            <p class="d-inline ml-2">{{$event->titulo}} ({{date('d/m/Y', strtotime($event->data_inicio))}})</p>
+                                        @endisset
+                                    </div>
+                                </a>
+                            @endif
+
+                            @if ($event->visibilidade)
+                                <a href="{{route("agenda.index")}}">
+                                    <div class="mb-2">
+                                        <div class="rounded-circle d-inline-block" style="background-color:{{$event->cor}}; width:10px; height:10px;"></div>
+                                        @isset($event->data_fim)
+                                            <p class="d-inline ml-2">{{$event->titulo}} ({{date('d/m/Y', strtotime($event->data_inicio))}} - {{date('d/m/Y', strtotime($event->data_fim))}})</p>
+                                        @else
+                                            <p class="d-inline ml-2">{{$event->titulo}} ({{date('d/m/Y', strtotime($event->data_inicio))}})</p>
+                                        @endisset
+                                    </div>
+                                </a>
+                            @endif
+                        @endforeach
+                    @else
+                        <p class="mb-0 text-center">Não existem eventos registados no sistema.</p>
+                    @endisset
                 </div>
             </div>
 
