@@ -141,7 +141,7 @@
                 </div>
             </div>
         </div>
-        
+
     </div>
 </div>
 <!-- End of container-fluid -->
@@ -167,5 +167,13 @@
     </div>
 </div>
 <!-- End of Modal for more information  -->
+
+<!-- Begin of Scripts -->
+@section('scripts')
+<script src="{{asset('/js/demo/chart-area-demo.js')}}"></script>
+<script src="{{asset('/js/demo/chart-pie-demo.js')}}"></script>
+@endsection
+<!-- End of Scripts -->
+
 @endsection
 <!-- End of Page Content -->

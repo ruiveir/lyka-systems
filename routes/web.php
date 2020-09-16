@@ -101,8 +101,7 @@ Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
     ]);
 
     /* Agenda */
-    Route::resource('/agenda', 'AgendController');
-    Route::post('/agenda', 'AgendController@store')->name('agend.store');
+    Route::resource('/agenda', 'AgendaController')->only(['index', 'store', 'update', 'destroy']);
 
     /* Pagamentos */
     Route::get('/pagamentos', 'PaymentController@index')->name('payments.index');

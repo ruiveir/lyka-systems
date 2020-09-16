@@ -17,9 +17,6 @@
     <!-- DataTables -->
     <link type="text/css" href="{{asset('/vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
 
-    <!-- Datetime Picker -->
-    <link type="text/css" href="{{asset('/vendor/datetimepicker/build/jquery.datetimepicker.min.css')}}" rel="stylesheet">
-
     <!-- Fontawesome core CSS -->
     <link href="{{asset('/vendor/fontawesome-free/css/all.min.css')}}" rel=" stylesheet" type="text/css">
 
@@ -41,9 +38,9 @@
 </head>
 
 <body id="page-top">
-    {{-- Modal de contactos --}}
+    <!-- Modal de contactos  -->
     @include('layout.partials.modal-contactos')
-    {{-- Modal para terminar a sessão --}}
+    <!-- Modal para terminar a sessão -->
     @include('layout.partials.modal-logout')
 
     <div id="wrapper">

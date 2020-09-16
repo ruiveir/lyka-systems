@@ -11,22 +11,18 @@ class Agenda extends Migration
         Schema::create('agenda', function (Blueprint $table) {
             $table->charset = 'latin1';
             $table->collation = 'latin1_swedish_ci';
-            $table->bigIncrements('idAgenda');
-
-            $table->unsignedBigInteger('idUser');
-                $table->foreign('idUser')->references('idUser')->on('user');
-
-            $table->unsignedBigInteger('idUniversidade')->nullable();
-                $table->foreign('idUniversidade')->references('idUniversidade')->on('universidade');
-
+            $table->bigIncrements('agenda_id');
             $table->string('titulo');
             $table->text('descricao')->nullable();
-            $table->boolean('visibilidade')->default(false);
-            $table->dateTime('dataInicio');
-            $table->dateTime('dataFim');
+            $table->dateTime('data_inicio');
+            $table->dateTime('data_fim')->nullable();
             $table->string('cor', 7);
+            $table->boolean('visibilidade')->default(false);
+            $table->unsignedBigInteger('idUser');
+                $table->foreign('idUser')->references('idUser')->on('user');
+            $table->unsignedBigInteger('idUniversidade')->nullable();
+                $table->foreign('idUniversidade')->references('idUniversidade')->on('universidade');
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

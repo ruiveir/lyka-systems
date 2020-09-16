@@ -9,8 +9,6 @@
 
   <!-- Chart JS -->
   <script src="{{asset('/vendor/chart.js/Chart.min.js')}}"></script>
-  <script src="{{asset('/js/demo/chart-area-demo.js')}}"></script>
-  <script src="{{asset('/js/demo/chart-pie-demo.js')}}"></script>
 
   <!-- DataTables JavaScript-->
   <script src="{{asset('/vendor/datatables/jquery.dataTables.min.js')}}"></script>

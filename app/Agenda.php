@@ -3,13 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Agenda extends Model
 {
-    use SoftDeletes;
     protected $table = 'agenda';
-    protected $primaryKey = 'idAgenda';
+    protected $primaryKey = 'agenda_id';
 
     protected $fillable = [
         'idUniversidade',
@@ -17,12 +15,12 @@ class Agenda extends Model
         'descricao',
         'cor',
         'visibilidade',
-        'dataInicio',
-        'dataFim',
+        'data_inicio',
+        'data_fim',
         '$idUser'
     ];
 
     public function user(){
-        return $this->belongsTo("App\User","idUser","idUser")->withTrashed();
+        return $this->belongsTo("App\User", "idUser", "idUser")->withTrashed();
     }
 }
