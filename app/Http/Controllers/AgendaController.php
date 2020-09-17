@@ -31,6 +31,10 @@ class AgendaController extends Controller
         $agenda = new Agenda;
         $agenda->fill($fields);
         $agenda->idUser = Auth()->user()->idUser;
+        if ($agenda->data_fim) {
+            $data_fim = Carbon::parse($agenda->data_fim)->addDay();
+            $agenda->data_fim = $data_fim;
+        }
         $agenda->save();
         return redirect()->route('agenda.index')->with('success', 'Evento adicionado com sucesso!');
     }
@@ -40,6 +44,10 @@ class AgendaController extends Controller
         $fields = $request->validated();
         $agenda->fill($fields);
         $agenda->idUser = Auth()->user()->idUser;
+        if ($agenda->data_fim) {
+            $data_fim = Carbon::parse($agenda->data_fim)->addDay();
+            $agenda->data_fim = $data_fim;
+        }
         $agenda->save();
         return redirect()->route('agenda.index')->with('success', 'Evento atualizado com sucesso!');
     }
