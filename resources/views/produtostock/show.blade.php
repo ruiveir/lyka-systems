@@ -7,7 +7,7 @@
 <div class="container-fluid">
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h4 mb-0 text-gray-800">Ficha do produto <b>{{$produtostock->descricao}}</b></h1>
+        <h1 class="h4 mb-0 text-gray-800">Ficha do produto - <b>{{$produtostock->descricao}}</b></h1>
         <div>
             <a href="#" data-toggle="modal" data-target="#addFase" class="btn btn-primary btn-icon-split btn-sm" title="Adicionar">
                 <span class="icon text-white-50">
@@ -26,7 +26,7 @@
     <!-- Approach -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Listagem das fases associadas ao produto "{{$produtostock->descricao}}"</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Listagem das fases associadas ao produto "{{$produtostock->descricao}}".</h6>
         </div>
         <div class="card-body">
             <div class="table-responsive p-1">

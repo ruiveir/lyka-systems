@@ -13,7 +13,7 @@
                 <span class="icon text-white-50">
                     <i class="fas fa-plus"></i>
                 </span>
-                <span class="text">Adicionar stock de produto</span>
+                <span class="text">Adicionar produto</span>
             </a>
             <a href="#" data-toggle="modal" data-target="#infoModal" class="btn btn-secondary btn-icon-split btn-sm" title="Informações">
                 <span class="icon text-white-50">
@@ -73,7 +73,7 @@
                 </button>
             </div>
             <div class="modal-body text-gray-800 pl-4 pr-5">
-                Nesta secção encontra-se a listagem dos stocks de produtos da Estudar Portugal. Pode acrescentar mais clicando no botão <b>Adicionar stock de produto</b>.
+                Nesta secção encontra-se a listagem dos stocks de produtos da Estudar Portugal. Pode acrescentar mais clicando no botão <b>Adicionar produto</b>.
             </div>
             <div class="modal-footer mt-3">
                 <a data-dismiss="modal" class="mr-4 font-weight-bold" id="close-option">Fechar</a>
