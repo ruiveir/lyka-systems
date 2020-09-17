@@ -14,8 +14,8 @@ use App\Mail\ReportProblemMail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
-class DashboardController extends Controller{
-
+class DashboardController extends Controller
+{
     protected $NotController;
 
     public function __construct(NotificationController $NotController)
@@ -23,11 +23,25 @@ class DashboardController extends Controller{
         $this->NotController = $NotController;
     }
 
-    public function index(){
+    public function index()
+    {
         $agentes = Agente::all()->count();
         $clientes = Cliente::all();
         $universidades = Universidade::all()->count();
-        $events = Agenda::all();
+
+        $events = Agenda::where([
+            ['data_fim', null],
+            ['data_inicio', '>=', Carbon::now()]
+        ])
+        ->orWhere(function($query) {
+            $query->where('data_fim', '!=', null)
+                  ->where('data_fim', '>=', Carbon::now());
+        })
+        ->where(function($query) {
+            $query->whereMonth('data_inicio', Carbon::now()->format('m'))
+                  ->orWhereMonth('data_fim', Carbon::now()->format('m'));
+        })
+        ->get();
 
         $this->NotController->getNotificacaoAniversario();
         $this->NotController->getNotificacaoInicioProduto();

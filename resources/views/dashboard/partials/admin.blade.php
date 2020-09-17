@@ -122,40 +122,52 @@
             <!-- Approach -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Calendário de eventos da Estudar Portugal</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Calendário de eventos mensais</h6>
                 </div>
                 <div class="card-body">
-                    @isset($events)
+                    @if(count($events))
                         @foreach ($events as $event)
                             @if ($event->idUser == Auth()->user()->idUser && !$event->visibilidade)
-                                <a href="{{route("agenda.index")}}">
-                                    <div class="mb-2">
-                                        <div class="rounded-circle d-inline-block" style="background-color:{{$event->cor}}; width:10px; height:10px;"></div>
-                                        @isset($event->data_fim)
-                                            <p class="d-inline ml-2">{{$event->titulo}} ({{date('d/m/Y', strtotime($event->data_inicio))}} - {{date('d/m/Y', strtotime($event->data_fim))}})</p>
-                                        @else
-                                            <p class="d-inline ml-2">{{$event->titulo}} ({{date('d/m/Y', strtotime($event->data_inicio))}})</p>
-                                        @endisset
+                                <div class="row d-inline-block">
+                                    <div class="col-12 mb-2">
+                                        <div>
+                                            <div class="rounded-circle d-inline-block" style="background-color:{{$event->cor}}; width:10px; height:10px;"></div>
+                                            @isset($event->data_fim)
+                                                <a href="{{route("agenda.index")}}" class="d-inline">
+                                                    <p class="d-inline ml-2">{{$event->titulo}} ({{date('d/m/Y', strtotime($event->data_inicio))}} - {{date('d/m/Y', strtotime($event->data_fim))}})</p>
+                                                </a>
+                                            @else
+                                                <a href="{{route("agenda.index")}}" class="d-inline">
+                                                    <p class="d-inline ml-2">{{$event->titulo}} ({{date('d/m/Y', strtotime($event->data_inicio))}})</p>
+                                                </a>
+                                            @endisset
+                                        </div>
                                     </div>
-                                </a>
+                                </div>
                             @endif
 
                             @if ($event->visibilidade)
-                                <a href="{{route("agenda.index")}}">
-                                    <div class="mb-2">
-                                        <div class="rounded-circle d-inline-block" style="background-color:{{$event->cor}}; width:10px; height:10px;"></div>
-                                        @isset($event->data_fim)
-                                            <p class="d-inline ml-2">{{$event->titulo}} ({{date('d/m/Y', strtotime($event->data_inicio))}} - {{date('d/m/Y', strtotime($event->data_fim))}})</p>
-                                        @else
-                                            <p class="d-inline ml-2">{{$event->titulo}} ({{date('d/m/Y', strtotime($event->data_inicio))}})</p>
-                                        @endisset
+                                <div class="row d-inline-block">
+                                    <div class="col-12 mb-2">
+                                        <div>
+                                            <div class="rounded-circle d-inline-block" style="background-color:{{$event->cor}}; width:10px; height:10px;"></div>
+                                            @isset($event->data_fim)
+                                                <a href="{{route("agenda.index")}}" class="d-inline">
+                                                    <p class="d-inline ml-2">{{$event->titulo}} ({{date('d/m/Y', strtotime($event->data_inicio))}} - {{date('d/m/Y', strtotime($event->data_fim))}})</p>
+                                                </a>
+                                            @else
+                                                <a href="{{route("agenda.index")}}" class="d-inline">
+                                                    <p class="d-inline ml-2">{{$event->titulo}} ({{date('d/m/Y', strtotime($event->data_inicio))}})</p>
+                                                </a>
+                                            @endisset
+                                        </div>
                                     </div>
-                                </a>
+                                </div>
                             @endif
                         @endforeach
                     @else
                         <p class="mb-0 text-center">Não existem eventos registados no sistema.</p>
-                    @endisset
+                    @endif
                 </div>
             </div>
 
