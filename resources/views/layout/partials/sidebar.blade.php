@@ -94,7 +94,7 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Páginas principais:</h6>
                 @if (Auth()->user()->tipo == "admin" && Auth()->user()->idAdmin != null)
-                    <a class="collapse-item {{Route::is('produtostock.*') ? 'active' : ''}}" href="{{route('produtostock.index')}}">Produtos Stock</a>
+                    <a class="collapse-item {{Route::is('produtostock.*') ? 'active' : ''}}" href="{{route('produtostock.index')}}">Stock de produtos</a>
                     <a class="collapse-item {{Route::is('listagens.*') ? 'active' : ''}}" href="{{route('listagens.index')}}">Listagens</a>
                     <a class="collapse-item {{Route::is('libraries.*') ? 'active' : ''}}" href="{{route('libraries.index')}}">Biblioteca</a>
                     <a class="collapse-item {{Route::is('admin.*') ? 'active' : ''}}" href="{{route('admin.index')}}">Administradores</a>

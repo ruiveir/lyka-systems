@@ -12,9 +12,10 @@ class ProdutoStock extends Migration
             $table->charset = 'latin1';
             $table->collation = 'latin1_swedish_ci';
             $table->bigIncrements('idProdutoStock');
-            $table->string('descricao',255);
+            $table->string('descricao', 255);
             $table->enum('tipoProduto',['Licenciatura','Mestrado','Doutoramento','Curso de Verão','Estágio Profissional','Transferência de Curso','Curso Indiomas','Erasmus','Pré-Universitário']);
-            $table->string('anoAcademico',255);
+            $table->string('anoAcademico', 255);
+            $table->string('slug')->nullable();
             $table->timestamps();
         });
     }

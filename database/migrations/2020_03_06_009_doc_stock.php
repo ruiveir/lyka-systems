@@ -14,9 +14,10 @@ class DocStock extends Migration
             $table->bigIncrements('idDocStock');
             $table->enum('tipo',['Pessoal', 'Academico']);
             $table->string('tipoDocumento', 255);
-            $table->timestamps();
+            $table->string('slug')->nullable();
             $table->unsignedBigInteger('idFaseStock');
                 $table->foreign('idFaseStock')->references('idFaseStock')->on('fase_stock');
+            $table->timestamps();
         });
     }
 

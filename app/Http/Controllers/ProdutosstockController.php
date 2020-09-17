@@ -1,7 +1,6 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\DocStock;
 use App\FaseStock;
 use App\ProdutoStock;
 use Illuminate\Http\Request;
@@ -18,10 +17,7 @@ class ProdutosstockController extends Controller
     public function index()
     {
         $produtoStocks = ProdutoStock::all();
-        $totalfasestock = FaseStock::all()->count();
-        $totaldocstock = DocStock::all()->count();
-        $totalprodutostock = $produtoStocks->count();
-        return view('produtostock.list', compact('produtoStocks', 'totalprodutostock', 'totalfasestock', 'totaldocstock'));
+        return view('produtostock.list', compact('produtoStocks'));
     }
 
     public function create()
@@ -36,7 +32,7 @@ class ProdutosstockController extends Controller
         $produtoStock = new ProdutoStock();
         $produtoStock->fill($produtoFields);
         $produtoStock->save();
-        return redirect()->route('produtostock.index')->with('success', 'Produto stock adicionado com sucesso');
+        return redirect()->route('produtostock.index')->with('success', 'Produto adicionado com sucesso!');
     }
 
     public function edit(ProdutoStock $produtostock)
@@ -49,7 +45,7 @@ class ProdutosstockController extends Controller
         $fields = $request->validated();
         $produtostock->fill($fields);
         $produtostock->save();
-        return redirect()->route('produtostock.index')->with('success', 'Dados do produto de stock modificados com sucesso');
+        return redirect()->route('produtostock.index')->with('success', 'Produto atualizado com sucesso!');
     }
 
     public function show(FaseStock $faseStocks,ProdutoStock $produtostock)
@@ -62,6 +58,6 @@ class ProdutosstockController extends Controller
     public function destroy(ProdutoStock $produtostock)
     {
         $produtostock->delete();
-        return redirect()->route('produtostock.index')->with('success', 'Produto stock eliminado com sucesso');
+        return redirect()->route('produtostock.index')->with('success', 'Produto eliminado com sucesso!');
     }
 }
