@@ -12,7 +12,7 @@ class StoreDocstockRequest extends FormRequest
     public function rules()
     {
         return [
-            'tipo' => 'required|in:Pessoal,Academico,Financeiro,Familiar,País,Outros',
+            'tipo' => 'required|in:Pessoal,Academico',
             'tipoDocumento' => 'required|max:255',
         ];
     }

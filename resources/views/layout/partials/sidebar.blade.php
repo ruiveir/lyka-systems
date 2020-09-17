@@ -27,7 +27,7 @@
         Recursos Humanos
     </div>
 
-    <li class="nav-item {{Route::is('clients.*') ? 'active' : ''}}">
+    <li class="nav-item <?php if (Route::is('clients.*') || Route::is('produtos.*')) { echo 'active'; } ?>">
         <a class="nav-link" href="{{route('clients.index')}}">
             <i class="fas fa-fw fa-user"></i>
             <span>Estudantes</span></a>
@@ -85,16 +85,16 @@
         </div>
     </li>
 
-    <li class="nav-item <?php if (Route::is('libraries.*') || Route::is('contacts.*') || Route::is('agenda.*') || Route::is('produtostock.*') || Route::is('admin.*') || Route::is('listagens.*') || Route::is('provider.*') || Route::is('bugreport.*')) { echo 'active'; } ?>">
+    <li class="nav-item <?php if (Route::is('libraries.*') || Route::is('contacts.*') || Route::is('agenda.*') || Route::is('produtostock.*') || Route::is('fasestock.*') || Route::is('admin.*') || Route::is('listagens.*') || Route::is('provider.*') || Route::is('bugreport.*')) { echo 'active'; } ?>">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseDiversos" aria-expanded="true" aria-controls="collapseDiversos">
             <i class="fas fa-fw fa-folder"></i>
             <span>Diversos</span>
         </a>
-        <div id="collapseDiversos" class="collapse <?php if (Route::is('libraries.*') || Route::is('contacts.*') || Route::is('agenda.*') || Route::is('produtostock.*') || Route::is('admin.*') || Route::is('listagens.*') || Route::is('provider.*') || Route::is('bugreport.*')) { echo 'show'; } ?>" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+        <div id="collapseDiversos" class="collapse <?php if (Route::is('libraries.*') || Route::is('contacts.*') || Route::is('agenda.*') || Route::is('produtostock.*') || Route::is('fasestock.*') || Route::is('admin.*') || Route::is('listagens.*') || Route::is('provider.*') || Route::is('bugreport.*')) { echo 'show'; } ?>" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Páginas principais:</h6>
                 @if (Auth()->user()->tipo == "admin" && Auth()->user()->idAdmin != null)
-                    <a class="collapse-item {{Route::is('produtostock.*') ? 'active' : ''}}" href="{{route('produtostock.index')}}">Stock de produtos</a>
+                    <a class="collapse-item <?php if (Route::is('produtostock.*') || Route::is('fasestock.*')) { echo 'active'; } ?>" href="{{route('produtostock.index')}}">Stock de produtos</a>
                     <a class="collapse-item {{Route::is('listagens.*') ? 'active' : ''}}" href="{{route('listagens.index')}}">Listagens</a>
                     <a class="collapse-item {{Route::is('libraries.*') ? 'active' : ''}}" href="{{route('libraries.index')}}">Biblioteca</a>
                     <a class="collapse-item {{Route::is('admin.*') ? 'active' : ''}}" href="{{route('admin.index')}}">Administradores</a>

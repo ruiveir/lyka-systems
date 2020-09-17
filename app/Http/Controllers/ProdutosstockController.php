@@ -50,9 +50,8 @@ class ProdutosstockController extends Controller
 
     public function show(FaseStock $faseStocks,ProdutoStock $produtostock)
     {
-        $nrfases = 1;
-        $faseStocks = FaseStock::where('idProdutoStock', '=', $produtostock->idProdutoStock)->get();
-        return view('produtostock.show', compact('produtostock', 'faseStocks', 'nrfases'));
+        $faseStocks = FaseStock::where('idProdutoStock', $produtostock->idProdutoStock)->get();
+        return view('produtostock.show', compact('produtostock', 'faseStocks'));
     }
 
     public function destroy(ProdutoStock $produtostock)

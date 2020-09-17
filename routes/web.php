@@ -175,12 +175,12 @@ Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
     Route::get('/produtostock/{fasestock}', 'ProdutosstockController@show')->name('produtostock.show');
 
     /* Fase Stock */
-    Route::resource('/fasestock', 'FasestockController');
+    Route::resource('/fasestock', 'FasestockController')->only(["store", "show", "update", "destroy"]);
     Route::post('/produtostock/{produtostock}', 'FasestockController@store')->name('fasestock.store');
     Route::get('/fasestock/{fasestock}', 'FasestockController@show')->name('fasestock.show');
 
     /* Documentos Stock*/
-    Route::resource('/documentostock', 'DocumentostockController');
+    Route::resource('/documentostock', 'DocumentostockController')->only(["store", "show", "update", "destroy"]);
     Route::post('/fasestock/{fasestock}', 'DocumentostockController@store')->name('documentostock.store');
     Route::get('/documentostock/{docstock}', 'DocumentostockController@show')->name('documentostock.show');
 

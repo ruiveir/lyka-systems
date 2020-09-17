@@ -15,15 +15,6 @@ class FasestockController extends Controller
         $this->middleware('superadmin');
     }
 
-    public function index()
-    {
-        return redirect()->route('dashboard');
-    }
-
-    public function create(){
-        return redirect()->route('dashboard');
-    }
-
     public function store(StoreFasestockRequest $requestFase, ProdutoStock $produtostock)
     {
         $faseFields = $requestFase->validated();
@@ -40,11 +31,6 @@ class FasestockController extends Controller
         $nrDocs = 1;
         $docstocks = DocStock::where('idFaseStock', '=', $fasestock->idFaseStock)->get();
         return view('fasestock.show', compact('fasestock', 'docstocks', 'nrDocs'));
-    }
-
-    public function edit(FaseStock $fasestock)
-    {
-        return view('fasestock.edit', compact('fasestock'));
     }
 
     public function update(StoreFasestockRequest $request, FaseStock $fasestock)

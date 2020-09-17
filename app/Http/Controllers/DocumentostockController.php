@@ -14,16 +14,6 @@ class DocumentostockController extends Controller
         $this->middleware('superadmin');
     }
 
-    public function index()
-    {
-        return redirect()->route('dashboard');
-    }
-
-    public function create()
-    {
-        return redirect()->route('dashboard');
-    }
-
     public function store(StoreDocstockRequest $requestDoc, FaseStock $fasestock)
     {
         $docFields = $requestDoc->validated();
@@ -32,17 +22,12 @@ class DocumentostockController extends Controller
         $idFaseStock = $fasestock->idFaseStock;
         $docStock->idFaseStock = $idFaseStock;
         $docStock->save();
-        return redirect()->back()->with('success', 'Documento stock adicionado com sucesso');
+        return redirect()->back()->with('success', 'Documento stock adicionado com sucesso!');
     }
 
-    public function show(DocStock $documentostock){
-        // $documentostock = DocStock::where('idFaseStock', '=', $fasestock->idFaseStock)->get();
-        return view('documentostock.show', compact('documentostock'));
-    }
-
-    public function edit(DocStock $documentostock)
+    public function show(DocStock $documentostock)
     {
-        return view('documentostock.edit', compact('documentostock'));
+        return view('documentostock.show', compact('documentostock'));
     }
 
     public function update(StoreDocstockRequest $request, DocStock $documentostock)
