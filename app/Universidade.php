@@ -55,6 +55,11 @@ class Universidade extends Model
         return $this->hasMany("App\Contacto", "idUniversidade", "idUniversidade");
     }
 
+    public function agenda()
+    {
+        return $this->hasMany("App\Agenda","idUniversidade","idUniversidade");
+    }
+
     public function getSlugOptions() : SlugOptions
     {
         return SlugOptions::create()

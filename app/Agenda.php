@@ -23,4 +23,8 @@ class Agenda extends Model
     public function user(){
         return $this->belongsTo("App\User", "idUser", "idUser")->withTrashed();
     }
+
+    public function universidade(){
+        return $this->belongsTo("App\Universidade", "idUniversidade", "idUniversidade");
+    }
 }

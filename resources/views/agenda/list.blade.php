@@ -80,16 +80,6 @@
             <form action="{{route('agenda.store')}}" method="POST" class="form-group needs-validation mb-0" novalidate>
                 @csrf
                 <div class="modal-body text-gray-800 pl-4 pr-5">
-                    @if(isset($university))
-                    <div class="form-row mb-2">
-                        <div class="col">
-                            <div class="form-group">
-                                <div class="card rounded text-center p-3"><strong><span class="text-muted">{{$university->nome}}</span></strong></div>
-                                <input type="hidden" name="idUniversidade" value="{{$university->idUniversidade}}">
-                            </div>
-                        </div>
-                    </div>
-                    @endif
                     <div class="form-row mt-3 mb-3">
                         <div class="col-md-12">
                             <label for="title">Título do evento <sup class="text-danger small">&#10033;</sup></label>
@@ -113,6 +103,17 @@
                             <div class="invalid-feedback">
                                 Oops, parece que algo não está bem...
                             </div>
+                        </div>
+                    </div>
+                    <div class="form-row mb-3">
+                        <div class="col-md-12">
+                            <label for="idUniversidade" class="text-gray-900">Universidade</label>
+                            <select class="custom-select" name="idUniversidade" id="idUniversidade">
+                                <option selected hidden disabled>Escolher uma universidade...</option>
+                                @foreach ($universidades as $universidade)
+                                    <option value="{{$universidade->idUniversidade}}">{{$universidade->nome}}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="form-row mb-3">
@@ -161,16 +162,6 @@
                 @csrf
                 @method("PUT")
                 <div class="modal-body text-gray-800 pl-4 pr-5">
-                    @if(isset($university))
-                    <div class="form-row mb-2">
-                        <div class="col">
-                            <div class="form-group">
-                                <div class="card rounded text-center p-3"><strong><span class="text-muted">{{$university->nome}}</span></strong></div>
-                                <input type="hidden" name="idUniversidade" value="{{$university->idUniversidade}}">
-                            </div>
-                        </div>
-                    </div>
-                    @endif
                     <div class="form-row mt-3 mb-3">
                         <div class="col-md-12">
                             <label for="title">Título do evento <sup class="text-danger small">&#10033;</sup></label>
@@ -194,6 +185,17 @@
                             <div class="invalid-feedback">
                                 Oops, parece que algo não está bem...
                             </div>
+                        </div>
+                    </div>
+                    <div class="form-row mb-3">
+                        <div class="col-md-12">
+                            <label for="idUniversidade" class="text-gray-900">Universidade</label>
+                            <select class="custom-select" name="idUniversidade" id="idUniversidade">
+                                <option selected hidden disabled id="uni_selected"></option>
+                                @foreach ($universidades as $universidade)
+                                    <option value="{{$universidade->idUniversidade}}">{{$universidade->nome}}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="form-row mb-3">
@@ -297,7 +299,11 @@
                         color: '{{$event->cor}}',
                         extendedProps: {
                             visibilidade: '{{$event->visibilidade}}',
-                            id: {{$event->agenda_id}}
+                            id: {{$event->agenda_id}},
+                            @if ($event->idUniversidade)
+                            universidade_id: {{$event->idUniversidade}},
+                            universidade_nome: '{{$event->universidade->nome}}'
+                            @endif
                         }
                     },
                 @endif
@@ -314,7 +320,11 @@
                         color: '{{$event->cor}}',
                         extendedProps: {
                             visibilidade: '{{$event->visibilidade}}',
-                            id: {{$event->agenda_id}}
+                            id: {{$event->agenda_id}},
+                            @if ($event->idUniversidade)
+                            universidade_id: {{$event->idUniversidade}},
+                            universidade_nome: '{{$event->universidade->nome}}'
+                            @endif
                         }
                     },
                 @endif
@@ -326,6 +336,13 @@
                 modal.find('.modal-body #titulo').val(element.event.title);
                 modal.find('.modal-body #cor').val(element.event.backgroundColor);
                 modal.find('.modal-body #data_inicio').val(dealWithDate(element.event.start));
+
+                if (element.event.extendedProps.universidade_id != null) {
+                    modal.find('.modal-body #uni_selected').val(element.event.extendedProps.universidade_id);
+                    modal.find('.modal-body #uni_selected').text(element.event.extendedProps.universidade_nome);
+                }else {
+                    modal.find('.modal-body #uni_selected').text("Escolha uma universidade...");
+                }
 
                 if (element.event.extendedProps.visibilidade == 1) {
                     $("#publico").attr("selected", "true");

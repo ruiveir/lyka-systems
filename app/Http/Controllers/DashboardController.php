@@ -41,6 +41,7 @@ class DashboardController extends Controller
             $query->whereMonth('data_inicio', Carbon::now()->format('m'))
                   ->orWhereMonth('data_fim', Carbon::now()->format('m'));
         })
+        ->orderBy('data_inicio', 'asc')
         ->get();
 
         $this->NotController->getNotificacaoAniversario();

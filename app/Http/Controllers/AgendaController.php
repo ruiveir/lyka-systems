@@ -21,7 +21,8 @@ class AgendaController extends Controller
     public function index()
     {
         $events = Agenda::all();
-        return view('agenda.list', compact('events'));
+        $universidades = Universidade::select('idUniversidade', 'nome')->get();
+        return view('agenda.list', compact('events', 'universidades'));
     }
 
     public function store(StoreAgendaRequest $request)
