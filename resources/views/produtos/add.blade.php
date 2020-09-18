@@ -161,7 +161,8 @@
                                         <div class="col-md-6 mb-3">
                                             <label class="text-gray-900" for="resp-cliente-fase{{$num}}">PickPocket para cliente <sup class="text-danger small">&#10033;</sup></label>
                                             <div class="input-group">
-                                                <input type="text" class="form-control form-required" name="resp-cliente-fase{{$num}}" id="resp-cliente-fase{{$num}}" value="{{old('valorCliente',$Responsabilidades[$num-1]->valorCliente)}}" placeholder="Inserir um valor..." required>
+                                                <input type="text" class="form-control form-required" name="resp-cliente-fase{{$num}}" id="resp-cliente-fase{{$num}}" value="{{old('valorCliente',$Responsabilidades[$num-1]->valorCliente)}}"
+                                                    placeholder="Inserir um valor..." required>
                                                 <div class="input-group-append">
                                                     <span class="input-group-text">€</span>
                                                 </div>
@@ -188,7 +189,8 @@
                                         <div class="col-md-6 mb-3">
                                             <label class="text-gray-900" for="resp-agente-fase{{$num}}">Valor a pagar ao agente <sup class="text-danger small">&#10033;</sup></label>
                                             <div class="input-group">
-                                                <input type="text" class="form-control form-required" name="resp-agente-fase{{$num}}" id="resp-agente-fase{{$num}}" value="{{old('valorAgente',$Responsabilidades[$num-1]->valorAgente)}}" placeholder="Inserir um valor..." required>
+                                                <input type="text" class="form-control form-required" name="resp-agente-fase{{$num}}" id="resp-agente-fase{{$num}}" value="{{old('valorAgente',$Responsabilidades[$num-1]->valorAgente)}}"
+                                                    placeholder="Inserir um valor..." required>
                                                 <div class="input-group-append">
                                                     <span class="input-group-text">€</span>
                                                 </div>
@@ -212,7 +214,8 @@
                                         <div class="col-md-6 mb-3">
                                             <label class="text-gray-900" for="resp-subagente-fase{{$fase->idFase}}">Valor a pagar ao sub-agente</label>
                                             <div class="input-group">
-                                                <input type="text" class="form-control form-required" name="resp-subagente-fase{{$fase->idFase}}" id="resp-subagente-fase{{$fase->idFase}}" value="{{old('valorSubAgente',$Responsabilidades[$num-1]->valorSubAgente)}}" placeholder="Inserir um valor...">
+                                                <input type="text" class="form-control form-required" name="resp-subagente-fase{{$fase->idFase}}" id="resp-subagente-fase{{$fase->idFase}}"
+                                                    value="{{old('valorSubAgente',$Responsabilidades[$num-1]->valorSubAgente)}}" placeholder="Inserir um valor...">
                                                 <div class="input-group-append">
                                                     <span class="input-group-text">€</span>
                                                 </div>
@@ -233,7 +236,8 @@
                                         <div class="col-md-6 mb-3">
                                             <label class="text-gray-900" for="resp-uni1-fase{{$num}}">Valor a pagar á universidade principal <sup class="text-danger small">&#10033;</sup></label>
                                             <div class="input-group">
-                                                <input type="text" class="form-control form-required" name="resp-uni1-fase{{$num}}" id="resp-uni1-fase{{$num}}" value="{{old('valorUniversidade1',$Responsabilidades[$num-1]->valorUniversidade1)}}" placeholder="Inserir um valor..." required>
+                                                <input type="text" class="form-control form-required" name="resp-uni1-fase{{$num}}" id="resp-uni1-fase{{$num}}" value="{{old('valorUniversidade1',$Responsabilidades[$num-1]->valorUniversidade1)}}"
+                                                    placeholder="Inserir um valor..." required>
                                                 <div class="input-group-append">
                                                     <span class="input-group-text">€</span>
                                                 </div>
@@ -257,7 +261,8 @@
                                         <div class="col-md-6 mb-3">
                                             <label class="text-gray-900" for="resp-uni2-fase{{$num}}">Valor a pagar á universidade secundária</label>
                                             <div class="input-group">
-                                                <input type="text" class="form-control form-required" name="resp-uni2-fase{{$num}}" id="resp-uni2-fase{{$num}}" value="{{old('valorUniversidade2',$Responsabilidades[$num-1]->valorUniversidade2)}}" placeholder="Inserir um valor...">
+                                                <input type="text" class="form-control form-required" name="resp-uni2-fase{{$num}}" id="resp-uni2-fase{{$num}}" value="{{old('valorUniversidade2',$Responsabilidades[$num-1]->valorUniversidade2)}}"
+                                                    placeholder="Inserir um valor...">
                                                 <div class="input-group-append">
                                                     <span class="input-group-text">€</span>
                                                 </div>
@@ -384,6 +389,12 @@
                 if (this.checkValidity() === false) {
                     event.preventDefault();
                     event.stopPropagation();
+                } else {
+                    $("#cancelBtn").removeAttr("onclick");
+                    button =
+                        "<button class='btn btn-primary' type='submit' disabled><span class='spinner-border spinner-border-sm' role='status' aria-hidden='true' style='position:relative; bottom:4px; right:3px;'></span>A enviar...</button>";
+                    $("#groupBtn").append(button);
+                    $("#submitbtn").remove();
                 }
                 $(".needs-validation").addClass("was-validated");
             });
