@@ -74,7 +74,7 @@
                     <p class="text-gray-800"><b>Ano Académico: </b> @if($produto->anoAcademico != null) {{$produto->anoAcademico}} @else N/A @endif</p>
                 </div>
                 <div class="col-md-6">
-                    <p class="text-gray-800"><b>Agente: </b> 
+                    <p class="text-gray-800"><b>Agente: </b>
                         <a class="name_link" href="{{route('agents.show',$produto->agente)}}">
                             {{$produto->agente->nome.' '.$produto->agente->apelido}}</span>
                         </a>
@@ -84,7 +84,7 @@
             <div class="row">
                 <div class="col-md-6">
                     @if($produto->idUniversidade2)
-                        <p class="text-gray-800"><b>2ª Universidade: </b> 
+                        <p class="text-gray-800"><b>2ª Universidade: </b>
                             <a class="name_link" href="{{route('universities.show',$produto->universidade2)}}">
                                 {{$produto->universidade2->nome}}</span>
                             </a>
@@ -93,7 +93,7 @@
                 </div>
                 <div class="col-md-6">
                     @if($produto->idSubAgente)
-                        <p class="text-gray-800"><b>Sub-Agente: </b> 
+                        <p class="text-gray-800"><b>Sub-Agente: </b>
                             <a class="name_link" href="{{route('agents.show',$produto->subAgente)}}">
                                 {{$produto->subAgente->nome.' '.$produto->subAgente->apelido}}</span>
                             </a>
@@ -567,7 +567,7 @@
 {{-- Scripts --}}
 @section('scripts')
 <script>
-    
+
     $(document).ready(function() {
 
         // Modal for DELETE
@@ -576,7 +576,7 @@
             var modal = $(this);
             modal.find("form").attr('action', '/produtos/' + button.data('slug'));
         });
-        
+
     });
 </script>
     {{-- <script src="{{asset('/js/NOME_DO_FICHEIR.js')}}"></script> --}}
