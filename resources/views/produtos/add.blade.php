@@ -26,15 +26,15 @@
             <form method="POST" action="{{route('produtos.store', $produtoStock)}}" class="form-group needs-validation" novalidate>
                 @csrf
                 <div class="container-fluid">
-                    <input type="text" class="form-control" name="idCliente" id="idCliente" value="{{old('idCliente',$cliente->idCliente)}}" readonly disabled hidden>
+                    <input type="text" class="form-control" name="idCliente" id="idCliente" value="{{old('idCliente',$cliente->idCliente)}}" readonly hidden>
                     <div class="form-row mb-3">
                         <div class="col-md-4 mb-3">
                             <label class="text-gray-900" for="tipo">Tipo de produto</label>
-                            <input type="text" class="form-control" name="tipo" id="tipo" value="{{old('tipo', $produto->tipo)}}" readonly disabled>
+                            <input type="text" class="form-control" name="tipo" id="tipo" value="{{old('tipo', $produto->tipo)}}" readonly>
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="text-gray-900" for="descricao">Descrição do produto</label>
-                            <input type="text" class="form-control" name="descricao" id="descricao" value="{{old('descricao', $produto->descricao)}}" readonly disabled>
+                            <input type="text" class="form-control" name="descricao" id="descricao" value="{{old('descricao', $produto->descricao)}}" readonly>
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="text-gray-900" for="AnoAcademico">Ano académico <sup class="text-danger small">&#10033;</sup></label>
@@ -61,7 +61,7 @@
                         <div class="col-md-6 mb-3">
                             <label class="text-gray-900" for="subagente">Sub-agente</label>
                             <select id="subagente" name="subagente" class="form-control custom-select">
-                                <option hidden disabled selected>Escolha um sub-agente...</option>
+                                <option hidden selected value="">Escolha um sub-agente...</option>
                                 @foreach($SubAgentes as $subagente)
                                 <option {{old('idSubAgente',$produto->idSubAgente)}} value="{{$subagente->idAgente}}">{{$subagente->nome.' '.$subagente->apelido.' ('.$subagente->email.')'}}</option>
                                 @endforeach
@@ -85,7 +85,7 @@
                         <div class="col-md-6 mb-3">
                             <label class="text-gray-900" for="uni2">Universidade secundária</label>
                             <select id="uni2" name="uni2" class="form-control custom-select">
-                                <option hidden disabled selected>Escolha um universidade...</option>
+                                <option hidden selected value="">Escolha um universidade...</option>
                                 @foreach($Universidades as $uni)
                                 <option {{old('idUniversidade2',$produto->idUniversidade2)}} value="{{$uni->idUniversidade}}">{{$uni->nome.' ('.$uni->email.')'}}</option>
                                 @endforeach
@@ -131,7 +131,7 @@
                                     <div class="form-row mb-3">
                                         <div class="col-md-4 mb-3">
                                             <label class="text-gray-900" for="descricao-fase{{$num}}">Descrição da fase</label>
-                                            <input type="text" class="form-control" name="descricao-fase{{$num}}" id="descricao-fase{{$num}}" value="{{old('descricao',$fase->descricao)}}" readonly disabled>
+                                            <input type="text" class="form-control" name="descricao-fase{{$num}}" id="descricao-fase{{$num}}" value="{{old('descricao',$fase->descricao)}}" readonly>
                                         </div>
                                         <div class="col-md-4 mb-3">
                                             <label class="text-gray-900" for="data-fase{{$num}}">Data de vencimento <sup class="text-danger small">&#10033;</sup></label>
