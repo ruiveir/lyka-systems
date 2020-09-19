@@ -351,7 +351,7 @@
                         </div>
                     </div>
                     <div class="text-right mt-3 mr-4" id="groupBtn">
-                        <span class="mr-4 font-weight-bold" onclick="window.history.back();" id="cancelBtn" style="cursor:pointer;">Cancelar</span>
+                        <a href="javascript:history.go(-1)" class="mr-4 font-weight-bold" id="cancelBtn" style="cursor:pointer;">Cancelar</a>
                         <button type="submit" name="button" class="btn btn-primary text-white font-weight-bold" id="submitbtn">Registar produto</button>
                     </div>
                 </div>

@@ -654,10 +654,9 @@
                     @endforeach
                 </div>
                 <div class="form-group text-right">
-                    <br><br>
-                    <div class="col text-right" style="min-width:285px">
-                        <button type="submit" class="btn btn-sm btn-success m-1 mr-2 px-3" name="submit"><i class="fas fa-check-circle mr-2"></i>Guardar produto</button>
-                        <a href="javascript:history.go(-1)" class="btn btn-sm btn-secondary px-3">Cancelar</a>
+                    <div class="text-right mt-3 mr-4" id="groupBtn">
+                        <span class="mr-4 font-weight-bold" onclick="window.history.back();" id="cancelBtn" style="cursor:pointer;">Cancelar</span>
+                        <button type="submit" name="button" class="btn btn-primary text-white font-weight-bold" id="submitbtn">Guardar produto</button>
                     </div>
                 </div>
             </div>
@@ -715,13 +714,13 @@
                 if (this.checkValidity() === false) {
                     event.preventDefault();
                     event.stopPropagation();
-                }/* else {
+                } else {
                     $("#cancelBtn").removeAttr("onclick");
                     button =
                         "<button class='btn btn-primary' type='submit' disabled><span class='spinner-border spinner-border-sm' role='status' aria-hidden='true' style='position:relative; bottom:4px; right:3px;'></span>A enviar...</button>";
                     $("#groupBtn").append(button);
                     $("#submitbtn").remove();
-                }*/
+                }
                 $(".needs-validation").addClass("was-validated");
             });
         });
