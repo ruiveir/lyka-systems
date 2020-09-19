@@ -24,11 +24,9 @@
         <label for="anoAcademico" class="text-gray-900">Ano académico <sup class="text-danger small">&#10033;</sup> </label>
         <select type="text" class="form-control custom-select" name="anoAcademico" id="anoAcademico" required>
             <option disabled hidden selected>Escolha um ano académico...</option>
-            <option {{old('anoAcademico',$produtostock->anoAcademico)=='2019/2020'?"selected":""}} value="2019/2020">2019/2020</option>
-            <option {{old('anoAcademico',$produtostock->anoAcademico)=='2020/2021'?"selected":""}} value="2020/2021">2020/2021</option>
-            <option {{old('anoAcademico',$produtostock->anoAcademico)=='2011/2022'?"selected":""}} value="2021/2022">2021/2022</option>
-            <option {{old('anoAcademico',$produtostock->anoAcademico)=='2012/2023'?"selected":""}} value="2022/2023">2022/2023</option>
-            <option {{old('anoAcademico',$produtostock->anoAcademico)=='2013/2024'?"selected":""}} value="2023/2024">2023/2024</option>
+            @foreach($anosAcademicos as $ano)
+                <option {{old('anoAcademico',$produtostock->anoAcademico)==$ano?"selected":""}} value="{{$ano}}">{{$ano}}</option>
+            @endforeach
         </select>
         <div class="invalid-feedback">
             Oops, parece que algo não está bem...

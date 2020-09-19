@@ -13,52 +13,63 @@
 
 <div class="container-fluid">
 
-    <div class="cards-navigation">
-        <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h4 mb-0 text-gray-800">Edição do produto</h1>
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h4 mb-0 text-gray-800">Edição do produto</h1>
+        <div>
+            <a href="#" data-toggle="modal" data-target="#infoModal" class="btn btn-secondary btn-icon-split btn-sm" title="Informações">
+                <span class="icon text-white-50">
+                    <i class="fas fa-info-circle"></i>
+                </span>
+                <span class="text">Informações</span>
+            </a>
         </div>
-        <br>
         
     </div>
     <!-- Approach -->
     <div class="card shadow mb-4">
 
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Edição do produto do cliente {{$produto->cliente->nome.' '.$produto->cliente->apelido}}.</h6>
+        </div>
+        <div class="card-body">
             <form method="POST" action="{{route('produtos.update',$produto)}}" class="form-group needs-validation pt-3" id="form_produto"
                   enctype="multipart/form-data" novalidate>
                 @csrf
                 @method("PUT")
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Edição do produto do cliente {{$produto->cliente->nome.' '.$produto->cliente->apelido}}</h6>
-                </div>
-                <div class="card-body">
-                    <div>
-                        <div><p class="text-gray-800"><b>Produto</b></p></div>
-                        <div class="row">
+                    <div class="container-fluid">
+                        <div class="form-row mb-3">
 
-                        <div class="col-md-4">
-                            <label for="tipo">Tipo:</label><br>
+                        <div class="col-md-4 mb-3">
+                            <label class="text-gray-900" for="tipo">Tipo de produto</label><br>
                             <input type="text" class="form-control" name="tipo" id="tipo"
                             value="{{old('tipo',$produto->tipo)}}" placeholder="Tipo" maxlength="20" readonly><br>
                         </div>
-                        <div class="col-md-6">
-                            <label for="descricao">Descrição:</label><br>
+                        <div class="col-md-4 mb-3">
+                            <label class="text-gray-900" for="descricao">Descrição do produto</label>
                             <input type="text" class="form-control" name="descricao" id="descricao"
                             value="{{old('descricao',$produto->descricao)}}" placeholder="Descricao" maxlength="20" readonly><br>
                         </div>
-                        <div class="col-md-2">
-                            <label for="anoAcademico">Ano académico: <span class="text-danger">*</span></label><br>
+                        <div class="col-md-4 mb-3">
+                            <label class="text-gray-900" for="AnoAcademico">Ano académico <sup class="text-danger small">&#10033;</sup></label>
                             @if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)
-                                <input type="text" class="form-control" name="anoAcademico" id="anoAcademico"
-                                value="{{old('anoAcademico',$produto->anoAcademico)}}" placeholder="Ano Academico" maxlength="20" required><br>
+                            <select type="text" class="form-control custom-select" name="anoAcademico" id="anoAcademico" required>
+                                <option disabled hidden selected>Escolha um ano académico...</option>
+                                @foreach($anosAcademicos as $ano)
+                                    <option {{old('anoAcademico',$produto->anoAcademico)==$ano?"selected":""}} value="{{$ano}}">{{$ano}}</option>
+                                @endforeach
+                            </select>
+                            <div class="invalid-feedback">
+                                Oops, parece que algo não está bem...
+                            </div>
                             @else
                                 <input type="text" class="form-control" name="anoAcademico" id="anoAcademico"
                                 value="{{old('anoAcademico',$produto->anoAcademico)}}" placeholder="Ano Academico" maxlength="20" readonly><br>
                             @endIf
                         </div>
-                        <div class="col-md-6">
-                            <label for="agente">Agente: <span class="text-danger">*</span></label><br>
+                        <div class="col-md-6 mb-3">
+                            <label class="text-gray-900" for="agente">Agente <sup class="text-danger small">&#10033;</sup></label>
                             @if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)
-                                <select id="agente" name="agente" class="form-control" required>
+                                <select id="agente" name="agente" class="form-control custom-select" required>
                                     <option value="" selected></option>
                                     @foreach($Agentes as $agente)
                                         @if($agente->idAgente == $produto->idAgente)
@@ -67,34 +78,37 @@
                                             <option {{old('idAgente',$produto->idAgente)}} value="{{$agente->idAgente}}">{{$agente->nome.' '.$agente->apelido.' -> '.$agente->email}}</option>
                                         @endif
                                     @endforeach
-                                </select><br>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Oops, parece que algo não está bem...
+                                </div><br>
                             @else
                                 @foreach($Agentes as $agente)
                                     @if($agente->idAgente == $produto->idAgente)
                                         <input type="text" class="form-control" name="agente" id="agente"
                                         value="{{$agente->nome.' '.$agente->apelido.' -> '.$agente->email}}" placeholder="" maxlength="20" readonly><br>
-                                    @else
-                                        <input type="text" class="form-control" name="agente" id="agente"
-                                        value="" placeholder="" maxlength="20" readonly><br>
                                     @endif
                                 @endforeach
                             @endIf
                         </div>
                         @if($produto->idSubAgente)
-                            <div class="col-md-6">
-                                <label for="subagente">Sub-Agente:</label><br>
-                                <select id="subagente" name="subagente" class="form-control" readonly>
+                            <div class="col-md-6 mb-3">
+                                <label class="text-gray-900" for="subagente">Sub-agente</label>
+                                <select id="subagente" name="subagente" class="form-control custom-select" readonly>
                                     @foreach($SubAgentes as $subagente)
                                         @if($subagente->idAgente == $produto->idSubAgente)
                                             <option {{old('idSubAgente',$produto->idSubAgente)}} value="{{$subagente->idAgente}}" selected>{{$subagente->nome.' '.$subagente->apelido.' -> '.$subagente->email}}</option>
                                         @endif
                                     @endforeach
-                                </select><br>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Oops, parece que algo não está bem...
+                                </div><br>
                             </div>
                         @else
-                            <div class="col-md-6">
-                                <label for="subagente">Sub-Agente:</label><br>
-                                <select id="subagente" name="subagente" class="form-control" onchange="AlteraInputSubAgente($(this))">
+                            <div class="col-md-6 mb-3">
+                                <label class="text-gray-900" for="subagente">Sub-agente</label>
+                                <select id="subagente" name="subagente" class="form-control custom-select" onchange="AlteraInputSubAgente($(this))">
                                     <option value="" selected></option>
                                     @foreach($SubAgentes as $subagente)
                                         @if($subagente->idAgente == $produto->idSubAgente)
@@ -103,13 +117,17 @@
                                             <option {{old('idSubAgente',$produto->idSubAgente)}} value="{{$subagente->idAgente}}">{{$subagente->nome.' '.$subagente->apelido.' -> '.$subagente->email}}</option>
                                         @endif
                                     @endforeach
-                                </select><br>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Oops, parece que algo não está bem...
+                                </div><br>
                             </div>
                         @endif
-                        <div class="col-md-6">
-                            <label for="uni1">Universidade Principal: <span class="text-danger">*</span></label><br>
+                        <br><br><br><br>
+                        <div class="col-md-6 mb-3">
+                            <label class="text-gray-900" for="uni1">Universidade principal <sup class="text-danger small">&#10033;</sup></label>
                             @if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)
-                                <select id="uni1" name="uni1" class="form-control" required>
+                                <select id="uni1" name="uni1" class="form-control custom-select" required>
                                     <option value="" selected></option>
                                     @foreach($Universidades as $uni)
                                         @if($uni->idUniversidade == $produto->idUniversidade1)
@@ -118,7 +136,10 @@
                                             <option {{old('idUniversidade1',$produto->idUniversidade1)}} value="{{$uni->idUniversidade}}">{{$uni->nome.' -> '.$uni->email}}</option>
                                         @endif
                                     @endforeach
-                                </select><br>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Oops, parece que algo não está bem...
+                                </div><br>
                             @else
                                 @foreach($Universidades as $uni)
                                     @if($uni->idUniversidade == $produto->idUniversidade1)
@@ -132,10 +153,10 @@
                             @endIf
 
                         </div>
-                        <div class="col-md-6">
-                            <label for="uni2">Universidade Secundária:</label><br>
+                        <div class="col-md-6 mb-3">
+                            <label class="text-gray-900" for="uni2">Universidade secundária</label>
                             @if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)
-                                <select id="uni2" name="uni2" class="form-control">
+                                <select id="uni2" name="uni2" class="form-control custom-select">
                                     <option value="" selected></option>
                                     @foreach($Universidades as $uni)
                                         @if($uni->idUniversidade == $produto->idUniversidade2)
@@ -145,6 +166,9 @@
                                         @endif
                                     @endforeach
                                 </select>
+                                <div class="invalid-feedback">
+                                    Oops, parece que algo não está bem...
+                                </div>
                             @else
                                 @foreach($Universidades as $uni)
                                     @if($uni->idUniversidade == $produto->idUniversidade2)
@@ -157,7 +181,6 @@
                                 @endforeach
                             @endIf
                         </div>
-                    </div>
                 </div>
                 <div class="tab-content p-2 mt-3" id="myTabContent">
                     <ul class="nav nav-tabs mt-5 mb-4 fases" id="myTab" role="tablist">
@@ -204,231 +227,358 @@
                         @else
                             <div class="tab-pane fade" id="fase{{$num}}" role="tabpanel" aria-labelledby="fase{{$num}}-tab">
                         @endif
+                            <div class="form-row mb-3">
 
-                        <div><p class="text-gray-800"><b>Fase {{$num}}</b></p></div>
-                            <div class="row">
-
-                                <div class="col-md-6">
-                                    <label for="descricao-fase{{$fase->idFase}}">Descrição:</label><br>
+                                <div class="col-md-4 mb-3">
+                                    <label class="text-gray-900" for="descricao-fase{{$fase->idFase}}">Descrição da fase</label>
                                     <input type="text" class="form-control" name="descricao-fase{{$fase->idFase}}" id="descricao-fase{{$fase->idFase}}"
                                     value="{{old('descricao',$fase->descricao)}}" placeholder="descricao" maxlength="20" readonly><br>
                                 </div>
                                 @if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)
-                                    <div class="col-md-3">
-                                        <label for="valor-fase{{$fase->idFase}}">Valor da fase: <span class="text-danger">*</span></label><br>
-                                        <input type="number" min="0" class="form-control" name="valor-fase{{$fase->idFase}}" id="valor-fase{{$fase->idFase}}"
-                                        value="{{old('valorFase',$fase->valorFase)}}" style="width:250px" required><br>
+                                    <div class="col-md-4 mb-3">
+                                        <label class="text-gray-900" for="valor-fase{{$fase->idFase}}">Valor total da fase <sup class="text-danger small">&#10033;</sup></label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control form-required" name="valor-fase{{$fase->idFase}}" id="valor-fase{{$fase->idFase}}" value="{{old('valorFase',$fase->valorFase)}}" placeholder="Inserir um valor..." required>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">€</span>
+                                            </div>
+                                            <div class="invalid-feedback">
+                                                Oops, parece que algo não está bem...
+                                            </div>
+                                        </div>
                                     </div>
 
-                                    <div class="col-md-3">
-                                        <label for="data-fase{{$fase->idFase}}">Data de vencimento: <span class="text-danger">*</span></label><br>
-                                        <input type="date" class="form-control" name="data-fase{{$fase->idFase}}" id="data-fase{{$fase->idFase}}"
-                                        value="{{date_create(old('dataVencimento',$fase->dataVencimento))->format('Y-m-d')}}" style="width:250px" required><br>
+                                    <div class="col-md-4 mb-3">
+                                        <label class="text-gray-900" for="data-fase{{$fase->idFase}}">Data de vencimento <sup class="text-danger small">&#10033;</sup></label>
+                                        <input type="date" class="form-control" name="data-fase{{$fase->idFase}}" id="data-fase{{$fase->idFase}}" value="{{date_create(old('dataVencimento',$fase->dataVencimento))->format('Y-m-d')}}" required>
+                                        <div class="invalid-feedback">
+                                            Oops, parece que algo não está bem...
+                                        </div>
                                     </div>
                                 @else
-                                    <div class="col-md-3">
-                                        <label for="valor-fase{{$fase->idFase}}">Valor da fase:</label><br>
-                                        <input type="number" min="0" class="form-control" name="valor-fase{{$fase->idFase}}" id="valor-fase{{$fase->idFase}}"
-                                        value="{{old('valorFase',$fase->valorFase)}}" style="width:250px" readonly/><br>
+                                    <div class="col-md-4 mb-3">
+                                        <label class="text-gray-900" for="valor-fase{{$fase->idFase}}">Valor total da fase <sup class="text-danger small">&#10033;</sup></label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control form-required" name="valor-fase{{$fase->idFase}}" id="valor-fase{{$fase->idFase}}" value="{{old('valorFase',$fase->valorFase)}}" placeholder="Inserir um valor..." readonly>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">€</span>
+                                            </div>
+                                            <div class="invalid-feedback">
+                                                Oops, parece que algo não está bem...
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-md-3">
-                                        <label for="data-fase{{$fase->idFase}}">Data de vencimento: <span class="text-danger">*</span></label><br>
-                                        <input type="date" class="form-control" name="data-fase{{$fase->idFase}}" id="data-fase{{$fase->idFase}}"
-                                        value="{{date_create(old('dataVencimento',$fase->dataVencimento))->format('Y-m-d')}}" style="width:250px" readonly><br>
+                                    <div class="col-md-4 mb-3">
+                                        <label class="text-gray-900" for="data-fase{{$fase->idFase}}">Data de vencimento <sup class="text-danger small">&#10033;</sup></label>
+                                        <input type="date" class="form-control" name="data-fase{{$fase->idFase}}" id="data-fase{{$fase->idFase}}" value="{{date_create(old('dataVencimento',$fase->dataVencimento))->format('Y-m-d')}}" readonly>
+                                        <div class="invalid-feedback">
+                                            Oops, parece que algo não está bem...
+                                        </div>
                                     </div>
                                 @endIf
                             </div>
-                            <div><p class="text-gray-800"><b>Responsabilidades</b></p></div>
-                            <div class="row" id="responsabilidades{{$responsabilidade->idResponsabilidade}}">
+                            <hr>
+                            <div class="mt-4 mb-4">
+                                <p class="text-gray-900 h5"><b>Responsabilidades</b></p>
+                            </div>
+                            <div class="form-row mb-3" id="responsabilidades{{$responsabilidade->idResponsabilidade}}">
                                 @if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)
-                                    <div class="col-md-6">
-                                        <label for="resp-cliente-fase{{$fase->idFase}}">PickPocket para cliente: <span class="text-danger">*</span></label><br>
-                                        <input type="number" class="form-control" name="resp-cliente-fase{{$fase->idFase}}" id="resp-cliente-fase{{$fase->idFase}}"
-                                        value="{{old('valorCliente',$responsabilidade->valorCliente)}}" style="width:250px" required><br>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="text-gray-900" for="resp-cliente-fase{{$fase->idFase}}">PickPocket para cliente <sup class="text-danger small">&#10033;</sup></label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control form-required" name="resp-cliente-fase{{$fase->idFase}}" id="resp-cliente-fase{{$fase->idFase}}">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">€</span>
+                                            </div>
+                                        </div>
 
                                     </div>
-                                    <div class="col-md-6">
-                                        <label for="resp-data-cliente-fase{{$fase->idFase}}">Data de vencimento do pagamento ao cliente:</label><br>
-                                        <input type="date" class="form-control" name="resp-data-cliente-fase{{$fase->idFase}}" id="resp-data-cliente-fase{{$fase->idFase}}"
-                                        value="" style="width:250px" ><br>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="text-gray-900" for="resp-data-cliente-fase{{$fase->idFase}}">Data de vencimento (Cliente)</label>
+                                        <div class="input-group">
+                                            <input type="date" class="form-control form-required" name="resp-data-cliente-fase{{$fase->idFase}}" id="resp-data-cliente-fase{{$fase->idFase}}">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                                            </div>
+                                        </div>
                                     </div>
                                 @else
-                                    <div class="col-md-6">
-                                        <label for="resp-cliente-fase{{$fase->idFase}}">PickPocket para cliente: <span class="text-danger">*</span></label><br>
-                                        <input type="number" class="form-control" name="resp-cliente-fase{{$fase->idFase}}" id="resp-cliente-fase{{$fase->idFase}}"
-                                        value="{{old('valorCliente',$responsabilidade->valorCliente)}}" style="width:250px" readonly><br>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="text-gray-900" for="resp-cliente-fase{{$fase->idFase}}">PickPocket para cliente <sup class="text-danger small">&#10033;</sup></label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control form-required" name="resp-cliente-fase{{$fase->idFase}}" id="resp-cliente-fase{{$fase->idFase}}" readonly>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">€</span>
+                                            </div>
+                                        </div>
 
                                     </div>
-                                    <div class="col-md-6">
-                                        <label for="resp-data-cliente-fase{{$fase->idFase}}">Data de vencimento do pagamento ao cliente:</label><br>
-                                        <input type="date" class="form-control" name="resp-data-cliente-fase{{$fase->idFase}}" id="resp-data-cliente-fase{{$fase->idFase}}"
-                                        value="" style="width:250px" readonly><br>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="text-gray-900" for="resp-data-cliente-fase{{$fase->idFase}}">Data de vencimento (Cliente)</label>
+                                        <div class="input-group">
+                                            <input type="date" class="form-control form-required" name="resp-data-cliente-fase{{$fase->idFase}}" id="resp-data-cliente-fase{{$fase->idFase}}"readonly>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                                            </div>
+                                        </div>
                                     </div>
                                 @endIf
 
+                            </div>
+                            <div class="form-row mb-3">
                                 @if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)
-                                    <div class="col-md-6">
-                                        <label for="resp-agente-fase{{$fase->idFase}}">Valor a pagar ao agente: <span class="text-danger">*</span></label><br>
-                                        <input type="number" class="form-control valor-pagar-agente" name="resp-agente-fase{{$fase->idFase}}" id="resp-agente-fase{{$fase->idFase}}"
-                                        value="{{old('valorAgente',$responsabilidade->valorAgente)}}" style="width:250px" required><br>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="text-gray-900" for="resp-agente-fase{{$fase->idFase}}">Valor a pagar ao agente <sup class="text-danger small">&#10033;</sup></label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control form-required" name="resp-agente-fase{{$fase->idFase}}" id="resp-agente-fase{{$fase->idFase}}">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">€</span>
+                                            </div>
+                                        </div>
 
                                     </div>
-                                    <div class="col-md-6">
-                                        <label for="resp-data-agente-fase{{$fase->idFase}}">Data de vencimento do pagamento ao agente:</label><br>
-                                        <input type="date" class="form-control" name="resp-data-agente-fase{{$fase->idFase}}" id="resp-data-agente-fase{{$fase->idFase}}"
-                                        value="" style="width:250px" ><br>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="text-gray-900" for="resp-data-agente-fase{{$fase->idFase}}">Data de vencimento (Agente)</label>
+                                        <div class="input-group">
+                                            <input type="date" class="form-control form-required" name="resp-data-agente-fase{{$fase->idFase}}" id="resp-data-agente-fase{{$fase->idFase}}">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                                            </div>
+                                        </div>
                                     </div>
                                 @else
-                                    <div class="col-md-6">
-                                        <label for="resp-agente-fase{{$fase->idFase}}">Valor a pagar ao agente: <span class="text-danger">*</span></label><br>
-                                        <input type="number" class="form-control" name="resp-agente-fase{{$fase->idFase}}" id="resp-agente-fase{{$fase->idFase}}"
-                                        value="{{old('valorAgente',$responsabilidade->valorAgente)}}" style="width:250px" readonly><br>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="text-gray-900" for="resp-agente-fase{{$fase->idFase}}">Valor a pagar ao agente <sup class="text-danger small">&#10033;</sup></label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control form-required" name="resp-agente-fase{{$fase->idFase}}" id="resp-agente-fase{{$fase->idFase}}" readonly>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">€</span>
+                                            </div>
+                                        </div>
 
                                     </div>
-                                    <div class="col-md-6">
-                                        <label for="resp-data-agente-fase{{$fase->idFase}}">Data de vencimento do pagamento ao agente:</label><br>
-                                        <input type="date" class="form-control" name="resp-data-agente-fase{{$fase->idFase}}" id="resp-data-agente-fase{{$fase->idFase}}"
-                                        value="" style="width:250px" readonly><br>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="text-gray-900" for="resp-data-agente-fase{{$fase->idFase}}">Data de vencimento (Agente)</label>
+                                        <div class="input-group">
+                                            <input type="date" class="form-control form-required" name="resp-data-agente-fase{{$fase->idFase}}" id="resp-data-agente-fase{{$fase->idFase}}"readonly>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                                            </div>
+                                        </div>
                                     </div>
                                 @endIf
 
+                                </div>
+                                <div class="form-row mb-3">
                                     @if(Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null && (Auth()->user()->agente->tipo == "Agente" ||
                                         (Auth()->user()->agente->tipo == "Subagente" && $permissao_subagente)))
                                         @if($produto->idSubAgente)
-                                            <div class="col-md-6 valor-responsabilidade-subagente">
+                                            <div class="col-md-6 valor-responsabilidade-subagente mb-3">
                                         @else
-                                            <div class="col-md-6 valor-responsabilidade-subagente" style="display: none;">
+                                            <div class="col-md-6 valor-responsabilidade-subagente mb-3" style="display: none;">
                                         @endif
-                                            <label for="resp-subagente-fase{{$fase->idFase}}">Valor a pagar ao sub-agente:</label><br>
-                                            <input type="number" class="form-control valor-pagar-subagente" name="resp-subagente-fase{{$fase->idFase}}" id="resp-subagente-fase{{$fase->idFase}}"
-                                            value="{{old('valorSubAgente',$responsabilidade->valorSubAgente)}}" style="width:250px"><br>
+                                            <label class="text-gray-900" for="resp-subagente-fase{{$fase->idFase}}">Valor a pagar ao sub-agente</label>
+                                            <div class="input-group">
+                                                <input type="number" class="form-control form-required" name="resp-subagente-fase{{$fase->idFase}}" id="resp-subagente-fase{{$fase->idFase}}">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text">€</span>
+                                                </div>
+                                            </div>
                                         </div>
                                         @if($produto->idSubAgente)
-                                            <div class="col-md-6 valor-responsabilidade-subagente">
+                                            <div class="col-md-6 valor-responsabilidade-subagente mb-3">
                                         @else
-                                            <div class="col-md-6 valor-responsabilidade-subagente" style="display: none;">
+                                            <div class="col-md-6 valor-responsabilidade-subagente mb-3" style="display: none;">
                                         @endif
-                                            <label for="resp-data-subagente-fase{{$fase->idFase}}">Data de vencimento do pagamento ao sub-agente:</label><br>
-                                            <input type="date" class="form-control" name="resp-data-subagente-fase{{$fase->idFase}}" id="resp-data-subagente-fase{{$fase->idFase}}"
-                                            value="" style="width:250px" ><br>
+                                        <label class="text-gray-900" for="resp-data-subagente-fase{{$fase->idFase}}">Data de vencimento (Sub-agente)</label>
+                                        <div class="input-group">
+                                            <input type="date" class="form-control form-required" name="resp-data-subagente-fase{{$fase->idFase}}" id="resp-data-subagente-fase{{$fase->idFase}}">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                                            </div>
+                                        </div>
                                         </div>
                                     @else
                                         @if($produto->idSubAgente)
-                                            <div class="col-md-6 valor-responsabilidade-subagente">
+                                            <div class="col-md-6 valor-responsabilidade-subagente mb-3">
                                         @else
-                                            <div class="col-md-6 valor-responsabilidade-subagente" style="display: none;">
+                                            <div class="col-md-6 valor-responsabilidade-subagente mb-3" style="display: none;">
                                         @endif
-                                            <label for="resp-subagente-fase{{$fase->idFase}}">Valor a pagar ao sub-agente:</label><br>
+                                        <label class="text-gray-900" for="resp-subagente-fase{{$fase->idFase}}">Valor a pagar ao sub-agente</label>
                                             @if(Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)
-                                                <input type="number" class="form-control" name="resp-subagente-fase{{$fase->idFase}}" id="resp-subagente-fase{{$fase->idFase}}"
-                                                value="{{old('valorSubAgente',$responsabilidade->valorSubAgente)}}" style="width:250px"><br>
+                                                <div class="input-group">
+                                                    <input type="number" class="form-control form-required" name="resp-subagente-fase{{$fase->idFase}}" id="resp-subagente-fase{{$fase->idFase}}">
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">€</span>
+                                                    </div>
+                                                </div>
                                             @else
-                                                <input type="number" class="form-control valor-pagar-subagente" name="resp-subagente-fase{{$fase->idFase}}" id="resp-subagente-fase{{$fase->idFase}}"
-                                                value="{{old('valorSubAgente',$responsabilidade->valorSubAgente)}}" style="width:250px"
-                                                onchange="adicionaValorSubAgente({{$responsabilidade->valorAgente}}, $(this).closest('#responsabilidades{{$responsabilidade->idResponsabilidade}}'),
-                                                {{$responsabilidade->valorAgente + $responsabilidade->valorSubAgente}})"><br>
+                                                <div class="input-group">
+                                                    <input type="number" class="form-control form-required" name="resp-subagente-fase{{$fase->idFase}}" id="resp-subagente-fase{{$fase->idFase}}"
+                                                    onchange="adicionaValorSubAgente({{$responsabilidade->valorAgente}}, $(this).closest('#responsabilidades{{$responsabilidade->idResponsabilidade}}'),
+                                                    {{$responsabilidade->valorAgente + $responsabilidade->valorSubAgente}})">
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">€</span>
+                                                    </div>
+                                                </div>
                                             @endif
                                         </div>
                                         @if($produto->idSubAgente)
-                                            <div class="col-md-6 valor-responsabilidade-subagente">
+                                            <div class="col-md-6 valor-responsabilidade-subagente mb-3">
                                         @else
-                                            <div class="col-md-6 valor-responsabilidade-subagente" style="display: none;">
+                                            <div class="col-md-6 valor-responsabilidade-subagente mb-3" style="display: none;">
                                         @endif
-                                            <label for="resp-data-subagente-fase{{$fase->idFase}}">Data de vencimento do pagamento ao sub-agente:</label><br>
-                                            <input type="date" class="form-control" name="resp-data-subagente-fase{{$fase->idFase}}" id="resp-data-subagente-fase{{$fase->idFase}}"
-                                            value="" style="width:250px"><br>
+                                        <label class="text-gray-900" for="resp-data-subagente-fase{{$fase->idFase}}">Data de vencimento (Sub-agente)</label>
+                                        <div class="input-group">
+                                            <input type="date" class="form-control form-required" name="resp-data-subagente-fase{{$fase->idFase}}" id="resp-data-subagente-fase{{$fase->idFase}}">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                                            </div>
+                                        </div>
                                         </div>
                                     @endif
 
+                                </div>
+                                <div class="form-row mb-3">
                                 
                                 @if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)
-                                    <div class="col-md-6">
-                                        <label for="resp-uni1-fase{{$fase->idFase}}">Valor a pagar á universidade principal: <span class="text-danger">*</span></label><br>
-                                        <input type="number" class="form-control" name="resp-uni1-fase{{$fase->idFase}}" id="resp-uni1-fase{{$fase->idFase}}"
-                                        value="{{old('valorUniversidade1',$responsabilidade->valorUniversidade1)}}" style="width:250px" required><br>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="text-gray-900" for="resp-uni1-fase{{$fase->idFase}}">Valor a pagar á universidade principal <sup class="text-danger small">&#10033;</sup></label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control form-required" name="resp-uni1-fase{{$fase->idFase}}" id="resp-uni1-fase{{$fase->idFase}}">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">€</span>
+                                            </div>
+                                        </div>
 
                                     </div>
-                                    <div class="col-md-6">
-                                        <label for="resp-data-uni1-fase{{$fase->idFase}}">Data de vencimento do pagamento à universidade principal:</label><br>
-                                        <input type="date" class="form-control" name="resp-data-uni1-fase{{$fase->idFase}}" id="resp-data-uni1-fase{{$fase->idFase}}"
-                                        value="" style="width:250px" ><br>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="text-gray-900" for="resp-data-uni1-fase{{$fase->idFase}}">Data de vencimento (Universidade principal)</label>
+                                        <div class="input-group">
+                                            <input type="date" class="form-control form-required" name="resp-data-uni1-fase{{$fase->idFase}}" id="resp-data-uni1-fase{{$fase->idFase}}">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                                            </div>
+                                        </div>
                                     </div>
                                 @else
-                                    <div class="col-md-6">
-                                        <label for="resp-uni1-fase{{$fase->idFase}}">Valor a pagar á universidade principal: <span class="text-danger">*</span></label><br>
-                                        <input type="number" class="form-control" name="resp-uni1-fase{{$fase->idFase}}" id="resp-uni1-fase{{$fase->idFase}}"
-                                        value="{{old('valorUniversidade1',$responsabilidade->valorUniversidade1)}}" style="width:250px" readonly><br>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="text-gray-900" for="resp-uni1-fase{{$fase->idFase}}">Valor a pagar á universidade principal <sup class="text-danger small">&#10033;</sup></label>
+                                        
+                                        <div class="input-group">
+                                            <input type="number" class="form-control form-required" name="resp-uni1-fase{{$fase->idFase}}" id="resp-uni1-fase{{$fase->idFase}}" readonly>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">€</span>
+                                            </div>
+                                        </div>
 
                                     </div>
-                                    <div class="col-md-6">
-                                        <label for="resp-data-uni1-fase{{$fase->idFase}}">Data de vencimento do pagamento à universidade principal:</label><br>
-                                        <input type="date" class="form-control" name="resp-data-uni1-fase{{$fase->idFase}}" id="resp-data-uni1-fase{{$fase->idFase}}"
-                                        value="" style="width:250px" readonly><br>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="text-gray-900" for="resp-data-uni1-fase{{$fase->idFase}}">Data de vencimento (Universidade principal)</label>
+                                        <div class="input-group">
+                                            <input type="date" class="form-control form-required" name="resp-data-uni1-fase{{$fase->idFase}}" id="resp-data-uni1-fase{{$fase->idFase}}"readonly>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                                            </div>
+                                        </div>
                                     </div>
                                 @endIf
-
+                            </div>
+                            <div class="form-row mb-3">
                                 @if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)
-                                    <div class="col-md-6">
-                                        <label for="resp-uni2-fase{{$fase->idFase}}">Valor a pagar á universidade secundária:</label><br>
-                                        <input type="number" class="form-control" name="resp-uni2-fase{{$fase->idFase}}" id="resp-uni2-fase{{$fase->idFase}}"
-                                        value="{{old('valorUniversidade2',$responsabilidade->valorUniversidade2)}}" style="width:250px"><br>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="text-gray-900" for="resp-uni2-fase{{$fase->idFase}}">Valor a pagar á universidade secundária</label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control form-required" name="resp-uni2-fase{{$fase->idFase}}" id="resp-uni2-fase{{$fase->idFase}}">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">€</span>
+                                            </div>
+                                        </div>
 
                                     </div>
-                                    <div class="col-md-6">
-                                        <label for="resp-data-uni2-fase{{$fase->idFase}}">Data de vencimento do pagamento à universidade secundária:</label><br>
-                                        <input type="date" class="form-control" name="resp-data-uni2-fase{{$fase->idFase}}" id="resp-data-uni2-fase{{$fase->idFase}}"
-                                        value="" style="width:250px" ><br>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="text-gray-900" for="resp-data-uni2-fase{{$fase->idFase}}">Data de vencimento (Universidade secundária)</label>
+                                        <div class="input-group">
+                                            <input type="date" class="form-control form-required" name="resp-data-uni2-fase{{$fase->idFase}}" id="resp-data-uni2-fase{{$fase->idFase}}">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                                            </div>
+                                        </div>
                                     </div>
                                 @else
-                                    <div class="col-md-6">
-                                        <label for="resp-uni2-fase{{$fase->idFase}}">Valor a pagar á universidade secundária:</label><br>
-                                        <input type="number" class="form-control" name="resp-uni2-fase{{$fase->idFase}}" id="resp-uni2-fase{{$fase->idFase}}"
-                                        value="{{old('valorUniversidade2',$responsabilidade->valorUniversidade2)}}" style="width:250px" readonly><br>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="text-gray-900" for="resp-uni2-fase{{$fase->idFase}}">Valor a pagar á universidade secundária</label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control form-required" name="resp-uni2-fase{{$fase->idFase}}" id="resp-uni2-fase{{$fase->idFase}}" readonly>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">€</span>
+                                            </div>
+                                        </div>
 
                                     </div>
-                                    <div class="col-md-6">
-                                        <label for="resp-data-uni2-fase{{$fase->idFase}}">Data de vencimento do pagamento à universidade secundária:</label><br>
-                                        <input type="date" class="form-control" name="resp-data-uni2-fase{{$fase->idFase}}" id="resp-data-uni2-fase{{$fase->idFase}}"
-                                        value="" style="width:250px" readonly><br>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="text-gray-900" for="resp-data-uni2-fase{{$fase->idFase}}">Data de vencimento (Universidade secundária)</label>
+                                        <div class="input-group">
+                                            <input type="date" class="form-control form-required" name="resp-data-uni2-fase{{$fase->idFase}}" id="resp-data-uni2-fase{{$fase->idFase}}"readonly>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                                            </div>
+                                        </div>
                                     </div>
                                 @endIf
                             </div>
 
                             <div class="list-fornecedores" style="min-width:225px">
-                                <div><p class="text-gray-800"><b>Fornecedores</b></span></div>
+                                <hr>
+                                <div class="mt-4 mb-4">
+                                    <p class="text-gray-900 h5"><b>Fornecedores</b></p>
+                                </div>
                                 <span class="numF" style="display: none;">{{count($relacoes->toArray())+1}}</span>
                                 <div class="fornecedor">
-                                    <div class="clones row" id="clonar">
-                                        <div class="col-md-6">
-                                            <label id="label1" for="fornecedor-fase{{$fase->idFase}}">Fornecedor 0:</label><br>
-                                            <select id="fornecedor-fase{{$fase->idFase}}" name="fornecedor-fase{{$fase->idFase}}" class="form-control" required>
-                                                <option value="" selected></option>
-                                                @foreach($Fornecedores as $fornecedor)
-                                                    <option {{old('idFornecedor',$relacao->idFornecedor)}} value="{{$fornecedor->idFornecedor}}">{{$fornecedor->nome.' -> '.$fornecedor->descricao}}</option>
-                                                @endforeach
-                                            </select><br>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label id="label2" for="valor-fornecedor-fase{{$fase->idFase}}">Valor a pagar:</label><br>
-                                            <input type="number" min="0" class="form-control" name="valor-fornecedor-fase{{$fase->idFase}}" id="valor-fornecedor-fase{{$fase->idFase}}"
-                                            value="{{old('valor',$relacao->valor)}}" style="width:250px" required><br>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label id="label3" for="data-fornecedor-fase{{$fase->idFase}}">Data de vencimento do pagamento ao fornecedor:</label><br>
-                                            <input type="date" class="form-control" name="data-fornecedor-fase{{$fase->idFase}}" id="data-fornecedor-fase{{$fase->idFase}}"
-                                            value="" style="width:250px"><br>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <br>
-                                            <div class="float-left">
-                                                <a id="button" style="color: white;" onclick="" class="btn btn-danger btn-icon-split btn-sm" title="remove">
-                                                    <span class="icon text-white-50">
-                                                        <i class="fas fa-trash-alt"></i>
-                                                    </span>
-                                                    <span id="a_button" class="text">Remover fornecedor</span>
-                                                </a>
-                                                {{--<button type="button" onclick="" class="top-button">Remover fornecedor</button>--}}
+                                    <div class="clones" id="clonar">
+                                        <div class="form-row mb-3" id="clonar">
+                                            <div class="col-md-4 mb-3">
+                                                <label class="text-gray-900" id="label1" for="fornecedor-fase{{$fase->idFase}}">Fornecedor #1</label>
+                                                <select id="fornecedor-fase{{$fase->idFase}}" name="fornecedor-fase{{$fase->idFase}}" class="form-control custom-select" required>
+                                                    <option value="" selected></option>
+                                                    @foreach($Fornecedores as $fornecedor)
+                                                        <option {{old('idFornecedor',$relacao->idFornecedor)}} value="{{$fornecedor->idFornecedor}}">{{$fornecedor->nome.' -> '.$fornecedor->descricao}}</option>
+                                                    @endforeach
+                                                </select>
+                                                <div class="invalid-feedback">
+                                                    Oops, parece que algo não está bem...
+                                                </div><br>
                                             </div>
+                                            <div class="col-md-4 mb-3">
+                                                <label class="text-gray-900" id="label2" for="valor-fornecedor-fase{{$fase->idFase}}">Valor a pagar <sup class="text-danger small">&#10033;</sup></label>
+                                                <div class="input-group">
+                                                    <input type="number" class="form-control" name="valor-fornecedor-fase{{$fase->idFase}}" id="valor-fornecedor-fase{{$fase->idFase}}" value="{{old('valor',$relacao->valor)}}" placeholder="Insira um valor...">
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">€</span>
+                                                    </div>
+                                                    <div class="invalid-feedback">
+                                                        Oops, parece que algo não está bem...
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 mb-3">
+                                                <label class="text-gray-900" id="label3" for="data-fornecedor-fase{{$fase->idFase}}">Data de vencimento (Fornecedor)</label>
+                                                <div class="input-group">
+                                                    <input type="date" class="form-control" name="data-fornecedor-fase{{$fase->idFase}}" id="data-fornecedor-fase{{$fase->idFase}}">
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="text-right mt-3">
+                                            <a id="button" style="color: white;" onclick="" class="btn btn-danger btn-icon-split btn-sm" title="remove">
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </span>
+                                                <span id="a_button" class="text">Remover fornecedor</span>
+                                            </a>
+                                            {{--<button type="button" onclick="" class="top-button">Remover fornecedor</button>--}}
                                         </div>
                                     </div>
                                     @if($relacoes->toArray())
@@ -436,13 +586,13 @@
                                             @php
                                                 $numF++;
                                             @endphp
-                                            <div class="row" id="div-fornecedor{{$numF}}-fase{{$fase->idFase}}">
-                                                <div class="col-md-6">
-                                                    <label id="label1" for="fornecedor{{$numF}}-fase{{$fase->idFase}}">Fornecedor {{$numF}}:</label><br>
+                                            <div class="form-row mb-3" id="div-fornecedor{{$numF}}-fase{{$fase->idFase}}">
+                                                <div class="col-md-4 mb-3">
+                                                    <label class="text-gray-900" id="label1" for="fornecedor{{$numF}}-fase{{$fase->idFase}}">Fornecedor #{{$numF}}</label>
                                                     @if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)
-                                                        <select id="fornecedor{{$numF}}-fase{{$fase->idFase}}" name="fornecedor{{$numF}}-fase{{$fase->idFase}}" class="form-control" required>
+                                                        <select id="fornecedor{{$numF}}-fase{{$fase->idFase}}" name="fornecedor{{$numF}}-fase{{$fase->idFase}}" class="form-control custom-select" required>
                                                     @else
-                                                        <select id="fornecedor{{$numF}}-fase{{$fase->idFase}}" name="fornecedor{{$numF}}-fase{{$fase->idFase}}" class="form-control" readonly>
+                                                        <select id="fornecedor{{$numF}}-fase{{$fase->idFase}}" name="fornecedor{{$numF}}-fase{{$fase->idFase}}" class="form-control custom-select" readonly>
                                                     @endIf
                                                         <option value="" selected></option>
                                                         @foreach($Fornecedores as $fornecedor)
@@ -452,31 +602,41 @@
                                                             <option {{old('idFornecedor',$relacao->idFornecedor)}} value="{{$fornecedor->idFornecedor}}">{{$fornecedor->nome.' -> '.$fornecedor->descricao}}</option>
                                                             @endif
                                                         @endforeach
-                                                    </select><br>
+                                                    </select>
+                                                    <div class="invalid-feedback">
+                                                        Oops, parece que algo não está bem...
+                                                    </div><br>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <label id="label2" for="valor-fornecedor{{$numF}}-fase{{$fase->idFase}}">Valor a pagar:</label><br>
-                                                    <input type="number" min="0" class="form-control" name="valor-fornecedor{{$numF}}-fase{{$fase->idFase}}" id="valor-fornecedor{{$numF}}-fase{{$fase->idFase}}"
-                                                    value="{{old('valor',$relacao->valor)}}" style="width:250px" required><br>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <label id="label3" for="data-fornecedor{{$numF}}-fase{{$num}}">Data de vencimento do pagamento ao fornecedor:</label><br>
-                                                    <input type="date" class="form-control" name="data-fornecedor{{$numF}}-fase{{$fase->idFase}}" id="data-fornecedor{{$numF}}-fase{{$fase->idFase}}"
-                                                    value="{{date_create(old('dataVencimentoPagamento',$relacao->dataVencimentoPagamento))->format('Y-m-d')}}"
-                                                    style="width:250px" required><br>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <br>
-                                                    <div class="float-left">
-                                                        <a id="button" style="color: white;" onclick="removerFornecedor({{$numF}},{{$fase->idFase}},$(this).closest('#div-fornecedor{{$numF}}-fase{{$fase->idFase}}'))" class="btn btn-danger btn-icon-split btn-sm" title="remove">
-                                                            <span class="icon text-white-50">
-                                                                <i class="fas fa-trash-alt"></i>
-                                                            </span>
-                                                            <span id="a_button" class="text">Remover fornecedor {{$numF}}</span>
-                                                        </a>
-                                                        {{--<button type="button" onclick="removerFornecedor({{$numF}},{{$fase->idFase}},$(this).closest('#div-fornecedor{{$numF}}-fase{{$fase->idFase}}'))" class="top-button">Remover fornecedor {{$numF}}</button>--}}
+                                                <div class="col-md-4 mb-3">
+                                                    <label class="text-gray-900" id="label2" for="valor-fornecedor{{$numF}}-fase{{$fase->idFase}}">Valor a pagar <sup class="text-danger small">&#10033;</sup></label>
+                                                    <div class="input-group">
+                                                        <input type="number" class="form-control" name="valor-fornecedor{{$numF}}-fase{{$fase->idFase}}" id="valor-fornecedor{{$numF}}-fase{{$fase->idFase}}" value="{{old('valor',$relacao->valor)}}" placeholder="Insira um valor...">
+                                                        <div class="input-group-append">
+                                                            <span class="input-group-text">€</span>
+                                                        </div>
+                                                        <div class="invalid-feedback">
+                                                            Oops, parece que algo não está bem...
+                                                        </div>
                                                     </div>
                                                 </div>
+                                                <div class="col-md-4 mb-3">
+                                                    <label class="text-gray-900" id="label3" for="data-fornecedor{{$numF}}-fase{{$fase->idFase}}">Data de vencimento (Fornecedor #{{$numF}})</label>
+                                                    <div class="input-group">
+                                                        <input type="date" class="form-control" name="data-fornecedor{{$numF}}-fase{{$fase->idFase}}" id="data-fornecedor{{$numF}}-fase{{$fase->idFase}}">
+                                                        <div class="input-group-append">
+                                                            <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="text-right mt-3">
+                                                <a id="button" style="color: white;" onclick="removerFornecedor({{$numF}},{{$fase->idFase}},$(this).closest('#div-fornecedor{{$numF}}-fase{{$fase->idFase}}'))" class="btn btn-danger btn-icon-split btn-sm" title="remove">
+                                                    <span class="icon text-white-50">
+                                                        <i class="fas fa-trash-alt"></i>
+                                                    </span>
+                                                    <span id="a_button" class="text">Remover fornecedor {{$numF}}</span>
+                                                </a>
+                                                {{--<button type="button" onclick="removerFornecedor({{$numF}},{{$fase->idFase}},$(this).closest('#div-fornecedor{{$numF}}-fase{{$fase->idFase}}'))" class="top-button">Remover fornecedor {{$numF}}</button>--}}
                                             </div>
                                         @endforeach
                                     @endif
@@ -500,13 +660,34 @@
                         <a href="javascript:history.go(-1)" class="btn btn-sm btn-secondary px-3">Cancelar</a>
                     </div>
                 </div>
+            </div>
             </form>
 
         </div>
 
         </div>
     </div>
-@endsection
+    <!-- Modal for more information -->
+    <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header pl-4 pb-1 pt-4">
+                    <h5 class="modal-title text-gray-800 font-weight-bold">Para que serve?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close-button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-gray-800 pl-4 pr-5">
+                    Ao preencher/editar o formulário irá alterar informação do produto associado ao cliente <b>{{$produto->cliente->nome.' '.$produto->cliente->apelido}}</b>, ter o cuidado que ao alterar irá perder os dados anteriores. Os campos com o asterisco de cor vermelha são de preenchimento obrigatório.
+                </div>
+                <div class="modal-footer mt-3">
+                    <a data-dismiss="modal" class="mr-4 font-weight-bold" id="close-option">Fechar</a>
+                    <button type="button" data-dismiss="modal" class="btn btn-primary font-weight-bold mr-2">Entendido!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End of Modal for more information  -->
 
 
 
@@ -550,14 +731,14 @@
 			var clone = clones.clone();
 	        closest.find('.numF').first().text(numF+1);
 			clone.attr('id','div-fornecedor'+numF+'-fase'+idFase);
-			$('#label1', clone).text("Fornecedor "+numF+":");
+			$('#label1', clone).text("Fornecedor #"+numF+":");
 			$('#label1', clone).attr('for','fornecedor'+numF+'-fase'+idFase);
 			$('select', clone).attr('id','fornecedor'+numF+'-fase'+idFase);
 			$('select', clone).attr('name','fornecedor'+numF+'-fase'+idFase);
 			$('#label2', clone).attr('for','valor-fornecedor'+numF+'-fase'+idFase);
 			$('#valor-fornecedor-fase'+idFase, clone).attr('name','valor-fornecedor'+numF+'-fase'+idFase);
 			$('#valor-fornecedor-fase'+idFase, clone).attr('id','valor-fornecedor'+numF+'-fase'+idFase);
-			$('#label3', clone).text('Data de vencimento do pagamento ao fornecedor'+numF+':');
+            $('#label3', clone).text('Data de vencimento (Fornecedor #' + numF + ")");
 			$('#label3', clone).attr('for','data-fornecedor'+numF+'-fase'+idFase);
 			$('#data-fornecedor-fase'+idFase, clone).attr('name','data-fornecedor'+numF+'-fase'+idFase);
 			$('#data-fornecedor-fase'+idFase, clone).attr('id','data-fornecedor'+numF+'-fase'+idFase);
@@ -599,5 +780,7 @@
             }
         }
     </script>
+
+@endsection
 
 @endsection

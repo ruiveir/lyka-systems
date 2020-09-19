@@ -38,7 +38,12 @@
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="text-gray-900" for="AnoAcademico">Ano académico <sup class="text-danger small">&#10033;</sup></label>
-                            <input type="text" class="form-control" name="anoAcademico" id="anoAcademico" value="{{old('anoAcademico', $produto->anoAcademico)}}" placeholder="Insira um ano..." required>
+                            <select type="text" class="form-control custom-select" name="anoAcademico" id="anoAcademico" required>
+                                <option disabled hidden selected>Escolha um ano académico...</option>
+                                @foreach($anosAcademicos as $ano)
+                                    <option {{old('anoAcademico',$produto->anoAcademico)==$ano?"selected":""}} value="{{$ano}}">{{$ano}}</option>
+                                @endforeach
+                            </select>
                             <div class="invalid-feedback">
                                 Oops, parece que algo não está bem...
                             </div>
@@ -105,11 +110,11 @@
                                 @endphp
                                 @if($num == 1)
                                 <li class="nav-item" id="fase{{$num}}-li" style="width:25%; min-width:110px">
-                                    <a class="nav-link active" id="fase{{$num}}-tab" data-toggle="tab" href="#fase{{$num}}" role="tab" aria-controls="fase{{$num}}" aria-selected="false">Fase {{$num}}</a>
+                                    <a class="nav-link active" id="fase{{$num}}-tab" data-toggle="tab" href="#fase{{$num}}" role="tab" aria-controls="fase{{$num}}" aria-selected="false">Fase {{$num}} - {{$fase->descricao}}</a>
                                 </li>
                                 @else
                                 <li class="nav-item" id="fase{{$num}}-li" style="width:25%; min-width:144px">
-                                    <a class="nav-link" id="fase{{$num}}-tab" data-toggle="tab" href="#fase{{$num}}" role="tab" aria-controls="fase{{$num}}" aria-selected="false">Fase {{$num}}</a>
+                                    <a class="nav-link" id="fase{{$num}}-tab" data-toggle="tab" href="#fase{{$num}}" role="tab" aria-controls="fase{{$num}}" aria-selected="false">Fase {{$num}} - {{$fase->descricao}}</a>
                                 </li>
                                 @endif
                                 @endforeach
@@ -134,22 +139,22 @@
                                             <input type="text" class="form-control" name="descricao-fase{{$num}}" id="descricao-fase{{$num}}" value="{{old('descricao',$fase->descricao)}}" readonly>
                                         </div>
                                         <div class="col-md-4 mb-3">
-                                            <label class="text-gray-900" for="data-fase{{$num}}">Data de vencimento <sup class="text-danger small">&#10033;</sup></label>
-                                            <input type="date" class="form-control" name="data-fase{{$num}}" id="data-fase{{$num}}" value="{{date_create(old('dataVencimento',$fase->dataVencimento))->format('Y-m-d')}}" required>
-                                            <div class="invalid-feedback">
-                                                Oops, parece que algo não está bem...
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 mb-3">
                                             <label class="text-gray-900" for="valor-fase{{$num}}">Valor total da fase <sup class="text-danger small">&#10033;</sup></label>
                                             <div class="input-group">
-                                                <input type="text" class="form-control form-required" name="valor-fase{{$num}}" id="valor-fase{{$num}}" value="{{old('valorFase',$fase->valorFase)}}" placeholder="Inserir um valor..." required>
+                                                <input type="number" class="form-control form-required" name="valor-fase{{$num}}" id="valor-fase{{$num}}" value="{{old('valorFase',$fase->valorFase)}}" placeholder="Inserir um valor..." required>
                                                 <div class="input-group-append">
                                                     <span class="input-group-text">€</span>
                                                 </div>
                                                 <div class="invalid-feedback">
                                                     Oops, parece que algo não está bem...
                                                 </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label class="text-gray-900" for="data-fase{{$num}}">Data de vencimento <sup class="text-danger small">&#10033;</sup></label>
+                                            <input type="date" class="form-control" name="data-fase{{$num}}" id="data-fase{{$num}}" value="{{date_create(old('dataVencimento',$fase->dataVencimento))->format('Y-m-d')}}" required>
+                                            <div class="invalid-feedback">
+                                                Oops, parece que algo não está bem...
                                             </div>
                                         </div>
                                     </div>
@@ -161,7 +166,7 @@
                                         <div class="col-md-6 mb-3">
                                             <label class="text-gray-900" for="resp-cliente-fase{{$num}}">PickPocket para cliente <sup class="text-danger small">&#10033;</sup></label>
                                             <div class="input-group">
-                                                <input type="text" class="form-control form-required" name="resp-cliente-fase{{$num}}" id="resp-cliente-fase{{$num}}" value="{{old('valorCliente',$Responsabilidades[$num-1]->valorCliente)}}"
+                                                <input type="number" class="form-control form-required" name="resp-cliente-fase{{$num}}" id="resp-cliente-fase{{$num}}" value="{{old('valorCliente',$Responsabilidades[$num-1]->valorCliente)}}"
                                                     placeholder="Inserir um valor..." required>
                                                 <div class="input-group-append">
                                                     <span class="input-group-text">€</span>
@@ -189,7 +194,7 @@
                                         <div class="col-md-6 mb-3">
                                             <label class="text-gray-900" for="resp-agente-fase{{$num}}">Valor a pagar ao agente <sup class="text-danger small">&#10033;</sup></label>
                                             <div class="input-group">
-                                                <input type="text" class="form-control form-required" name="resp-agente-fase{{$num}}" id="resp-agente-fase{{$num}}" value="{{old('valorAgente',$Responsabilidades[$num-1]->valorAgente)}}"
+                                                <input type="number" class="form-control form-required" name="resp-agente-fase{{$num}}" id="resp-agente-fase{{$num}}" value="{{old('valorAgente',$Responsabilidades[$num-1]->valorAgente)}}"
                                                     placeholder="Inserir um valor..." required>
                                                 <div class="input-group-append">
                                                     <span class="input-group-text">€</span>
@@ -214,7 +219,7 @@
                                         <div class="col-md-6 mb-3">
                                             <label class="text-gray-900" for="resp-subagente-fase{{$fase->idFase}}">Valor a pagar ao sub-agente</label>
                                             <div class="input-group">
-                                                <input type="text" class="form-control form-required" name="resp-subagente-fase{{$fase->idFase}}" id="resp-subagente-fase{{$fase->idFase}}"
+                                                <input type="number" class="form-control form-required" name="resp-subagente-fase{{$fase->idFase}}" id="resp-subagente-fase{{$fase->idFase}}"
                                                     value="{{old('valorSubAgente',$Responsabilidades[$num-1]->valorSubAgente)}}" placeholder="Inserir um valor...">
                                                 <div class="input-group-append">
                                                     <span class="input-group-text">€</span>
@@ -236,7 +241,7 @@
                                         <div class="col-md-6 mb-3">
                                             <label class="text-gray-900" for="resp-uni1-fase{{$num}}">Valor a pagar á universidade principal <sup class="text-danger small">&#10033;</sup></label>
                                             <div class="input-group">
-                                                <input type="text" class="form-control form-required" name="resp-uni1-fase{{$num}}" id="resp-uni1-fase{{$num}}" value="{{old('valorUniversidade1',$Responsabilidades[$num-1]->valorUniversidade1)}}"
+                                                <input type="number" class="form-control form-required" name="resp-uni1-fase{{$num}}" id="resp-uni1-fase{{$num}}" value="{{old('valorUniversidade1',$Responsabilidades[$num-1]->valorUniversidade1)}}"
                                                     placeholder="Inserir um valor..." required>
                                                 <div class="input-group-append">
                                                     <span class="input-group-text">€</span>
@@ -261,7 +266,7 @@
                                         <div class="col-md-6 mb-3">
                                             <label class="text-gray-900" for="resp-uni2-fase{{$num}}">Valor a pagar á universidade secundária</label>
                                             <div class="input-group">
-                                                <input type="text" class="form-control form-required" name="resp-uni2-fase{{$num}}" id="resp-uni2-fase{{$num}}" value="{{old('valorUniversidade2',$Responsabilidades[$num-1]->valorUniversidade2)}}"
+                                                <input type="number" class="form-control form-required" name="resp-uni2-fase{{$num}}" id="resp-uni2-fase{{$num}}" value="{{old('valorUniversidade2',$Responsabilidades[$num-1]->valorUniversidade2)}}"
                                                     placeholder="Inserir um valor...">
                                                 <div class="input-group-append">
                                                     <span class="input-group-text">€</span>
@@ -302,7 +307,7 @@
                                                     <div class="col-md-4 mb-3">
                                                         <label class="text-gray-900" id="label2" for="valor-fornecedor-fase{{$num}}">Valor a pagar <sup class="text-danger small">&#10033;</sup></label>
                                                         <div class="input-group">
-                                                            <input type="text" class="form-control" name="valor-fornecedor-fase{{$num}}" id="valor-fornecedor-fase{{$num}}" value="{{old('valor',$relacao->valor)}}" placeholder="Insira um valor...">
+                                                            <input type="number" class="form-control" name="valor-fornecedor-fase{{$num}}" id="valor-fornecedor-fase{{$num}}" value="{{old('valor',$relacao->valor)}}" placeholder="Insira um valor...">
                                                             <div class="input-group-append">
                                                                 <span class="input-group-text">€</span>
                                                             </div>
@@ -414,7 +419,6 @@
             $('#label2', clone).attr('for', 'valor-fornecedor' + numF + '-fase' + idFase);
             $('#valor-fornecedor-fase' + idFase, clone).attr('name', 'valor-fornecedor' + numF + '-fase' + idFase);
             $('#valor-fornecedor-fase' + idFase, clone).attr('id', 'valor-fornecedor' + numF + '-fase' + idFase);
-            $('#label3', clone).text('Data de vencimento (Fornecedor #' + numF + ")");
             $('#label3', clone).text('Data de vencimento (Fornecedor #' + numF + ")");
             $('#label3', clone).attr('for', 'data-fornecedor' + numF + '-fase' + idFase);
             $('#data-fornecedor-fase' + idFase, clone).attr('name', 'data-fornecedor' + numF + '-fase' + idFase);

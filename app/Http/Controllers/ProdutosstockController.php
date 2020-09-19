@@ -22,8 +22,16 @@ class ProdutosstockController extends Controller
 
     public function create()
     {
+
+        $anosAcademicos = null;
+        $anoAtual =  date("Y");
+
+        for($i = 0; $i <= 5; $i++){
+            $anosAcademicos[] = ($anoAtual-1+$i)."/".($anoAtual+$i);
+        }
+        
         $produtostock = new ProdutoStock();
-        return view('produtostock.add', compact('produtostock'));
+        return view('produtostock.add', compact('produtostock','anosAcademicos'));
     }
 
     public function store(StoreProdutosstockRequest $requestProduto)

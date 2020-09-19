@@ -47,7 +47,6 @@ class ProdutoController extends Controller
             $Fases=null;
             $Responsabilidades = null;
             $relacao = new RelFornResp;
-
             $fasesStock = $produtoStock->faseStock;
             foreach($fasesStock as $faseStock){
                 $fase = new Fase;
@@ -57,7 +56,15 @@ class ProdutoController extends Controller
                 $Responsabilidades[] = $responsabilidade;
             }
 
-            return view('produtos.add',compact('produto','produtoStock','cliente','Agentes','SubAgentes','Universidades','Fases','Responsabilidades','Fornecedores','relacao'));
+            $anosAcademicos = null;
+            $anoAtual =  date("Y");
+    
+            for($i = 0; $i <= 5; $i++){
+                $anosAcademicos[] = ($anoAtual-1+$i)."/".($anoAtual+$i);
+            }
+            
+
+            return view('produtos.add',compact('produto','produtoStock','cliente','Agentes','SubAgentes','Universidades','Fases','Responsabilidades','Fornecedores','relacao','anosAcademicos'));
         }else{
             abort(403);
         }
@@ -284,7 +291,14 @@ class ProdutoController extends Controller
             $relacao = new RelFornResp;
             $relacao->valor=0;
             $fases = $produto->fase;
-            return view('produtos.edit', compact('produto','Agentes','SubAgentes','Universidades','fases','Fornecedores','relacao'));
+
+            $anosAcademicos = null;
+            $anoAtual =  date("Y");
+    
+            for($i = 0; $i <= 5; $i++){
+                $anosAcademicos[] = ($anoAtual-1+$i)."/".($anoAtual+$i);
+            }
+            return view('produtos.edit', compact('produto','Agentes','SubAgentes','Universidades','fases','Fornecedores','relacao','anosAcademicos'));
         }else{
             abort(403);
         }
