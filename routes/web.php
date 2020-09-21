@@ -191,7 +191,7 @@ Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
     Route::resource('/produtos', 'ProdutoController')->only(['destroy','update','show','edit']);
 
     /* Documentos Pessoais */
-    Route::get('/documento-pessoal/criar/{client}', 'DocPessoalController@createFromClient')->name('documento-pessoal.createFromClient');
+    Route::post('/documento-pessoal/criar/{client}', 'DocPessoalController@createFromClient')->name('documento-pessoal.createFromClient');
     Route::post('/documento-pessoal/store/{client}/{docnome}', 'DocPessoalController@storeFromClient')->name('documento-pessoal.storeFromClient');
 
     Route::get('/documento-pessoal/criar-na-fase/{fase}/{docnecessario}', 'DocPessoalController@create')->name('documento-pessoal.create');

@@ -86,7 +86,6 @@ class DocPessoalController extends Controller
             (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)|| $permissao){
 
             $fields = $request->all();
-            //dd($fields);
             $infoDoc = null;
             for($i=1;$i<=500;$i++){
                 if(array_key_exists('nome-campo'.$i, $fields)){
@@ -118,8 +117,6 @@ class DocPessoalController extends Controller
                 $documento->verificacao = false;
             }
 
-
-
             $source = null;
 
             if($fields['img_doc']) {
@@ -127,7 +124,6 @@ class DocPessoalController extends Controller
                 $tipoDoc = str_replace(".","_",str_replace(" ","",$documento->tipo));
                 $nomeficheiro = 'cliente_'.$client->idCliente.'_documento_pessoal_'.$tipoDoc.'.'.$ficheiro->getClientOriginalExtension();
                 Storage::disk('public')->putFileAs('client-documents/'.$client->idCliente.'/', $ficheiro, $nomeficheiro);
-/*                 $source = $fase->produto->cliente->idCliente.'/'.$nomeficheiro; */
             }
             $documento->imagem = $nomeficheiro;
             $documento->save();
@@ -137,11 +133,6 @@ class DocPessoalController extends Controller
             abort(403);
         }
     }
-
-
-
-
-
 
     public function show(DocPessoal $documento)
     {
@@ -155,11 +146,6 @@ class DocPessoalController extends Controller
             abort(403);
         }
     }
-
-
-
-
-
 
     public function store(StoreDocumentoRequest $request,Fase $fase, DocNecessario $docnecessario){
 
@@ -178,7 +164,6 @@ class DocPessoalController extends Controller
             (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)|| $permissao){
 
             $fields = $request->all();
-            //dd($fields);
             $infoDoc = null;
             if(strtolower($docnecessario->tipoDocumento) == "passaporte"){
                 $infoDoc['numPassaporte'] = $fields['numPassaporte'];
@@ -225,7 +210,6 @@ class DocPessoalController extends Controller
                 $tipoDoc = str_replace(".","_",str_replace(" ","",$documento->tipo));
                 $nomeficheiro = 'cliente_'.$fase->produto->cliente->idCliente.'_fase_'.$fase->idFase.'_documento_pessoal_'.$tipoDoc.'.'.$ficheiro->getClientOriginalExtension();
                 Storage::disk('public')->putFileAs('client-documents/'.$fase->produto->cliente->idCliente.'/', $ficheiro, $nomeficheiro);
-/*                 $source = $fase->produto->cliente->idCliente.'/'.$nomeficheiro; */
             }
             $documento->imagem = $nomeficheiro;
             $documento->save();
