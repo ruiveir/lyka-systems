@@ -316,6 +316,19 @@ class DocAcademicoController extends Controller
 
     }
 
+    public function show(DocAcademico $documento)
+    {
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)){
+            $infoDoc = (array)json_decode($documento->info);
+            $infoKeys = array_keys($infoDoc);
+            $tipoPAT = 'Academico';
+            $tipo = $documento->tipo;
+            return view('documentos.show',compact('documento','infoDoc','infoKeys','tipo','tipoPAT'));
+        }else{
+            abort(403);
+        }
+    }
+
 
     public function destroy(DocAcademico $documento)
     {

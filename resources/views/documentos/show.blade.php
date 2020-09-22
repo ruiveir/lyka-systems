@@ -1,123 +1,129 @@
 @extends('layout.master')
-
-{{-- Titulo da Página --}}
-@section('title', 'Verificacao de um documento')
-
-{{-- Estilos de CSS --}}
-@section('styleLinks')
-<link href="{{asset('/css/providers.css')}}" rel="stylesheet">
-@endsection
-
-{{-- Conteudo da Página --}}
+<!-- Page Title -->
+@section('title', 'Visualização de um documento')
+<!-- Page Content -->
 @section('content')
-<div class="container mt-2 ">
-
-    {{-- Navegação --}}
-    <div class="float-left buttons">
-        <a href="javascript:history.go(-1)" title="Voltar">
-            <ion-icon name="arrow-back-outline" class="button-back"></ion-icon>
-        </a>
-        <a href="javascript:window.history.forward();" title="Avançar">
-            <ion-icon name="arrow-forward-outline" class="button-foward"></ion-icon>
-        </a>
+<!-- Begin Page Content -->
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h4 mb-0 text-gray-800">Visualização de um documento</h1>
+        <div>
+            @if($tipoPAT == 'Pessoal')
+            <a href="{{route('documento-pessoal.edit', $documento)}}" class="btn btn-success btn-icon-split btn-sm" title="Editar">
+                <span class="icon text-white-50">
+                    <i class="fas fa-pencil-alt"></i>
+                </span>
+                <span class="text">Editar documento</span>
+            </a>
+            @elseif($tipoPAT == 'Academico')
+            <a href="{{route('documento-academico.edit', $documento)}}" class="btn btn-success btn-icon-split btn-sm" title="Editar">
+                <span class="icon text-white-50">
+                    <i class="fas fa-pencil-alt"></i>
+                </span>
+                <span class="text">Editar documento</span>
+            </a>
+            @else
+            <a href="{{route('documento-transacao.edit', $documento)}}" class="btn btn-success btn-icon-split btn-sm" title="Editar">
+                <span class="icon text-white-50">
+                    <i class="fas fa-pencil-alt"></i>
+                </span>
+                <span class="text">Editar documento</span>
+            </a>
+            @endif
+            <a href="#" data-toggle="modal" data-target="#infoModal" class="btn btn-secondary btn-icon-split btn-sm" title="Informações">
+                <span class="icon text-white-50">
+                    <i class="fas fa-info-circle"></i>
+                </span>
+                <span class="text">Informações</span>
+            </a>
+        </div>
     </div>
-
-    <br><br>
-
-    <div class="cards-navigation">
-        <div class="row">
-            <div class="col-md-4 title">
-                <h1 class="h4 mb-0 text-gray-800">Informação do {{$tipo}}</h1>
-            </div>
-            <div class="col-md-8">
-                <a class="" onclick="window.open('{{url('/storage/client-documents/'.$documento->idCliente .'/'. $documento->imagem)}}', '', 'width=620,height=450,toolbar=no,location=no,menubar=no,copyhistory=no,status=no,directories=no,scrollbars=yes,resizable=yes'); return false;" href="{{url('/storage/client-documents/'.$documento->idCliente .'/'. $documento->imagem)}}" id="yui_3_17_2_1_1589215110643_49">
-                    <img src="../../storage/default-photos/pdf.png" class="iconlarge activityicon" alt="" role="presentation" aria-hidden="true">
-                    <span class="instancename">Abrir Imagem do {{$documento->tipo}}</span>
-                </a>
-            </div><br><br>
+    <!-- Approach -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Visualização do documento "{{strtolower($tipo)}}" afeto ao cliente {{$documento->cliente->nome.' '.$documento->cliente->apelido}}.</h6>
         </div>
-        <br>
-        <div class="formulario-edicao shadow-sm">
-            <div class="row documento">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="text-gray-800"><b>Documento:</b> <a
+                            onclick="window.open('{{url('/storage/client-documents/'.$documento->idCliente .'/'. $documento->imagem)}}', '', 'width=620,height=450,toolbar=no,location=no,menubar=no,copyhistory=no,status=no,directories=no,scrollbars=yes,resizable=yes'); return false;"
+                            href="{{url('/storage/client-documents/'.$documento->idCliente .'/'. $documento->imagem)}}" id="yui_3_17_2_1_1589215110643_49"> documento.pdf </a>
+                    </p>
+                </div>
                 @if(strtolower($tipo) == "passaport")
-                    <div class="col-md-4">
-                        <div><span class="text-secondary ">Nº Passaport:</span> {{$documento->numPassaport}}</div><br>
-                    </div>
-                    <div class="col-md-4">
-                        <div><span class="text-secondary ">Data de validade:</span> {{date("m/Y",strtotime($documento->dataValidPP))}}</div><br>
-                    </div>
-                    <div class="col-md-4">
-                        <div><span class="text-secondary ">País de Emissão:</span> {{$documento->passaportPaisEmi}}</div><br>
-                    </div>
-                    <div class="col-md-4">
-                        <div><span class="text-secondary ">Local de Emissão:</span> {{$documento->localEmissaoPP}}</div><br>
-                    </div>
-                    @php
-                        $i=0;
-                    @endphp
-                    @foreach($infoKeys as $key)
-                        @php
-                            $i++;
-                        @endphp
-                        <div class="col-md-4">
-                            <div><span class="text-secondary ">{{$key}}:</span> {{$infoDoc[$key]}}</div><br>
-                        </div>
-                    @endforeach
-                @else
-                    @if($tipoPAT == "Academico")
-                        <div class="col-md-4">
-                            <div><span class="text-secondary ">País de Emissão:</span> {{$documento->nome}}</div><br>
-                        </div>
-                    @else
-                        <div class="col-md-4">
-                            <div><span class="text-secondary ">Data de validade:</span> {{date("m/Y",strtotime($documento->dataValidade))}}</div><br>
-                        </div>
-                    @endif
-                    @php
-                        $i=0;
-                    @endphp
-                    @foreach($infoKeys as $key)
-                        @php
-                            $i++;
-                        @endphp
-                        <div class="col-md-4">
-                            <div><span class="text-secondary ">{{$key}}:</span> {{$infoDoc[$key]}}</div><br>
-                        </div>
-                    @endforeach
-                @endif
+                <div class="col-md-6">
+                    <p class="text-gray-800"><b>Número de passaporte:</b> {{$documento->numPassaport}}</p>
+                </div>
             </div>
-            <div class="text-right">
-                @if($tipoPAT == 'Pessoal')
-                    <a href="{{route('documento-pessoal.edit', $documento)}}" class="btn btn-success btn-icon-split btn-sm" title="Editar">
-                        <span class="icon text-white-50">
-                            <i class="fas fa-pencil-alt"></i>
-                        </span>
-                        <span class="text">Editar Documento</span>
-                    </a>
-                @elseif($tipoPAT == 'Academico')
-                    <a href="{{route('documento-academico.edit', $documento)}}" class="btn btn-success btn-icon-split btn-sm" title="Editar">
-                        <span class="icon text-white-50">
-                            <i class="fas fa-pencil-alt"></i>
-                        </span>
-                        <span class="text">Editar Documento</span>
-                    </a>
-                @else
-                    <a href="{{route('documento-transacao.edit', $documento)}}" class="btn btn-success btn-icon-split btn-sm" title="Editar">
-                        <span class="icon text-white-50">
-                            <i class="fas fa-pencil-alt"></i>
-                        </span>
-                        <span class="text">Editar Documento</span>
-                    </a>
-                @endif
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="text-gray-800"><b>Data de validade:</b> {{date("d/m/Y",strtotime($documento->dataValidPP))}}</p>
+                </div>
+                <div class="col-md-6">
+                    <p class="text-gray-800"><b>País de emissão:</b> {{$documento->passaportPaisEmi}}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="text-gray-800"><b>Local de emissão:</b> {{$documento->localEmissaoPP}}</p>
+                </div>
+            </div>
+            @foreach($infoKeys as $key)
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="text-gray-800"><b>{{$key}}:</b>
+                        @if ($infoDoc[$key] != null) {{$infoDoc[$key]}}
+                        @else N/A @endif</p>
+                </div>
+            </div>
+            @endforeach
+            @elseif($tipoPAT == "Academico")
+            <div class="col-md-6">
+                <p class="text-gray-800"><b>Nome do documento:</b> {{$documento->nome}}</p>
             </div>
         </div>
-        <br>
+        @else
+        <div class="col-md-6">
+            <p class="text-gray-800"><b>Data de validade:</b> {{date("d/m/Y", strtotime($documento->dataValidade))}}</p>
+        </div>
+    </div>
+    @foreach($infoKeys as $key)
+    <div class="row">
+        <div class="col-md-6">
+            <p class="text-gray-800"><b>{{$key}}:</b>
+                @if ($infoDoc[$key] != null) {{$infoDoc[$key]}}
+                @else N/A @endif</p>
+        </div>
+    </div>
+    @endforeach
+    @endif
+</div>
+</div>
+</div>
+<!-- End of container-fluid -->
+
+<!-- Modal Info -->
+<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header pl-4 pb-1 pt-4">
+                <h5 class="modal-title text-gray-800 font-weight-bold">Para que serve?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close-button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-gray-800 pl-4 pr-5">
+                Aqui apenas pode visualizar os detalhes de um documento. Para editar os dados do documento, clique no botão <b>Editar documento</b>.
+            </div>
+            <div class="modal-footer mt-3">
+                <a data-dismiss="modal" class="mr-4 font-weight-bold" id="close-option">Fechar</a>
+                <button type="button" data-dismiss="modal" class="btn btn-primary font-weight-bold mr-2">Entendido!</button>
+            </div>
+        </div>
     </div>
 </div>
-
-@section('scripts')
-    <script type="text/javascript">
-    </script>
+<!-- End of Modal Info -->
 @endsection
-
-@endsection
+<!-- End of Page Content -->
