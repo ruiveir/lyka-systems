@@ -128,7 +128,7 @@ class DocPessoalController extends Controller
             $documento->imagem = $nomeficheiro;
             $documento->save();
 
-            return redirect()->route('clients.show',$client)->with('success', $docnome.' adicionado com sucesso');
+            return redirect()->route('clients.show',$client)->with('success', $docnome.' adicionado(a) com sucesso!');
         }else{
             abort(403);
         }

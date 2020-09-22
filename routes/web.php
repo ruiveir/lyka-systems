@@ -204,7 +204,7 @@ Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
     Route::resource('/documento-pessoal', 'DocPessoalController')->only(['destroy']);
 
     /* Documentos Academicos */
-    Route::get('/documento-academico/criar/{client}', 'DocAcademicoController@createFromClient')->name('documento-academico.createFromClient');
+    Route::post('/documento-academico/criar/{client}', 'DocAcademicoController@createFromClient')->name('documento-academico.createFromClient');
     Route::post('/documento-academico/store/{client}/{docnome}', 'DocAcademicoController@storeFromClient')->name('documento-academico.storeFromClient');
 
     Route::get('/documento-academico/criar-na-fase/{fase}/{docnecessario}', 'DocAcademicoController@create')->name('documento-academico.create');

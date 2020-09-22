@@ -354,7 +354,7 @@
 
                                 <i class="far fa-address-card mr-2"></i>
 
-                                <a class="font-weight-bold" target="_blank" href="{{route('documento-pessoal.show',$docpessoal)}}">{{$docpessoal->tipo}}</a>
+                                <a class="font-weight-bold" target="_blank" href="{{route('documento-pessoal.show', $docpessoal)}}">{{$docpessoal->tipo}}</a>
 
                                 <span class=""><small>({{ date('d-M-y', strtotime($docpessoal->created_at)) }})</small></span>
 
@@ -377,8 +377,13 @@
 
                         {{-- Adicionar Documento PESSOAL--}}
 
-                        <div class="col text-left">
-                            <a href="#" class="btn btn-sm btn-primary m-1 mr-2 px-3 " data-toggle="modal" data-target="#novoDocPessoal"><i class="fas fa-plus mr-2 "></i>Adicionar Documento Pessoal</a>
+                        <div class="text-right mt-2">
+                            <a href="#" data-toggle="modal" data-target="#novoDocPessoal" class="btn btn-primary btn-icon-split btn-sm" title="Adicionar">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-plus"></i>
+                                </span>
+                                <span class="text">Adicionar documento pessoal</span>
+                            </a>
                         </div>
 
                     </div>
@@ -445,7 +450,7 @@
 
                                 @if ($docAcademico->imagem != null)
                                 <i class="far fa-address-card mr-2"></i>
-                                <a class="font-weight-bold" target="_blank" href="{{route('documento-academico.show',$docacademico)}}">{{$docAcademico->tipo}}</a>
+                                <a class="font-weight-bold" target="_blank" href="{{route('documento-academico.show', $docAcademico)}}">{{$docAcademico->tipo}}</a>
                                 <span class=""><small>({{ date('d-M-y', strtotime($docAcademico->created_at)) }})</small></span>
 
                                 @if($docAcademico->verificacao==0)
@@ -468,12 +473,15 @@
                         @endif
 
                         {{-- Adicionar Documento Academico --}}
-                        <div class="col text-left">
-                            <a href="#" class="btn btn-sm btn-primary m-1 mr-2 px-3" data-toggle="modal" data-target="#novoDocAcademico"><i class="fas fa-plus mr-2 "></i>Adicionar Documento Academico</a>
+                        <div class="text-right mt-2">
+                            <a href="#" data-toggle="modal" data-target="#novoDocAcademico" class="btn btn-primary btn-icon-split btn-sm" title="Adicionar">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-plus"></i>
+                                </span>
+                                <span class="text">Adicionar documento académico</span>
+                            </a>
                         </div>
-
                     </div>
-
                 </div>
 
                 <br>
@@ -638,36 +646,33 @@
 </form>
 
 <!-- Modal -->
-<form class="form-group needs-validation" id="Form-Documento-Academico" action="{{route('documento-academico.createFromClient', $client)}}" method="post" id="form_fase" enctype="multipart/form-data" novalidate>
+<form class="form-group needs-validation" id="Form-Documento-Academico" action="{{route('documento-academico.createFromClient', $client)}}" method="post" novalidate>
     @csrf
-
     <div class="modal fade" id="novoDocAcademico" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Novo Documento Pessoal</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <div class="modal-header pl-4 pb-1 pt-4">
+                    <h5 class="modal-title text-gray-800 font-weight-bold">Quer adicionar um novo documento?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close-button">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <br>
-
-                    {{-- INPUT tipoDocumento --}}
-                    <label for="NomeDocumentoAcademico" class="font-weight-bold">Nome do Documento:</label>
-                    <input class="form-control" id="NomeDocumentoAcademico" style="width: 100%;" name="NomeDocumentoAcademico" required>
-
+                <div class="modal-body text-gray-800 pl-4 pr-5">
+                    <div class="form-row p-2">
+                        <label for="NomeDocumentoAcademico" class="text-gray-900">Nome do documento <sup class="text-danger small">&#10033;</sup></label>
+                        <input class="form-control" id="NomeDocumentoAcademico" name="NomeDocumentoAcademico" placeholder="Insira um nome..." required>
+                        <div class="invalid-feedback">
+                            Oops, parece que algo não está bem...
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-sm btn-success px-2"><i class="fas fa-plus mr-2 "></i>Adicionar
-                        Documento</button>
-                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cancelar</button>
-
+                <div class="modal-footer mt-3">
+                    <a data-dismiss="modal" class="mr-4 font-weight-bold" id="close-option">Fechar</a>
+                    <button type="submit" class="btn btn-primary font-weight-bold mr-2">Adicionar documento</button>
                 </div>
             </div>
         </div>
     </div>
-
 </form>
 
 @endsection

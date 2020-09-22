@@ -163,8 +163,8 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 mb-3">
-                                                    <label for="nome-campo1" class="text-gray-900">Valor do campo #1 <sup class="text-danger small">&#10033;</sup></label>
-                                                    <input type="text" class="form-control" name="nome-campo1" id="nome-campo1" placeholder="Insira um valor..." required>
+                                                    <label for="valor-campo1" class="text-gray-900">Valor do campo #1 <sup class="text-danger small">&#10033;</sup></label>
+                                                    <input type="text" class="form-control" name="valor-campo1" id="valor-campo1" placeholder="Insira um valor..." required>
                                                     <div class="invalid-feedback">
                                                         Oops, parece que algo não está bem...
                                                     </div>
@@ -200,7 +200,7 @@
                                             </div>
                                         </div>
                                         <div class="col-md-6 mb-3">
-                                            <label id="label2" for="nome-campo" class="text-gray-900">Valor do campo <sup class="text-danger small">&#10033;</sup></label>
+                                            <label id="label2" for="valor-campo" class="text-gray-900">Valor do campo <sup class="text-danger small">&#10033;</sup></label>
                                             <input type="text" class="form-control" name="valor-campo" id="input2" placeholder="Insira um valor..." required>
                                             <div class="invalid-feedback">
                                                 Oops, parece que algo não está bem...
@@ -217,13 +217,11 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group text-right">
-                                    <br>
-                                    <button type="submit" class="btn btn-sm btn-success m-1 mr-2 px-3" name="submit"><i class="fas fa-check-circle mr-2"></i>Adicionar documento</button>
-                                    <a href="javascript:history.go(-1)" class="btn btn-sm btn-secondary px-3">Cancelar</a>
+                                <div class="text-right mt-5 mr-4 mb-3" id="groupBtn">
+                                    <span class="mr-4 font-weight-bold" onclick="window.history.back();" id="cancelBtn" style="cursor:pointer;">Cancelar</span>
+                                    <button type="submit" name="button" class="btn btn-primary text-white font-weight-bold" id="submitbtn">Adicionar documento</button>
                                 </div>
                             </form>
-                            <br>
         </div>
     </div>
 </div>

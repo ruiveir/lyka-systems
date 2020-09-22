@@ -27,7 +27,7 @@
         Recursos Humanos
     </div>
 
-    <li class="nav-item <?php if (Route::is('clients.*') || Route::is('produtos.*')) { echo 'active'; } ?>">
+    <li class="nav-item <?php if (Route::is('clients.*') || Route::is('produtos.*') || Route::is('documento-*.*')) { echo 'active'; } ?>">
         <a class="nav-link" href="{{route('clients.index')}}">
             <i class="fas fa-fw fa-user"></i>
             <span>Estudantes</span></a>
