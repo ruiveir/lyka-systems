@@ -63,12 +63,12 @@
     </div>
 
     <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item <?php if (Route::is('payments.*') || Route::is('charges.*') || Route::is('conta.*')) { echo 'active'; } ?>">
+    <li class="nav-item <?php if (Route::is('payments.*') || Route::is('charges.*') || Route::is('conta.*') || Route::is('relatorio.*')) { echo 'active'; } ?>">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFinance" aria-expanded="true" aria-controls="collapseFinance">
             <i class="fas fa-fw fa-chart-area"></i>
             <span>Finanças</span>
         </a>
-        <div id="collapseFinance" class="collapse <?php if (Route::is('payments.*') || Route::is('charges.*') || Route::is('conta.*')) { echo 'show'; } ?>" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+        <div id="collapseFinance" class="collapse <?php if (Route::is('payments.*') || Route::is('charges.*') || Route::is('conta.*') || Route::is('relatorio.*')) { echo 'show'; } ?>" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Páginas principais:</h6>
                 @if (Auth()->user()->tipo == "admin" && Auth()->user()->idAdmin != null)
