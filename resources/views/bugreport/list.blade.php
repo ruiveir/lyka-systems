@@ -27,9 +27,8 @@
                         <tr>
                             <th>Utilizador</th>
                             <th>E-mail</th>
-                            <th style="max-width:350px; min-width:350px;">Relatório</th>
-                            <th>Estado</th>
                             <th>Data de recção</th>
+                            <th>Estado</th>
                             <th style="max-width:100px; min-width:100px;">Opções</th>
                         </tr>
                     </thead>
@@ -38,13 +37,9 @@
                         <tr>
                             <td>{{$bugreport->nome}}</td>
                             <td>{{$bugreport->email}}</td>
-                            <td>
-                                <div style="width:350px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{$bugreport->relatorio}}
-                                    <div>
-                            </td>
+                            <td>{{date('d/m/Y', strtotime($bugreport->created_at))}}</td>
                             <td @if($bugreport->estado == "Pendente") class="text-danger font-weight-bold" @elseif($bugreport->estado == "Resolvido") class="text-success font-weight-bold"
                                     @else class="text-warning font-weight-bold" @endif>{{$bugreport->estado}}</td>
-                            <td>{{date('d/m/Y', strtotime($bugreport->created_at))}}</td>
                             <td class="text-center align-middle">
                                 <a href="{{route("bugreport.show", $bugreport)}}" class="btn btn-sm btn-outline-primary" title="Relatório completo"><i class="far fa-eye"></i></a>
                                 <button data-toggle="modal" data-target="#editModal" data-id="{{$bugreport->idRelatorioProblema}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></button>
