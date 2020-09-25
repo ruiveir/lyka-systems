@@ -22,7 +22,7 @@ class RestorePasswordMail extends Mailable
 
     public function build()
     {
-      return $this->from('lykasystems@mail.com', 'Lyka Systems')
+      return $this->from('lykasystems@gmail.com', 'Lyka Systems')
           ->subject('Lyka Systems | Restaurar palavra-chave - '.$this->name)
           ->markdown('mails.restore-password')
           ->with([

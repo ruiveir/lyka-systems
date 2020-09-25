@@ -31,6 +31,6 @@ class SendReportMail implements ShouldQueue
 
     public function handle()
     {
-        Mail::to("lykasystems@mail.com")->send(new ReportProblemMail($this->name, $this->email, $this->phone, $this->text, $this->errorfile));
+        Mail::to("lykasystems@gmail.com")->send(new ReportProblemMail($this->name, $this->email, $this->phone, $this->text, $this->errorfile));
     }
 }

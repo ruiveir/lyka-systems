@@ -21,7 +21,7 @@ class SendEmailConfirmation extends Mailable
 
     public function build()
     {
-        return $this->from('lykasystems@estudarportugal.com', 'Lyka Systems')
+        return $this->from('lykasystems@gmail.com', 'Lyka Systems')
             ->subject('Lyka Systems | Ativação Conta - '.$this->name)
             ->markdown('mails.confirmation')
             ->with([
