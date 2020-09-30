@@ -110,7 +110,7 @@ class AgenteController extends Controller
             $name = $agent->nome.' '.$agent->apelido;
             $email = $agent->email;
             $auth_key = $user->auth_key;
-            dispatch(new SendWelcomeEmail($email, $name, $auth_key));
+            // dispatch(new SendWelcomeEmail($email, $name, $auth_key));
 
             return redirect()->route('agents.index')->with('success', 'Registo criado com sucesso! Aguarda ativação de conta.');
 
