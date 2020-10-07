@@ -21,7 +21,7 @@
             <h6 class="m-0 font-weight-bold text-primary">Formulário de edição do contacto do(a) {{$contact->nome}}</h6>
         </div>
         <div class="card-body">
-            <form class="form-group needs-validation" action="{{route('contacts.update', $contact)}}" method="POST" novalidate>
+            <form class="form-group needs-validation" action="{{route('contacts.update', $contact)}}" method="POST" novalidate enctype="multipart/form-data">
                 @csrf
                 @method("PUT")
                 <div class="container-fluid">

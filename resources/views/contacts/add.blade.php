@@ -29,7 +29,7 @@
             @endif
         </div>
         <div class="card-body">
-            <form class="form-group needs-validation" action="{{route('contacts.store')}}" method="POST" novalidate>
+            <form class="form-group needs-validation" action="{{route('contacts.store')}}" method="POST" novalidate enctype="multipart/form-data">
                 @csrf
                 <div class="container-fluid">
                     @include('contacts.partials.add-edit')
