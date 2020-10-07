@@ -29,7 +29,7 @@ class ProdutosstockController extends Controller
         for($i = 0; $i <= 5; $i++){
             $anosAcademicos[] = ($anoAtual-1+$i)."/".($anoAtual+$i);
         }
-        
+
         $produtostock = new ProdutoStock();
         return view('produtostock.add', compact('produtostock','anosAcademicos'));
     }
@@ -45,7 +45,14 @@ class ProdutosstockController extends Controller
 
     public function edit(ProdutoStock $produtostock)
     {
-        return view('produtostock.edit', compact('produtostock'));
+        $anosAcademicos = null;
+        $anoAtual =  date("Y");
+
+        for($i = 0; $i <= 5; $i++){
+            $anosAcademicos[] = ($anoAtual-1+$i)."/".($anoAtual+$i);
+        }
+
+        return view('produtostock.edit', compact('produtostock', 'anosAcademicos'));
     }
 
     public function update(StoreProdutosstockRequest $request, ProdutoStock $produtostock)

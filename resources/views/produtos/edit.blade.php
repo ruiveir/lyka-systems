@@ -270,7 +270,7 @@
                                 <div class="form-row mb-3" id="responsabilidades{{$responsabilidade->idResponsabilidade}}">
                                     @if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)
                                         <div class="col-md-6 mb-3">
-                                            <label class="text-gray-900" for="resp-cliente-fase{{$fase->idFase}}">PickPocket para cliente <sup class="text-danger small">&#10033;</sup></label>
+                                            <label class="text-gray-900" for="resp-cliente-fase{{$fase->idFase}}">Pocket Money para cliente <sup class="text-danger small">&#10033;</sup></label>
                                             <div class="input-group">
                                                 <input type="number" class="form-control form-required" placeholder="Insira um valor..." value="{{$responsabilidade->valorCliente}}" name="resp-cliente-fase{{$fase->idFase}}" id="resp-cliente-fase{{$fase->idFase}}">
                                                 <div class="input-group-append">
@@ -290,7 +290,7 @@
                                         </div>
                                         @else
                                         <div class="col-md-6 mb-3">
-                                            <label class="text-gray-900" for="resp-cliente-fase{{$fase->idFase}}">PickPocket para cliente <sup class="text-danger small">&#10033;</sup></label>
+                                            <label class="text-gray-900" for="resp-cliente-fase{{$fase->idFase}}">Pocket Money para cliente <sup class="text-danger small">&#10033;</sup></label>
                                             <div class="input-group">
                                                 <input type="number" class="form-control form-required" placeholder="Insira um valor..." name="resp-cliente-fase{{$fase->idFase}}" id="resp-cliente-fase{{$fase->idFase}}" readonly>
                                                 <div class="input-group-append">

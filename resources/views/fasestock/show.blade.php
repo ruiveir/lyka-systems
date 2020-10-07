@@ -9,6 +9,12 @@
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h4 mb-0 text-gray-800">Ficha da fase - <b>{{$fasestock->descricao}}</b></h1>
         <div>
+            <a href="/produtostock" class="btn btn-success btn-icon-split btn-sm" title="Adicionar">
+                <span class="icon text-white-50">
+                    <i class="fas fa-check"></i>
+                </span>
+                <span class="text">Conclusão das fases</span>
+            </a>
             <a href="#" data-toggle="modal" data-target="#addDocument" class="btn btn-primary btn-icon-split btn-sm" title="Adicionar">
                 <span class="icon text-white-50">
                     <i class="fas fa-plus"></i>

@@ -164,7 +164,7 @@
                                     </div>
                                     <div class="form-row mb-3">
                                         <div class="col-md-6 mb-3">
-                                            <label class="text-gray-900" for="resp-cliente-fase{{$num}}">PickPocket para cliente <sup class="text-danger small">&#10033;</sup></label>
+                                            <label class="text-gray-900" for="resp-cliente-fase{{$num}}">Pocket Money para cliente <sup class="text-danger small">&#10033;</sup></label>
                                             <div class="input-group">
                                                 <input type="number" class="form-control form-required" name="resp-cliente-fase{{$num}}" id="resp-cliente-fase{{$num}}" value="{{old('valorCliente',$Responsabilidades[$num-1]->valorCliente)}}"
                                                     placeholder="Inserir um valor..." required>
