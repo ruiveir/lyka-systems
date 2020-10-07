@@ -25,7 +25,7 @@
             @endif
         </div>
         <div class="card-body">
-            <form class="form-group needs-validation" action="{{route('agents.update', $agent)}}" method="POST" novalidate>
+            <form class="form-group needs-validation" action="{{route('agents.update', $agent)}}" method="POST" novalidate enctype="multipart/form-data">
                 @csrf
                 @method("PUT")
                 <div class="container-fluid">

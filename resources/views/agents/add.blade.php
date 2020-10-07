@@ -21,7 +21,7 @@
             <h6 class="m-0 font-weight-bold text-primary">Formulário de criação de um novo agente</h6>
         </div>
         <div class="card-body">
-            <form class="form-group needs-validation" action="{{route('agents.store')}}" method="POST" novalidate>
+            <form class="form-group needs-validation" action="{{route('agents.store')}}" method="POST" novalidate enctype="multipart/form-data">
                 @csrf
                 <div class="container-fluid">
                     @include('agents.partials.add-edit')
