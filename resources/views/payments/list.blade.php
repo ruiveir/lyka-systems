@@ -220,7 +220,7 @@
                                 Vencido
                             @elseif ($relacao->verificacaoPago == false && $relacao->estado == "Pendente")
                                 Pendente
-                            @elseif ($relacao->verificacaoPago == true)
+                            @elseif ($relacao->verificacaoPago == true && $relacao->estado == "Pago")
                                 Pago
                             @endif
                             </td>

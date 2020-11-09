@@ -503,7 +503,9 @@ class PaymentController extends Controller
             $pagoResponsabilidade->idConta = $contaFornecedor;
             $pagoResponsabilidade->save();
 
-            if ($valorFornecedor >= $relacao->valor) {
+            dd($pagoResponsabilidade->valorPago >= $relacao->valor);
+
+            if ($pagoResponsabilidade->valorPago >= $relacao->valor) {
                 $relacao->update([
                     'verificacaoPago' => '1',
                     'estado' => 'Pago'

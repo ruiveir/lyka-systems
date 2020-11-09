@@ -9,8 +9,8 @@ class DocPessoal extends Migration
     public function up()
     {
         Schema::create('doc_pessoal', function (Blueprint $table) {
-            $table->charset = 'latin1';
-            $table->collation = 'latin1_swedish_ci';
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_general_ci';
             $table->bigIncrements('idDocPessoal');
             $table->string('idCliente',255)->nullable();
             $table->string('tipo', 255);
