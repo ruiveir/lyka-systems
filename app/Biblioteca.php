@@ -17,7 +17,8 @@ class Biblioteca extends Model
         'descricao',
         'ficheiro',
         'tipo',
-        'tamanho'
+        'tamanho',
+        'link'
     ];
 
     public function getSlugOptions() : SlugOptions

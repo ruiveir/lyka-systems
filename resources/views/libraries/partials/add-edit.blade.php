@@ -1,102 +1,38 @@
-<div class="row ">
-    <div class="col col-lg-2 col-md-12 text-center text-primary" style="min-width:350px">
-
-        {{-- INPUT Ficheiro --}}
-        <div>
-            <label for="ficheiro" style="font-weight: 700!important;">Ficheiro:</label>
-            <input type='file' id="ficheiro" name="ficheiro" style="display:none"  />
+<div class="form-row mb-3">
+    <div class="col-md-6 mb-3">
+        <label for="ficheiro" class="text-gray-900">Documento</label>
+        <div class="custom-file mb-3">
+            <input type="file" class="custom-file-input" name="ficheiro" id="ficheiro">
+            <small class="form-text text-muted">O ficheiro não deve ultrupassar 20MB.</small>
+            <label class="custom-file-label" for="ficheiro" data-browse="Escolher">Escolha um ficheiro...</label>
         </div>
-
-
-
-        {{-- NÃO EXISTE FICHEIRO --}}
-        <div id="add_file" class="card rounded shadow-sm p-2 text-center align-middle "
-            style="height:250px;cursor:pointer">
-            <i class="fas fa-plus-circle my-auto" style="font-size:60px;" title="Clique para mudar"></i>
-        </div>
-
-
-        {{-- EXISTE FICHEIRO --}}
-
-        <a id="replace_file" href="#" class="name_link" title="Clique para mudar">
-            <div id="file_frame" class="card rounded shadow-sm p-2 text-center align-middle "
-                style="height:250px;cursor:pointer">
-                <div class="my-auto">
-                    <i class="far fa-file-alt" style="font-size:60px"></i>
-                    <div class="mt-3" id="aux_file_name" value="{{old('ficheiro',$library->ficheiro)}}">{{old('ficheiro',$library->ficheiro)}}</div>
-                </div>
-            </div>
-        </a>
-        <div id="warning-file" style="display:none;"><small class="text-danger"><strong>É necessário escolher um
-                    ficheiro</strong></small></div>
-        <div class="mt-2 mb-3"><small class="text-muted">(clique para mudar)</small></div>
-
     </div>
-
-
-
-    <div class="col" style="min-width: 300px">
-
-        <div class="row">
-
-            {{-- Nome do ficheiro --}}
-            <input type="hidden" value="{{old('ficheiro',$library->ficheiro)}}" class="form-control" name="file_name"
-                id="file_name" maxlength="30" required>
-
-            <div class="col">
-                {{-- Tipo de acesso --}}
-                <label for="acesso" style="font-weight: 700!important;">Tipo de acesso:</label>
-                <select name="acesso" id="acesso" class="form-control select_style" required>
-                    <option {{old('acesso',$library->acesso)=='Privado'?"selected":""}} value="Privado">Privado
-                    </option>
-                    <option {{old('acesso',$library->acesso)=='Público'?"selected":""}} value="Público">Público
-                    </option>
-                </select>
-            </div>
-
-        </div>
-        <div class="row mt-3">
-            <div class="col">
-                <label for="descricao" style="font-weight: 700!important;">Descrição curta:</label>
-                <input value="{{old('descricao',$library->descricao)}}" type="text" class="form-control"
-                    name="descricao" id="descricao" maxlength="70" required>
-                <div class="invalid-feedback">É necessário inserir uma descricão curta</div>
-            </div>
-
-            {{-- Inputs auxiliares --}}
-            <input type="hidden" name="tipo" id="tipo" value="{{old('tipo',$library->tipo)}}">
-            <input type="hidden" name="tamanho" id="tamanho" value="{{old('tamanho',$library->tamanho)}}">
-        </div>
-
-        <div class="p-3 bg-light rounded border mt-4">
-
-            {{-- Quando NÃO EXISTE ficheiro --}}
-            <div id="div_nofile" style="height:70px">
-                <div class="text-center" style="padding: 15px">
-                    <i class="fas fa-info-circle mr-2"></i>Nenhum ficheiro selecionado<br>
-                    <small>(Para continuar escolha um ficheiro)</small>
-                </div>
-            </div>
-
-
-            {{-- Quand EXISTE ficheiro --}}
-            {{-- File info --}}
-            <div id="div_propriedades">
-                <div class="font-weight-bold"><i class="fas fa-info-circle mr-2"></i>Informação sobre o ficheiro:</div>
-                <div class="mt-3">Tipo de ficheiro: <span id="info_fileType"
-                        class="font-weight-bold">{{old('ficheiro',$library->tipo)}}</span> </div>
-                <div class="mt-2">Tamanho: <span id="info_fileSize"
-                        class="font-weight-bold">{{old('ficheiro',$library->tamanho)}}</span> </div>
-
-                <div class="mt-2">Última modificação: <span id="info_dateCreated"
-                        class="font-weight-bold">{{old('ficheiro',$library->created_ate)}}</span></div>
-            </div>
-
-
-        </div>
-
+    <div class="col-md-6 mb-3">
+        <label for="link" class="text-gray-900">Link de acesso ao documento</label>
+        <input type="text" class="form-control" name="link" id="link" placeholder="Insira um link..." required>
+        <small class="form-text text-muted">Deve colocar um link de acesso ao documento quando o mesmo passa de 20MB.</small>
     </div>
-
-
-
 </div>
+
+<div class="form-row mb-3">
+    <div class="col-md-6 mb-3">
+        <label for="descricao" class="text-gray-900">Descrição do documento <sup class="text-danger small">&#10033;</sup></label>
+        <input type="text" class="form-control" name="descricao" id="descricao" value="{{old('descricao',$library->descricao)}}" placeholder="Insira uma descrição..." required>
+    </div>
+    <div class="col-md-6 mb-3">
+        <label for="acesso" class="text-gray-900">Tipo de acesso <sup class="text-danger small">&#10033;</sup></label>
+        <select name="acesso" id="acesso" class="form-control custom-select" required>
+            <option disabled selected hidden>Escolha um tipo de acesso...</option>
+            <option {{old('acesso',$library->acesso)=='Privado'?"selected":""}} value="Privado">Privado</option>
+            <option {{old('acesso',$library->acesso)=='Público'?"selected":""}} value="Público">Público</option>
+        </select>
+    </div>
+</div>
+
+
+{{-- Nome do ficheiro --}}
+<input type="hidden" value="{{old('ficheiro',$library->ficheiro)}}" class="form-control" name="file_name" id="file_name" maxlength="30" required>
+
+{{-- Inputs auxiliares --}}
+<input type="hidden" name="tipo" id="tipo" value="{{old('tipo',$library->tipo)}}">
+<input type="hidden" name="tamanho" id="tamanho" value="{{old('tamanho',$library->tamanho)}}">

@@ -16,19 +16,11 @@ class StoreLibraryRequest extends FormRequest
         return [
             'acesso'=>'required|in:Privado,Público',
             'descricao' => 'required',
-            'ficheiro' => 'required',
+            'ficheiro' => 'nullable',
+            'link' => 'nullable',
             'file_name' => 'required',
             'tipo'=> 'required',
             'tamanho' => 'required'
-        ];
-    }
-
-    public function messages()
-    {
-        return [
-            'file_name.required' => 'É necessária um nome para o ficheiro',
-            'descricao.required' => 'É necessária uma descrição para o ficheiro',
-            'ficheiro.required' => 'É necessária um ficheiro'
         ];
     }
 }

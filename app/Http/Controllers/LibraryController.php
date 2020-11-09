@@ -76,11 +76,9 @@ class LibraryController extends Controller
 
             if ($request->hasFile('ficheiro')) {
                 $uploadfile = $request->file('ficheiro');
-
                 $file_name = $request->file_name . '('. $file->idBiblioteca.').'.$uploadfile->getClientOriginalExtension();
                 $file->ficheiro = $file_name;
                 Storage::disk('public')->putFileAs('library/', $uploadfile, $file_name);
-
                 $file->save();
             }
 
