@@ -17,9 +17,9 @@ class UpdateLibraryRequest extends FormRequest
             'acesso' => 'required|in:Privado,Público',
             'descricao' => 'required',
             'ficheiro' => 'nullable',
-            'file_name' => 'required',
-            'tipo'=> 'required',
-            'tamanho' => 'required',
+            'file_name' => 'nullable',
+            'tipo'=> 'nullable',
+            'tamanho' => 'nullable',
         ];
     }
 

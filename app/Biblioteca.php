@@ -24,7 +24,7 @@ class Biblioteca extends Model
     public function getSlugOptions() : SlugOptions
     {
         return SlugOptions::create()
-            ->generateSlugsFrom('ficheiro')
+            ->generateSlugsFrom('descricao')
             ->saveSlugsTo('slug');
     }
 

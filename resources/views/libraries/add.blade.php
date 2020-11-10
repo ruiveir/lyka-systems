@@ -65,6 +65,7 @@
 <script src="{{asset('/js/library.js')}}"></script>
 <script>
     $(document).ready(function() {
+        bsCustomFileInput.init();
         $('#table').DataTable({
             "language": {
                 "sEmptyTable": "Não foi encontrado nenhum registo",

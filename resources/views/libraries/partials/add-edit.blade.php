@@ -4,12 +4,12 @@
         <div class="custom-file mb-3">
             <input type="file" class="custom-file-input" name="ficheiro" id="ficheiro">
             <small class="form-text text-muted">O ficheiro não deve ultrupassar 20MB.</small>
-            <label class="custom-file-label" for="ficheiro" data-browse="Escolher">Escolha um ficheiro...</label>
+            <label class="custom-file-label" for="ficheiro" data-browse="Escolher">@if($library->ficheiro) {{$library->ficheiro}} @else Escolha um ficheiro... @endif</label>
         </div>
     </div>
     <div class="col-md-6 mb-3">
         <label for="link" class="text-gray-900">Link de acesso ao documento</label>
-        <input type="text" class="form-control" name="link" id="link" placeholder="Insira um link..." required>
+        <input type="text" class="form-control" name="link" id="link" placeholder="Insira um link...">
         <small class="form-text text-muted">Deve colocar um link de acesso ao documento quando o mesmo passa de 20MB.</small>
     </div>
 </div>

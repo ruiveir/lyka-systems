@@ -62,8 +62,8 @@
                         @foreach ($files as $library)
                         <tr>
                             <td title="{{$library->descricao}}">{{\Illuminate\Support\Str::limit($library->descricao, 25, $end='...')}}</td>
-                            <td>{{$library->tamanho}}</td>
-                            <td>{{$library->tipo}}</td>
+                            <td>@if($library->tamanho) {{$library->tamanho}} @else N/A @endif</td>
+                            <td>@if($library->tipo) {{$library->tipo}} @else N/A @endif</td>
                             <td>{{date('d/m/Y', strtotime($library->updated_at))}}</td>
                             @if (Auth()->user()->tipo == "admin")
                             <td>@if($library->acesso == "Privado") <span class="text-danger font-weight-bold">Privado</span> @else <span class="text-success font-weight-bold">Público</span> @endif</td>

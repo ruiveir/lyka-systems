@@ -18,9 +18,9 @@ class StoreLibraryRequest extends FormRequest
             'descricao' => 'required',
             'ficheiro' => 'nullable',
             'link' => 'nullable',
-            'file_name' => 'required',
-            'tipo'=> 'required',
-            'tamanho' => 'required'
+            'file_name' => 'nullable',
+            'tipo'=> 'nullable',
+            'tamanho' => 'nullable'
         ];
     }
 }
