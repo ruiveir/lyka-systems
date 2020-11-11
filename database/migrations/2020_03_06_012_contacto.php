@@ -9,15 +9,15 @@ class Contacto extends Migration
     public function up()
     {
         Schema::create('contacto', function (Blueprint $table) {
-            $table->charset = 'latin1';
-            $table->collation = 'latin1_swedish_ci';
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_general_ci';
             $table->bigIncrements('idContacto');
 
             $table->unsignedBigInteger('idUser')->nullable();
                 $table->foreign('idUser')->references('idUser')->on('user');
             $table->unsignedBigInteger('idUniversidade')->nullable();
                 $table->foreign('idUniversidade')->references('idUniversidade')->on('universidade');
-                
+
             $table->string('nome',255);
             $table->string('fotografia',255)->nullable();
             $table->string('telefone1',255)->nullable();

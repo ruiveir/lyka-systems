@@ -9,8 +9,8 @@ class DocNecessario extends Migration
     public function up()
     {
         Schema::create('doc_necessario', function (Blueprint $table) {
-            $table->charset = 'latin1';
-            $table->collation = 'latin1_swedish_ci';
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_general_ci';
             $table->bigIncrements('idDocNecessario');
             $table->enum('tipo',['Pessoal', 'Academico']);
             $table->string('tipoDocumento', 255);

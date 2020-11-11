@@ -9,8 +9,8 @@ class Agente extends Migration
     public function up()
     {
         Schema::create('agente', function (Blueprint $table) {
-            $table->charset = 'latin1';
-            $table->collation = 'latin1_swedish_ci';
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_general_ci';
             $table->bigIncrements('idAgente');
 
             $table->unsignedBigInteger('idAgenteAssociado')->nullable();
@@ -22,24 +22,17 @@ class Agente extends Migration
             $table->enum('tipo',['Agente', 'Subagente']);
             $table->boolean('exepcao')->default(false);
             $table->string('email',255)->unique();
-
             $table->date('dataNasc');
             $table->string('fotografia',255)->nullable();
             $table->string('morada',255);
             $table->string('pais',255);
             $table->string('NIF',255)->unique();
-
-
             $table->string('num_doc',255)->unique();
             $table->string('img_doc',255)->nullable();
-
             $table->string('telefone1',255);
             $table->string('telefone2',255)->nullable();
-
             $table->string('IBAN',255)->nullable();
             $table->longText('observacoes')->nullable();
-
-
             $table->string('slug')->nullable();
             $table->timestamps();
             $table->softDeletes();

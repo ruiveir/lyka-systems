@@ -11,10 +11,8 @@ class Cliente extends Migration
         Schema::create('cliente', function (Blueprint $table) {
             $table->charset = 'utf8mb4';
             $table->collation = 'utf8mb4_general_ci';
-
             $table->bigIncrements('idCliente');
             $table->unsignedBigInteger('idAgente')->nullable();
-
             $table->string('nome',255);
             $table->string('apelido',255);
             $table->enum('genero',['F','M'])->default('M');
@@ -35,12 +33,9 @@ class Cliente extends Migration
             $table->string('fotografia',255)->nullable();
             $table->string('NIF',255)->unique()->default(null)->nullable();
             $table->string('IBAN',255)->nullable();
-
             $table->enum('nivEstudoAtual',['Secundário Incompleto','Secundário Completo','Curso Tecnológico','Estuda na Universidade','Licenciado','Mestrado'])->nullable()->default(null);
-
             $table->string('nomeInstituicaoOrigem',255)->nullable();
             $table->string('cidadeInstituicaoOrigem',255)->nullable();
-
             $table->string('num_docOficial',255)->unique()->nullable();
             $table->longText('validade_docOficial')->nullable();
             $table->longText('numPassaporte')->nullable();
@@ -49,10 +44,8 @@ class Cliente extends Migration
             $table->longText('obsFinanceiras')->nullable();
             $table->longText('obsAcademicas')->nullable();
             $table->longText('obsAgente')->nullable();
-
             $table->enum('estado',['Inativo','Ativo', 'Proponente'])->default('Inativo');
             $table->boolean('editavel')->default(true);
-
             $table->string('slug')->nullable();
             $table->timestamps();
             $table->softDeletes();

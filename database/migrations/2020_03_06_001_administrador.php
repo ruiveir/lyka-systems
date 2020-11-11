@@ -9,8 +9,8 @@ class Administrador extends Migration
     public function up()
     {
         Schema::create('administrador', function (Blueprint $table) {
-            $table->charset = 'latin1';
-            $table->collation = 'latin1_swedish_ci';
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_general_ci';
             $table->bigIncrements('idAdmin');
             $table->string('nome',255);
             $table->string('apelido',255);

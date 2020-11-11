@@ -9,8 +9,8 @@ class User extends Migration
     public function up()
     {
         Schema::create('user', function (Blueprint $table) {
-            $table->charset = 'latin1';
-            $table->collation = 'latin1_swedish_ci';
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_general_ci';
             $table->bigIncrements('idUser');
             $table->string('email', 255)->unique();
             $table->enum('tipo',['admin', 'agente', 'cliente']);

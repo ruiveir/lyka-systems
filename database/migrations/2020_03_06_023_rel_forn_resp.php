@@ -9,8 +9,8 @@ class RelFornResp extends Migration
     public function up()
     {
         Schema::create('rel_forn_resp', function (Blueprint $table) {
-            $table->charset = 'latin1';
-            $table->collation = 'latin1_swedish_ci';
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_general_ci';
             $table->bigIncrements('idRelacao');
             $table->decimal('valor', 18, 2);
             $table->boolean('verificacaoPago')->default(false);
