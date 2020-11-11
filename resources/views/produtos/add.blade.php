@@ -145,9 +145,9 @@
                                                 <div class="input-group-append">
                                                     <span class="input-group-text">€</span>
                                                 </div>
-                                                <div class="invalid-feedback">
-                                                    Oops, parece que algo não está bem...
-                                                </div>
+                                            </div>
+                                            <div class="invalid-feedback">
+                                                Oops, parece que algo não está bem...
                                             </div>
                                         </div>
                                         <div class="col-md-4 mb-3">
@@ -164,27 +164,21 @@
                                     </div>
                                     <div class="form-row mb-3">
                                         <div class="col-md-6 mb-3">
-                                            <label class="text-gray-900" for="resp-cliente-fase{{$num}}">Pocket Money para cliente <sup class="text-danger small">&#10033;</sup></label>
+                                            <label class="text-gray-900" for="resp-cliente-fase{{$num}}">Pocket Money para cliente</label>
                                             <div class="input-group">
-                                                <input type="number" class="form-control form-required" name="resp-cliente-fase{{$num}}" id="resp-cliente-fase{{$num}}" value="{{old('valorCliente',$Responsabilidades[$num-1]->valorCliente)}}"
-                                                    placeholder="Inserir um valor..." required>
+                                                <input type="number" class="form-control" name="resp-cliente-fase{{$num}}" id="resp-cliente-fase{{$num}}" value="{{old('valorCliente',$Responsabilidades[$num-1]->valorCliente)}}"
+                                                    placeholder="Inserir um valor...">
                                                 <div class="input-group-append">
                                                     <span class="input-group-text">€</span>
-                                                </div>
-                                                <div class="invalid-feedback">
-                                                    Oops, parece que algo não está bem...
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label class="text-gray-900" for="resp-data-cliente-fase{{$num}}">Data de vencimento (Cliente)</label>
                                             <div class="input-group">
-                                                <input type="date" class="form-control form-required" name="resp-data-cliente-fase{{$num}}" id="resp-data-cliente-fase{{$num}}">
+                                                <input type="date" class="form-control" name="resp-data-cliente-fase{{$num}}" id="resp-data-cliente-fase{{$num}}">
                                                 <div class="input-group-append">
                                                     <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
-                                                </div>
-                                                <div class="invalid-feedback">
-                                                    Oops, parece que algo não está bem...
                                                 </div>
                                             </div>
                                         </div>
@@ -192,22 +186,19 @@
 
                                     <div class="form-row mb-3">
                                         <div class="col-md-6 mb-3">
-                                            <label class="text-gray-900" for="resp-agente-fase{{$num}}">Valor a pagar ao agente <sup class="text-danger small">&#10033;</sup></label>
+                                            <label class="text-gray-900" for="resp-agente-fase{{$num}}">Valor a pagar ao agente</label>
                                             <div class="input-group">
-                                                <input type="number" class="form-control form-required" name="resp-agente-fase{{$num}}" id="resp-agente-fase{{$num}}" value="{{old('valorAgente',$Responsabilidades[$num-1]->valorAgente)}}"
-                                                    placeholder="Inserir um valor..." required>
+                                                <input type="number" class="form-control" name="resp-agente-fase{{$num}}" id="resp-agente-fase{{$num}}" value="{{old('valorAgente',$Responsabilidades[$num-1]->valorAgente)}}"
+                                                    placeholder="Inserir um valor...">
                                                 <div class="input-group-append">
                                                     <span class="input-group-text">€</span>
-                                                </div>
-                                                <div class="invalid-feedback">
-                                                    Oops, parece que algo não está bem...
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label class="text-gray-900" for="resp-data-agente-fase{{$num}}">Data de vencimento (Agente)</label>
                                             <div class="input-group">
-                                                <input type="date" class="form-control form-required" name="resp-data-agente-fase{{$num}}" id="resp-data-agente-fase{{$num}}">
+                                                <input type="date" class="form-control" name="resp-data-agente-fase{{$num}}" id="resp-data-agente-fase{{$num}}">
                                                 <div class="input-group-append">
                                                     <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
                                                 </div>
@@ -219,7 +210,7 @@
                                         <div class="col-md-6 mb-3">
                                             <label class="text-gray-900" for="resp-subagente-fase{{$fase->idFase}}">Valor a pagar ao sub-agente</label>
                                             <div class="input-group">
-                                                <input type="number" class="form-control form-required" name="resp-subagente-fase{{$fase->idFase}}" id="resp-subagente-fase{{$fase->idFase}}"
+                                                <input type="number" class="form-control" name="resp-subagente-fase{{$fase->idFase}}" id="resp-subagente-fase{{$fase->idFase}}"
                                                     value="{{old('valorSubAgente',$Responsabilidades[$num-1]->valorSubAgente)}}" placeholder="Inserir um valor...">
                                                 <div class="input-group-append">
                                                     <span class="input-group-text">€</span>
@@ -229,7 +220,7 @@
                                         <div class="col-md-6 mb-3">
                                             <label class="text-gray-900" for="resp-data-subagente-fase{{$num}}">Data de vencimento (Sub-agente)</label>
                                             <div class="input-group">
-                                                <input type="date" class="form-control form-required" name="resp-data-subagente-fase{{$num}}" id="resp-data-subagente-fase{{$num}}">
+                                                <input type="date" class="form-control" name="resp-data-subagente-fase{{$num}}" id="resp-data-subagente-fase{{$num}}">
                                                 <div class="input-group-append">
                                                     <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
                                                 </div>
@@ -239,22 +230,19 @@
 
                                     <div class="form-row mb-3">
                                         <div class="col-md-6 mb-3">
-                                            <label class="text-gray-900" for="resp-uni1-fase{{$num}}">Valor a pagar á universidade principal <sup class="text-danger small">&#10033;</sup></label>
+                                            <label class="text-gray-900" for="resp-uni1-fase{{$num}}">Valor a pagar á universidade principal</label>
                                             <div class="input-group">
-                                                <input type="number" class="form-control form-required" name="resp-uni1-fase{{$num}}" id="resp-uni1-fase{{$num}}" value="{{old('valorUniversidade1',$Responsabilidades[$num-1]->valorUniversidade1)}}"
-                                                    placeholder="Inserir um valor..." required>
+                                                <input type="number" class="form-control" name="resp-uni1-fase{{$num}}" id="resp-uni1-fase{{$num}}" value="{{old('valorUniversidade1',$Responsabilidades[$num-1]->valorUniversidade1)}}"
+                                                    placeholder="Inserir um valor...">
                                                 <div class="input-group-append">
                                                     <span class="input-group-text">€</span>
-                                                </div>
-                                                <div class="invalid-feedback">
-                                                    Oops, parece que algo não está bem...
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label class="text-gray-900" for="resp-data-uni1-fase{{$num}}">Data de vencimento (Universidade principal)</label>
                                             <div class="input-group">
-                                                <input type="date" class="form-control form-required" name="resp-data-uni1-fase{{$num}}" id="resp-data-uni1-fase{{$num}}">
+                                                <input type="date" class="form-control" name="resp-data-uni1-fase{{$num}}" id="resp-data-uni1-fase{{$num}}">
                                                 <div class="input-group-append">
                                                     <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
                                                 </div>
@@ -266,7 +254,7 @@
                                         <div class="col-md-6 mb-3">
                                             <label class="text-gray-900" for="resp-uni2-fase{{$num}}">Valor a pagar á universidade secundária</label>
                                             <div class="input-group">
-                                                <input type="number" class="form-control form-required" name="resp-uni2-fase{{$num}}" id="resp-uni2-fase{{$num}}" value="{{old('valorUniversidade2',$Responsabilidades[$num-1]->valorUniversidade2)}}"
+                                                <input type="number" class="form-control" name="resp-uni2-fase{{$num}}" id="resp-uni2-fase{{$num}}" value="{{old('valorUniversidade2',$Responsabilidades[$num-1]->valorUniversidade2)}}"
                                                     placeholder="Inserir um valor...">
                                                 <div class="input-group-append">
                                                     <span class="input-group-text">€</span>
@@ -276,7 +264,7 @@
                                         <div class="col-md-6 mb-3">
                                             <label class="text-gray-900" for="resp-data-uni2-fase{{$num}}">Data de vencimento (Universidade secundária)</label>
                                             <div class="input-group">
-                                                <input type="date" class="form-control form-required" name="resp-data-uni2-fase{{$num}}" id="resp-data-uni2-fase{{$num}}">
+                                                <input type="date" class="form-control" name="resp-data-uni2-fase{{$num}}" id="resp-data-uni2-fase{{$num}}">
                                                 <div class="input-group-append">
                                                     <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
                                                 </div>
@@ -293,6 +281,7 @@
                                             <div id="clonar" class="mb-5">
                                                 <div class="form-row mb-3">
                                                     <div class="col-md-4 mb-3">
+                                                        {{-- <p>{{$num}}</p> --}}
                                                         <label class="text-gray-900" id="label1" for="fornecedor-fase{{$num}}">Fornecedor #1</label>
                                                         <select id="fornecedor-fase{{$num}}" name="fornecedor-fase{{$num}}" class="form-control custom-select" required>
                                                             <option selected disabled hidden>Escolha um fornecedor...</option>
@@ -305,7 +294,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4 mb-3">
-                                                        <label class="text-gray-900" id="label2" for="valor-fornecedor-fase{{$num}}">Valor a pagar <sup class="text-danger small">&#10033;</sup></label>
+                                                        <label class="text-gray-900" id="label2" for="">Valor a pagar <sup class="text-danger small">&#10033;</sup></label>
                                                         <div class="input-group">
                                                             <input type="number" class="form-control" name="valor-fornecedor-fase{{$num}}" id="valor-fornecedor-fase{{$num}}" value="{{old('valor',$relacao->valor)}}" placeholder="Insira um valor...">
                                                             <div class="input-group-append">
@@ -352,7 +341,7 @@
                     </div>
                     <div class="text-right mt-3 mr-4" id="groupBtn">
                         <a href="javascript:history.go(-1)" class="mr-4 font-weight-bold" id="cancelBtn" style="cursor:pointer;">Cancelar</a>
-                        <button type="submit" name="button" class="btn btn-primary text-white font-weight-bold" id="submitbtn">Registar produto</button>
+                        <button type="submit" name="button" class="btn btn-primary text-white font-weight-bold" id="submitbtn">Atribuir produto</button>
                     </div>
                 </div>
             </form>

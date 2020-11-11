@@ -394,7 +394,7 @@ class DataController extends Controller
         $produto = new Produto;
         $produto->descricao = 'Licenciatura';
         $produto->tipo = 'Licenciatura';
-        $produto->anoAcademico = 5;
+        $produto->anoAcademico = '2020/2021';
         $produto->valorTotal = 1500;
         $produto->valorTotalAgente = 300;
         $produto->valorTotalSubAgente = null;
@@ -408,7 +408,7 @@ class DataController extends Controller
         $produto = new Produto;
         $produto->descricao = 'Mestrado';
         $produto->tipo = 'Mestrado';
-        $produto->anoAcademico = 5;
+        $produto->anoAcademico = '2020/2021';
         $produto->valorTotal = 1900;
         $produto->valorTotalAgente = 300;
         $produto->valorTotalSubAgente = null;

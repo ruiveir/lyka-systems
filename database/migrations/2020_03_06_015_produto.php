@@ -9,8 +9,8 @@ class Produto extends Migration
     public function up()
     {
         Schema::create('produto', function (Blueprint $table) {
-            $table->charset = 'latin1';
-            $table->collation = 'latin1_swedish_ci';
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_general_ci';
             $table->bigIncrements('idProduto');
             $table->string('descricao',255);
             $table->enum('tipo',['Licenciatura','Mestrado','Doutoramento','Curso de Verão','Estágio Profissional','Transferência de Curso','Curso Indiomas','Erasmus','Pré-Universitário']);

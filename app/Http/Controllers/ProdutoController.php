@@ -58,11 +58,11 @@ class ProdutoController extends Controller
 
             $anosAcademicos = null;
             $anoAtual =  date("Y");
-    
+
             for($i = 0; $i <= 5; $i++){
                 $anosAcademicos[] = ($anoAtual-1+$i)."/".($anoAtual+$i);
             }
-            
+
 
             return view('produtos.add',compact('produto','produtoStock','cliente','Agentes','SubAgentes','Universidades','Fases','Responsabilidades','Fornecedores','relacao','anosAcademicos'));
         }else{
@@ -185,9 +185,6 @@ class ProdutoController extends Controller
                     $responsabilidade->idUniversidade1 = $produto->idUniversidade1;
                     $responsabilidade->idUniversidade2 = $produto->idUniversidade2;
 
-
-
-
                     $produto->save();
 
                     $fase->idProduto = $produto->idProduto;
@@ -294,7 +291,7 @@ class ProdutoController extends Controller
 
             $anosAcademicos = null;
             $anoAtual =  date("Y");
-    
+
             for($i = 0; $i <= 5; $i++){
                 $anosAcademicos[] = ($anoAtual-1+$i)."/".($anoAtual+$i);
             }
@@ -321,10 +318,6 @@ class ProdutoController extends Controller
 
             $fases = $produto->fase;
             $fields = $request->all();
-            //dd($fields);
-
-
-
             /*if(!$fields['anoAcademico']){
                 return redirect()->back()->withErrors(['required' => 'Ano académico é obrigatório']);
             }
@@ -353,11 +346,6 @@ class ProdutoController extends Controller
             if(!$permissao){
                 $produto->idUniversidade1 = $fields['uni1'];
                 $produto->idUniversidade2 = $fields['uni2'];
-
-                // data em que foi modificado
-                $t=time();
-                $produto->updated_at == date("Y-m-d",$t);
-
             }
 
             $valorProduto = 0;
@@ -455,8 +443,6 @@ class ProdutoController extends Controller
                         }
                         $responsabilidade->verificacaoPagoUni2 = false;
                     }
-
-
                     $responsabilidade->idCliente = $produto->idCliente;
                     $responsabilidade->idAgente = $produto->idAgente;
                     $responsabilidade->idUniversidade1 = $produto->idUniversidade1;
