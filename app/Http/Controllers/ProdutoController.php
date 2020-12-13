@@ -373,7 +373,6 @@ class ProdutoController extends Controller
                     $fase->descricao = $fields['descricao-fase'.$fase->idFase];
                     $fase->dataVencimento = date("Y-m-d",strtotime($fields['data-fase'.$fase->idFase]));
                     $fase->valorFase = $fields['valor-fase'.$fase->idFase];
-                    $fase->create_at == date("Y-m-d",$t);
                 }
                 $produto->save();
                 $fase->save();
@@ -503,7 +502,6 @@ class ProdutoController extends Controller
                                     }else{
                                         $relacao->valor = 0;
                                     }
-                                    $relacao->create_at == date("Y-m-d",$t);
                                     $relacao->save();
 
                                     $valorRelacoes = $valorRelacoes + $relacao->valor;

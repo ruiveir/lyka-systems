@@ -278,7 +278,7 @@
                                         <div class="col-md-6 mb-3">
                                             <label class="text-gray-900" for="resp-data-cliente-fase{{$fase->idFase}}">Data de vencimento (Cliente)</label>
                                             <div class="input-group">
-                                                <input type="date" class="form-control" name="resp-data-cliente-fase{{$fase->idFase}}" id="resp-data-cliente-fase{{$fase->idFase}}" value="{{date('Y-m-d', strtotime($responsabilidade->dataVencimentoCliente))}}">
+                                                <input type="date" class="form-control" name="resp-data-cliente-fase{{$fase->idFase}}" id="resp-data-cliente-fase{{$fase->idFase}}" @if($responsabilidade->dataVencimentoCliente) value="{{date('Y-m-d', strtotime($responsabilidade->dataVencimentoCliente))}}" @endif>
                                                 <div class="input-group-append">
                                                     <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
                                                 </div>
@@ -533,7 +533,7 @@
                                                                                     <div class="col-md-4 mb-3">
                                                                                         <label class="text-gray-900" id="label2" for="valor-fornecedor-fase{{$fase->idFase}}">Valor a pagar <sup class="text-danger small">&#10033;</sup></label>
                                                                                         <div class="input-group">
-                                                                                            <input type="number" class="form-control" name="valor-fornecedor-fase{{$fase->idFase}}" id="valor-fornecedor-fase{{$fase->idFase}}"
+                                                                                            <input type="number" class="form-control" name="valor-fornecedor-fase{{$fase->idFase}}" id="valor-fornecedor-fase"
                                                                                                 value="{{old('valor', $relacao->valor)}}" placeholder="Insira um valor...">
                                                                                             <div class="input-group-append">
                                                                                                 <span class="input-group-text">€</span>
@@ -595,7 +595,7 @@
                                                                                     <div class="col-md-4 mb-3">
                                                                                         <label class="text-gray-900" id="label2" for="valor-fornecedor{{$numF}}-fase{{$fase->idFase}}">Valor a pagar <sup class="text-danger small">&#10033;</sup></label>
                                                                                         <div class="input-group">
-                                                                                            <input type="number" class="form-control" name="valor-fornecedor{{$numF}}-fase{{$fase->idFase}}" id="valor-fornecedor{{$numF}}-fase{{$fase->idFase}}"
+                                                                                            <input type="number" class="form-control" name="valor-fornecedor{{$numF}}-fase{{$fase->idFase}}" id="valor-fornecedor-fase"
                                                                                                 value="{{old('valor',$relacao->valor)}}" placeholder="Insira um valor...">
                                                                                             <div class="input-group-append">
                                                                                                 <span class="input-group-text">€</span>
@@ -631,7 +631,7 @@
                                                                         </div>
                                                                         @if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)
                                                                             <div>
-                                                                                <a style="color: white;" onclick="addFornecedor({{$fase->idFase}},$(this).closest('.list-fornecedores'))" class="btn btn-primary btn-icon-split btn-sm" title="Editar">
+                                                                                <a style="color: white;" onclick="addFornecedor({{$num}},$(this).closest('.list-fornecedores'))" class="btn btn-primary btn-icon-split btn-sm" title="Editar">
                                                                                     <span class="text">Adicionar fornecedor</span>
                                                                                 </a>
                                                                                 {{--<button type="button" onclick="addFornecedor({{$fase->idFase}},$(this).closest('.list-fornecedores'))" class="top-button ">Adicionar fornecedor</button>--}}
@@ -677,25 +677,14 @@
 </div>
 <!-- End of Modal for more information  -->
 
-
-
-
-
-{{-- Scripts --}}
+<!-- Begin of Scripts  -->
 @section('scripts')
-
-{{-- script contem: datatable configs, input configs, validações --}}
-<script src="{{asset('/js/produtos.js')}}"></script>
-
-{{-- script permite definir se um input recebe só numeros OU so letras --}}
-<script src="{{asset('/js/jquery-key-restrictions.min.js')}}"></script>
 
 <script>
     var clones = $('#clonar').clone();
     $(".clones").remove();
     $("#formulario-produto").css("display", "none");
     $("#formulario-fases").css("display", "none");
-
 
     $(document).ready(function() {
         bsCustomFileInput.init();
@@ -715,6 +704,7 @@
     });
 
     function addFornecedor(idFase, closest) {
+        console.log(idFase);
         var numF = parseInt(closest.find('.numF').first().text());
         var clone = clones.clone();
         closest.find('.numF').first().text(numF + 1);
@@ -724,8 +714,8 @@
         $('select', clone).attr('id', 'fornecedor' + numF + '-fase' + idFase);
         $('select', clone).attr('name', 'fornecedor' + numF + '-fase' + idFase);
         $('#label2', clone).attr('for', 'valor-fornecedor' + numF + '-fase' + idFase);
-        $('#valor-fornecedor-fase' + idFase, clone).attr('name', 'valor-fornecedor' + numF + '-fase' + idFase);
-        $('#valor-fornecedor-fase' + idFase, clone).attr('id', 'valor-fornecedor' + numF + '-fase' + idFase);
+        $('#valor-fornecedor-fase', clone).attr('name', 'valor-fornecedor' + numF + '-fase' + idFase);
+        $('#valor-fornecedor-fase', clone).attr('id', 'valor-fornecedor' + numF + '-fase' + idFase);
         $('#label3', clone).text('Data de vencimento (Fornecedor #' + numF + ")");
         $('#label3', clone).attr('for', 'data-fornecedor' + numF + '-fase' + idFase);
         $('#data-fornecedor-fase' + idFase, clone).attr('name', 'data-fornecedor' + numF + '-fase' + idFase);
@@ -771,7 +761,6 @@
         }
     }
 </script>
-
 @endsection
 
 @endsection

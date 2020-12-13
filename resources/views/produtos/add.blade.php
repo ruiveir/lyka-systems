@@ -132,7 +132,6 @@
                                 @else
                                 <div class="tab-pane fade" id="fase{{$num}}" role="tabpanel" aria-labelledby="fase{{$num}}-tab">
                                     @endif
-
                                     <div class="form-row mb-3">
                                         <div class="col-md-4 mb-3">
                                             <label class="text-gray-900" for="descricao-fase{{$num}}">Descrição da fase</label>
@@ -281,7 +280,6 @@
                                             <div id="clonar" class="mb-5">
                                                 <div class="form-row mb-3">
                                                     <div class="col-md-4 mb-3">
-                                                        {{-- <p>{{$num}}</p> --}}
                                                         <label class="text-gray-900" id="label1" for="fornecedor-fase{{$num}}">Fornecedor #1</label>
                                                         <select id="fornecedor-fase{{$num}}" name="fornecedor-fase{{$num}}" class="form-control custom-select" required>
                                                             <option selected disabled hidden>Escolha um fornecedor...</option>
@@ -296,7 +294,7 @@
                                                     <div class="col-md-4 mb-3">
                                                         <label class="text-gray-900" id="label2" for="">Valor a pagar <sup class="text-danger small">&#10033;</sup></label>
                                                         <div class="input-group">
-                                                            <input type="number" class="form-control" name="valor-fornecedor-fase{{$num}}" id="valor-fornecedor-fase{{$num}}" value="{{old('valor',$relacao->valor)}}" placeholder="Insira um valor...">
+                                                            <input type="number" class="form-control" name="valor-fornecedor-fase" id="valor-fornecedor-fase" value="{{old('valor',$relacao->valor)}}" placeholder="Insira um valor...">
                                                             <div class="input-group-append">
                                                                 <span class="input-group-text">€</span>
                                                             </div>
@@ -308,7 +306,7 @@
                                                     <div class="col-md-4 mb-3">
                                                         <label class="text-gray-900" id="label3" for="data-fornecedor-fase{{$num}}">Data de vencimento (Fornecedor)</label>
                                                         <div class="input-group">
-                                                            <input type="date" class="form-control" name="data-fornecedor-fase{{$num}}" id="data-fornecedor-fase{{$num}}">
+                                                            <input type="date" class="form-control" name="data-fornecedor-fase" id="data-fornecedor-fase">
                                                             <div class="input-group-append">
                                                                 <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
                                                             </div>
@@ -406,12 +404,12 @@
             $('select', clone).attr('id', 'fornecedor' + numF + '-fase' + idFase);
             $('select', clone).attr('name', 'fornecedor' + numF + '-fase' + idFase);
             $('#label2', clone).attr('for', 'valor-fornecedor' + numF + '-fase' + idFase);
-            $('#valor-fornecedor-fase' + idFase, clone).attr('name', 'valor-fornecedor' + numF + '-fase' + idFase);
-            $('#valor-fornecedor-fase' + idFase, clone).attr('id', 'valor-fornecedor' + numF + '-fase' + idFase);
+            $('#valor-fornecedor-fase', clone).attr('name', 'valor-fornecedor' + numF + '-fase' + idFase);
+            $('#valor-fornecedor-fase', clone).attr('id', 'valor-fornecedor' + numF + '-fase' + idFase);
             $('#label3', clone).text('Data de vencimento (Fornecedor #' + numF + ")");
             $('#label3', clone).attr('for', 'data-fornecedor' + numF + '-fase' + idFase);
-            $('#data-fornecedor-fase' + idFase, clone).attr('name', 'data-fornecedor' + numF + '-fase' + idFase);
-            $('#data-fornecedor-fase' + idFase, clone).attr('id', 'data-fornecedor' + numF + '-fase' + idFase);
+            $('#data-fornecedor-fase', clone).attr('name', 'data-fornecedor' + numF + '-fase' + idFase);
+            $('#data-fornecedor-fase', clone).attr('id', 'data-fornecedor' + numF + '-fase' + idFase);
             $('#button', clone).attr('onclick', 'removerFornecedor(' + numF + ',' + idFase + ',$(this).closest("#div-fornecedor' + numF + '-fase' + idFase + '"))');
             $('#a_button', clone).text('Remover fornecedor #' + numF);
             closest.find('.fornecedor').first().append(clone);
