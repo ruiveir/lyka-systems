@@ -6,17 +6,18 @@
         <i class="fa fa-bars"></i>
     </button>
 
-    <!-- Topbar Search -->
-    <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-        <div class="input-group">
-            <input type="text" class="form-control bg-gray-200 border-0 small" placeholder="Procurar por..." aria-label="Search" aria-describedby="basic-addon2">
-            <div class="input-group-append">
-                <button class="btn btn-primary" type="button">
-                    <i class="fas fa-search fa-sm"></i>
-                </button>
-            </div>
-        </div>
-    </form>
+    <div class="next_previous ml-2">
+        <button type="button" class="btn btn-circle btn-sm btn-secondary round" id="previousButton">
+            <span class="mb-1" style="font-size:1.8rem;">
+                &#8249;
+            </span>
+        </button>
+        <button type="button" class="ml-1 btn btn-circle btn-sm btn-secondary round" id="forwardButton">
+            <span class="mb-1" style="font-size:1.8rem;">
+                &#8250;
+            </span>
+        </button>
+    </div>
 
     <!-- Topbar Navbar -->
     <ul class="navbar-nav ml-auto">
@@ -229,6 +230,17 @@
 
 @section('scripts')
 <script type="text/javascript">
+    var previousButton = document.getElementById('previousButton');
+    var forwardButton = document.getElementById('forwardButton');
+
+    previousButton.onclick = function(){
+        window.history.back();
+    }
+
+    forwardButton.onclick = function(){
+        window.history.forward();
+    }
+
     function showNotificacao(div) {
         div.find('.descricaoNotificacao').first().css({
             "display": "block"
