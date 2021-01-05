@@ -141,14 +141,6 @@ class ClientController extends Controller
         }
     }
 
-
-
-
-    /**
-    * Show the form for creating a new resource.
-    *
-    * @return \Illuminate\Http\Response
-    */
     public function create(){
 
         if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
@@ -165,19 +157,8 @@ class ClientController extends Controller
             /* não tem permissões */
             abort (403);
         }
-
-
     }
 
-
-
-
-    /***********************************************************************//*
-    *
-    * @param  \Illuminate\Http\Request  $request
-    * @return \Illuminate\Http\Response
-    * @param  \App\User  $user
-    */
     public function store(StoreClientRequest $requestClient){
 
         if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
@@ -193,6 +174,14 @@ class ClientController extends Controller
             $client->cidadeInstituicaoOrigem = ucwords(mb_strtolower($requestClient->cidadeInstituicaoOrigem,'UTF-8'));
 
             $client->save();
+
+            $processNumber = str_pad($client->idCliente, 3, '0', STR_PAD_LEFT);
+            $twoDigitsDate = date("y");
+            $twoDigitsCountry = strtoupper(post_slug($client->paisNaturalidade));
+            $twoDigitsCountry = substr($twoDigitsCountry, 0, 2);
+            $processCode = $twoDigitsCountry.'.'.$twoDigitsDate.'.'.$processNumber;
+
+            $client->codigo = $processCode;
 
             /* Criação de cliente */
             if ($requestClient->hasFile('fotografia')) {
@@ -219,8 +208,6 @@ class ClientController extends Controller
 
 
         /* Criação de documentos Pessoais */
-
-
             /* Cria Documento de identificação pessoal se Existir ficheiro para Upload*/
             if ($requestClient->hasFile('img_docOficial')) {
 

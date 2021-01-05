@@ -106,6 +106,7 @@ class DataController extends Controller
         /*******************          Clientes          ********************/
 
         $cliente = new Cliente;
+        $cliente->codigo = "FR.21.001";
         $cliente->nome = 'Tiago';
         $cliente->idAgente = 1;
         $cliente->apelido = 'Oliveira';
@@ -142,6 +143,7 @@ class DataController extends Controller
 
         $cliente = new Cliente;
         $cliente->idAgente = 2;
+        $cliente->codigo = "RU.21.002";
         $cliente->nome = 'Katherine';
         $cliente->apelido = 'Romaria';
         $cliente->genero = 'F';

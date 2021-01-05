@@ -67,7 +67,6 @@
 
                 <!-- Content -->
                 @yield('content')
-
             </div>
             <!-- End of Main Content -->
 
