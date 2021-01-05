@@ -251,6 +251,24 @@
                 }
                 $("#form-contact").addClass("was-validated");
             });
+
+            if(document.referrer.indexOf(window.location.host) != -1){
+                $("#previousButton").removeClass("bg-gray-400");
+                $("#previousButton").addClass("bg-gray-600");
+            }
+
+            $("#previousButton").click(function(event){
+                if(document.referrer.indexOf(window.location.host) != -1){
+                    history.go(-1);
+                }else {
+                    event.preventDefault();
+                    return false;
+                }
+            });
+
+            $("#forwardButton").click(function(){
+                window.history.forward();
+            });
         });
     </script>
 </body>

@@ -7,13 +7,13 @@
     </button>
 
     <div class="next_previous ml-2">
-        <button type="button" class="btn btn-circle btn-sm btn-secondary round" id="previousButton">
-            <span class="mb-1" style="font-size:1.8rem;">
+        <button type="button" class="btn btn-circle btn-sm bg-gray-400 round" id="previousButton" title="Retroceder">
+            <span class="mb-1" style="font-size:1.8rem; color:white;">
                 &#8249;
             </span>
         </button>
-        <button type="button" class="ml-1 btn btn-circle btn-sm btn-secondary round" id="forwardButton">
-            <span class="mb-1" style="font-size:1.8rem;">
+        <button type="button" class="ml-1 btn btn-circle btn-sm bg-gray-400 round" id="forwardButton" title="Avançar">
+            <span class="mb-1" style="font-size:1.8rem; color:white;">
                 &#8250;
             </span>
         </button>
@@ -230,17 +230,6 @@
 
 @section('scripts')
 <script type="text/javascript">
-    var previousButton = document.getElementById('previousButton');
-    var forwardButton = document.getElementById('forwardButton');
-
-    previousButton.onclick = function(){
-        window.history.back();
-    }
-
-    forwardButton.onclick = function(){
-        window.history.forward();
-    }
-
     function showNotificacao(div) {
         div.find('.descricaoNotificacao').first().css({
             "display": "block"
