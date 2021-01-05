@@ -1,4 +1,4 @@
-<option value="" selected hidden>Selecione país</option>
+<option value="" selected hidden>Selecione um país...</option>
 <option value="Afeganistão">Afeganistão</option>
 <option value="África do Sul">África do Sul</option>
 <option value="Albânia">Albânia</option>

@@ -145,12 +145,10 @@ class ClientController extends Controller
 
         if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
             $client = new Cliente;
-            $agents = Agente::where("tipo","=","Agente")->get();
-
+            $agents = Agente::where("tipo", "Agente")->get();
 
             $instituicoes = array_unique(Cliente::pluck('nomeInstituicaoOrigem')->toArray());
             $cidadesInstituicoes = array_unique(Cliente::pluck('cidadeInstituicaoOrigem')->toArray());
-
 
             return view('clients.add',compact('client','agents','instituicoes','cidadesInstituicoes'));
         }else{

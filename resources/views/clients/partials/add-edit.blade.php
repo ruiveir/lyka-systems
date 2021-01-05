@@ -1,79 +1,63 @@
-<div class="alert alert-danger my-2" id="warning_msg" style="display: none"><i class="fas fa-exclamation-triangle mr-2"></i>Existem dados obrigatórios por preencher. Verifique os campos assinalados.</div>
+{{-- <div class="alert alert-danger my-2" id="warning_msg" style="display: none"><i class="fas fa-exclamation-triangle mr-2"></i>Existem dados obrigatórios por preencher. Verifique os campos assinalados.</div> --}}
 
-@if (Auth::user()->tipo == "admin")
-    <div class="mb-2" >
-
-        <div class="row">
-                <div id="div_agente" class="col m-3 py-4 border shadow-sm">
-                    <div class="mx-2 my-auto">
-                        <i class="fas fa-user-tie active mr-3 ml-3"></i><label for="idAgente" class="font-weight-bold">Agente responsável:</label>
-                        <div class="mr-3">
-                            <select class="form-control select_style ml-2" id="idAgente" name="idAgente" style="min-width: 200px">
-                                <option selected value="0">(selecione um agente)</option>
-                                @if($agents)
-                                    @foreach($agents as $agent)
-                                        <option value="{{$agent->idAgente}}"  {{old('idAgente', $client->idAgente ) == $agent->idAgente ? "selected" : "" }}   >{{$agent->nome}} {{$agent->apelido}} ({{$agent->pais}})</option>
-                                    @endforeach
-                                @endif
-                            </select>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="col m-3 py-4 border shadow-sm" style="min-width: 412px">
-                    <div class="mx-2 my-auto">
-                        <div class="row">
-                            <div class="col">
-                                {{-- Estado do cliente --}}
-                                <i class="fas fa-traffic-light active mr-3 ml-3"></i><label for="estado" class="font-weight-bold">Estado do cliente:</label>
-                                    <select class="form-control select_style ml-2" id="estado" name="estado" style="min-width: 200px" required>
-                                        <option {{old('idAgente', $client->estado ) == "Inativo" ? "selected" : "" }} value="Inativo">Inativo</option>
-                                        <option {{old('idAgente', $client->estado ) == "Ativo" ? "selected" : "" }} value="Ativo">Ativo</option>
-                                        <option {{old('idAgente', $client->estado ) == "Proponente" ? "selected" : "" }} value="Proponente">Proponente</option>
-                                    </select>
-                            </div>
-
-                            <div class="col text-center" style="max-width: 100px">
-
-                                {{-- Permitir/negar edição --}}
-                                <div id="btn_editavel" class="bg-lighth h-100 border shadow-sm" style="cursor:pointer; border-radius:10px">
-                                    <div class="p-3">
-                                        <input name="editavel" id="editavel" type="hidden" value="{{$client->editavel}} ">
-                                        <i id="editavel_sim" class="fas fa-lock-open text-success my-auto" style="font-size: 25px; display:none" title="Os agentes podem modificar as informações"></i>
-                                        <i id="editavel_nao" class="fas fa-lock text-danger" style="font-size: 25px; display:none" title="Os agentes NÃO podem modificar as informações"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
+<div class="container-fluid">
+    @if (Auth::user()->tipo == "admin")
+    <div class="form-row mb-3">
+        <div class="col-md-4 mb-3">
+            <label for="idAgente" class="text-gray-900">Agente responsável <sup class="text-danger small">&#10033;</sup> </label>
+            <select class="custom-select" id="idAgente" name="idAgente" required>
+                <option selected disabled hidden>Escolher agente...</option>
+                @if($agents)
+                    @foreach($agents as $agent)
+                        <option value="{{$agent->idAgente}}" {{old('idAgente', $client->idAgente ) == $agent->idAgente ? "selected" : "" }}   >{{$agent->nome.' '.$agent->apelido}} ({{$agent->pais}})</option>
+                    @endforeach
+                @endif
+            </select>
+            <div class="invalid-feedback">
+                Oops, parece que algo não está bem...
+            </div>
         </div>
-
+        <div class="col-md-4 mb-3">
+            <label for="descricao" class="text-gray-900">Subagente responsável <sup class="text-danger small">&#10033;</sup> </label>
+            <select class="custom-select" id="idAgente" name="idAgente" required>
+                <option selected disabled hidden>Escolher subagente...</option>
+                {{-- @foreach($SubAgentes as $subagente)
+                    <option {{old('idSubAgente',$produto->idSubAgente)}} value="{{$subagente->idAgente}}">{{$subagente->nome.' '.$subagente->apelido.' ('.$subagente->email.')'}}</option>
+                @endforeach --}}
+            </select>
+            <div class="invalid-feedback">
+                Oops, parece que algo não está bem...
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label for="estado" class="text-gray-900">Estado do cliente <sup class="text-danger small">&#10033;</sup> </label>
+            <select class="custom-select" id="estado" name="estado" required>
+                <option selected disabled hidden>Escolher estado do cliente...</option>
+                <option {{old('idAgente', $client->estado ) == "Proponente" ? "selected" : "" }} value="Proponente">Proponente</option>
+                <option {{old('idAgente', $client->estado ) == "Ativo" ? "selected" : "" }} value="Ativo">Ativo</option>
+                <option {{old('idAgente', $client->estado ) == "Inativo" ? "selected" : "" }} value="Inativo">Inativo</option>
+            </select>
+            <div class="invalid-feedback">
+                Oops, parece que algo não está bem...
+            </div>
+        </div>
     </div>
-@else
-
-    {{-- campos auxiliares --}}
-    <input type="hidden" id="idAgente" name="idAgente" value="{{old('idAgente', $client->idAgente )}}">
-    <input type="hidden" id="estado" value="{{old('estado', $client->estado )}}">
-
-@endif
+    @else
+        <input type="hidden" id="idAgente" name="idAgente" value="{{old('idAgente', $client->idAgente)}}">
+        <input type="hidden" id="estado" value="{{old('estado', $client->estado)}}">
+    @endif
+</div>
 
 <div class="row nav nav-fill w-100 text-center mx-auto p-3">
-
-
     <a class="nav-item nav-link active border p-3 m-1 bg-white rounded shadow-sm" id="pessoal-tab"
         data-toggle="tab" href="#pessoal" role="tab" aria-controls="pessoal" aria-selected="true">
         <div class="col"><i class="fas fa-user mr-2"></i>Dados pessoais</div>
     </a>
 
-
     <a class="nav-item nav-link border p-3 m-1 bg-white rounded shadow-sm" id="documentation-tab"
         data-toggle="tab" href="#documentation" role="tab" aria-controls="documentation" aria-selected="false">
         <div class="col"><i class="far fa-id-card mr-2"></i>Documentos</div>
     </a>
-
 
     <a class="nav-item nav-link border p-3 m-1 bg-white rounded shadow-sm" id="academicos-tab"
         data-toggle="tab" href="#school" role="tab" aria-controls="school" aria-selected="false">
@@ -81,126 +65,86 @@
         </div>
     </a>
 
-
     <a class="nav-item nav-link border p-3 m-1 bg-white rounded shadow-sm" id="contacts-tab" data-toggle="tab"
         href="#contacts" role="tab" aria-controls="contacts" aria-selected="false">
         <div class="col"><i class="fas fa-comments mr-2"></i>Contactos</div>
     </a>
 
-
     <a class="nav-item nav-link border p-3 m-1 bg-white rounded shadow-sm border" id="financas-tab" data-toggle="tab"
         href="#financas" role="tab" aria-controls="financas" aria-selected="false">
         <div class="col"><i class="fas fa-chart-pie mr-2"></i>Financeiro</div>
     </a>
-
-
 </div>
 
 <div class="bg-white border shadow-sm mb-4 p-4" style="margin-top:-30px">
-
     <div class="tab-content p-2 mt-3" id="myTabContent">
-
         {{-- Conteudo: Informação pessoal --}}
         <div class="tab-pane fade show active" id="pessoal" role="tabpanel" aria-labelledby="pessoal-tab">
-            <div class="row">
-                <div class="col">
 
-                    <div class="row">
-                        <div class="col" style="min-width:250px">
-                            {{-- INPUT nome --}}
-                            <label for="nome">Nome:</label><br>
-                            <input type="text" class="form-control" name="nome" id="nome"
-                                value="{{old('nome',$client->nome)}}" placeholder="Insira o nome do aluno"
-                                maxlength="20" required>
-                                <br>
-                        </div>
-                        <div class="col" style="min-width:250px">
-                            {{-- INPUT apelido --}}
-                            <label for="apelido">Apelido:</label><br>
-                            <input type="text" class="form-control" name="apelido" id="apelido"
-                                value="{{old('apelido',$client->apelido)}}" placeholder="Insira o apelido do aluno"
-                                maxlength="20" required>
-                                <br>
-                        </div>
+            <div class="form-row mb-3">
+                <div class="col-md-4 mb-3">
+                    <label for="nome" class="text-gray-900">Nome próprio <sup class="text-danger small">&#10033;</sup> </label>
+                    <input type="text" class="form-control" name="nome" id="nome" placeholder="Inserir uma nome..." value="{{old('nome', $client->nome)}}" required>
+                    <div class="invalid-feedback">
+                        Oops, parece que algo não está bem...
                     </div>
-
-
-
-                    <div class="row mb-4">
-
-                        <div class="col" style="min-width:250px">
-                            {{-- INPUT GENERO --}}
-                            <label for="genero">Género:</label><br>
-                            <select id="genero" name="genero" style="width:100%" class="form-control select_style" required>
-                                <option value="" selected hidden>Selecione o género</option>
-                                <option {{old('genero',$client->genero)=='F'?"selected":""}} value="F">Feminino</option>
-                                <option {{old('genero',$client->genero)=='M'?"selected":""}} value="M">Masculino
-                                </option>
-                            </select>
-                            <br>
-                        </div>
-
-                        <div class="col" style="min-width:250px">
-
-                            {{-- INPUT paisNaturalidade --}}
-                            <label for="paisNaturalidade">Naturalidade:</label><br>
-                            <input type="hidden" id="hidden_paisNaturalidade"
-                                value="{{old('paisNaturalidade',$client->paisNaturalidade)}}">
-                            <select id="paisNaturalidade" name="paisNaturalidade" style="width:100%" class="form-control select_style" required>
-                                @include('clients.partials.countries');
-                            </select>
-                          </div>
-
-                    </div>
-
-                    <div class="row mt-3">
-                        <div class="col-6" style="min-width:250px">
-                        {{-- INPUT dataNasc --}}
-                        <label for="dataNasc">Data de nascimento:</label><br>
-                        <input type="date" class="form-control" name="dataNasc" id="dataNasc"
-                            value="{{old('dataNasc',$client->dataNasc)}}" style="width:100%" class="form-control select_style" >
-                        </div>
-                    </div>
-
-                    <br>
-
                 </div>
-
-                <div class="col col-4 text-center align-middle" style="min-width: 300px" >
-                    {{-- INPUT fotografia --}}
-                    <div>
-                        <label for="fotografia">Fotografia:</label>
-                        <input type='file' id="fotografia" name="fotografia" style="display:none" accept="image/*" />
-
+                <div class="col-md-4 mb-3">
+                    <label for="apelido" class="text-gray-900">Apelido <sup class="text-danger small">&#10033;</sup> </label>
+                    <input type="text" class="form-control" name="apelido" id="apelido" placeholder="Inserir uma apelido..." value="{{old('apelido', $client->apelido)}}" required>
+                    <div class="invalid-feedback">
+                        Oops, parece que algo não está bem...
                     </div>
-
-                    <div class="text-center align-self-center align-middle mx-auto" style="width:300px; max-height:300px; overflow:hidden;">
-                        <!-- Verifica se a imagem já existe-->
-                        @if ($client->fotografia!=null)
-                        <img src="{{url('/storage/client-documents/'.$client->idCliente.'/'.$client->fotografia)}}"
-                            id="preview" class="m-2 p-1 border rounded bg-white shadow-sm"
-                            style="width:80%; height:auto; cursor:pointer; min-width:118px;" alt="Imagem de apresentação"
-                            title="Clique para mudar a imagem de apresentação" />
-                        @else
-
-                        <img src="{{url('/storage/default-photos/m.jpg')}}" id="preview"
-                            class="p-1 border rounded bg-white shadow-sm " style="width:80%; cursor:pointer; min-width:118px; max-height:300px;"
-                            alt="Imagem de apresentação" title="Clique para mudar a imagem de apresentação" />
-                        @endif
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="fotografia" class="text-gray-900">Fotografia</label>
+                    <div class="custom-file mb-3">
+                        <input type="file" class="custom-file-input" name="fotografia" id="fotografia">
+                        <small class="form-text text-muted">A fotografia não deve ultrupassar os 5MB.</small>
+                        <label class="custom-file-label" for="fotografia" data-browse="Escolher">Escolher fotografia...</label>
                     </div>
-                    <div class="mt-2"><small class="text-muted">(clique para mudar)</small></div>
                 </div>
             </div>
 
+            <div class="form-row mb-3">
+                <div class="col-md-4 mb-3">
+                    <label for="genero" class="text-gray-900">Género <sup class="text-danger small">&#10033;</sup> </label>
+                    <select class="custom-select" id="genero" name="genero" required>
+                        <option selected disabled hidden>Escolher o género...</option>
+                        <option {{old('genero',$client->genero)=='F'?"selected":""}} value="F">Feminino</option>
+                        <option {{old('genero',$client->genero)=='M'?"selected":""}} value="M">Masculino</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Oops, parece que algo não está bem...
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="paisNaturalidade" class="text-gray-900">País de naturalidade <sup class="text-danger small">&#10033;</sup> </label>
+                    <select class="custom-select" id="paisNaturalidade" name="paisNaturalidade" required>
+                        @include('clients.partials.countries')
+                    </select>
+                    <div class="invalid-feedback">
+                        Oops, parece que algo não está bem...
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="dataNasc" class="text-gray-900">Data de nascimento</label>
+                    <div class="input-group">
+                        <input type="date" class="form-control" name="dataNasc" id="dataNasc" value="{{old('dataNasc',$client->dataNasc)}}">
+                        <div class="input-group-append">
+                            <div class="input-group-text"><i class="fas fa-calendar-alt"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             {{-- Campo de referência do cliente para o admin --}}
             @if (Auth::user()->tipo == "admin")
-            <br>
-                <div class="row">
-                    <div class="col-md-12">
-                        {{-- INPUT obsPessoais --}}
-                        <label for="obsPessoais">Referência do cliente:</label><br>
-                        <textarea name="refCliente" id="refCliente" rows="2" style="width:100%">{{old('refCliente',$client->refCliente)}}</textarea>
+                <div class="form-row mb-3">
+                    <div class="col mb-3">
+                        <label for="refCliente" class="text-gray-900">Observações do administrador</label>
+                        <textarea class="form-control" name="refCliente" id="refCliente" rows="2" placeholder="Inserir uma observação...">{{old('refCliente',$client->refCliente)}}</textarea>
+                        <small class="form-text text-muted">Atenção! Visível apenas para o administrador.</small>
                     </div>
                 </div>
             @endif
@@ -208,26 +152,22 @@
 
             {{-- Campo de Observações para o admin --}}
             @if (Auth::user()->tipo == "admin")
-            <br>
-                <div class="row">
-                    <div class="col-md-12">
-                        {{-- INPUT obsPessoais --}}
-                        <label for="obsPessoais">Observações pessoais:</label><br>
-                        <textarea name="obsPessoais" id="obsPessoais" rows="5" style="width:100%">{{old('obsPessoais',$client->obsPessoais)}}</textarea>
+                <div class="form-row mb-3">
+                    <div class="col mb-3">
+                        <label for="obsPessoais" class="text-gray-900">Observações pessoais</label>
+                        <textarea class="form-control" name="obsPessoais" id="obsPessoais" rows="2" placeholder="Inserir uma observação...">{{old('obsPessoais',$client->obsPessoais)}}</textarea>
+                        <small class="form-text text-muted">Atenção! Visível apenas para o administrador.</small>
                     </div>
                 </div>
             @endif
 
-            {{-- Campo de Observações para o agente / admin --}}
-            <div class="row">
-                <div class="col-md-12">
-                    <br>
-                    {{-- INPUT PARA O AGENTE obsAgente --}}
-                    <label for="obsPessoais">Observações @if (Auth::user()->tipo == "admin")(do agente)@endif:</label><br>
-                    <textarea name="obsAgente" id="obsAgente" rows="5" style="width:100%">{{old('obsAgente',$client->obsAgente)}}</textarea>
+            <div class="form-row mb-3">
+                <div class="col mb-3">
+                    <label for="obsAgente" class="text-gray-900">Observações gerais</label>
+                    <textarea class="form-control" name="obsAgente" id="obsAgente" rows="2" placeholder="Inserir uma observação...">{{old('obsAgente',$client->obsAgente)}}</textarea>
+                    <small class="form-text text-muted">Atenção! Visível para o administrador e para o agente.</small>
                 </div>
             </div>
-
         </div>
 
 
@@ -616,5 +556,4 @@
 
 
     </div>
-</div>
 </div>
