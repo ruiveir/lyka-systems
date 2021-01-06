@@ -1,4 +1,3 @@
-{{-- <div class="alert alert-danger my-2" id="warning_msg" style="display: none"><i class="fas fa-exclamation-triangle mr-2"></i>Existem dados obrigatórios por preencher. Verifique os campos assinalados.</div> --}}
 <div class="container-fluid">
     @if (Auth::user()->tipo == "admin")
     <div class="form-row mb-3">
@@ -17,12 +16,12 @@
             </div>
         </div>
         <div class="col-md-4 mb-3">
-            <label for="descricao" class="text-gray-900">Subagente responsável <sup class="text-danger small">&#10033;</sup> </label>
-            <select class="custom-select" id="idAgente" name="idAgente" required>
+            <label for="idSubAgente" class="text-gray-900">Subagente responsável <sup class="text-danger small">&#10033;</sup> </label>
+            <select class="custom-select" id="idSubAgente" name="idSubAgente">
                 <option selected disabled hidden>Escolher subagente...</option>
-                {{-- @foreach($SubAgentes as $subagente)
-                    <option {{old('idSubAgente',$produto->idSubAgente)}} value="{{$subagente->idAgente}}">{{$subagente->nome.' '.$subagente->apelido.' ('.$subagente->email.')'}}</option>
-                @endforeach --}}
+                @foreach($subAgentes as $subAgente)
+                    <option value="{{$subAgente->idAgente}}">{{$subAgente->nome.' '.$subAgente->apelido.' ('.$subAgente->pais.')'}}</option>
+                @endforeach
             </select>
             <div class="invalid-feedback">
                 Oops, parece que algo não está bem...

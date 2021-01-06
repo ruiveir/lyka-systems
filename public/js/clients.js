@@ -118,52 +118,14 @@ $(document).ready(function() {
 
     });
 
-
-
-
-    /* Permitir/negar edição */
-
-
-
-    /* Estado inicial */
-    /* Para novo cliente */
-
-
     if ($('#editavel').length) {
         if ($('#editavel').val().length <= 1) {
             $('#editavel').val("1");
         }
     }
 
-    /* Caso a edição seja permitida */
-    if ($('#editavel').val() == 1) {
-        $("#editavel_sim").show();
-        $("#editavel_nao").hide();
-    } else {
-        /* Caso a edição NÃO seja permitida */
-        $("#editavel_sim").hide();
-        $("#editavel_nao").show();
-    }
-
-
-    /* Mudança de estado */
-    $('#btn_editavel').click(function() {
-        if ($('#editavel').val() == 1) {
-            $("#editavel_sim").hide();
-            $("#editavel_nao").show();
-            $('#editavel').val(0);
-        } else {
-            $("#editavel_sim").show();
-            $("#editavel_nao").hide();
-            $('#editavel').val(1);
-        }
-
-    });
-
-
-
     /* OPÇÃO DE APAGAR */
-    var formToSubmit //Variavel para indicar o forumulário a submeter
+    var formToSubmit
 
     $(".form_client_id").submit(function(e) {
         e.preventDefault();
@@ -176,11 +138,6 @@ $(document).ready(function() {
     $(".btn_submit").click(function(e) {
         formToSubmit.submit();
     });
-
-
-
-
-
 
     /* VALIDAÇÃO DE INPUTS */
 
@@ -206,31 +163,23 @@ $(document).ready(function() {
 
     }
 
-
-
     /* Quando um input é modificado remove a validação do bootstrap */
     $("input, select").change(function() {
         $(this).removeClass("is-invalid");
     });
 
-
-
-    /*           Validação do formulário / campos */
-
     $('#form_client').on('submit', function() {
 
-        /* mostrar div de espera */
         $("#wait_screen").show();
 
         var validated = true;
-
-        /* valida Campos da informação pessoal */
 
         /* Campo do nome */
         if ($("#nome").val() == "") {
             $("#wait_screen").hide();
             $("#nome").addClass("is-invalid");
-            $("#pessoal-tab").addClass("border-danger text-danger");
+            $("#pessoal-tab").addClass("border-danger");
+            $("#pessoal-tab").css("color", "#e74a3b");
             $("#warning_msg").show();
             validated = false;
         } else {
@@ -243,7 +192,8 @@ $(document).ready(function() {
         if ($("#apelido").val() == "") {
             $("#wait_screen").hide();
             $("#apelido").addClass("is-invalid");
-            $("#pessoal-tab").addClass("border-danger text-danger");
+            $("#pessoal-tab").addClass("border-danger");
+            $("#pessoal-tab").css("color", "#e74a3b");
             $("#warning_msg").show();
             validated = false;
         } else {
@@ -256,7 +206,8 @@ $(document).ready(function() {
         if ($("#genero").val() == "") {
             $("#wait_screen").hide();
             $("#genero").addClass("is-invalid");
-            $("#pessoal-tab").addClass("border-danger text-danger");
+            $("#pessoal-tab").css("color", "#e74a3b");
+            $("#pessoal-tab").addClass("border-danger");
             $("#warning_msg").show();
             validated = false;
         } else {
@@ -269,7 +220,8 @@ $(document).ready(function() {
         if ($("#paisNaturalidade").val() == "") {
             $("#wait_screen").hide();
             $("#paisNaturalidade").addClass("is-invalid");
-            $("#pessoal-tab").addClass("border-danger text-danger");
+            $("#pessoal-tab").addClass("border-danger");
+            $("#pessoal-tab").css("color", "#e74a3b");
             $("#warning_msg").show();
             validated = false;
         } else {
@@ -281,24 +233,6 @@ $(document).ready(function() {
         if ($("#nome").val() != "" && $("#apelido").val() != "" && $("#paisNaturalidade").val() != "" && $("#genero").val() != "") {
             $("#pessoal-tab").removeClass("border-danger text-danger");
         }
-
-
-
-        /* Campo do e-mail  */
-        /*             if (($("#email").val() == "")) {
-                        $("#wait_screen").hide();
-                        $("#email").addClass("is-invalid");
-                        $("#contacts-tab").addClass("border-danger text-danger");
-                        $("#warning_msg").show();
-                        validated = false;
-                    } else {
-                        $("#contacts-tab").removeClass("border-danger text-danger");
-                        $("#email").removeClass("is-invalid");
-
-                    } */
-
-
-
 
         if (validated == true) {
             return true;

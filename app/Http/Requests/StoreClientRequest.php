@@ -16,6 +16,7 @@ class StoreClientRequest extends FormRequest
     {
         return [
             'idAgente' => 'nullable',
+            'idSubAgente' => 'nullable',
             'nome' => 'required',
             'apelido' => 'required',
             'genero'=> 'required',
@@ -60,7 +61,6 @@ class StoreClientRequest extends FormRequest
             'refCliente' => 'nullable',
 
             'estado' => 'required',
-            'editavel' => 'required',
         ];
     }
 

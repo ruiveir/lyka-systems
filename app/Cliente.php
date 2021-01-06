@@ -14,7 +14,7 @@ class Cliente extends Model
     protected $primaryKey = 'idCliente';
 
     protected $fillable = [
-        'idAgente','nome','apelido','genero','email','telefone1','telefone2','dataNasc',
+        'idAgente','idSubAgente','nome','apelido','genero','email','telefone1','telefone2','dataNasc',
         'paisNaturalidade','morada','cidade','moradaResidencia','nomePai','telefonePai',
         'emailPai','nomeMae','telefoneMae','emailMae','fotografia','NIF','IBAN',
         'nivEstudoAtual','nomeInstituicaoOrigem','cidadeInstituicaoOrigem',
@@ -29,8 +29,7 @@ class Cliente extends Model
         return $this->hasMany("App\Produto","idCliente","idCliente")->withTrashed();
     }
 
-    public function responsabilidade()
-    {
+    public function responsabilidade(){
         return $this->hasMany("App\Responsabilidade","idCliente","idCliente")->withTrashed();
     }
 

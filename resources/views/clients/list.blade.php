@@ -75,7 +75,7 @@
                                         <td>@if($client->email != null){{$client->email}} @else N/A @endif</td>
                                         <td>@if($client->telefone1 != null){{$client->telefone1}} @else N/A @endif</td>
                                         <td>{{$client->paisNaturalidade}}</td>
-                                        <td class="font-weight-bold @if($client->estado == "Ativo") text-success @else text-danger @endif">@if($client->estado) Ativo @else Proponente @endif</td>
+                                        <td class="font-weight-bold @if($client->estado == "Ativo") text-success @else text-primary @endif">@if($client->estado == "Ativo") Ativo @else Proponente @endif</td>
                                         <td class="text-center align-middle">
                                             <a href="{{route("clients.show", $client)}}" class="btn btn-sm btn-outline-primary" title="Ficha completa"><i class="far fa-eye"></i></a>
                                             @if(Auth::user()->tipo == "admin" || Auth::user()->tipo == "agente" && $client->editavel == 1)
@@ -184,7 +184,7 @@
         $('#deleteModal').on('show.bs.modal', function(event) {
             var button = $(event.relatedTarget);
             var modal = $(this);
-            modal.find("form").attr('action', '/estudantes/' + button.data('slug'));
+            modal.find("form").attr('action', '/clientes/' + button.data('slug'));
         });
     });
 </script>

@@ -146,13 +146,11 @@ class ClientController extends Controller
         if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
             $client = new Cliente;
             $agents = Agente::where("tipo", "Agente")->get();
-
+            $subAgentes = Agente::where("tipo", "Subagente")->get();
             $instituicoes = array_unique(Cliente::pluck('nomeInstituicaoOrigem')->toArray());
             $cidadesInstituicoes = array_unique(Cliente::pluck('cidadeInstituicaoOrigem')->toArray());
-
-            return view('clients.add',compact('client','agents','instituicoes','cidadesInstituicoes'));
+            return view('clients.add',compact('client','agents','instituicoes','cidadesInstituicoes', 'subAgentes'));
         }else{
-            /* não tem permissões */
             abort (403);
         }
     }
@@ -765,9 +763,10 @@ class ClientController extends Controller
             $client->delete();
 
             /* "Apaga" dos utilizadores */
-            $utilizador = User::where('idCliente', $client->idCliente)->get();
-            $utilizador->deleted_at = $client->deleted_at;
-            $utilizador->save();
+            // $utilizador = User::where('idCliente', $client->idCliente)->get();
+            // if ($utilizador) {
+            //     $utilizador->delete();
+            // }
 
             return redirect()->route('clients.index')->with('success', 'Estudante eliminado com sucesso');
         }else{

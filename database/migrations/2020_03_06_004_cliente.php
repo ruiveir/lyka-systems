@@ -13,7 +13,6 @@ class Cliente extends Migration
             $table->collation = 'utf8mb4_general_ci';
             $table->bigIncrements('idCliente');
             $table->unsignedBigInteger('idAgente')->nullable();
-            $table->string('codigo',10)->nullable()->unique();
             $table->string('nome',255);
             $table->string('apelido',255);
             $table->enum('genero',['F','M'])->default('M');
