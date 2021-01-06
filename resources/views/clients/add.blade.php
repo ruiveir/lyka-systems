@@ -56,12 +56,10 @@
 @section('scripts')
 <script src="{{asset('/js/clients.js')}}"></script>
 <script src="{{asset('/js/jquery-key-restrictions.min.js')}}"></script>
-<script src="{{asset('/js/editable_comboBox.js')}}"></script>
 <script>
     $(document).ready(function() {
         bsCustomFileInput.init();
         $(".needs-validation").submit(function(event) {
-            var nif = $('#NIF').val();
             if (this.checkValidity() === false) {
                 event.preventDefault();
                 event.stopPropagation();
