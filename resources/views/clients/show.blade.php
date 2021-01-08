@@ -131,7 +131,7 @@
                             <div class="tab-pane fade active show mt-1" id="obsPessoais" role="tabpanel" aria-labelledby="obsPessoais-tab">
                                 <div class="border rounded bg-light p-2 pl-3 text-gray-900" style="height:120px; overflow: auto;">
                                     @if ($client->obsPessoais == null)
-                                    <span class="text-muted"><small>(sem dados para mostrar)</small></span>
+                                    <span class="text-muted"><small>(sem dados para apresentar)</small></span>
                                     @else
                                     {{$client->obsPessoais}}
                                     @endif
@@ -141,7 +141,7 @@
                             <div class="tab-pane fade mt-1" id="obsAgentes" role="tabpanel" aria-labelledby="obsAgentes-tab">
                                 <div class="border rounded bg-light p-2 pl-3 text-gray-900" style="height:120px; overflow: auto;">
                                     @if ($client->obsAgente==null)
-                                    <span class="text-muted"><small>(sem dados para mostrar)</small></span>
+                                    <span class="text-muted"><small>(sem dados para apresentar)</small></span>
                                     @else
                                     {{ $client->obsAgente }}
                                     @endif
@@ -152,7 +152,7 @@
                         <div class="nav ">Observações:</div>
                         <div class="border rounded bg-light p-2 " style="height:100%; overflow: auto">
                             @if ($client->obsAgente==null)
-                            <span class="text-muted"><small>(sem dados para mostrar)</small></span>
+                            <span class="text-muted"><small>(sem dados para apresentar)</small></span>
                             @else
                             {{ $client->obsAgente }}
                             @endif
@@ -411,7 +411,7 @@
                                 <div class=" mb-2 ">Observações académicas:</div>
                                 <div class="border rounded bg-light p-3">
                                     @if ($client->obsAcademicas==null)
-                                    <div class="text-muted "><small>(sem dados para mostrar)</small></div>
+                                    <div class="text-muted "><small>(sem dados para apresentar)</small></div>
                                     @else
                                     <div class="font-weight-bold"> {{$client->obsAcademicas}}</div>
                                     @endif
@@ -501,7 +501,7 @@
                                 </div>
                                 <div class="border rounded bg-light p-3">
                                     @if ($client->moradaResidencia==null)
-                                    <span class="text-muted"><small>(sem dados para mostrar)</small></span>
+                                    <span class="text-muted"><small>(sem dados para apresentar)</small></span>
                                     @else
                                     <span class="font-weight-bold">{{$client->moradaResidencia}}</span>
                                     @endif
@@ -558,7 +558,55 @@
                     {{-- DADOS FINANCEIROS --}}
                     <div class="tab-pane fade pl-2 text-gray-900" id="financas" role="tabpanel" aria-labelledby="financas-tab" style="font-weight:normal !important">
                         <div class="row mt-2">
-                            <div class="col">
+                            <div class="col-lg-6">
+                                <div class="mb-2 font-weight-bold" style="min-width: 256px">Pagamentos pendentes:</div>
+                                <div class="border rounded bg-light p-3">
+                                    @if ($fasesPendentes)
+                                        @php
+                                            $valorTotalPendente = 0;
+                                        @endphp
+                                        @foreach ($fasesPendentes as $fase)
+                                            <div class="mb-3">
+                                                {{$fase->produto->descricao.' ('.$fase->descricao.')'}}: <span class="font-weight-bold">{{number_format((float) $fase->valorFase, 2, ',', '').'€'}}</span>
+                                            </div>
+                                            @php
+                                                $valorTotalPendente += $fase->valorFase;
+                                            @endphp
+                                        @endforeach
+                                        <hr>
+                                        <p class="mb-0">Valor total pendente: <span class="font-weight-bold"> {{number_format((float) $valorTotalPendente, 2, ',', '').'€'}} </span></p>
+                                    @else
+                                        <div class="text-muted">
+                                            <small>(sem dados para apresentar)</small>
+                                        </div>
+                                    @endif
+                                </div>
+
+                                <div class="mb-2 mt-4 font-weight-bold" style="min-width: 256px">Pagamentos efectuados:</div>
+                                <div class="border rounded bg-light p-3">
+                                    @if ($fasesPagas)
+                                        @php
+                                            $valorTotalPago = 0;
+                                        @endphp
+                                        @foreach ($fasesPagas as $fase)
+                                            <div>
+                                                {{$fase->produto->descricao.' ('.$fase->descricao.')'}}: <span class="font-weight-bold text-success">{{number_format((float) $fase->valorFase, 2, ',', '').'€'}}</span>
+                                            </div>
+                                            @php
+                                                $valorTotalPago += $fase->valorFase;
+                                            @endphp
+                                        @endforeach
+                                        <hr>
+                                        <p class="mb-0">Valor total pago: <span class="font-weight-bold text-success"> {{number_format((float) $valorTotalPago, 2, ',', '').'€'}} </span></p>
+                                    @else
+                                        <div class="text-muted">
+                                            <small>(sem dados para apresentar)</small>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
                                 <div class="mb-2 font-weight-bold" style="min-width: 256px">Pagamentos em dívida:</div>
                                 <div class="border rounded bg-light p-3">
                                     @if ($fasesDivida)
@@ -577,31 +625,7 @@
                                         <p class="mb-0">Valor total em dívida: <span class="text-danger font-weight-bold"> {{number_format((float) $valorTotalDivida, 2, ',', '').'€'}} </span></p>
                                     @else
                                         <div class="text-muted">
-                                            <small>(sem dados para mostrar)</small>
-                                        </div>
-                                    @endif
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="mb-2 font-weight-bold" style="min-width: 256px">Pagamentos pendentes:</div>
-                                <div class="border rounded bg-light p-3">
-                                    @if ($fasesPendentes)
-                                        @php
-                                            $valorTotalPendente = 0;
-                                        @endphp
-                                        @foreach ($fasesPendentes as $fase)
-                                            <div>
-                                                {{$fase->produto->descricao.' ('.$fase->descricao.')'}}: <span class="font-weight-bold">{{number_format((float) $fase->valorFase, 2, ',', '').'€'}}</span>
-                                            </div>
-                                            @php
-                                                $valorTotalPendente += $fase->valorFase;
-                                            @endphp
-                                        @endforeach
-                                        <hr>
-                                        <p class="mb-0">Valor total pendente: <span class="font-weight-bold"> {{number_format((float) $valorTotalPendente, 2, ',', '').'€'}} </span></p>
-                                    @else
-                                        <div class="text-muted">
-                                            <small>(sem dados para mostrar)</small>
+                                            <small>(sem dados para apresentar)</small>
                                         </div>
                                     @endif
                                 </div>

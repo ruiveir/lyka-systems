@@ -369,10 +369,27 @@ class ClientController extends Controller
                 return $fasesPendentes;
             }
 
+            function fasesPagas($client){
+                $produtos = Produto::where("idCliente", $client->idCliente)->get();
+                $fasesPagas = array();
+                foreach ($produtos as $produto) {
+                    $fases = Fase::where("idProduto", $produto->idProduto)
+                    ->where("estado", "Pago")
+                    ->where("verificacaoPago", true)
+                    ->orderBy("dataVencimento", "desc")
+                    ->get();
+                    foreach ($fases as $fase) {
+                        array_push($fasesPagas, $fase);
+                    }
+                }
+                return $fasesPagas;
+            }
+
             $fasesDivida = fasesDivida($client);
             $fasesPendentes = fasesPendentes($client);
+            $fasesPagas = fasesPagas($client);
 
-            return view('clients.show', compact("client", "fasesDivida", "fasesPendentes", "agente", "subAgente", "produtos", "totalprodutos", "passaporteData", 'documentosPessoais', 'documentosAcademicos', 'novosDocumentos'));
+            return view('clients.show', compact("client", "fasesDivida", "fasesPendentes", "fasesPagas", "agente", "subAgente", "produtos", "totalprodutos", "passaporteData", 'documentosPessoais', 'documentosAcademicos', 'novosDocumentos'));
         }else{
             abort (403);
         }
