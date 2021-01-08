@@ -16,7 +16,7 @@ class ChargeVerification
 
         $pago = 0;
         foreach ($fases as $fase) {
-            if ($fase->estado == "Pago" && $fase->verificacaoPago == true) {
+            if ($fase->estado == "Pago" && $fase->verificacaoPago) {
                 $pago++;
             }
 

@@ -58,8 +58,6 @@ class StoreClientRequest extends FormRequest
             'IBAN' => 'nullable|unique:cliente|unique:agente|unique:conta',
             'obsFinanceiras' => 'nullable',
 
-            'refCliente' => 'nullable',
-
             'estado' => 'required',
         ];
     }

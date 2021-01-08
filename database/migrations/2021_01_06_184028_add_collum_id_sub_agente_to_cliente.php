@@ -9,7 +9,7 @@ class AddCollumIdSubAgenteToCliente extends Migration
     public function up()
     {
         Schema::table('cliente', function (Blueprint $table) {
-            $table->unsignedBigInteger('idSubAgente')->after('nome')->nullable();
+            $table->unsignedBigInteger('idSubAgente')->after('idAgente')->nullable();
         });
     }
 

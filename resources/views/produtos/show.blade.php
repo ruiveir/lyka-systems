@@ -119,10 +119,10 @@
                     <li class="nav-item " style="width:25%">
                         @if($numfase == 1)
                             <a class="nav-link active" id="{{'fase'.$numfase.'-tab'}}" data-toggle="tab" href="#{{'fase'.$numfase}}" role="tab"
-                            aria-controls="{{'fase'.$numfase}}" aria-selected="false">{{'Fase '.$numfase}}</a>
+                            aria-controls="{{'fase'.$numfase}}" aria-selected="false">{{'Fase '.$numfase.' - '.$fase->descricao}}</a>
                         @else
                             <a class="nav-link" id="{{'fase'.$numfase.'-tab'}}" data-toggle="tab" href="#{{'fase'.$numfase}}" role="tab"
-                            aria-controls="{{'fase'.$numfase}}" aria-selected="false">{{'Fase '.$numfase}}</a>
+                            aria-controls="{{'fase'.$numfase}}" aria-selected="false">{{'Fase '.$numfase.' - '.$fase->descricao}}</a>
                         @endif
                     </li>
                     @php

@@ -11,6 +11,7 @@ use App\DocAcademico;
 use App\DocNecessario;
 use App\Responsabilidade;
 use App\Produto;
+use App\Fase;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -177,7 +178,7 @@ class ClientController extends Controller
             $twoDigitsCountry = substr($twoDigitsCountry, 0, 2);
             $processCode = $twoDigitsCountry.'.'.$twoDigitsDate.'.'.$processNumber;
 
-            $client->codigo = $processCode;
+            $client->refCliente = $processCode;
 
             /* Criação de cliente */
             if ($requestClient->hasFile('fotografia')) {
@@ -282,100 +283,52 @@ class ClientController extends Controller
         }
     }
 
-
-
-
-    /**
-    * Display the specified resource.
-    *
-    * @param  \App\Cliente  $client
-    * @return \Illuminate\Http\Response
-    */
     public function show(Cliente $client){
-        $produts = null;
-        $permissao = false;
+        // Produtos para serem visualizados para o Agente e/ou Subagente
         if(Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null && Auth()->user()->agente->tipo == 'Agente'){
-            $produts = Produto::whereRaw('idAgente = '.Auth()->user()->idAgente.' and idCliente = '.$client->idCliente)->get();
+            $products = Produto::whereRaw('idAgente = '.Auth()->user()->idAgente.' and idCliente = '.$client->idCliente)->get();
         }elseif(Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null && Auth()->user()->agente->tipo == 'Subagente'){
-            $produts = Produto::whereRaw('idSubAgente = '.Auth()->user()->idAgente.' and idCliente = '.$client->idCliente)->get();
-        }
-        if($produts){
-            $permissao = true;
+            $products = Produto::whereRaw('idSubAgente = '.Auth()->user()->idAgente.' and idCliente = '.$client->idCliente)->get();
         }
 
-        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||$permissao){
-
-            $totalprodutos=null;
-
-            // Produtos adquiridos pelo cliente
+        // Produtos e documentos a serem visualizados pelo Administrador
+        if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin)){
+            $totalprodutos = null;
             $produtos = $client->produtoSaved;
 
-            if ($produtos->isEmpty()) {
-                $produtos=null;
-                $totalprodutos=null;
+            if ($produtos->isEmpty()){
+                $produtos = null;
+                $totalprodutos = null;
             }else{
-
-                /* Soma do valor total dos produtos */
-                $totalprodutos=0;
+                $totalprodutos = 0;
                 foreach ($produtos as $produto) {
-                    $totalprodutos=$totalprodutos+$produto->valorTotal;
+                    $totalprodutos = $totalprodutos + $produto->valorTotal;
                 }
-
             }
 
-            /* AGENTE RESPONSAVEL   +++++++++++++++++++++++++ */
-            $agente = Agente::
-            where("idAgente","=",$client->idAgente)
+            $agente = Agente::where("idAgente", $client->idAgente)->first();
+            $subAgente = Agente::where("idAgente", $client->idSubAgente)->first();
+
+            $passaporte = DocPessoal::where ("idCliente", $client->idCliente)
+            ->where("tipo", "Passaporte")
+            ->orderby("created_at","desc")
             ->first();
 
-
-            /* Agentes associados: apartir da tabela dos produtos */
-            $agents = Agente::
-            whereIn('idAgente', function ($query) use ($client) {
-                $query->select('idAgente')
-                ->from('produto')
-                ->where('idCliente', $client->idCliente);
-            })->get();
-
-
-            /* Subagentes associados: : apartir da tabela dos produtos */
-            $subagents = Agente::
-            whereIn('idAgente', function ($query) use ($client) {
-                $query->select('idSubAgente')
-                ->from('produto')
-                ->where('idCliente', $client->idCliente);
-            })->get();
-
-
-            /* Junta os resultados das duas querys e remove duplicados */
-            $associados = $agents->merge($subagents);
-
-
-            /* Lê os dados do passaporte JSON: numPassaporte dataValidPP passaportPaisEmi localEmissaoPP */
-                $passaporte = DocPessoal::
-                where ("idCliente","=",$client->idCliente)
-                ->where("tipo","=","Passaporte")
-                ->orderby("created_at","desc")/*  Ordena por data: do mais recente para o mais antigo */
-                ->first(); /* Seleciona o registo mais recente */
-
-
-                /* Decode das infos do passaporte */
-                if( $passaporte!=null){
-                    $passaporteData = json_decode($passaporte->info);
-                }else{
-                    $passaporteData=null;
-                }
-
+            /* Decode das infos do passaporte */
+            if($passaporte != null){
+                $passaporteData = json_decode($passaporte->info);
+            }else{
+                $passaporteData = null;
+            }
 
             /* Documentos pessoais */
-            $documentosPessoais = DocPessoal::where("idCliente","=",$client->idCliente)->orderby("created_at","desc")->get();
-            if ($documentosPessoais->isEmpty()) {
+            $documentosPessoais = DocPessoal::where("idCliente", $client->idCliente)->orderby("created_at","desc")->get();
+            if ($documentosPessoais->isEmpty()){
                 $documentosPessoais=null;
             }
 
-
             /* Documentos académicos */
-            $documentosAcademicos = DocAcademico::where("idCliente","=",$client->idCliente)->orderby("created_at","desc")->get();
+            $documentosAcademicos = DocAcademico::where("idCliente", $client->idCliente)->orderby("created_at","desc")->get();
             if ($documentosAcademicos->isEmpty()) {
                 $documentosAcademicos=null;
             }
@@ -383,32 +336,48 @@ class ClientController extends Controller
             /* Lista de Documentos Necessários */
             $novosDocumentos = DocNecessario::all();
 
+            // Estado financeiro do cliente
+            function fasesDivida($client){
+                $produtos = Produto::where("idCliente", $client->idCliente)->get();
+                $fasesDivida = array();
+                foreach ($produtos as $produto) {
+                    $fases = Fase::where("idProduto", $produto->idProduto)
+                    ->where("estado", "Dívida")
+                    ->where("verificacaoPago", false)
+                    ->orderBy("dataVencimento", "desc")
+                    ->get();
+                    foreach ($fases as $fase) {
+                        array_push($fasesDivida, $fase);
+                    }
+                }
+                return $fasesDivida;
+            }
 
-            /* Dívidas */
-    /*         $dividas = Responsabilidade::where("idCliente","=",$client->idCliente)
-            ->where("estado","=","Pendente")
-            ->orWhere("estado","=","Dívida")
-            ->get(); */
+            function fasesPendentes($client){
+                $produtos = Produto::where("idCliente", $client->idCliente)->get();
+                $fasesPendentes = array();
+                foreach ($produtos as $produto) {
+                    $fases = Fase::where("idProduto", $produto->idProduto)
+                    ->where("estado", "Pendente")
+                    ->where("verificacaoPago", false)
+                    ->orderBy("dataVencimento", "desc")
+                    ->get();
+                    foreach ($fases as $fase) {
+                        array_push($fasesPendentes, $fase);
+                    }
+                }
+                return $fasesPendentes;
+            }
 
-    /*      dd($dividas); */
+            $fasesDivida = fasesDivida($client);
+            $fasesPendentes = fasesPendentes($client);
 
-            return view('clients.show',compact("client","agente","associados",/* "dividas","agents","subagents", */"produtos","totalprodutos","passaporteData",'documentosPessoais','documentosAcademicos','novosDocumentos'));
-
+            return view('clients.show', compact("client", "fasesDivida", "fasesPendentes", "agente", "subAgente", "produtos", "totalprodutos", "passaporteData", 'documentosPessoais', 'documentosAcademicos', 'novosDocumentos'));
         }else{
-            /* não tem permissões */
             abort (403);
         }
     }
 
-
-
-
-    /**
-    * Prepares document for printing the specified client.
-    *
-    * @param  \App\Cliente  $client
-    * @return \Illuminate\Http\Response
-    */
     public function print(Cliente $client){
         $produts = null;
         $permissao = false;
@@ -456,13 +425,6 @@ class ClientController extends Controller
 
 
 
-
-    /**
-    * Show the form for editing the specified resource.
-    *
-    * @param  \App\Cliente  $client
-    * @return \Illuminate\Http\Response
-    */
     public function edit(Cliente $client){
         $produts = null;
         $permissao = false;
@@ -507,8 +469,8 @@ class ClientController extends Controller
             /* Se for o administrador a editar */
             if (Auth::user()->tipo == "admin"){
                 $agents = Agente::where("tipo","=","Agente")->get();
-
-                return view('clients.edit', compact('client','agents','docOfficial','passaporte','passaporteData','instituicoes','cidadesInstituicoes'));
+                $subAgentes = Agente::where("tipo", "Subagente")->get();
+                return view('clients.edit', compact('client','agents','subAgentes','docOfficial','passaporte','passaporteData','instituicoes','cidadesInstituicoes'));
 
             }
 

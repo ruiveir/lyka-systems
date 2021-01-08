@@ -59,6 +59,24 @@
 <script src="{{asset('/js/jquery-key-restrictions.min.js')}}"></script>
 <script>
     $(document).ready(function() {
+        var options = [
+            {"option": document.getElementById("pessoal-tab")},
+            {"option": document.getElementById("documentation-tab")},
+            {"option": document.getElementById("academicos-tab")},
+            {"option": document.getElementById("contacts-tab")},
+            {"option": document.getElementById("financas-tab")}
+        ]
+
+        $("#pessoal-tab, #documentation-tab, #academicos-tab, #contacts-tab, #financas-tab").click(function(){
+            for (var i = 0; i < options.length; i++) {
+                if(this.id === options[i].option.id){
+                    $(this).removeClass("bg-white").addClass("bg-primary text-white");
+                }else{
+                    $(options[i].option).removeClass("bg-primary text-white").addClass("bg-white");
+                }
+            }
+        });
+
         bsCustomFileInput.init();
         $(".needs-validation").submit(function(event) {
             if (this.checkValidity() === false) {

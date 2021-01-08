@@ -56,7 +56,7 @@
                 <table class="table table-bordered table-striped" id="table" width="100%">
                     <thead>
                         <tr>
-                            <th>Código</th>
+                            <th>Referência</th>
                             <th>Nome</th>
                             <th>E-Mail</th>
                             <th>Telefone</th>
@@ -70,7 +70,7 @@
                             @foreach ($clients as $client)
                                 @if ($client->estado == "Ativo" || $client->estado == "Proponente")
                                     <tr>
-                                        <td>{{$client->codigo}}</td>
+                                        <td>{{$client->refCliente}}</td>
                                         <td>{{$client->nome.' '.$client->apelido}}</td>
                                         <td>@if($client->email != null){{$client->email}} @else N/A @endif</td>
                                         <td>@if($client->telefone1 != null){{$client->telefone1}} @else N/A @endif</td>

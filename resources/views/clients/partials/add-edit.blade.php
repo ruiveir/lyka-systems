@@ -137,17 +137,6 @@
                 </div>
             </div>
 
-            {{-- Campo de referência do cliente para o admin --}}
-            @if (Auth::user()->tipo == "admin")
-                <div class="form-row mb-3">
-                    <div class="col mb-3">
-                        <label for="refCliente" class="text-gray-900">Observações do administrador</label>
-                        <textarea class="form-control" name="refCliente" id="refCliente" rows="2" placeholder="Inserir uma observação...">{{old('refCliente',$client->refCliente)}}</textarea>
-                        <small class="form-text text-muted">Atenção! Visível apenas para o administrador.</small>
-                    </div>
-                </div>
-            @endif
-
             {{-- Campo de Observações para o admin --}}
             @if (Auth::user()->tipo == "admin")
                 <div class="form-row mb-3">
