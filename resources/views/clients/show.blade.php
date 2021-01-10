@@ -232,7 +232,7 @@
                                     Produtos registados: <span class="active">{{count($produtos)}}</span>
                             </div> --}}
                             <div class="col font-weight-bold">
-                                Total dos protudos: <span class="text-success ">{{$totalprodutos}}€</span>
+                                Valor total dos produtos: <span class="text-success ">{{$totalprodutos}}€</span>
                             </div>
                         </div>
 
