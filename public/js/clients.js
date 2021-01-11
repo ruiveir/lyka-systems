@@ -1,8 +1,4 @@
 $(document).ready(function() {
-    /* Definir paisNaturalidade */
-    var str_paisNaturalidade = $("#hidden_paisNaturalidade").val();
-    $('#paisNaturalidade').val(str_paisNaturalidade);
-
     /* Definir passaportPaisEmi */
     var str_passaportPaisEmi = $("#hidden_passaportPaisEmi").val();
     $('#passaportPaisEmi').val(str_passaportPaisEmi);

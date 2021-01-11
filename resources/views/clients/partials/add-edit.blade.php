@@ -2,8 +2,8 @@
     @if (Auth::user()->tipo == "admin")
     <div class="form-row mb-3">
         <div class="col-md-4 mb-3">
-            <label for="idAgente" class="text-gray-900">Agente responsável <sup class="text-danger small">&#10033;</sup> </label>
-            <select class="custom-select" id="idAgente" name="idAgente" required>
+            <label for="idAgente" class="text-gray-900">Agente responsável</label>
+            <select class="custom-select" id="idAgente" name="idAgente">
                 <option selected disabled hidden>Escolher agente...</option>
                 @if($agents)
                     @foreach($agents as $agent)
@@ -11,21 +11,17 @@
                     @endforeach
                 @endif
             </select>
-            <div class="invalid-feedback">
-                Oops, parece que algo não está bem...
-            </div>
         </div>
         <div class="col-md-4 mb-3">
-            <label for="idSubAgente" class="text-gray-900">Subagente responsável <sup class="text-danger small">&#10033;</sup> </label>
+            <label for="idSubAgente" class="text-gray-900">Subagente responsável</label>
             <select class="custom-select" id="idSubAgente" name="idSubAgente">
                 <option selected disabled hidden>Escolher subagente...</option>
-                @foreach($subAgentes as $subAgente)
-                    <option value="{{$subAgente->idAgente}}">{{$subAgente->nome.' '.$subAgente->apelido.' ('.$subAgente->pais.')'}}</option>
-                @endforeach
+                @if($subAgentes)
+                    @foreach($subAgentes as $subAgente)
+                        <option value="{{$subAgente->idAgente}}" {{old('idSubAgente', $client->idSubAgente ) == $subAgente->idAgente ? "selected" : "" }}>{{$subAgente->nome.' '.$subAgente->apelido.' ('.$subAgente->pais.')'}}</option>
+                    @endforeach
+                @endif
             </select>
-            <div class="invalid-feedback">
-                Oops, parece que algo não está bem...
-            </div>
         </div>
         <div class="col-md-4 mb-3">
             <label for="estado" class="text-gray-900">Estado do cliente <sup class="text-danger small">&#10033;</sup> </label>
@@ -99,8 +95,13 @@
                     <label for="fotografia" class="text-gray-900">Fotografia</label>
                     <div class="custom-file mb-3">
                         <input type="file" class="custom-file-input" name="fotografia" id="fotografia">
-                        <small class="form-text text-muted">A fotografia não deve ultrupassar os 5MB.</small>
-                        <label class="custom-file-label" for="fotografia" data-browse="Escolher">Escolher fotografia...</label>
+                        @if ($client->fotografia)
+                            <small class="form-text text-muted" id="removePhoto">Clique para remover a fotografia atual.</small>
+                            <label class="custom-file-label" for="fotografia" data-browse="Escolher" id="labelPhoto">{{$client->fotografia}}</label>
+                        @else
+                            <small class="form-text text-muted">A fotografia não deve ultrupassar os 5MB.</small>
+                            <label class="custom-file-label" for="fotografia" data-browse="Escolher">Escolher fotografia...</label>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -120,6 +121,11 @@
                 <div class="col-md-4 mb-3">
                     <label for="paisNaturalidade" class="text-gray-900">País de naturalidade <sup class="text-danger small">&#10033;</sup> </label>
                     <select class="custom-select" id="paisNaturalidade" name="paisNaturalidade" required>
+                        @if ($client->paisNaturalidade)
+                            <option selected hidden value="{{$client->paisNaturalidade}}">{{$client->paisNaturalidade}}</option>
+                        @else
+                            <option selected hidden value="">Selecione um país...</option>
+                        @endif
                         @include('clients.partials.countries')
                     </select>
                     <div class="invalid-feedback">

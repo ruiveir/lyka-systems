@@ -21,7 +21,7 @@
             <h6 class="m-0 font-weight-bold text-primary">Formulário de edição do estudante {{$client->nome.' '.$client->apelido}}.</h6>
         </div>
         <div class="card-body">
-            <form method="POST" action="{{route('clients.store')}}" class="form-group needs-validation " id="form_client" enctype="multipart/form-data" novalidate>
+            <form method="POST" action="{{route('clients.update', $client)}}" class="form-group needs-validation" id="form_client" enctype="multipart/form-data" novalidate>
                 @csrf
                 @method("PUT")
                 @include('clients.partials.add-edit')
@@ -75,6 +75,25 @@
                     $(options[i].option).removeClass("bg-primary text-white").addClass("bg-white");
                 }
             }
+        });
+
+        $("#removePhoto").hover(function(){
+            $("#removePhoto").css({
+                    "cursor": "pointer",
+                    "text-decoration": "underline"
+            });
+        });
+
+        $("#removePhoto").mouseout(function(){
+            $("#removePhoto").css({
+                    "cursor": "default",
+                    "text-decoration": "none"
+            });
+        });
+
+        $("#removePhoto").click(function(){
+            $("#fotografia").val(" ");
+            $("#labelPhoto").text("Escolher fotografia...");
         });
 
         bsCustomFileInput.init();

@@ -58,7 +58,6 @@
                         <tr>
                             <th>Referência</th>
                             <th>Nome</th>
-                            <th>E-Mail</th>
                             <th>Telefone</th>
                             <th>País</th>
                             <th style="max-width:100px; min-width:100px;">Estado</th>
@@ -72,7 +71,6 @@
                                     <tr>
                                         <td>{{$client->refCliente}}</td>
                                         <td>{{$client->nome.' '.$client->apelido}}</td>
-                                        <td>@if($client->email != null){{$client->email}} @else N/A @endif</td>
                                         <td>@if($client->telefone1 != null){{$client->telefone1}} @else N/A @endif</td>
                                         <td>{{$client->paisNaturalidade}}</td>
                                         <td class="font-weight-bold @if($client->estado == "Ativo") text-success @else text-primary @endif">@if($client->estado == "Ativo") Ativo @else Proponente @endif</td>

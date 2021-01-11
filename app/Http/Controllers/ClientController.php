@@ -554,10 +554,12 @@ class ClientController extends Controller
             if ($request->hasFile('fotografia')) {
 
             /* Verifica se o ficheiro antigo existe e apaga do storage*/
-            if(Storage::disk('public')->exists('client-documents/'.$client->idCliente.'/'. $oldfile->fotografia)){
-                Storage::disk('public')->delete('client-documents/'.$client->idCliente.'/'. $oldfile->fotografia);
-            }
+                if(Storage::disk('public')->exists('client-documents/'.$client->idCliente.'/'. $oldfile->fotografia)){
+                    Storage::disk('public')->delete('client-documents/'.$client->idCliente.'/'. $oldfile->fotografia);
+                }
                 $photo = $request->file('fotografia');
+
+                dd($photo);
                 $profileImg = $client->idCliente .'.'. $photo->getClientOriginalExtension();
                 Storage::disk('public')->putFileAs('client-documents/'.$client->idCliente.'/', $photo, $profileImg);
                 $client->fotografia = $profileImg;
