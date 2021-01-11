@@ -1,6 +1,12 @@
 @extends('layout.master')
 <!-- Page Title -->
 @section('title', 'Página Inicial')
+
+<!-- CSS Style -->
+@section('style-links')
+    <link href="{{asset('/css/dashboard.css')}}" rel="stylesheet">
+@endsection
+
 <!-- Page Content -->
 @section('content')
 

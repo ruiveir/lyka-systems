@@ -607,7 +607,7 @@
                             </div>
 
                             <div class="col-md-6">
-                                <div class="mb-2 font-weight-bold" style="min-width: 256px">Pagamentos em dívida:</div>
+                                <div class="mb-2 font-weight-bold" style="min-width: 256px">Pagamentos vencidos:</div>
                                 <div class="border rounded bg-light p-3">
                                     @if ($fasesDivida)
                                         @php
@@ -622,7 +622,7 @@
                                             @endphp
                                         @endforeach
                                         <hr>
-                                        <p class="mb-0">Valor total em dívida: <span class="text-danger font-weight-bold"> {{number_format((float) $valorTotalDivida, 2, ',', '').'€'}} </span></p>
+                                        <p class="mb-0">Valor total vencido: <span class="text-danger font-weight-bold"> {{number_format((float) $valorTotalDivida, 2, ',', '').'€'}} </span></p>
                                     @else
                                         <div class="text-muted">
                                             <small>(sem dados para apresentar)</small>
