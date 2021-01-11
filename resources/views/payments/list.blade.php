@@ -272,6 +272,7 @@
 
 <!-- Begin of Scripts -->
 @section('scripts')
+<script src="//cdn.datatables.net/plug-ins/1.10.11/sorting/date-eu.js" type="text/javascript"></script>
 <script>
     $(document).ready(function() {
         $('#table').DataTable({
@@ -298,7 +299,8 @@
                     "sSortDescending": ": Ordenar colunas de forma descendente"
                 }
             },
-            "order": [[ 4, 'desc' ], [ 3, 'desc' ]]
+            "order": [ 3, 'asc' ],
+            "columnDefs" : [{"targets":3, "type":"date-eu"}],
         });
     });
 </script>

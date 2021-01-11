@@ -138,7 +138,7 @@
                     "sSortDescending": ": Ordenar colunas de forma descendente"
                 }
             },
-            "order": [ 3, 'asc' ]
+            "order": [ 0, 'asc' ]
         });
 
         // Modal for DELETE
