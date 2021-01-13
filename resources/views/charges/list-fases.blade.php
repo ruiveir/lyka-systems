@@ -37,7 +37,7 @@
                     <tbody>
                         @foreach ($fases as $fase)
                         <tr>
-                            <td>{{$fase->descricao}}</td>
+                            <td class="text-truncated" title="{{$fase->descricao}}">{{$fase->descricao}}</td>
                             <td>{{str_replace('.', ',', $fase->valorFase)}}€</td>
                             <td>{{date('d/m/Y', strtotime($fase->dataVencimento))}}</td>
                             <td>
@@ -107,6 +107,13 @@
 <!-- Begin of Scripts -->
 @section('scripts')
 <script>
+    // Truncate a string
+    function strtrunc(str, max, add){
+        add = add || '...';
+        return (typeof str === 'string' && str.length > max ? str.substring(0, max) + add : str);
+    };
+
+
     $(document).ready(function() {
         $('#table').DataTable({
             "language": {
@@ -132,7 +139,18 @@
                     "sSortDescending": ": Ordenar colunas de forma descendente"
                 }
             },
-            "order": [ 4, 'asc' ]
+            "order": [ 0, 'asc' ],
+            'columnDefs': [
+                {
+                   'targets': 0,
+                   'render': function(data, type, full, meta){
+                      if(type === 'display'){
+                         data = strtrunc(data, 45);
+                      }
+                      return data;
+                  }
+               }
+            ]
         });
     });
 </script>

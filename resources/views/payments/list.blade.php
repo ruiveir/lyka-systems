@@ -60,7 +60,7 @@
                             <td>Estudante</td>
                             <td>{{number_format((float) $responsabilidade->valorCliente, 2, ',', '').'€'}}</td>
                             <td>{{date('d/m/Y', strtotime($responsabilidade->dataVencimentoCliente))}}</td>
-                            <td class="@if(!$responsabilidade->verificacaoPagoCliente && $responsabilidade->dataVencimentoCliente < $currentdate) text-danger font-weight-bold @elseif ($responsabilidade->verificacaoPagoCliente) text-success font-weight-bold @else text-gray @endif">
+                            <td class="@if(!$responsabilidade->verificacaoPagoCliente && $responsabilidade->dataVencimentoCliente < $currentdate) text-danger font-weight-bold @elseif ($responsabilidade->verificacaoPagoCliente) text-success font-weight-bold @else font-weight-bold text-gray @endif">
                             @if (!$responsabilidade->verificacaoPagoCliente && $responsabilidade->dataVencimentoCliente < $currentdate)
                                 Vencido
                             @elseif (!$responsabilidade->verificacaoPagoCliente && $responsabilidade->dataVencimentoCliente > $currentdate)
