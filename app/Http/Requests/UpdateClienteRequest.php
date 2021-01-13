@@ -15,6 +15,7 @@ class UpdateClienteRequest extends FormRequest
     public function rules()
     {
         return [
+            'refCliente' => 'required',
             'idAgente' => 'nullable',
             'idSubAgente' => 'nullable',
             'nome' => 'required',
@@ -57,8 +58,6 @@ class UpdateClienteRequest extends FormRequest
 
             'IBAN' => ['nullable', Rule::unique('cliente')->ignore($this->client), Rule::unique('agente'), Rule::unique('conta')],
             'obsFinanceiras' => 'nullable',
-
-            'refCliente' => 'nullable',
 
             'estado' => 'required',
         ];

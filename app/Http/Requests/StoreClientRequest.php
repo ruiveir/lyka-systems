@@ -15,6 +15,7 @@ class StoreClientRequest extends FormRequest
     public function rules()
     {
         return [
+            'refCliente' => 'required',
             'idAgente' => 'nullable',
             'idSubAgente' => 'nullable',
             'nome' => 'required',

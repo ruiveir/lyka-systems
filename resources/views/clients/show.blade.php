@@ -42,53 +42,53 @@
 
                     <div class="col col-3 mr-3" style="min-width:280px !important">
                         <div class="mb-3">
-                            <span class="text-gray-800"><b>Género:</b></span>
+                            <span class="text-gray-900"><b>Género:</b></span>
                             @if ($client->genero == 'M')
-                            <span class="text-gray-800">Masculino</span>
+                            <span class="text-gray-900">Masculino</span>
                             @else
-                            <span class="text-gray-800">Feminino</span>
+                            <span class="text-gray-900">Feminino</span>
                             @endif
                         </div>
 
                         <div class="mb-3">
-                            <span class="text-gray-800"><b>Naturalidade:</b></span>
-                            <span class="text-gray-800">{{$client->paisNaturalidade}}</span>
+                            <span class="text-gray-900"><b>Naturalidade:</b></span>
+                            <span class="text-gray-900">{{$client->paisNaturalidade}}</span>
                         </div>
 
                         <div class="mb-3">
-                            <span class="text-gray-800"><b>Data de nascimento:</b></span>
+                            <span class="text-gray-900"><b>Data de nascimento:</b></span>
                             @if ($client->dataNasc)
-                                <span class="text-gray-800">{{date('d/m/Y', strtotime($client->dataNasc))}}</span>
+                                <span class="text-gray-900">{{date('d/m/Y', strtotime($client->dataNasc))}}</span>
                             @else
-                                <span class="text-gray-800">N/A</span>
+                                <span class="text-gray-900">N/A</span>
                             @endif
                         </div>
 
                         <div class="mb-3">
-                            <span class="text-gray-800"><b>Telefone:</b></span>
+                            <span class="text-gray-900"><b>Telefone:</b></span>
                             @if ($client->telefone1)
-                                <span class="text-gray-800">{{$client->telefone1}}</span>
+                                <span class="text-gray-900">{{$client->telefone1}}</span>
                             @else
-                                <span class="text-gray-800">N/A</span>
+                                <span class="text-gray-900">N/A</span>
                             @endif
                         </div>
 
                         <div class="mb-3">
-                            <span class="text-gray-800"><b>E-Mail:</b></span>
+                            <span class="text-gray-900"><b>E-Mail:</b></span>
                             @if ($client->email)
-                                <span class="text-gray-800">{{$client->email}}</span>
+                                <span class="text-gray-900">{{$client->email}}</span>
                             @else
-                                <span class="text-gray-800">N/A</span>
+                                <span class="text-gray-900">N/A</span>
                             @endif
                         </div>
 
                         @if (Auth::user()->tipo == "admin")
                         <div class="mb-3">
-                            <span class="text-gray-800"><b>Referência cliente:</b></span>
+                            <span class="text-gray-900"><b>Referência cliente:</b></span>
                             @if ($client->refCliente)
-                                <span class="text-gray-800">{{$client->refCliente}}</span>
+                                <span class="text-gray-900">{{$client->refCliente}}</span>
                             @else
-                                <span class="text-gray-800">N/A</span>
+                                <span class="text-gray-900">N/A</span>
                             @endif
                         </div>
                         @endif
@@ -97,7 +97,7 @@
                     <div class="col pr-3 pb-3" style="min-width:300px !important">
                         @if (Auth::user()->tipo == "admin")
                         <div class="mb-3">
-                            <span class="text-gray-800"><b>Agente:</b></span>
+                            <span class="text-gray-900"><b>Agente:</b></span>
                             @if ($client->idAgente && $agente)
                                 <a class="font-weight-bold" href="{{route('agents.show', $agente)}}">{{$agente->nome.' '.$agente->apelido}}</a>
                             @else
@@ -106,7 +106,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <span class="text-gray-800"><b>Subagente:</b></span>
+                            <span class="text-gray-900"><b>Subagente:</b></span>
                             @if ($client->idSubAgente && $subAgente)
                                 <a class="font-weight-bold" href="{{route('agents.show', $subAgente)}}">{{$subAgente->nome.' '.$subAgente->apelido}}</a>
                             @else
@@ -117,7 +117,7 @@
 
                         @if (Auth::user()->tipo == "admin")
                         <div class="nav mt-3">
-                            <span class="text-gray-800"><b>Ver observações:</b></span>
+                            <span class="text-gray-900"><b>Ver observações:</b></span>
                             <a class="font-weight-bold active ml-2" id="obsPessoais-tab" data-toggle="tab" href="#obsPessoais" role="tab" aria-controls="obsPessoais" aria-selected="true">
                                 Administrativas
                             </a>
@@ -198,134 +198,148 @@
                         {{-- Conteudo: Produtos --}}
                         <div class="tab-pane fade active show " id="produtos" role="tabpanel" aria-labelledby="produtos-tab" style="color: black;font-weight:normal !important">
                             @if($produtos)
-                            <div class="row mt-2 pl-2">
-                                {{-- Botão para adicionar novo produto --}}
-                                @if (Auth::user()->tipo == "admin")
-                                <a class="name_link text-center m-2" href="{{route('produtos.list',$client)}}">
-                                    <div class="col bg-light border border-info rounded shadow-sm p-4" style="height:143px; min-width: 160px">
-                                        <div style="font-size:80px; line-height:60px "><strong>+</strong></div>
-                                        <div class="mt-1">Adicionar Produto</div>
+                                <div class="row mt-2 pl-2">
+                                    {{-- Botão para adicionar novo produto --}}
+                                    @if (Auth::user()->tipo == "admin")
+                                    <a class="name_link text-center m-2" href="{{route('produtos.list',$client)}}">
+                                        <div class="col bg-light border border-info rounded shadow-sm p-4" style="height:143px; min-width: 160px">
+                                            <div style="font-size:80px; line-height:60px "><strong>+</strong></div>
+                                            <div class="mt-1">Adicionar Produto</div>
+                                        </div>
+                                    </a>
+                                    @endif
+
+                                    @foreach ($produtos as $produto)
+                                        <a class="name_link text-center m-2" href="{{route('produtos.show',$produto)}}">
+                                            <div class="col bg-light border rounded shadow-sm p-4" style="height:143px; min-width: 160px">
+                                                <div class=""><i class="fas fa-database p-2 " style="font-size: 25px"></i>
+                                                </div>
+                                                <div>{{$produto->tipo}}</div>
+                                                <div class="mt-1">{{$produto->valorTotal.'€'}}</div>
+                                            </div>
+                                        </a>
+                                    @endforeach
+                                </div>
+
+                                {{-- Total dos produtos --}}
+                                <div class="row border rounded bg-light p-3 mx-auto mt-3">
+                                    <div class="col font-weight-bold">
+                                        Valor total dos produtos: <span class="text-success">{{$totalprodutos}}€</span>
                                     </div>
-                                </a>
+                                </div>
+                            @else
+                                @if (Auth::user()->tipo == "admin")
+                                <div class="row mt-2 pl-2">
+                                    {{-- Botão para adicionar novo produto --}}
+                                    <a class="name_link text-center m-2" href="{{route('produtos.list', $client)}}">
+                                        <div class="col bg-light border border-info rounded shadow-sm p-4" style="height:143px; min-width: 160px">
+                                            <div style="font-size:80px; line-height:60px "><strong>+</strong></div>
+                                            <div class="mt-1">Adicionar Produto</div>
+                                        </div>
+                                    </a>
+                                </div>
                                 @endif
 
-                                @foreach ($produtos as $produto)
-
-                                <a class="name_link text-center m-2" href="{{route('produtos.show',$produto)}}">
-                                    <div class="col bg-light border rounded shadow-sm p-4" style="height:143px; min-width: 160px">
-                                        <div class=""><i class="fas fa-database p-2 " style="font-size: 25px"></i>
-                                        </div>
-                                        <div>{{$produto->tipo}}</div>
-                                        <div class="mt-1">{{$produto->valorTotal.'€'}}</div>
+                                <div class="row">
+                                    <div class="col border rounded bg-light p-3 m-3 font-weight-bold">
+                                        Valor total de produtos: <span class="text-gray-900">0€</span>
                                     </div>
-                                </a>
-
-                                @endforeach
-
-
-
-                            </div>
-
-                            {{-- Total dos produtos --}}
-                            <div class="row border rounded bg-light p-3 mx-auto mt-3">
-                                {{-- <div class="col">
-                                    Produtos registados: <span class="active">{{count($produtos)}}</span>
-                            </div> --}}
-                            <div class="col font-weight-bold">
-                                Valor total dos produtos: <span class="text-success ">{{$totalprodutos}}€</span>
-                            </div>
-                        </div>
-
-                        @else
-
-                        {{-- Sem produtos --}}
-                        {{-- <div class="row ">
-                                <div class="col border rounded bg-light p-3 m-3">
-                                    <div class="text-muted"><small>(sem registos)</small></div>
                                 </div>
-                            </div> --}}
-
-
-                        @if (Auth::user()->tipo == "admin")
-                        <div class="row mt-2 pl-2">
-                            {{-- Botão para adicionar novo produto --}}
-
-                            <a class="name_link text-center m-2" href="{{route('produtos.list',$client)}}">
-                                <div class="col bg-light border border-info rounded shadow-sm p-4" style="height:143px; min-width: 160px">
-                                    <div style="font-size:80px; line-height:60px "><strong>+</strong></div>
-                                    <div class="mt-1">Adicionar Produto</div>
-                                </div>
-                            </a>
-
+                            @endif
                         </div>
-                        @endif
-
-                        <div class="row ">
-                            <div class="col border rounded bg-light p-3 m-3 font-weight-bold">
-                                Total dos protudos: <span class="text-success ">0 €</span>
-                            </div>
-                        </div>
-
-                        @endif
-
-                    </div>
-
 
                     {{-- Conteudo: Documentação --}}
-                    <div class="tab-pane fade " id="documentation" role="tabpanel" aria-labelledby="documentation-tab" style="color: black;font-weight:normal !important">
-
+                    <div class="tab-pane fade text-gray-900" id="documentation" role="tabpanel" aria-labelledby="documentation-tab">
                         {{-- DADOS DE Passaporte --}}
                         <div class="row mt-2 pl-2 ">
-
                             <div class="col mr-3 ">
-                                <div class=" mb-2 ">Documento de identificação pessoal:</div>
-
+                                <div class="mb-2 font-weight-bold">Documento de identificação pessoal:</div>
                                 <div class="border rounded bg-light p-3">
                                     {{-- CC IDENTIFICAÇÃO --}}
-                                    <div>Número do documento: <span class="font-weight-bold">{{$client->num_docOficial}}</span>
+                                    <div>
+                                        <span>Número do documento:</span>
+                                        @if ($client->num_docOficial)
+                                            <span class="text-gray-900 font-weight-bold">{{$client->num_docOficial}}</span>
+                                        @else
+                                            <span class="text-gray-900 font-weight-bold">N/A</span>
+                                        @endif
                                     </div>
                                     <br>
-                                    <div>Número de identificação fiscal: <span class="font-weight-bold">{{$client->NIF}}</span>
+                                    <div>
+                                        <span>Número de identificação fiscal:</span>
+                                        @if ($client->NIF)
+                                            <span class="text-gray-900 font-weight-bold">{{$client->NIF}}</span>
+                                        @else
+                                            <span class="text-gray-900 font-weight-bold">N/A</span>
+                                        @endif
                                     </div>
                                     <br>
-                                    <div>Data de validade: <span class="font-weight-bold">{{ date('d/m/Y', strtotime($client->validade_docOficial)) }}</span>
+                                    <div>
+                                        <span>Data de validade:</span>
+                                        @if ($client->validade_docOficial)
+                                            <span class="text-gray-900 font-weight-bold">{{date('d/m/Y', strtotime($client->validade_docOficial))}}</span>
+                                        @else
+                                            <span class="text-gray-900 font-weight-bold">N/A</span>
+                                        @endif
                                     </div>
                                 </div>
 
                                 <br><br>
 
-                                <div class=" mb-2">Passaporte:</div>
-
+                                <div class="mb-2 font-weight-bold">Passaporte:</div>
                                 <div class="border rounded bg-light p-3">
-                                    @if ( isset($passaporteData) && $passaporteData!=null)
+                                    @if (isset($passaporteData) && $passaporteData != null)
                                     {{-- numPassaporte --}}
-                                    <div>Número do passaporte: <span class="font-weight-bold my-3">{{$passaporteData->numPassaporte}}</span></div>
-                                    <br>
+                                        <div>
+                                            <span>Número do passaporte:</span>
+                                            @if ($passaporteData->numPassaporte)
+                                                <span class="text-gray-900 font-weight-bold">{{$passaporteData->numPassaporte}}</span>
+                                            @else
+                                                <span class="text-gray-900 font-weight-bold">N/A</span>
+                                            @endif
+                                        </div>
+                                        <br>
 
-                                    {{-- dataValidPP --}}
-                                    <div>Data de validade do passaporte: <span class="font-weight-bold my-3">{{ date('M-Y', strtotime($passaporteData->dataValidPP)) }}</span>
-                                    </div><br>
+                                        {{-- dataValidPP --}}
+                                        <div>
+                                            <span>Data de validade do passaporte:</span>
+                                            @if ($passaporteData->dataValidPP)
+                                                <span class="text-gray-900 font-weight-bold">{{date('M-Y', strtotime($passaporteData->dataValidPP))}}</span>
+                                            @else
+                                                <span class="text-gray-900 font-weight-bold">N/A</span>
+                                            @endif
+                                        </div>
+                                        <br>
 
-                                    {{-- passaportPaisEmi --}}
-                                    <div>Pais emissor do passaporte: <span class="font-weight-bold my-3">{{$passaporteData->passaportPaisEmi}}</span></div><br>
+                                        {{-- passaportPaisEmi --}}
+                                        <div>
+                                            <span>País emissor do passaporte:</span>
+                                            @if ($passaporteData->passaportPaisEmi)
+                                                <span class="text-gray-900 font-weight-bold">{{$passaporteData->passaportPaisEmi}}</span>
+                                            @else
+                                                <span class="text-gray-900 font-weight-bold">N/A</span>
+                                            @endif
+                                        </div>
+                                        <br>
 
-                                    {{-- localEmissaoPP --}}
-                                    <div>Local de emissão do passaporte: <span class="font-weight-bold my-3">{{$passaporteData->localEmissaoPP}}</span></div>
+                                        {{-- localEmissaoPP --}}
+                                        <div>
+                                            <span>Local de emissão do passaporte:</span>
+                                            @if ($passaporteData->localEmissaoPP)
+                                                <span class="text-gray-900 font-weight-bold">{{$passaporteData->localEmissaoPP}}</span>
+                                            @else
+                                                <span class="text-gray-900 font-weight-bold">N/A</span>
+                                            @endif
+                                        </div>
                                     @else
-                                    <div class=""><small>(sem informação)</small></div>
+                                        <div class="text-muted"><small>(sem dados para apresentar)</small></div>
                                     @endif
-
-
                                 </div>
-
-                                <br>
-
-
                             </div>
 
                             {{-- DOCUMENTOS PESSOAIS --}}
                             <div class="col" style="min-width:250px">
-                                <div class=" mb-2">Ficheiros:</div>
+                                <div class="mb-2 font-weight-bold">Ficheiros:</div>
                                 @if ($documentosPessoais!=null )
                                 <ul class="border rounded bg-light pl-3" style="list-style-type:none;margin:0px;padding:0">
                                     @foreach ($documentosPessoais as $docpessoal)
@@ -352,7 +366,7 @@
                                 </ul>
                                 @else
                                 <div class="border rounded bg-light p-3">
-                                    <div class="text-muted"><small>(sem registos)</small></div>
+                                    <div class="text-muted"><small>(sem dados para apresentar)</small></div>
                                 </div>
                                 @endif
 

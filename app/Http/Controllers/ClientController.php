@@ -172,13 +172,9 @@ class ClientController extends Controller
 
             $client->save();
 
-            $processNumber = str_pad($client->idCliente, 3, '0', STR_PAD_LEFT);
-            $twoDigitsDate = date("y");
-            $twoDigitsCountry = strtoupper(post_slug($client->paisNaturalidade));
-            $twoDigitsCountry = substr($twoDigitsCountry, 0, 2);
-            $processCode = $twoDigitsCountry.'.'.$twoDigitsDate.'.'.$processNumber;
-
-            $client->refCliente = $processCode;
+            $strpadIdCliente = str_pad($client->idCliente, 3, "0", STR_PAD_LEFT);
+            $refClient = strtoupper($client->refCliente.'.'.$strpadIdCliente);
+            $client->refCliente = $refClient;
 
             /* Criação de cliente */
             if ($requestClient->hasFile('fotografia')) {
@@ -579,8 +575,10 @@ class ClientController extends Controller
                 $client->nivEstudoAtual = null;
             }
 
+            $strpadIdCliente = str_pad($client->idCliente, 3, "0", STR_PAD_LEFT);
+            $refClient = strtoupper($client->refCliente.'.'.$strpadIdCliente);
+            $client->refCliente = $refClient;
             $client->save();
-
 
 
 

@@ -1,29 +1,20 @@
 <div class="container-fluid">
     @if (Auth::user()->tipo == "admin")
     <div class="form-row mb-3">
-        <div class="col-md-4 mb-3">
-            <label for="idAgente" class="text-gray-900">Agente responsável</label>
-            <select class="custom-select" id="idAgente" name="idAgente">
-                <option selected disabled hidden>Escolher agente...</option>
-                @if($agents)
-                    @foreach($agents as $agent)
-                        <option value="{{$agent->idAgente}}" {{old('idAgente', $client->idAgente ) == $agent->idAgente ? "selected" : "" }}   >{{$agent->nome.' '.$agent->apelido}} ({{$agent->pais}})</option>
-                    @endforeach
-                @endif
-            </select>
+        @php
+            // Referência do cliente sem o seu ID
+            if ($client->refCliente) {
+                $refClient = substr($client->refCliente, 0, -4);
+            }
+        @endphp
+        <div class="col-md-3 col-sm-4 mb-3">
+            <label for="refCliente" class="text-gray-900">Referência do estudante <sup class="text-danger small">&#10033;</sup></label>
+            <input type="text" class="form-control" name="refCliente" id="refCliente" placeholder="Inserir uma referência..." value="@if(isset($refClient)){{$refClient}}@endif" maxlength="5" required>
+            <div class="invalid-feedback">
+                Oops, parece que algo não está bem...
+            </div>
         </div>
-        <div class="col-md-4 mb-3">
-            <label for="idSubAgente" class="text-gray-900">Subagente responsável</label>
-            <select class="custom-select" id="idSubAgente" name="idSubAgente">
-                <option selected disabled hidden>Escolher subagente...</option>
-                @if($subAgentes)
-                    @foreach($subAgentes as $subAgente)
-                        <option value="{{$subAgente->idAgente}}" {{old('idSubAgente', $client->idSubAgente ) == $subAgente->idAgente ? "selected" : "" }}>{{$subAgente->nome.' '.$subAgente->apelido.' ('.$subAgente->pais.')'}}</option>
-                    @endforeach
-                @endif
-            </select>
-        </div>
-        <div class="col-md-4 mb-3">
+        <div class="col-md-3 col-sm-4 mb-3">
             <label for="estado" class="text-gray-900">Estado do cliente <sup class="text-danger small">&#10033;</sup> </label>
             <select class="custom-select" id="estado" name="estado" required>
                 <option selected disabled hidden>Escolher estado do cliente...</option>
@@ -34,6 +25,28 @@
             <div class="invalid-feedback">
                 Oops, parece que algo não está bem...
             </div>
+        </div>
+        <div class="col-md-3 col-sm-4 mb-3">
+            <label for="idAgente" class="text-gray-900">Agente responsável</label>
+            <select class="custom-select" id="idAgente" name="idAgente">
+                <option selected disabled hidden>Escolher agente...</option>
+                @if($agents)
+                    @foreach($agents as $agent)
+                        <option value="{{$agent->idAgente}}" {{old('idAgente', $client->idAgente ) == $agent->idAgente ? "selected" : "" }}   >{{$agent->nome.' '.$agent->apelido}} ({{$agent->pais}})</option>
+                    @endforeach
+                @endif
+            </select>
+        </div>
+        <div class="col-md-3 col-sm-4 mb-3">
+            <label for="idSubAgente" class="text-gray-900">Subagente responsável</label>
+            <select class="custom-select" id="idSubAgente" name="idSubAgente">
+                <option selected disabled hidden>Escolher subagente...</option>
+                @if($subAgentes)
+                    @foreach($subAgentes as $subAgente)
+                        <option value="{{$subAgente->idAgente}}" {{old('idSubAgente', $client->idSubAgente ) == $subAgente->idAgente ? "selected" : "" }}>{{$subAgente->nome.' '.$subAgente->apelido.' ('.$subAgente->pais.')'}}</option>
+                    @endforeach
+                @endif
+            </select>
         </div>
     </div>
     @else
