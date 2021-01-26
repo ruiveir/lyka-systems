@@ -571,79 +571,90 @@
 
                     {{-- DADOS FINANCEIROS --}}
                     <div class="tab-pane fade pl-2 text-gray-900" id="financas" role="tabpanel" aria-labelledby="financas-tab" style="font-weight:normal !important">
-                        <div class="row mt-2">
-                            <div class="col-lg-6">
-                                <div class="mb-2 font-weight-bold" style="min-width: 256px">Pagamentos pendentes:</div>
-                                <div class="border rounded bg-light p-3">
+                        <div class="table-responsive p-1 mt-4">
+                            <table class="table table-bordered table-striped" id="table" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>Produto</th>
+                                        <th>Fase</th>
+                                        <th>Valor</th>
+                                        <th>Data de vencimento</th>
+                                        <th style="max-width:50px; min-width:50px;">Estado</th>
+                                        <th style="max-width:80px; min-width:80px;">Opções</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{-- Listagem das fases com pagamentos pendentes --}}
                                     @if ($fasesPendentes)
-                                        @php
-                                            $valorTotalPendente = 0;
-                                        @endphp
                                         @foreach ($fasesPendentes as $fase)
-                                            <div class="mb-3">
-                                                {{$fase->produto->descricao.' ('.$fase->descricao.')'}}: <span class="font-weight-bold">{{number_format((float) $fase->valorFase, 2, ',', '').'€'}}</span>
-                                            </div>
-                                            @php
-                                                $valorTotalPendente += $fase->valorFase;
-                                            @endphp
+                                            <tr>
+                                                <td title="{{$fase->produto->descricao}}">{{$fase->produto->descricao}}</td>
+                                                <td title="{{$fase->descricao}}">{{$fase->descricao}}</td>
+                                                <td>{{number_format((float) $fase->valorFase, 2, ',', '').'€'}}</td>
+                                                <td>{{date('d/m/Y', strtotime($fase->dataVencimento))}}</td>
+                                                <td class="font-weight-bold">Pendente</td>
+                                                <td class="text-center align-middle">
+                                                @if (count($fase->docTransacao))
+                                                    <button class="btn btn-sm btn-outline-dark text-gray-900" title="Editar" disabled><i class="fas fa-check"></i></button>
+                                                    <a href="{{route("charges.show", [$fase->produto, $fase, $fase->docTransacao[0]])}}" class="btn btn-sm btn-outline-primary" title="Ver em detalhe"><i class="far fa-eye"></i></a>
+                                                    <a href="{{route("charges.edit", [$fase->produto, $fase, $fase->docTransacao[0]])}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                                @else
+                                                    <a href="{{route("charges.create", [$fase->produto, $fase])}}" class="btn btn-sm btn-outline-success" title="Registar"><i class="fas fa-check"></i></i></a>
+                                                    <button class="btn btn-sm btn-outline-dark text-gray-900" title="Ver em detalhe" disabled><i class="far fa-eye"></i></button>
+                                                    <button class="btn btn-sm btn-outline-dark text-gray-900" title="Editar" disabled><i class="fas fa-pencil-alt"></i></button>
+                                                @endif
+                                                </td>
+                                            </tr>
                                         @endforeach
-                                        <hr>
-                                        <p class="mb-0">Valor total pendente: <span class="font-weight-bold"> {{number_format((float) $valorTotalPendente, 2, ',', '').'€'}} </span></p>
-                                    @else
-                                        <div class="text-muted">
-                                            <small>(sem dados para apresentar)</small>
-                                        </div>
                                     @endif
-                                </div>
-
-                                <div class="mb-2 mt-4 font-weight-bold" style="min-width: 256px">Pagamentos efectuados:</div>
-                                <div class="border rounded bg-light p-3">
+                                    {{-- Listagem das fases com pagamentos pagos --}}
                                     @if ($fasesPagas)
-                                        @php
-                                            $valorTotalPago = 0;
-                                        @endphp
                                         @foreach ($fasesPagas as $fase)
-                                            <div>
-                                                {{$fase->produto->descricao.' ('.$fase->descricao.')'}}: <span class="font-weight-bold text-success">{{number_format((float) $fase->valorFase, 2, ',', '').'€'}}</span>
-                                            </div>
-                                            @php
-                                                $valorTotalPago += $fase->valorFase;
-                                            @endphp
+                                            <tr>
+                                                <td title="{{$fase->produto->descricao}}">{{$fase->produto->descricao}}</td>
+                                                <td title="{{$fase->descricao}}">{{$fase->descricao}}</td>
+                                                <td>{{number_format((float) $fase->valorFase, 2, ',', '').'€'}}</td>
+                                                <td>{{date('d/m/Y', strtotime($fase->dataVencimento))}}</td>
+                                                <td class="font-weight-bold text-success">Pago</td>
+                                                <td class="text-center align-middle">
+                                                @if (count($fase->docTransacao))
+                                                    <button class="btn btn-sm btn-outline-dark text-gray-900" title="Editar" disabled><i class="fas fa-check"></i></button>
+                                                    <a href="{{route("charges.show", [$fase->produto, $fase, $fase->docTransacao[0]])}}" class="btn btn-sm btn-outline-primary" title="Ver em detalhe"><i class="far fa-eye"></i></a>
+                                                    <a href="{{route("charges.edit", [$fase->produto, $fase, $fase->docTransacao[0]])}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                                @else
+                                                    <a href="{{route("charges.create", [$fase->produto, $fase])}}" class="btn btn-sm btn-outline-success" title="Registar"><i class="fas fa-check"></i></i></a>
+                                                    <button class="btn btn-sm btn-outline-dark text-gray-900" title="Ver em detalhe" disabled><i class="far fa-eye"></i></button>
+                                                    <button class="btn btn-sm btn-outline-dark text-gray-900" title="Editar" disabled><i class="fas fa-pencil-alt"></i></button>
+                                                @endif
+                                                </td>
+                                            </tr>
                                         @endforeach
-                                        <hr>
-                                        <p class="mb-0">Valor total pago: <span class="font-weight-bold text-success"> {{number_format((float) $valorTotalPago, 2, ',', '').'€'}} </span></p>
-                                    @else
-                                        <div class="text-muted">
-                                            <small>(sem dados para apresentar)</small>
-                                        </div>
                                     @endif
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="mb-2 font-weight-bold" style="min-width: 256px">Pagamentos vencidos:</div>
-                                <div class="border rounded bg-light p-3">
+                                    {{-- Listagem das fases com pagamentos vencidos --}}
                                     @if ($fasesDivida)
-                                        @php
-                                            $valorTotalDivida = 0;
-                                        @endphp
                                         @foreach ($fasesDivida as $fase)
-                                            <div class="mb-3">
-                                                {{$fase->produto->descricao.' ('.$fase->descricao.')'}}: <span class="font-weight-bold text-danger">{{number_format((float) $fase->valorFase, 2, ',', '').'€'}}</span>
-                                            </div>
-                                            @php
-                                                $valorTotalDivida += $fase->valorFase;
-                                            @endphp
+                                            <tr>
+                                                <td title="{{$fase->produto->descricao}}">{{$fase->produto->descricao}}</td>
+                                                <td title="{{$fase->descricao}}">{{$fase->descricao}}</td>
+                                                <td>{{number_format((float) $fase->valorFase, 2, ',', '').'€'}}</td>
+                                                <td>{{date('d/m/Y', strtotime($fase->dataVencimento))}}</td>
+                                                <td class="font-weight-bold text-danger">Vencido</td>
+                                                <td class="text-center align-middle">
+                                                @if (count($fase->docTransacao))
+                                                    <button class="btn btn-sm btn-outline-dark text-gray-900" title="Editar" disabled><i class="fas fa-check"></i></button>
+                                                    <a href="{{route("charges.show", [$fase->produto, $fase, $fase->docTransacao[0]])}}" class="btn btn-sm btn-outline-primary" title="Ver em detalhe"><i class="far fa-eye"></i></a>
+                                                    <a href="{{route("charges.edit", [$fase->produto, $fase, $fase->docTransacao[0]])}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                                @else
+                                                    <a href="{{route("charges.create", [$fase->produto, $fase])}}" class="btn btn-sm btn-outline-success" title="Registar"><i class="fas fa-check"></i></i></a>
+                                                    <button class="btn btn-sm btn-outline-dark text-gray-900" title="Ver em detalhe" disabled><i class="far fa-eye"></i></button>
+                                                    <button class="btn btn-sm btn-outline-dark text-gray-900" title="Editar" disabled><i class="fas fa-pencil-alt"></i></button>
+                                                @endif
+                                                </td>
+                                            </tr>
                                         @endforeach
-                                        <hr>
-                                        <p class="mb-0">Valor total vencido: <span class="text-danger font-weight-bold"> {{number_format((float) $valorTotalDivida, 2, ',', '').'€'}} </span></p>
-                                    @else
-                                        <div class="text-muted">
-                                            <small>(sem dados para apresentar)</small>
-                                        </div>
                                     @endif
-                                </div>
-                            </div>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -739,7 +750,51 @@
 @section('scripts')
 <script src="{{asset('/js/clients.js')}}"></script>
 <script>
+    // Truncate a string
+    function strtrunc(str, max, add){
+        add = add || '...';
+        return (typeof str === 'string' && str.length > max ? str.substring(0, max) + add : str);
+    };
+
     $(document).ready(function() {
+        $('#table').DataTable({
+            "language": {
+                "sEmptyTable": "Não foi encontrado nenhum registo",
+                "sLoadingRecords": "A carregar...",
+                "sProcessing": "A processar...",
+                "sLengthMenu": "Mostrar _MENU_ registos",
+                "sZeroRecords": "Não foram encontrados resultados",
+                "sInfo": "Mostrando _END_ de _TOTAL_ registos",
+                "sInfoEmpty": "Mostrando de 0 de 0 registos",
+                "sInfoFiltered": "(filtrado de _MAX_ registos no total)",
+                "sInfoPostFix": "",
+                "sSearch": "Procurar:",
+                "sUrl": "",
+                "oPaginate": {
+                    "sFirst": "Primeiro",
+                    "sPrevious": "Anterior",
+                    "sNext": "Seguinte",
+                    "sLast": "Último"
+                },
+                "oAria": {
+                    "sSortAscending": ": Ordenar colunas de forma ascendente",
+                    "sSortDescending": ": Ordenar colunas de forma descendente"
+                }
+            },
+            "order": [ 4, 'desc' ],
+            "columnDefs": [
+                {
+                   'targets': [0, 1],
+                   'render': function(data, type, full, meta){
+                      if(type === 'display'){
+                         data = strtrunc(data, 15);
+                      }
+                      return data;
+                  }
+               }
+            ]
+        });
+
         var options = [
             {"option": document.getElementById("produtos-tab")},
             {"option": document.getElementById("documentation-tab")},

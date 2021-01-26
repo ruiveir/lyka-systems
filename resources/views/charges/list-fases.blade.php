@@ -113,7 +113,6 @@
         return (typeof str === 'string' && str.length > max ? str.substring(0, max) + add : str);
     };
 
-
     $(document).ready(function() {
         $('#table').DataTable({
             "language": {
