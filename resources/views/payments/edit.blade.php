@@ -9,12 +9,20 @@
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h4 mb-0 text-gray-800">Edição de um pagamento</h1>
-        <a href="#" data-toggle="modal" data-target="#infoModal" class="btn btn-secondary btn-icon-split btn-sm" title="Informações">
-            <span class="icon text-white-50">
-                <i class="fas fa-info-circle"></i>
-            </span>
-            <span class="text">Informações</span>
-        </a>
+        <div>
+            <a href="#" class="btn btn-danger btn-icon-split btn-sm" title="Eliminar pagamento">
+                <span class="icon text-white-50">
+                    <i class="fas fa-trash-alt"></i>
+                </span>
+                <span class="text">Eliminar pagamento</span>
+            </a>
+            <a href="#" data-toggle="modal" data-target="#infoModal" class="btn btn-secondary btn-icon-split btn-sm" title="Informações">
+                <span class="icon text-white-50">
+                    <i class="fas fa-info-circle"></i>
+                </span>
+                <span class="text">Informações</span>
+            </a>
+        </div>
     </div>
     <!-- Approach -->
     <div class="card shadow mb-4">
