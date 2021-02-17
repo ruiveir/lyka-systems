@@ -813,4 +813,43 @@ class PaymentController extends Controller
     {
         return Storage::disk('public')->download('comprovativos-pagamento/'.$pagoresponsabilidade->comprovativoPagamento);
     }
+
+    public function destroy(PagoResponsabilidade $pagoResponsabilidade)
+    {
+        switch ($pagoResponsabilidade->tipo_beneficiario) {
+            case 'Cliente':
+                Responsabilidade::where('idResponsabilidade', $pagoResponsabilidade->responsabilidade->idResponsabilidade)
+                ->update(['verificacaoPagoCliente' => '0']);
+                break;
+
+            case 'Agente':
+                Responsabilidade::where('idResponsabilidade', $pagoResponsabilidade->responsabilidade->idResponsabilidade)
+                ->update(['verificacaoPagoAgente' => '0']);
+                break;
+
+            case 'Subagente':
+                Responsabilidade::where('idResponsabilidade', $pagoResponsabilidade->responsabilidade->idResponsabilidade)
+                ->update(['verificacaoPagoSubAgente' => '0']);
+                break;
+
+            case 'UniPrincipal':
+                Responsabilidade::where('idResponsabilidade', $pagoResponsabilidade->responsabilidade->idResponsabilidade)
+                ->update(['verificacaoPagoUni1' => '0']);
+                break;
+
+            case 'UniSecundaria':
+                Responsabilidade::where('idResponsabilidade', $pagoResponsabilidade->responsabilidade->idResponsabilidade)
+                ->update(['verificacaoPagoUni2' => '0']);
+                break;
+
+            case 'Fornecedor':
+                RelFornResp::where('idResponsabilidade', $pagoResponsabilidade->responsabilidade->idResponsabilidade)
+                ->update(['verificacaoPago' => '0']);
+                break;
+        }
+        Storage::disk('public')->delete('comprovativos-pagamento/'.$pagoResponsabilidade->comprovativoPagamento);
+        $pagoResponsabilidade->delete();
+
+        return redirect()->route('payments.index')->with('success', 'Pagamento anulado com sucesso.');
+    }
 }

@@ -10,12 +10,12 @@
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h4 mb-0 text-gray-800">Edição de um pagamento</h1>
         <div>
-            <a href="#" class="btn btn-danger btn-icon-split btn-sm" title="Eliminar pagamento">
+            <button data-toggle="modal" data-target="#deleteModal" class="btn btn-danger btn-icon-split btn-sm" title="Anular pagamento">
                 <span class="icon text-white-50">
                     <i class="fas fa-trash-alt"></i>
                 </span>
-                <span class="text">Eliminar pagamento</span>
-            </a>
+                <span class="text">Anular pagamento</span>
+            </button>
             <a href="#" data-toggle="modal" data-target="#infoModal" class="btn btn-secondary btn-icon-split btn-sm" title="Informações">
                 <span class="icon text-white-50">
                     <i class="fas fa-info-circle"></i>
@@ -75,6 +75,33 @@
 </div>
 <!-- End of Modal Info -->
 
+<!-- Modal Info -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header pl-4 pb-1 pt-4">
+                <h5 class="modal-title text-gray-800 font-weight-bold">Pretende anular o pagamento?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close-button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-gray-800 pl-4 pr-5">
+                Ao anular o registo deste pagamento, <b>irá anulá-lo o mesmo para todo o sempre!</b> Pense duas vezes antes de proceder com a ação.
+            </div>
+            <div class="modal-footer mt-3">
+                <form method="post">
+                    @csrf
+                    @method('DELETE')
+                    <a data-dismiss="modal" class="mr-4 font-weight-bold" id="close-option">Cancelar</a>
+                    <button type="submit" class="btn btn-danger font-weight-bold mr-2">Eliminar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Modal Info -->
+
+
 <!-- Begin of Scripts -->
 @section('scripts')
 <script>
@@ -116,6 +143,12 @@
                 });
             }
             $(".needs-validation").addClass("was-validated");
+        });
+
+        $('#deleteModal').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget);
+            var modal = $(this);
+            modal.find("form").attr('action', '/pagamentos/{{$pagoResponsabilidade->idPagoResp}}/anular');
         });
     });
 </script>
