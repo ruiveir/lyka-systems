@@ -939,6 +939,7 @@
 
 <!-- Begin of Scripts -->
 @section('scripts')
+<script src="//cdn.datatables.net/plug-ins/1.10.11/sorting/date-eu.js" type="text/javascript"></script>
 <script src="{{asset('/js/clients.js')}}"></script>
 <script>
     // Truncate a string
@@ -972,8 +973,12 @@
                     "sSortDescending": ": Ordenar colunas de forma descendente"
                 }
             },
-            "order": [5, 'desc'],
+            "order": [4, 'asc'],
             "columnDefs": [
+                {
+                    "targets":4,
+                    "type":"date-eu"
+                },
                 {
                    'targets': [1, 2],
                    'render': function(data, type, full, meta){
@@ -982,7 +987,7 @@
                       }
                       return data;
                   }
-               }
+              }
             ]
         });
 
