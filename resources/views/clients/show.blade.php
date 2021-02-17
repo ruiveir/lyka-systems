@@ -1,6 +1,11 @@
 @extends('layout.master')
 <!-- Page Title -->
 @section('title', 'Visualizar estudante')
+
+@section('style-links')
+    <link href="{{asset("/css/clientes.css")}}" rel="stylesheet">
+@endsection
+
 <!-- Page Content -->
 @section('content')
 <!-- Begin Page Content -->
@@ -575,10 +580,11 @@
                             <table class="table table-bordered table-striped" id="table" width="100%">
                                 <thead>
                                     <tr>
+                                        <th>Tipo</th>
                                         <th>Produto</th>
                                         <th>Fase</th>
                                         <th>Valor</th>
-                                        <th>Data de vencimento</th>
+                                        <th>Data de venc.</th>
                                         <th style="max-width:50px; min-width:50px;">Estado</th>
                                         <th style="max-width:80px; min-width:80px;">Opções</th>
                                     </tr>
@@ -588,6 +594,7 @@
                                     @if ($fasesPendentes)
                                         @foreach ($fasesPendentes as $fase)
                                             <tr>
+                                                <td>Cobrança</td>
                                                 <td title="{{$fase->produto->descricao}}">{{$fase->produto->descricao}}</td>
                                                 <td title="{{$fase->descricao}}">{{$fase->descricao}}</td>
                                                 <td>{{number_format((float) $fase->valorFase, 2, ',', '').'€'}}</td>
@@ -611,6 +618,7 @@
                                     @if ($fasesPagas)
                                         @foreach ($fasesPagas as $fase)
                                             <tr>
+                                                <td>Cobrança</td>
                                                 <td title="{{$fase->produto->descricao}}">{{$fase->produto->descricao}}</td>
                                                 <td title="{{$fase->descricao}}">{{$fase->descricao}}</td>
                                                 <td>{{number_format((float) $fase->valorFase, 2, ',', '').'€'}}</td>
@@ -634,6 +642,7 @@
                                     @if ($fasesDivida)
                                         @foreach ($fasesDivida as $fase)
                                             <tr>
+                                                <td>Cobrança</td>
                                                 <td title="{{$fase->produto->descricao}}">{{$fase->produto->descricao}}</td>
                                                 <td title="{{$fase->descricao}}">{{$fase->descricao}}</td>
                                                 <td>{{number_format((float) $fase->valorFase, 2, ',', '').'€'}}</td>
@@ -651,6 +660,188 @@
                                                 @endif
                                                 </td>
                                             </tr>
+                                        @endforeach
+                                    @endif
+                                    @if ($responsabilidades)
+                                        @foreach ($responsabilidades as $responsabilidade)
+                                            @if ($responsabilidade->valorCliente != null)
+                                            <tr>
+                                                <td class="tooltip-td" data-toggle="tooltip" data-placement="top" title="Pagamento sujeito ao cliente.">Pagamento</td>
+                                                <td title="{{$responsabilidade->fase->produto->descricao}}">{{$responsabilidade->fase->produto->descricao}}</td>
+                                                <td title="{{$responsabilidade->fase->descricao}}">{{$responsabilidade->fase->descricao}}</td>
+                                                <td>{{number_format((float) $responsabilidade->valorCliente, 2, ',', '').'€'}}</td>
+                                                <td>{{date('d/m/Y', strtotime($responsabilidade->dataVencimentoCliente))}}</td>
+                                                <td class="@if(!$responsabilidade->verificacaoPagoCliente && $responsabilidade->dataVencimentoCliente < $currentdate) text-danger font-weight-bold @elseif ($responsabilidade->verificacaoPagoCliente) text-success font-weight-bold @else font-weight-bold text-gray @endif">
+                                                @if (!$responsabilidade->verificacaoPagoCliente && $responsabilidade->dataVencimentoCliente < $currentdate)
+                                                    Vencido
+                                                @elseif (!$responsabilidade->verificacaoPagoCliente && $responsabilidade->dataVencimentoCliente > $currentdate)
+                                                    Pendente
+                                                @elseif ($responsabilidade->verificacaoPagoCliente)
+                                                    Pago
+                                                @endif
+                                                </td>
+                                                <td class="text-center align-middle">
+                                                    @if($responsabilidade->pagoResponsabilidade && $responsabilidade->verificacaoPagoCliente)
+                                                        <button class="btn btn-sm btn-outline-dark text-gray-900" disabled><i class="fas fa-check"></i></button>
+                                                        <a href="{{route('payments.showcliente', [$responsabilidade->cliente, $responsabilidade->fase, $responsabilidade, $responsabilidade->pagoResponsabilidade])}}" class="btn btn-sm btn-outline-primary" title="Visualizar"><i class="far fa-eye"></i></a>
+                                                        <a href="{{route('payments.editcliente', [$responsabilidade->cliente, $responsabilidade->fase, $responsabilidade, $responsabilidade->pagoResponsabilidade])}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                                    @else
+                                                        <a href="{{route('payments.cliente', [$responsabilidade->cliente, $responsabilidade->fase, $responsabilidade])}}" class="btn btn-sm btn-outline-success" title="Registar"><i class="fas fa-check"></i></a>
+                                                        <button class="btn btn-sm btn-outline-dark text-gray-900" disabled><i class="far fa-eye"></i></button>
+                                                        <button class="btn btn-sm btn-outline-dark text-gray-900" disabled><i class="fas fa-pencil-alt"></i></button>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                            @endif
+
+                                            @if ($responsabilidade->valorAgente != null)
+                                            <tr>
+                                                <td class="tooltip-td" data-toggle="tooltip" data-placement="top" title="Pagamento sujeito ao agente {{$responsabilidade->agente->nome.' '.$responsabilidade->agente->apelido}}.">Pagamento</td>
+                                                <td title="{{$responsabilidade->fase->produto->descricao}}">{{$responsabilidade->fase->produto->descricao}}</td>
+                                                <td title="{{$responsabilidade->fase->descricao}}">{{$responsabilidade->fase->descricao}}</td>
+                                                <td>{{number_format((float) $responsabilidade->valorAgente, 2, ',', '').'€'}}</td>
+                                                <td>{{date('d/m/Y', strtotime($responsabilidade->dataVencimentoAgente))}}</td>
+                                                <td class="@if(!$responsabilidade->verificacaoPagoAgente && $responsabilidade->dataVencimentoAgente < $currentdate) text-danger font-weight-bold @elseif ($responsabilidade->verificacaoPagoAgente) text-success font-weight-bold @else font-weight-bold text-gray @endif">
+                                                @if (!$responsabilidade->verificacaoPagoAgente && $responsabilidade->dataVencimentoAgente < $currentdate)
+                                                    Vencido
+                                                @elseif (!$responsabilidade->verificacaoPagoAgente && $responsabilidade->dataVencimentoAgente > $currentdate)
+                                                    Pendente
+                                                @elseif ($responsabilidade->verificacaoPagoAgente)
+                                                    Pago
+                                                @endif
+                                                </td>
+                                                <td class="text-center align-middle">
+                                                    @if($responsabilidade->pagoResponsabilidade && $responsabilidade->verificacaoPagoAgente)
+                                                        <button class="btn btn-sm btn-outline-dark text-gray-900" disabled><i class="fas fa-check"></i></button>
+                                                        <a href="{{route('payments.showagente', [$responsabilidade->agente, $responsabilidade->fase, $responsabilidade, $responsabilidade->pagoResponsabilidade])}}" class="btn btn-sm btn-outline-primary" title="Visualizar"><i class="far fa-eye"></i></a>
+                                                        <a href="{{route('payments.editagente', [$responsabilidade->agente, $responsabilidade->fase, $responsabilidade, $responsabilidade->pagoResponsabilidade])}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                                    @else
+                                                        <a href="{{route('payments.agente', [$responsabilidade->agente, $responsabilidade->fase, $responsabilidade])}}" class="btn btn-sm btn-outline-success" title="Registar"><i class="fas fa-check"></i></a>
+                                                        <button class="btn btn-sm btn-outline-dark text-gray-900" disabled><i class="far fa-eye"></i></button>
+                                                        <button class="btn btn-sm btn-outline-dark text-gray-900" disabled><i class="fas fa-pencil-alt"></i></button>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                            @endif
+
+                                            @if ($responsabilidade->valorSubAgente != null)
+                                            <tr>
+                                                <td class="tooltip-td" data-toggle="tooltip" data-placement="top" title="Pagamento sujeito ao sub-agente {{$responsabilidade->subAgente->nome.' '.$responsabilidade->subAgente->apelido}}.">Pagamento</td>
+                                                <td title="{{$responsabilidade->fase->produto->descricao}}">{{$responsabilidade->fase->produto->descricao}}</td>
+                                                <td title="{{$responsabilidade->fase->descricao}}">{{$responsabilidade->fase->descricao}}</td>
+                                                <td>{{number_format((float) $responsabilidade->valorSubAgente, 2, ',', '').'€'}}</td>
+                                                <td>{{date('d/m/Y', strtotime($responsabilidade->dataVencimentoSubAgente))}}</td>
+                                                <td class="@if(!$responsabilidade->verificacaoPagoSubAgente && $responsabilidade->dataVencimentoSubAgente < $currentdate) text-danger font-weight-bold @elseif ($responsabilidade->verificacaoPagoSubAgente) text-success font-weight-bold @else font-weight-bold text-gray @endif">
+                                                @if (!$responsabilidade->verificacaoPagoSubAgente && $responsabilidade->dataVencimentoSubAgente < $currentdate)
+                                                    Vencido
+                                                @elseif (!$responsabilidade->verificacaoPagoSubAgente && $responsabilidade->dataVencimentoSubAgente > $currentdate)
+                                                    Pendente
+                                                @elseif ($responsabilidade->verificacaoPagoSubAgente)
+                                                    Pago
+                                                @endif
+                                                </td>
+                                                <td class="text-center align-middle">
+                                                    @if($responsabilidade->pagoResponsabilidade && $responsabilidade->verificacaoPagoSubAgente)
+                                                        <button class="btn btn-sm btn-outline-dark text-gray-900" disabled><i class="fas fa-check"></i></button>
+                                                        <a href="{{route('payments.showsubagente', [$responsabilidade->subAgente, $responsabilidade->fase, $responsabilidade, $responsabilidade->pagoResponsabilidade])}}" class="btn btn-sm btn-outline-primary" title="Visualizar"><i class="far fa-eye"></i></a>
+                                                        <a href="{{route('payments.editsubagente', [$responsabilidade->subAgente, $responsabilidade->fase, $responsabilidade, $responsabilidade->pagoResponsabilidade])}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                                    @else
+                                                        <a href="{{route('payments.subagente', [$responsabilidade->subAgente, $responsabilidade->fase, $responsabilidade])}}" class="btn btn-sm btn-outline-success" title="Registar"><i class="fas fa-check"></i></a>
+                                                        <button class="btn btn-sm btn-outline-dark text-gray-900" disabled><i class="far fa-eye"></i></button>
+                                                        <button class="btn btn-sm btn-outline-dark text-gray-900" disabled><i class="fas fa-pencil-alt"></i></button>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                            @endif
+
+                                            @if ($responsabilidade->valorUniversidade1 != null)
+                                            <tr>
+                                                <td class="tooltip-td" data-toggle="tooltip" data-placement="top" title="Pagamento sujeito a universidade {{$responsabilidade->universidade1->nome}}.">Pagamento</td>
+                                                <td title="{{$responsabilidade->fase->produto->descricao}}">{{$responsabilidade->fase->produto->descricao}}</td>
+                                                <td title="{{$responsabilidade->fase->descricao}}">{{$responsabilidade->fase->descricao}}</td>
+                                                <td>{{number_format((float) $responsabilidade->valorUniversidade1, 2, ',', '').'€'}}</td>
+                                                <td>{{date('d/m/Y', strtotime($responsabilidade->dataVencimentoUni1))}}</td>
+                                                <td class="@if(!$responsabilidade->verificacaoPagoUni1 && $responsabilidade->dataVencimentoUni1 < $currentdate) text-danger font-weight-bold @elseif ($responsabilidade->verificacaoPagoUni1) text-success font-weight-bold @else font-weight-bold text-gray @endif">
+                                                @if (!$responsabilidade->verificacaoPagoUni1 && $responsabilidade->dataVencimentoUni1 < $currentdate)
+                                                    Vencido
+                                                @elseif (!$responsabilidade->verificacaoPagoUni1 && $responsabilidade->dataVencimentoUni1 > $currentdate)
+                                                    Pendente
+                                                @elseif ($responsabilidade->verificacaoPagoUni1)
+                                                    Pago
+                                                @endif
+                                                </td>
+                                                <td class="text-center align-middle">
+                                                    @if($responsabilidade->pagoResponsabilidade && $responsabilidade->verificacaoPagoUni1)
+                                                        <button class="btn btn-sm btn-outline-dark text-gray-900" disabled><i class="fas fa-check"></i></button>
+                                                        <a href="{{route('payments.showuni1', [$responsabilidade->universidade1, $responsabilidade->fase, $responsabilidade, $responsabilidade->pagoResponsabilidade])}}" class="btn btn-sm btn-outline-primary" title="Visualizar"><i class="far fa-eye"></i></a>
+                                                        <a href="{{route('payments.edituni1', [$responsabilidade->universidade1, $responsabilidade->fase, $responsabilidade, $responsabilidade->pagoResponsabilidade])}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                                    @else
+                                                        <a href="{{route('payments.uni1', [$responsabilidade->universidade1, $responsabilidade->fase, $responsabilidade])}}" class="btn btn-sm btn-outline-success" title="Registar"><i class="fas fa-check"></i></a>
+                                                        <button class="btn btn-sm btn-outline-dark text-gray-900" disabled><i class="far fa-eye"></i></button>
+                                                        <button class="btn btn-sm btn-outline-dark text-gray-900" disabled><i class="fas fa-pencil-alt"></i></button>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                            @endif
+
+                                            @if ($responsabilidade->valorUniversidade2 != null)
+                                            <tr>
+                                                <td class="tooltip-td" data-toggle="tooltip" data-placement="top" title="Pagamento sujeito a universidade {{$responsabilidade->universidade2->nome}}.">Pagamento</td>
+                                                <td title="{{$responsabilidade->fase->produto->descricao}}">{{$responsabilidade->fase->produto->descricao}}</td>
+                                                <td title="{{$responsabilidade->fase->descricao}}">{{$responsabilidade->fase->descricao}}</td>
+                                                <td>{{number_format((float) $responsabilidade->valorUniversidade2, 2, ',', '').'€'}}</td>
+                                                <td>{{date('d/m/Y', strtotime($responsabilidade->dataVencimentoUni2))}}</td>
+                                                <td class="@if(!$responsabilidade->verificacaoPagoUni2 && $responsabilidade->dataVencimentoUni2 < $currentdate) text-danger font-weight-bold @elseif ($responsabilidade->verificacaoPagoUni2) text-success font-weight-bold @else font-weight-bold text-gray @endif">
+                                                @if (!$responsabilidade->verificacaoPagoUni2 && $responsabilidade->dataVencimentoUni2 < $currentdate)
+                                                    Vencido
+                                                @elseif (!$responsabilidade->verificacaoPagoUni2 && $responsabilidade->dataVencimentoUni2 > $currentdate)
+                                                    Pendente
+                                                @elseif ($responsabilidade->verificacaoPagoUni2)
+                                                    Pago
+                                                @endif
+                                                </td>
+                                                <td class="text-center align-middle">
+                                                    @if($responsabilidade->pagoResponsabilidade && $responsabilidade->verificacaoPagoUni2)
+                                                        <button class="btn btn-sm btn-outline-dark text-gray-900" disabled><i class="fas fa-check"></i></button>
+                                                        <a href="{{route('payments.showuni2', [$responsabilidade->universidade2, $responsabilidade->fase, $responsabilidade, $responsabilidade->pagoResponsabilidade])}}" class="btn btn-sm btn-outline-primary" title="Visualizar"><i class="far fa-eye"></i></a>
+                                                        <a href="{{route('payments.edituni2', [$responsabilidade->universidade2, $responsabilidade->fase, $responsabilidade, $responsabilidade->pagoResponsabilidade])}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                                    @else
+                                                        <a href="{{route('payments.uni2', [$responsabilidade->universidade2, $responsabilidade->fase, $responsabilidade])}}" class="btn btn-sm btn-outline-success" title="Registar"><i class="fas fa-check"></i></a>
+                                                        <button class="btn btn-sm btn-outline-dark text-gray-900" disabled><i class="far fa-eye"></i></button>
+                                                        <button class="btn btn-sm btn-outline-dark text-gray-900" disabled><i class="fas fa-pencil-alt"></i></button>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                            @endif
+                                            @foreach ($responsabilidade->relacao as $relacao)
+                                            <tr>
+                                                <td class="tooltip-td" data-toggle="tooltip" data-placement="top" title="Pagamento sujeito ao fornecedor {{$relacao->fornecedor->nome}}.">Pagamento</td>
+                                                <td title="{{$relacao->responsabilidade->fase->produto->descricao}}">{{$relacao->responsabilidade->fase->produto->descricao}}</td>
+                                                <td title="{{$relacao->responsabilidade->fase->descricao}}">{{$relacao->responsabilidade->fase->descricao}}</td>
+                                                <td>{{number_format((float) $relacao->valor, 2, ',', '').'€'}}</td>
+                                                <td>{{date('d/m/Y', strtotime($relacao->dataVencimento))}}</td>
+                                                <td class="@if($relacao->verificacaoPago == false && $relacao->estado == "Dívida") text-danger font-weight-bold @elseif ($relacao->verificacaoPago == true) text-success font-weight-bold @else text-gray @endif">
+                                                @if ($relacao->verificacaoPago == false && $relacao->estado == "Dívida")
+                                                    Vencido
+                                                @elseif ($relacao->verificacaoPago == false && $relacao->estado == "Pendente")
+                                                    Pendente
+                                                @elseif ($relacao->verificacaoPago == true && $relacao->estado == "Pago")
+                                                    Pago
+                                                @endif
+                                                </td>
+                                                <td class="text-center align-middle">
+                                                    @if($responsabilidade->pagoResponsabilidade && $relacao->verificacaoPago)
+                                                        <button class="btn btn-sm btn-outline-dark text-gray-900" disabled><i class="fas fa-check"></i></button>
+                                                        <a href="{{route('payments.showfornecedor', [$relacao->fornecedor, $relacao->responsabilidade->fase, $relacao, $responsabilidade->pagoResponsabilidade])}}" class="btn btn-sm btn-outline-primary" title="Visualizar"><i class="far fa-eye"></i></a>
+                                                        <a href="{{route('payments.editfornecedor', [$relacao->fornecedor, $relacao->responsabilidade->fase, $relacao, $responsabilidade->pagoResponsabilidade])}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                                    @else
+                                                        <a href="{{route('payments.fornecedor', [$relacao->fornecedor, $relacao->responsabilidade->fase, $relacao])}}" class="btn btn-sm btn-outline-success" title="Registar"><i class="fas fa-check"></i></a>
+                                                        <button class="btn btn-sm btn-outline-dark text-gray-900" disabled><i class="far fa-eye"></i></button>
+                                                        <button class="btn btn-sm btn-outline-dark text-gray-900" disabled><i class="fas fa-pencil-alt"></i></button>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                            @endforeach
                                         @endforeach
                                     @endif
                                 </tbody>
@@ -781,13 +972,13 @@
                     "sSortDescending": ": Ordenar colunas de forma descendente"
                 }
             },
-            "order": [ 4, 'desc' ],
+            "order": [5, 'desc'],
             "columnDefs": [
                 {
-                   'targets': [0, 1],
+                   'targets': [1, 2],
                    'render': function(data, type, full, meta){
                       if(type === 'display'){
-                         data = strtrunc(data, 15);
+                         data = strtrunc(data, 12);
                       }
                       return data;
                   }

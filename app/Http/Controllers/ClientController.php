@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use DateTime;
 use App\Cliente;
 use App\Agente;
 use App\User;
@@ -32,7 +33,7 @@ class ClientController extends Controller
     public function sendActivationEmail(Cliente $client){
 
 
-        $user = User::where('idCliente', '=', $client->idCliente)->first();
+        $user = User::where('idCliente', $client->idCliente)->first();
 
 
         /* Cria o UTILIZADOR se ainda não existir */
@@ -381,11 +382,13 @@ class ClientController extends Controller
                 return $fasesPagas;
             }
 
+            $responsabilidades = Responsabilidade::where("idCliente", $client->idCliente)->get();
+            $currentdate = new DateTime();
             $fasesDivida = fasesDivida($client);
             $fasesPendentes = fasesPendentes($client);
             $fasesPagas = fasesPagas($client);
 
-            return view('clients.show', compact("client", "fasesDivida", "fasesPendentes", "fasesPagas", "agente", "subAgente", "produtos", "totalprodutos", "passaporteData", 'documentosPessoais', 'documentosAcademicos', 'novosDocumentos'));
+            return view('clients.show', compact("currentdate","responsabilidades", "client", "fasesDivida", "fasesPendentes", "fasesPagas", "agente", "subAgente", "produtos", "totalprodutos", "passaporteData", 'documentosPessoais', 'documentosAcademicos', 'novosDocumentos'));
         }else{
             abort (403);
         }
