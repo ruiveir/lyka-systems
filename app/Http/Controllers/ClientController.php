@@ -510,16 +510,6 @@ class ClientController extends Controller
 
     }
 
-
-
-    /**
-    * Update the specified resource in storage.
-    *
-    * @param  \Illuminate\Http\Request  $request
-    * @param  \App\Cliente  $user
-    * @return \Illuminate\Http\Response
-    */
-
     public function update(UpdateClienteRequest $request, Cliente $client)
     {
         $produts = null;
@@ -535,7 +525,7 @@ class ClientController extends Controller
 
         if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||$permissao){
 
-            $t=time(); /*  data atual */
+            $t=time();
 
             $fields = $request->validated();
             $client->fill($fields);
