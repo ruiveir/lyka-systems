@@ -820,7 +820,7 @@
                                                 <td title="{{$relacao->responsabilidade->fase->descricao}}">{{$relacao->responsabilidade->fase->descricao}}</td>
                                                 <td>{{number_format((float) $relacao->valor, 2, ',', '').'€'}}</td>
                                                 <td>{{date('d/m/Y', strtotime($relacao->dataVencimento))}}</td>
-                                                <td class="@if($relacao->verificacaoPago == false && $relacao->estado == "Dívida") text-danger font-weight-bold @elseif ($relacao->verificacaoPago == true) text-success font-weight-bold @else text-gray @endif">
+                                                <td class="@if($relacao->verificacaoPago == false && $relacao->estado == "Dívida") text-danger font-weight-bold @elseif ($relacao->verificacaoPago == true) text-success font-weight-bold @else font-weight-bold text-gray @endif">
                                                 @if ($relacao->verificacaoPago == false && $relacao->estado == "Dívida")
                                                     Vencido
                                                 @elseif ($relacao->verificacaoPago == false && $relacao->estado == "Pendente")
