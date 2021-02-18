@@ -584,7 +584,7 @@
                                         <th>Produto</th>
                                         <th>Fase</th>
                                         <th>Valor</th>
-                                        <th>Data de venc.</th>
+                                        <th class="text-truncate" style="max-width:60px; min-width:60px;" title="Data de vencimento">Data de vencimento</th>
                                         <th style="max-width:50px; min-width:50px;">Estado</th>
                                         <th style="max-width:80px; min-width:80px;">Opções</th>
                                     </tr>
@@ -973,7 +973,7 @@
                     "sSortDescending": ": Ordenar colunas de forma descendente"
                 }
             },
-            "order": [4, 'asc'],
+            "order": [[5, 'desc'], [4, 'asc']],
             "columnDefs": [
                 {
                     "targets":4,

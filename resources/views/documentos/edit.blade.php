@@ -16,7 +16,7 @@
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h4 mb-0 text-gray-800">Edição do {{$tipo}}</h1>
         </div>
-        
+
     </div>
 
     <div class="card shadow mb-4">
@@ -45,7 +45,7 @@
                                         <input type='file' id="img_doc" name="img_doc" style="display:none"
                                             accept="application/pdf, image/*" />
                                     </div>
-                
+
                                     <div class="card mx-auto p-4 rounded shadow-sm text-center "
                                         style="width:80%;min-width:118px;min-height:120px">
                                         <a style="display:none;cursor:pointer"
@@ -59,10 +59,10 @@
                                         <i id="passport_preview_file" class="fas fa-plus-circle mt-2"
                                             style="font-size:60px;cursor:pointer"
                                             title="Clique para adicionar o documento do passaporte"></i>
-                
+
                                     </div>
                                     <small class="text-muted">(clique para mudar)</small>
-                
+
                                 </div>
                             </div>
                             <div class="col-md-2">
@@ -117,7 +117,7 @@
                                         <input type='file' id="img_doc" name="img_doc" style="display:none"
                                             accept="application/pdf, image/*" />
                                     </div>
-                
+
                                     <div class="card mx-auto p-4 rounded shadow-sm text-center "
                                         style="width:80%;min-width:118px;min-height:120px">
                                         <a style="display:none;cursor:pointer"
@@ -131,10 +131,10 @@
                                         <i id="passport_preview_file" class="fas fa-plus-circle mt-2"
                                             style="font-size:60px;cursor:pointer"
                                             title="Clique para adicionar o documento do passaporte"></i>
-                
+
                                     </div>
                                     <small class="text-muted">(clique para mudar)</small>
-                
+
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -209,7 +209,7 @@
                                             <input type='file' id="img_doc" name="img_doc" style="display:none"
                                                 accept="application/pdf, image/*" />
                                         </div>
-                    
+
                                         <div class="card mx-auto p-4 rounded shadow-sm text-center "
                                             style="width:80%;min-width:118px;min-height:120px">
                                             <a style="display:none;cursor:pointer"
@@ -223,10 +223,10 @@
                                             <i id="passport_preview_file" class="fas fa-plus-circle mt-2"
                                                 style="font-size:60px;cursor:pointer"
                                                 title="Clique para adicionar o documento do passaporte"></i>
-                    
+
                                         </div>
                                         <small class="text-muted">(clique para mudar)</small>
-                    
+
                                     </div>
                                 </div>
                                 @if($tipoPAT == "Academico")
@@ -342,7 +342,7 @@
             $("#valor-campo"+num).attr("required", false);
             closest.css("display", "none");
         }
-        
+
         //Preview do Passporte+++++++++++++++
         $('#passport_preview_file').on('click', function (e) {
             e.preventDefault();

@@ -47,9 +47,9 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
-                    <p class="text-gray-800"><b>Documento:</b> <a
-                            onclick="window.open('{{url('/storage/client-documents/'.$documento->idCliente .'/'. $documento->imagem)}}', '', 'width=620,height=450,toolbar=no,location=no,menubar=no,copyhistory=no,status=no,directories=no,scrollbars=yes,resizable=yes'); return false;"
-                            href="{{url('/storage/client-documents/'.$documento->idCliente .'/'. $documento->imagem)}}" id="yui_3_17_2_1_1589215110643_49"> documento.pdf </a>
+                    <p class="text-gray-800"><b>Documento:</b>
+                        <a class="text-truncate" onclick="window.open('{{url('/storage/client-documents/'.$documento->idCliente .'/'. $documento->imagem)}}', '', 'width=620,height=450,toolbar=no,location=no,menubar=no,copyhistory=no,status=no,directories=no,scrollbars=yes,resizable=yes'); return false;"
+                            href="{{url('/storage/client-documents/'.$documento->idCliente .'/'. $documento->imagem)}}"> {{$documento->imagem}} </a>
                     </p>
                 </div>
                 @if(strtolower($tipo) == "passaport")
@@ -83,6 +83,13 @@
             <div class="col-md-6">
                 <p class="text-gray-800"><b>Nome do documento:</b> {{$documento->nome}}</p>
             </div>
+            @foreach($infoKeys as $key)
+                <div class="col-md-6">
+                    <p class="text-gray-800"><b>{{$key}}:</b>
+                        @if ($infoDoc[$key] != null) {{$infoDoc[$key]}}
+                        @else N/A @endif</p>
+                </div>
+            @endforeach
         </div>
         @else
         <div class="col-md-6">
