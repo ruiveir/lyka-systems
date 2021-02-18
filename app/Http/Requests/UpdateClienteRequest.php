@@ -26,6 +26,7 @@ class UpdateClienteRequest extends FormRequest
             'obsPessoais' => 'nullable',
             'obsAgente'=> 'nullable',
             'fotografia' => 'nullable',
+            'deletePhoto' => 'nullable',
 
             'num_docOficial'=> ['nullable', Rule::unique('cliente')->ignore($this->client)],
             'validade_docOficial'=> 'nullable',

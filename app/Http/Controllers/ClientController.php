@@ -526,29 +526,28 @@ class ClientController extends Controller
         if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||$permissao){
 
             $t=time();
-
             $fields = $request->validated();
             $client->fill($fields);
-
 
             /* (Tratamento de strings, casos especificos) */
             $client->nomeInstituicaoOrigem = ucwords(mb_strtolower($request->nomeInstituicaoOrigem,'UTF-8'));
             $client->cidadeInstituicaoOrigem = ucwords(mb_strtolower($request->cidadeInstituicaoOrigem,'UTF-8'));
 
-            /* Verifica se existem ficheiros antigos e apaga do storage*/
-            $oldfile=Cliente::where('idCliente', '=',$client->idCliente)->first();
+            if($request->input('deletePhoto') && $client->fotografia) {
+                Storage::disk('public')->delete('client-documents/'.$client->idCliente.'/'.$client->fotografia);
+                $client->fotografia = NULL;
+            }
 
+            /* Verifica se existem ficheiros antigos e apaga do storage*/
+            $oldfile = Cliente::where('idCliente', $client->idCliente)->first();
 
             /* Fotografia do cliente */
             if ($request->hasFile('fotografia')) {
-
-            /* Verifica se o ficheiro antigo existe e apaga do storage*/
+                /* Verifica se o ficheiro antigo existe e apaga do storage*/
                 if(Storage::disk('public')->exists('client-documents/'.$client->idCliente.'/'. $oldfile->fotografia)){
                     Storage::disk('public')->delete('client-documents/'.$client->idCliente.'/'. $oldfile->fotografia);
                 }
                 $photo = $request->file('fotografia');
-
-                dd($photo);
                 $profileImg = $client->idCliente .'.'. $photo->getClientOriginalExtension();
                 Storage::disk('public')->putFileAs('client-documents/'.$client->idCliente.'/', $photo, $profileImg);
                 $client->fotografia = $profileImg;

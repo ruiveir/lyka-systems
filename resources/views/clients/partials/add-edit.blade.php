@@ -111,6 +111,7 @@
                         @if ($client->fotografia)
                             <small class="form-text text-muted" id="removePhoto">Clique para remover a fotografia atual.</small>
                             <label class="custom-file-label" for="fotografia" data-browse="Escolher" id="labelPhoto">{{$client->fotografia}}</label>
+                            <input type="text" name="deletePhoto" id="deletePhoto" hidden>
                         @else
                             <small class="form-text text-muted">A fotografia não deve ultrupassar os 5MB.</small>
                             <label class="custom-file-label" for="fotografia" data-browse="Escolher">Escolher fotografia...</label>
