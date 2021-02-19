@@ -7,7 +7,7 @@
 <div class="container-fluid">
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h4 mb-0 text-gray-800">Registo de um documento {{strtolower($tipoPAT)}}</h1>
+        <h1 class="h4 mb-0 text-gray-800">Registo de um documento do tipo {{strtolower($tipoPAT)}}</h1>
         <a href="#" data-toggle="modal" data-target="#infoModal" class="btn btn-secondary btn-icon-split btn-sm" title="Informações">
             <span class="icon text-white-50">
                 <i class="fas fa-info-circle"></i>
@@ -39,76 +39,49 @@
                                 @csrf
                                 <div class="container-fluid">
                                     @if(strtolower($tipo) == "passaporte")
-                                    <div class="row para-clone documento-passaporte">
-                                        <span class="num" style="display: none;">2</span>
-
-                                        <div class="col-md-6">
-                                            <div class="col text-center" style="max-width:380px;min-width:298px;">
-                                                <div>
-                                                    <label for="img_doc">Imagem:</label>
-                                                    <input type='file' id="img_doc" name="img_doc" style="display:none" accept="application/pdf, image/*" required />
+                                    <div class="para-clone documento-passaporte">
+                                        <div class="form-row mb-3">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="img_doc" class="text-gray-900">Documento <sup class="text-danger small">&#10033;</sup></label>
+                                                <div class="custom-file mb-3">
+                                                    <input type="file" class="custom-file-input" name="img_doc" id="img_doc" accept="application/pdf, image/*">
+                                                    <div class="invalid-feedback">
+                                                        Oops, parece que algo não está bem...
+                                                    </div>
+                                                    <small class="form-text text-muted">O documento não deve ultrupassar 2MB.</small>
+                                                    <label class="custom-file-label" for="img_doc" data-browse="Escolher">Escolher documento...</label>
                                                 </div>
-
-                                                <div class="card mx-auto p-4 rounded shadow-sm text-center " style="width:80%;min-width:118px;min-height:120px">
-                                                    <a style="display:none;cursor:pointer" title="Clique para adicionar o documento do passaporte" id="doc_preview" class="">
-                                                        <i class="far fa-id-card mt-2" style="font-size:50px"></i>
-                                                        <div id="name_doc_file" class="text-muted">
-
-                                                        </div>
-                                                    </a>
-                                                    <i id="passport_preview_file" class="fas fa-plus-circle mt-2" style="font-size:60px;cursor:pointer" title="Clique para adicionar o documento do passaporte"></i>
-
-                                                </div>
-                                                <small class="text-muted">(clique para mudar)</small>
-
                                             </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="numPassaporte">Nº Passaporte: </label>
-                                            <input type="text" class="form-control" name="numPassaporte" placeholder="Nº Passaporte" autocomplete="off" required>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="dataValidPP">Data de validade: </label>
-                                            <input type="month" class="form-control" name="dataValidPP" value="" style="width:250px" required><br>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="passaportPaisEmi">País de Emissão: </label>
-                                            <select name="passaportPaisEmi" id="passaportePaisEmi" class="form-control select_style" required>
-                                                @include('layout.partials.countries');
-                                            </select>
-                                            {{-- <input type="text" class="form-control" name="passaportPaisEmi" placeholder="Tipo pagamento" autocomplete="off" required> --}}
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="localEmissaoPP">Local de Emissão: </label>
-                                            <input type="text" class="form-control" name="localEmissaoPP" value="" style="width:250px" required><br>
-                                        </div>
-
-                                        <div class="list-clones">
-                                            <div class="row" id="documento-campo1">
-                                                <div class="col-md-6">
-                                                    <label for="nome-campo1">Nome do Campo</label>
-                                                    <br>
-                                                    <input id="nome-campo1" type="text" class="form-control" name="nome-campo1" placeholder="Inserir nome do campo" autocomplete="off" required>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <label for="valor-campo1">Valor do Campo</label>
-                                                    <br>
-                                                    <input id="valor-campo1" type="text" class="form-control" name="valor-campo1" placeholder="Inserir valor do campo" autocomplete="off" required>
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <br><br><a id="button" style="color: white;" onclick="removeCampo(1,$(this).closest('#documento-campo1'))" class="btn btn-danger btn-icon-split btn-sm" title="remove">
-                                                        <span class="icon text-white-50">
-                                                            <i class="fas fa-trash-alt"></i>
-                                                        </span>
-                                                        <span id="a_button" class="text">Remover 1</span>
-                                                    </a>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="numPassaporte" class="text-gray-900">Número do passaporte <sup class="text-danger small">&#10033;</sup></label>
+                                                <input type="text" class="form-control" name="numPassaporte" placeholder="Inserir número de passaporte..." required>
+                                                <div class="invalid-feedback">
+                                                    Oops, parece que algo não está bem...
                                                 </div>
                                             </div>
                                         </div>
-                                        <div><br>
-                                            <a style="color: white;" onclick="addCampo($(this).closest('.para-clone'))" class="btn btn-primary btn-icon-split btn-sm" title="Editar">
-                                                <span class="text">Adicionar campo</span>
-                                            </a><br><br>
+
+                                        <div class="form-row mb-3">
+                                            <div class="col-md-4 mb-3">
+                                                <label for="dataValidPP" class="text-gray-900">Data de validade</label>
+                                                <div class="input-group">
+                                                    <input type="date" class="form-control" name="dataValidPP">
+                                                    <div class="input-group-append">
+                                                        <div class="input-group-text"><i class="fas fa-calendar-alt"></i></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 mb-3">
+                                                <label for="passaportPaisEmi" class="text-gray-900">País de emissão</label>
+                                                <select class="custom-select" id="passaportPaisEmi" name="passaportPaisEmi">
+                                                    <option selected hidden value="">Selecione um país...</option>
+                                                    @include('clients.partials.countries')
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4 mb-3">
+                                                <label for="localEmissaoPP" class="text-gray-900">Local do emissão</label>
+                                                <input type="text" class="form-control" name="localEmissaoPP" placeholder="Inserir o local de emissão...">
+                                            </div>
                                         </div>
                                     </div>
                                     @else
@@ -154,29 +127,31 @@
                                             <p class="text-gray-900 h5"><b>Campos adicionais</b></p>
                                         </div>
                                         <div class="list-clones">
-                                            <div class="form-row" id="documento-campo1">
-                                                <div class="col-md-6 mb-3">
-                                                    <label for="nome-campo1" class="text-gray-900">Nome do campo #1 <sup class="text-danger small">&#10033;</sup></label>
-                                                    <input type="text" class="form-control" name="nome-campo1" id="nome-campo1" placeholder="Insira um nome..." required>
-                                                    <div class="invalid-feedback">
-                                                        Oops, parece que algo não está bem...
+                                            <div id="documento-campo1">
+                                                <div class="form-row">
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="nome-campo1" class="text-gray-900">Nome do campo n.º1</label>
+                                                        <input type="text" class="form-control" name="nome-campo1" id="nome-campo1" placeholder="Insira um nome...">
+                                                        <div class="invalid-feedback">
+                                                            Oops, parece que algo não está bem...
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="valor-campo1" class="text-gray-900">Valor do campo n.º1 </label>
+                                                        <input type="text" class="form-control" name="valor-campo1" id="valor-campo1" placeholder="Insira um valor...">
+                                                        <div class="invalid-feedback">
+                                                            Oops, parece que algo não está bem...
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6 mb-3">
-                                                    <label for="valor-campo1" class="text-gray-900">Valor do campo #1 <sup class="text-danger small">&#10033;</sup></label>
-                                                    <input type="text" class="form-control" name="valor-campo1" id="valor-campo1" placeholder="Insira um valor..." required>
-                                                    <div class="invalid-feedback">
-                                                        Oops, parece que algo não está bem...
-                                                    </div>
+                                                <div class="text-right">
+                                                    <a href="" id="button" onclick="removeCampo(1,$(this).closest('#documento-campo1'))" class="btn btn-danger btn-icon-split btn-sm" title="Remover">
+                                                        <span class="icon text-white-50">
+                                                            <i class="fas fa-trash-alt"></i>
+                                                        </span>
+                                                        <span id="a_button" class="text">Remover campo n.º1</span>
+                                                    </a>
                                                 </div>
-                                            </div>
-                                            <div class="text-right">
-                                                <a href="" id="button" onclick="removeCampo(1,$(this).closest('#documento-campo1'))" class="btn btn-danger btn-icon-split btn-sm" title="Remover">
-                                                    <span class="icon text-white-50">
-                                                        <i class="fas fa-trash-alt"></i>
-                                                    </span>
-                                                    <span id="a_button" class="text">Remover campo #1</span>
-                                                </a>
                                             </div>
                                         </div>
                                         <div>
@@ -276,26 +251,24 @@
     function addCampo(closest) {
         var num = parseInt(closest.find('.num').first().text());
         var clone = clones.clone();
-        var sup = "<sup class='text-danger small'>&#10033;</sup>";
         closest.find('.num').first().text(num + 1);
         clone.attr('id', 'documento-campo' + num);
-        $('#label1', clone).text("Nome do campo #" + num);
-        $('#label1', clone).append(" " + sup);
+        $('#label1', clone).text("Nome do campo n.º" + num);
         $('#label1', clone).attr('for', 'nome-campo' + num);
         $('#input1', clone).attr('name', 'nome-campo' + num);
         $('#input1', clone).attr('id', 'nome-campo' + num);
-        $('#label2', clone).text("Valor do campo #" + num);
-        $('#label2', clone).append(" " + sup);
+        $('#label2', clone).text("Valor do campo n.º" + num);
         $('#label2', clone).attr('for', 'valor-campo' + num);
         $('#input2', clone).attr('name', 'valor-campo' + num);
         $('#input2', clone).attr('id', 'valor-campo' + num);
         $('#button', clone).attr('onclick', 'removeCampo(' + num + ',$(this).closest("#documento-campo' + num + '"))');
         $('#button', clone).attr('id', 'javascript-button');
-        $('#a_button', clone).text('Remover campo #' + num);
+        $('#a_button', clone).text('Remover campo n.º' + num);
         closest.find('.list-clones').first().append(clone);
     }
 
     function removeCampo(num, closest) {
+        event.preventDefault();
         $('#nome-campo' + num).val(null);
         $('#valor-campo' + num).val(null);
         $("#nome-campo" + num).attr("required", false);

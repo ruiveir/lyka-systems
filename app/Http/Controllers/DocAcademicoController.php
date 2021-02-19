@@ -72,7 +72,7 @@ class DocAcademicoController extends Controller
             if ($infoDoc) {
                 $documento->info = json_encode($infoDoc);
             } else {
-                return redirect()->back()->withErrors(['message'=>$docnecessario->tipoDocumento.' tem de conter no minimo 1 campo']);
+                $documento->info = NULL;
             }
 
 
@@ -98,7 +98,7 @@ class DocAcademicoController extends Controller
             $documento->imagem = $nomeficheiro;
             $documento->save();
 
-            return redirect()->route('produtos.show', $fase->produto)->with('success', $docnecessario->tipoDocumento.' adicionado com sucesso');
+            return redirect()->route('clients.show', $fase->client)->with('success', 'Documento '.$docnecessario->tipoDocumento.' adicionado com sucesso!');
         } else {
             abort(403);
         }
@@ -167,7 +167,7 @@ class DocAcademicoController extends Controller
             if ($infoDoc) {
                 $documento->info = json_encode($infoDoc);
             } else {
-                return redirect()->back()->withErrors(['message'=>$docnome.' tem de conter no minimo 1 campo']);
+                $documento->info = NULL;
             }
 
 
@@ -192,7 +192,7 @@ class DocAcademicoController extends Controller
             $documento->imagem = $nomeficheiro;
             $documento->save();
 
-            return redirect()->route('clients.show', $client)->with('success', $docnome.' adicionado com sucesso');
+            return redirect()->route('clients.show', $client)->with('success', 'Documento '.$docnome.' adicionado com sucesso!');
         } else {
             abort(403);
         }
@@ -222,7 +222,7 @@ class DocAcademicoController extends Controller
         }
     }
 
-    public function edit(DocAcademico $documento)
+    public function edit(DocAcademico $documento, Cliente $client)
     {
         $produts = null;
         $permissao = false;
@@ -242,7 +242,7 @@ class DocAcademicoController extends Controller
             $tipoPAT = 'Academico';
             $tipo = $documento->tipo;
 
-            return view('documentos.edit', compact('documento', 'infoDoc', 'infoKeys', 'tipo', 'tipoPAT'));
+            return view('documentos.edit', compact('documento', 'client', 'infoDoc', 'infoKeys', 'tipo', 'tipoPAT'));
         } else {
             abort(403);
         }
@@ -280,7 +280,7 @@ class DocAcademicoController extends Controller
             if ($infoDoc) {
                 $documento->info = json_encode($infoDoc);
             } else {
-                return redirect()->back()->withErrors(['message'=>$documento->tipo.' tem de conter no minimo 1 campo']);
+                $documento->info = NULL;
             }
 
             if (Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null) {
@@ -303,7 +303,7 @@ class DocAcademicoController extends Controller
                 $documento->imagem = $nomeficheiro;
             }
             $documento->save();
-            return redirect()->route('produtos.show', $documento->fase->produto)->with('success', 'Dados do '.$documento->tipo.' editados com sucesso');
+            return redirect()->route('clients.show', $documento->cliente)->with('success', 'Dados do documento "'.$documento->tipo.'" editados com sucesso!');
         } else {
             abort(403);
         }
@@ -327,9 +327,9 @@ class DocAcademicoController extends Controller
     {
         if (Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null) {
             $tipo = $documento->tipo;
+            Storage::disk('public')->delete('client-documents/'.$documento->idCliente.'/'.$documento->imagem);
             $documento->delete();
-
-            return redirect()->route('produtos.show', $documento->fase->produto)->with('success', $tipo.' eliminado com sucesso');
+            return redirect()->route('clients.show', $documento->cliente)->with('success', 'Documento "'.$tipo.'" eliminado com sucesso');
         } else {
             abort(403);
         }
