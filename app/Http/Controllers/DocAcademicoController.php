@@ -106,30 +106,35 @@ class DocAcademicoController extends Controller
 
     public function createFromClient(StoreDocumentoRequest $request, Cliente $client)
     {
-        $produts = null;
-        $permissao = false;
-        if (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null && Auth()->user()->agente->tipo == 'Agente') {
-            $produts = Produto::whereRaw('idAgente = '.Auth()->user()->idAgente.' and idCliente = '.$client->idCliente)->get();
-        } elseif (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null && Auth()->user()->agente->tipo == 'Subagente') {
-            $produts = Produto::whereRaw('idSubAgente = '.Auth()->user()->idAgente.' and idCliente = '.$client->idCliente)->get();
-        }
-        if ($produts) {
-            $permissao = true;
-        }
+        $checkDocCliente = DocAcademico::where("idCliente", $client->idCliente)->where("tipo", $request->NomeDocumentoAcademico)->get();
+        if (count($checkDocCliente) == 0) {
+            $produts = null;
+            $permissao = false;
+            if (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null && Auth()->user()->agente->tipo == 'Agente') {
+                $produts = Produto::whereRaw('idAgente = '.Auth()->user()->idAgente.' and idCliente = '.$client->idCliente)->get();
+            } elseif (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null && Auth()->user()->agente->tipo == 'Subagente') {
+                $produts = Produto::whereRaw('idSubAgente = '.Auth()->user()->idAgente.' and idCliente = '.$client->idCliente)->get();
+            }
+            if ($produts) {
+                $permissao = true;
+            }
 
-        if ((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
-            (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)|| $permissao) {
-            $fields = $request->all();
+            if ((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
+                (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)|| $permissao) {
+                $fields = $request->all();
 
-            $documento = new DocAcademico;
-            $tipoPAT = "Academico";
-            $docnome = $fields['NomeDocumentoAcademico'];
-            $tipo = $docnome;
-            $fase = null;
+                $documento = new DocAcademico;
+                $tipoPAT = "Academico";
+                $docnome = $fields['NomeDocumentoAcademico'];
+                $tipo = $docnome;
+                $fase = null;
 
-            return view('documentos.add', compact('fase', 'tipoPAT', 'tipo', 'documento', 'docnome', 'client'));
-        } else {
-            abort(403);
+                return view('documentos.add', compact('fase', 'tipoPAT', 'tipo', 'documento', 'docnome', 'client'));
+            } else {
+                abort(403);
+            }
+        }else {
+            return redirect()->back()->withErrors(['message' => 'O documento com o nome "'.$request->NomeDocumentoAcademico.'" já existe! Por favor, insira outro nome.']);
         }
     }
 

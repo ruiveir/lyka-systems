@@ -41,29 +41,32 @@ class DocPessoalController extends Controller
 
     public function createFromClient(StoreDocumentoRequest $request, Cliente $client)
     {
-        $produts = null;
-        $permissao = false;
-        if (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null && Auth()->user()->agente->tipo == 'Agente') {
-            $produts = Produto::whereRaw('idAgente = '.Auth()->user()->idAgente.' and idCliente = '.$client->idCliente)->get();
-        } elseif (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null && Auth()->user()->agente->tipo == 'Subagente') {
-            $produts = Produto::whereRaw('idSubAgente = '.Auth()->user()->idAgente.' and idCliente = '.$client->idCliente)->get();
-        }
-        if ($produts) {
-            $permissao = true;
-        }
+        $checkDocCliente = DocPessoal::where("idCliente", $client->idCliente)->where("tipo", $request->NomeDocumentoPessoal)->get();
+        if (count($checkDocCliente) == 0) {
+            $produts = null;
+            $permissao = false;
+            if (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null && Auth()->user()->agente->tipo == 'Agente') {
+                $produts = Produto::whereRaw('idAgente = '.Auth()->user()->idAgente.' and idCliente = '.$client->idCliente)->get();
+            } elseif (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null && Auth()->user()->agente->tipo == 'Subagente') {
+                $produts = Produto::whereRaw('idSubAgente = '.Auth()->user()->idAgente.' and idCliente = '.$client->idCliente)->get();
+            }
+            if ($produts) {
+                $permissao = true;
+            }
 
-        if ((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
-            (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)|| $permissao) {
-            $fields = $request->all();
-            $documento = new DocPessoal;
-            $tipoPAT = "Pessoal";
-            $docnome = $fields['NomeDocumentoPessoal'];
-            $tipo = $docnome;
-            $fase = null;
-
-            return view('documentos.add', compact('fase', 'tipoPAT', 'tipo', 'documento', 'docnome', 'client'));
-        } else {
-            abort(403);
+            if ((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
+                (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)|| $permissao) {
+                $documento = new DocPessoal;
+                $tipoPAT = "Pessoal";
+                $docnome = $request->NomeDocumentoPessoal;
+                $tipo = $docnome;
+                $fase = null;
+                return view('documentos.add', compact('fase', 'tipoPAT', 'tipo', 'documento', 'docnome', 'client'));
+            }else {
+                abort(403);
+            }
+        }else {
+            return redirect()->back()->withErrors(['message' => 'O documento com o nome "'.$request->NomeDocumentoPessoal.'" já existe! Por favor, insira outro nome.']);
         }
     }
 
@@ -336,9 +339,10 @@ class DocPessoalController extends Controller
     public function destroy(DocPessoal $documento)
     {
         if (Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null) {
+            $tipo = $documento->tipo;
             $documento->delete();
             Storage::disk('public')->delete('client-documents/'.$documento->idCliente.'/'.$documento->imagem);
-            return redirect()->route('clients.show', $documento->idCliente)->with('success', 'Documento "'.$tipo.'" eliminado com sucesso');
+            return redirect()->route('clients.show', $documento->cliente)->with('success', 'Documento "'.$tipo.'" eliminado com sucesso!');
         } else {
             abort(403);
         }

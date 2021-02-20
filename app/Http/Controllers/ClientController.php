@@ -321,13 +321,13 @@ class ClientController extends Controller
             /* Documentos pessoais */
             $documentosPessoais = DocPessoal::where("idCliente", $client->idCliente)->orderby("created_at","desc")->get();
             if ($documentosPessoais->isEmpty()){
-                $documentosPessoais=null;
+                $documentosPessoais = null;
             }
 
             /* Documentos académicos */
             $documentosAcademicos = DocAcademico::where("idCliente", $client->idCliente)->orderby("created_at","desc")->get();
             if ($documentosAcademicos->isEmpty()) {
-                $documentosAcademicos=null;
+                $documentosAcademicos = null;
             }
 
             /* Lista de Documentos Necessários */

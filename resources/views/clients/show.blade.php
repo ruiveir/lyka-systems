@@ -343,21 +343,19 @@
                             {{-- DOCUMENTOS PESSOAIS --}}
                             <div class="col" style="min-width:250px">
                                 <div class="mb-2 font-weight-bold">Ficheiros:</div>
-                                @if ($documentosPessoais!=null )
+                                @if($documentosPessoais)
                                     <ul class="border rounded bg-light pl-3" style="list-style-type:none;margin:0px;padding:0">
                                     @foreach ($documentosPessoais as $docpessoal)
                                         <li class="my-3">
-                                            @if ($docpessoal->imagem != null)
-                                                <i class="far fa-address-card mr-2"></i>
-                                                <a class="font-weight-bold" target="_blank" href="{{route('documento-pessoal.show', $docpessoal)}}">{{$docpessoal->tipo}}</a>
-                                                <span>
-                                                    <small>({{date('d/m/Y', strtotime($docpessoal->created_at))}})</small>
-                                                </span>
-                                                @if($docpessoal->verificacao==0)
-                                                    <span class="text-danger"><small><i class="fas fa-exclamation ml-1 mr-2" title="Aguarda validação"></i></small></span>
-                                                @else
-                                                <span class="text-success"><small><i class="fas fa-check ml-1 mr-1" title="Ficheiro validado"></i></small></span>
-                                                @endif
+                                            <i class="far fa-address-card mr-2"></i>
+                                            <a class="font-weight-bold" target="_blank" href="{{route('documento-pessoal.show', $docpessoal)}}">{{$docpessoal->tipo}}</a>
+                                            <span>
+                                                <small>({{date('d/m/Y', strtotime($docpessoal->created_at))}})</small>
+                                            </span>
+                                            @if($docpessoal->verificacao == 0)
+                                                <span class="text-danger"><small><i class="fas fa-exclamation ml-1 mr-2" title="Aguarda validação"></i></small></span>
+                                            @else
+                                            <span class="text-success"><small><i class="fas fa-check ml-1 mr-1" title="Ficheiro validado"></i></small></span>
                                             @endif
                                         </li>
                                     @endforeach
@@ -389,7 +387,7 @@
                                 <div class="mb-2 font-weight-bold">Nível de estudos:</div>
                                 <div class="border rounded bg-light p-3">
                                     @if($client->nivEstudoAtual)
-                                        <span class="font-weight-bold">{{$client->nivEstudoAtual}}</span>
+                                        <span>{{$client->nivEstudoAtual}}</span>
                                     @else
                                         <div class="text-muted"><small>(sem dados para apresentar)</small></div>
                                     @endif
@@ -418,10 +416,10 @@
                                 <br>
                                 <div class="mb-2 font-weight-bold">Observações académicas:</div>
                                 <div class="border rounded bg-light p-3">
-                                    @if ($client->obsAcademicas==null)
-                                        <div class="text-muted"><small>(sem dados para apresentar)</small></div>
-                                    @else
+                                    @if ($client->obsAcademicas)
                                         <div class="font-weight-bold">{{$client->obsAcademicas}}</div>
+                                    @else
+                                        <div class="text-muted"><small>(sem dados para apresentar)</small></div>
                                     @endif
                                 </div>
                             </div>
@@ -429,25 +427,21 @@
                             {{-- DOCUMENTOS Académicos --}}
                             <div class="col" style="min-width:250px">
                                 <div class=" mb-2">Ficheiros:</div>
-                                @if ($documentosAcademicos!=null)
+                                @if ($documentosAcademicos)
                                     <ul class="border rounded bg-light pl-3" style="list-style-type:none;margin:0px;padding:0">
                                         @foreach ($documentosAcademicos as $docAcademico)
-                                            @if ($docAcademico->imagem != null)
-                                                <li class="my-3">
-                                                    @if ($docAcademico->imagem != null)
-                                                        <i class="far fa-address-card mr-2"></i>
-                                                        <a class="font-weight-bold" target="_blank" href="{{route('documento-academico.show', $docAcademico)}}">{{$docAcademico->tipo}}</a>
-                                                        <span>
-                                                            <small>({{date('d/m/Y', strtotime($docAcademico->created_at))}})</small>
-                                                        </span>
-                                                        @if($docAcademico->verificacao == 0)
-                                                            <span class="text-danger"><small><i class="fas fa-exclamation ml-1 mr-2" title="Aguarda validação"></i></small></span>
-                                                        @else
-                                                            <span class="text-success"><small><i class="fas fa-check ml-1 mr-1" title="Ficheiro validado"></i></small></span>
-                                                        @endif
-                                                    @endif
+                                            <li class="my-3">
+                                                <i class="far fa-address-card mr-2"></i>
+                                                <a class="font-weight-bold" target="_blank" href="{{route('documento-academico.show', $docAcademico)}}">{{$docAcademico->tipo}}</a>
+                                                <span>
+                                                    <small>({{date('d/m/Y', strtotime($docAcademico->created_at))}})</small>
+                                                </span>
+                                                @if($docAcademico->verificacao == 0)
+                                                    <span class="text-danger"><small><i class="fas fa-exclamation ml-1 mr-2" title="Aguarda validação"></i></small></span>
+                                                @else
+                                                    <span class="text-success"><small><i class="fas fa-check ml-1 mr-1" title="Ficheiro validado"></i></small></span>
+                                                @endif
                                                 </li>
-                                            @endif
                                         @endforeach
                                     </ul>
                                 @else
