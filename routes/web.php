@@ -59,8 +59,8 @@ Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
     /* Estudantes */
     Route::get('/clientes/pesquisa', 'ClientController@searchIndex')->name('clients.searchIndex');
     Route::post('/clientes/resultados','ClientController@searchResults')->name('clients.searchResults');
-    Route::get('/clientes/print/{client}', 'ClientController@print')->name('clients.print');
-    Route::get('/clientes/sendActivationEmail/{client}', 'ClientController@sendActivationEmail')->name('clients.sendActivationEmail');
+    // Route::get('/clientes/sendActivationEmail/{client}', 'ClientController@sendActivationEmail')->name('clients.sendActivationEmail');
+    Route::post('/clientes/imprimir-ficha-financeiro/{client}', 'ClientController@printFinanceiro');
     Route::resource('/clientes', 'ClientController')->parameters([
         'clientes' => 'client'
     ])->names([

@@ -52,7 +52,7 @@
                                     break;
 
                                     case 'Dívida':
-                                        echo "<span class='font-weight-bold text-danger'>Dívida</span>";
+                                        echo "<span class='font-weight-bold text-danger'>Vencido</span>";
                                     break;
 
                                     case 'Crédito':
@@ -106,6 +106,7 @@
 
 <!-- Begin of Scripts -->
 @section('scripts')
+<script src="//cdn.datatables.net/plug-ins/1.10.11/sorting/date-eu.js" type="text/javascript"></script>
 <script>
     // Truncate a string
     function strtrunc(str, max, add){
@@ -138,8 +139,12 @@
                     "sSortDescending": ": Ordenar colunas de forma descendente"
                 }
             },
-            "order": [ 0, 'asc' ],
+            "order": [[2, 'asc'], [3, 'desc']],
             'columnDefs': [
+                {
+                    "targets": 2,
+                    "type": "date-eu"
+                },
                 {
                    'targets': 0,
                    'render': function(data, type, full, meta){

@@ -1,259 +1,216 @@
 <!DOCTYPE html>
-<html lang="pt" dir="ltr">
+<html lang="en" dir="ltr">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title> Ficha de estudante - {{$client->nome}} {{$client->apelido}}</title>
-
-    <!-- Favicon -->
-    <!-- Bootstrap core CSS -->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ficha financeira - Lyka Systems</title>
     <link href="{{asset('/vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
-
-
-    <!-- Lyka Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-
-
-    <!-- Fontawesome core CSS -->
-    <link href="{{asset('/vendor/fontawesome-free/css/all.min.css')}}" rel=" stylesheet" type="text/css">
-
-
-
-    <style>
-        div{
-            font-size: 13pt;
-            line-height: 20pt;
-        }
-
-        @media print {
-            body {
-                width: 21cm;
-                height: 29.7cm;
-                margin: 10mm 20mm 10mm 20mm;
-                /* change the margins as you want them to be. */
-            }
-        }
-
-    </style>
-
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
 </head>
 
-<body onload="javascript:window.print()">
+<body>
+    <style media="screen">
+        body {
+            padding: 3px 33px;
+            font-family: 'Lato', sans-serif;
+            font-size: 10pt;
+        }
 
-    <div class="container-fluid">
+        img {
+            width: 130px;
+        }
 
-        <div class="row ">
+        #text-beneficiario {
+            position: relative;
+            top: -10px;
+        }
 
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
 
-            <div class="col">
-                <h3><i class="fas fa-user-graduate mr-2"></i>Ficha de estudante</h3>
-                <hr style="border:1px solid lightgray"><br>
+        th, td {
+          padding: 5px 10px;
+          text-align: left;
+        }
 
-                {{-- Informações Pessoais --}}
-                <div><span class="text-secondary font-weight-bold">Nome:</span> {{$client->nome}} {{$client->apelido}}
-                </div>
-
-                <div><span class="text-secondary font-weight-bold">Género:</span>
-                    @if ($client->genero == 'M')
-                    Masculino
-                @else
-                    Feminino
-                @endif
-                </div>
-
-                <div><span class="text-secondary font-weight-bold">Naturalidade:</span> {{$client->paisNaturalidade}}
-                </div>
-
-                <div><span class="text-secondary font-weight-bold">Data de nascimento:
-                    </span>{{ date('d-M-y', strtotime($client->dataNasc)) }}</div>
-
-                <div><span class="text-secondary font-weight-bold">Telefone:</span> {{$client->telefone1}}
-                    @if ($client->telefone2!=null)
-                    / {{$client->telefone2}}
-                    @endif
-
-                </div>
-
-                <div><span class="text-secondary font-weight-bold">E-mail:</span> {{$client->email}}</div>
-
-                <div><span class="text-secondary font-weight-bold">Observações pessoais:</span>
-                    @if ($client->obsPessoais==null)
-                    <span class="text-muted"><small>(sem dados para mostrar)</small></span>
-                    @else
-                    {{ $client->obsPessoais }}
-                    @endif
-                </div><br>
-
-                <div><span class="text-secondary font-weight-bold">Adicionado em: </span>{{ date('d-M-y', strtotime($client->created_at)) }}</div><br>
-
-            </div>
-
-            {{-- Fotografia --}}
-            <div class="col col-3">
-
-            @if($client->fotografia)
-                <img class="m-2 p-1 rounded bg-white shadow-sm" src="{{url('/storage/client-documents/'.$client->idCliente.'/'.$client->fotografia)}}" style="width:90%">
-            @elseif($client->genero == 'F')
-                <img class="m-2 p-1 rounded bg-white shadow-sm" src="{{url('/storage/default-photos/F.jpg')}}" style="width:90%">
-            @else
-                <img class="m-2 p-1 rounded bg-white shadow-sm" src="{{url('/storage/default-photos/M.jpg')}}" style="width:90%">
-            @endif
-
-            </div>
-
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
+    <br>
+    <div class="row">
+        <div class="col-md-6">
+            <img src="{{asset('/media/logo.png')}}" alt="Logótipo - Estudar Portugal">
         </div>
-
-        <hr style="border:1px solid lightgray"><br>
-
-
-        <div class="row ">
-
-            <div class="col p-3 mr-3 ">
-                <h5><i class="fas fa-passport mr-2"></i>Passaporte</h5><br>
-                {{--  numPassaporte --}}
-                <div><span class="text-secondary font-weight-bold">Número do passaporte:</span>
-                    {{$client->numPassaporte  ?? ''}}</div>
-
-                {{--  dataValidPP --}}
-                <div><span class="text-secondary font-weight-bold">Data de validade do passaporte:</span>
-                    {{$infosPassaporte->dataValidPP ?? ''}}</div>
-
-                {{--  passaportPaisEmi --}}
-                <div><span class="text-secondary font-weight-bold">Pais emissor do passaporte:</span>
-                    {{$infosPassaporte->passaportPaisEmi  ?? ''}}</div>
-
-                {{--  localEmissaoPP --}}
-                <div><span class="text-secondary font-weight-bold">Local de emissão do passaporte:</span>
-                    {{$infosPassaporte->localEmissaoPP  ?? ''}}</div><br>
-            </div>
-
-            <div class="col p-3 ">
-                <h5><i class="far fa-id-card mr-2"></i>Documento de identificação</h5><br>
-                <div><span class="text-secondary font-weight-bold">Número de identificação pessoal:<br></span>
-                    {{$client->num_docOficial}}</div>
-                <div><span class="text-secondary font-weight-bold">Número de identificação fiscal:<br></span>
-                    {{$client->NIF}}</div><br>
-                    <div><span class="text-secondary font-weight-bold">Data de validade:</span>
-                        {{$client->validade_docOficial }}</div>
-            </div>
-
-
-        </div>
-
-        <hr style="border:1px solid lightgray"><br>
-
-
-        <div class="row">
-
-            <div class="col mr-4 ">
-
-                <h5><i class="fas fa-university mr-2"></i>Dados académicos</h5><br>
-                {{-- Informações Escolares --}}
-                <div><span class="text-secondary font-weight-bold">Nivel de estudos(atual):</span>
-                    {{$client->nivEstudoAtual}}
-                </div>
-
-                <div><span class="text-secondary font-weight-bold">Nome da instituição de origem:</span>
-                    {{$client->nomeInstituicaoOrigem}}</div>
-
-                <div><span class="text-secondary font-weight-bold">Local da instituição:</span>
-                    {{$client->cidadeInstituicaoOrigem}}</div>
-
-            </div>
-
-            <div class="col ">
-                {{-- Observações académicas --}}
-                <div><span class="text-secondary font-weight-bold">Observações académicas:</span>
-
-                    @if ($client->obsAcademicas==null)
-                    <span class="text-muted"><small>(sem dados para mostrar)</small></span>
-                    @else
-                    {{$client->obsAcademicas}}
-                    @endif
-                </div>
-            </div>
-
-        </div>
-
-
-        <br>
-        <hr style="border:1px solid lightgray"><br>
-
-
-        <div class="row">
-
-            <div class="col">
-                <h5><i class="far fa-address-book mr-2"></i>Contactos</h5><br>
-                {{-- Morada em Portugal --}}
-                <div><span class="text-secondary font-weight-bold">Morada de residência (Portugal):</span> {{$client->moradaResidencia}}</div>
-
-                {{-- Morada de residência no pais de origem --}}
-                <div><span class="text-secondary font-weight-bold">Morada (origem):</span> {{$client->morada}}</div>
-                <div><span class="text-secondary font-weight-bold">Cidade (origem):</span> {{$client->cidade}}</div>
-            </div>
-            <div class="col pt-4">
-                {{-- Contactos dos pais --}}
-                <div><span class="text-secondary font-weight-bold">Nome do pai:</span> {{$client->nomePai}}</div>
-                <div><span class="text-secondary font-weight-bold">Telefone do pai:</span> {{$client->telefonePai}}</div>
-                <div><span class="text-secondary font-weight-bold">E-mail do pai:</span> {{$client->emailPai}}</div>
-                <div><span class="text-secondary font-weight-bold">Nome da mãe:</span> {{$client->nomeMae}}</div>
-                <div><span class="text-secondary font-weight-bold">Telefone da mãe:</span> {{$client->telefoneMae}}</div>
-                <div><span class="text-secondary font-weight-bold">E-mail da mãe:</span> {{$client->emailMae}}</div>
-            </div>
-
-        </div>
-
-        <br>
-        <hr style="border:1px solid lightgray"><br>
-
-
-        <div class="row">
-            <div class="col">
-                <div><i class="fas fa-stream mr-2 "></i><span class="text-secondary font-weight-bold">Produtos aquiridos:</span>
-                    @if($produtos!=null)
-                        @foreach($produtos as $produto)
-                        {{$produto->descricao}}({{$produto->tipo}}),
-                        @endforeach
-                    @else
-                        Sem produtos adquiridos
-                    @endif
-
-                </div>
+        <div class="col-md-6">
+            <div class="text-right" id="text-beneficiario">
+                <p class="mb-0 font-weight-bold text-grey-900">Ficha Financeira do Cliente: <span class="font-weight-normal">{{$cliente->nome.' '.$cliente->apelido}}</span></p>
+                <p class="mb-0 font-weight-bold">Produto Associado: <span class="font-weight-normal">{{$produto->descricao}}</span></p>
+                <p class="font-weight-bold">Agente Associado: <span class="font-weight-normal">{{$produto->agente->nome.' '.$produto->agente->apelido}}</span></p>
             </div>
         </div>
-
-        <br>
-        <hr style="border:1px solid lightgray"><br>
-
-        <div class="row">
-
-            <div class="col">
-                <div><span class="text-secondary font-weight-bold">Observações Financeiras:</span>
-
-                    @if ($client->obsFinanceiras==null)
-                    <span class="text-muted font-weight-bold"><small>(sem dados para mostrar)</small></span>
-                    @else
-                    {{$client->obsFinanceiras}}
-                    @endif
-                </div>
-            </div>
-
-            <div class="col">
-                <div><i class="fas fa-search-dollar mr-2"></i><span class="text-secondary font-weight-bold">IBAN:</span> {{$client->IBAN}}</div>
-            </div>
-
-        </div>
-
     </div>
+    <p class="font-weight-bold">Listagem das Cobranças</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Fase</th>
+                <th>Valor</th>
+                <th>Data de Vencimento</th>
+                <th>Estado</th>
+                <th>Observações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (count($fases))
+                @foreach ($fases as $fase)
+                    <tr>
+                        <td>{{$fase->descricao}}</td>
+                        <td>{{number_format((float) $fase->valorFase, 2, ',', '')}}&euro;</td>
+                        <td>{{date('d/m/Y', strtotime($fase->dataVencimento))}}</td>
+                        <td>{{$fase->estado}}</td>
+                        <td>N/A</td>
+                    </tr>
+                @endforeach
+            @else
+                <tr>
+                    <td colspan="5" style="text-align: center; padding:10px !important;"><i>Nada a apresentar</i></td>
+                </tr>
+            @endif
+        </tbody>
+    </table>
 
+    <p class="font-weight-bold mt-5">Listagem dos Pagamentos</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Beneficiário</th>
+                <th>Fase</th>
+                <th>Valor</th>
+                <th>Data de Vencimento</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (count($responsabilidades))
+                @foreach ($responsabilidades as $responsabilidade)
+                    @if ($responsabilidade->valorCliente != null)
+                    <tr>
+                        <td>{{$responsabilidade->cliente->nome.' '.$responsabilidade->cliente->apelido}} (Cliente)</td>
+                        <td>{{$responsabilidade->fase->descricao}}</td>
+                        <td>{{number_format((float) $responsabilidade->valorCliente, 2, ',', '')}}&euro;</td>
+                        <td>{{date('d/m/Y', strtotime($responsabilidade->dataVencimentoCliente))}}</td>
+                        <td>
+                        @if (!$responsabilidade->verificacaoPagoCliente && $responsabilidade->dataVencimentoCliente < $currentdate)
+                            Vencido
+                        @elseif (!$responsabilidade->verificacaoPagoCliente && $responsabilidade->dataVencimentoCliente > $currentdate)
+                            Pendente
+                        @elseif ($responsabilidade->verificacaoPagoCliente)
+                            Pago
+                        @endif
+                        </td>
+                    </tr>
+                    @endif
+
+                    @if ($responsabilidade->valorAgente != null)
+                    <tr>
+                        <td>{{$responsabilidade->agente->nome.' '.$responsabilidade->agente->apelido}} (Agente)</td>
+                        <td>{{$responsabilidade->fase->descricao}}</td>
+                        <td>{{number_format((float) $responsabilidade->valorAgente, 2, ',', '')}}&euro;</td>
+                        <td>{{date('d/m/Y', strtotime($responsabilidade->dataVencimentoAgente))}}</td>
+                        <td>
+                        @if (!$responsabilidade->verificacaoPagoAgente && $responsabilidade->dataVencimentoAgente < $currentdate)
+                            Vencido
+                        @elseif (!$responsabilidade->verificacaoPagoAgente && $responsabilidade->dataVencimentoAgente > $currentdate)
+                            Pendente
+                        @elseif ($responsabilidade->verificacaoPagoAgente)
+                            Pago
+                        @endif
+                        </td>
+                    </tr>
+                    @endif
+
+                    @if ($responsabilidade->valorSubAgente != null)
+                    <tr>
+                        <td>{{$responsabilidade->subAgente->nome.' '.$responsabilidade->subAgente->apelido}} (Sub-Agente)</td>
+                        <td>{{$responsabilidade->fase->descricao}}</td>
+                        <td>{{number_format((float) $responsabilidade->valorSubAgente, 2, ',', '')}}&euro;</td>
+                        <td>{{date('d/m/Y', strtotime($responsabilidade->dataVencimentoSubAgente))}}</td>
+                        <td>
+                        @if (!$responsabilidade->verificacaoPagoSubAgente && $responsabilidade->dataVencimentoSubAgente < $currentdate)
+                            Vencido
+                        @elseif (!$responsabilidade->verificacaoPagoSubAgente && $responsabilidade->dataVencimentoSubAgente > $currentdate)
+                            Pendente
+                        @elseif ($responsabilidade->verificacaoPagoSubAgente)
+                            Pago
+                        @endif
+                        </td>
+                    </tr>
+                    @endif
+
+                    @if ($responsabilidade->valorUniversidade1 != null)
+                    <tr>
+                        <td>{{$responsabilidade->universidade1->nome}}</td>
+                        <td>{{$responsabilidade->fase->descricao}}</td>
+                        <td>{{number_format((float) $responsabilidade->valorUniversidade1, 2, ',', '')}}&euro;</td>
+                        <td>{{date('d/m/Y', strtotime($responsabilidade->dataVencimentoUni1))}}</td>
+                        <td>
+                        @if (!$responsabilidade->verificacaoPagoUni1 && $responsabilidade->dataVencimentoUni1 < $currentdate)
+                            Vencido
+                        @elseif (!$responsabilidade->verificacaoPagoUni1 && $responsabilidade->dataVencimentoUni1 > $currentdate)
+                            Pendente
+                        @elseif ($responsabilidade->verificacaoPagoUni1)
+                            Pago
+                        @endif
+                        </td>
+                    </tr>
+                    @endif
+
+                    @if ($responsabilidade->valorUniversidade2 != null)
+                    <tr>
+                        <td>{{$responsabilidade->universidade2->nome}}</td>
+                        <td>{{$responsabilidade->fase->descricao}}</td>
+                        <td>{{number_format((float) $responsabilidade->valorUniversidade2, 2, ',', '')}}&euro;</td>
+                        <td>{{date('d/m/Y', strtotime($responsabilidade->dataVencimentoUni2))}}</td>
+                        <td>
+                        @if (!$responsabilidade->verificacaoPagoUni2 && $responsabilidade->dataVencimentoUni2 < $currentdate)
+                            Vencido
+                        @elseif (!$responsabilidade->verificacaoPagoUni2 && $responsabilidade->dataVencimentoUni2 > $currentdate)
+                            Pendente
+                        @elseif ($responsabilidade->verificacaoPagoUni2)
+                            Pago
+                        @endif
+                        </td>
+                    </tr>
+                    @endif
+                    @foreach ($responsabilidade->relacao as $relacao)
+                    <tr>
+                        <td>{{$relacao->fornecedor->nome}}</td>
+                        <td>{{$relacao->responsabilidade->fase->descricao}}</td>
+                        <td>{{number_format((float) $relacao->valor, 2, ',', '')}}&euro;</td>
+                        <td>{{date('d/m/Y', strtotime($relacao->dataVencimento))}}</td>
+                        <td>
+                        @if ($relacao->verificacaoPago == false && $relacao->estado == "Dívida")
+                            Vencido
+                        @elseif ($relacao->verificacaoPago == false && $relacao->estado == "Pendente")
+                            Pendente
+                        @elseif ($relacao->verificacaoPago == true && $relacao->estado == "Pago")
+                            Pago
+                        @endif
+                        </td>
+                    </tr>
+                    @endforeach
+                @endforeach
+            @else
+                <tr>
+                    <td colspan="5" style="text-align: center; padding:10px !important;"><i>Nada a apresentar</i></td>
+                </tr>
+            @endif
+        </tbody>
+    </table>
 </body>
-
 </html>
-
-
-
-
-
-
-</div>

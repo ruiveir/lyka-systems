@@ -14,11 +14,17 @@
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h4 mb-0 text-gray-800">Visualização do(a) estudante {{$client->nome.' '.$client->apelido}}</h1>
         <div>
-            <a href="{{route('clients.edit', $client)}}" class="btn btn-success btn-icon-split btn-sm" title="Adicionar">
+            <a href="{{route('clients.edit', $client)}}" class="btn btn-success btn-icon-split btn-sm" title="Editar cliente">
                 <span class="icon text-white-50">
                     <i class="fas fa-pencil-alt"></i>
                 </span>
                 <span class="text">Editar estudante</span>
+            </a>
+            <a href="#" data-toggle="modal" data-target="#printModal" data-slug="{{$client->slug}}" class="btn btn-primary btn-icon-split btn-sm" title="Imprimir ficha financeira">
+                <span class="icon text-white-50">
+                    <i class="fas fa-print"></i>
+                </span>
+                <span class="text">Imprimir ficha financeira</span>
             </a>
             <a href="#" data-toggle="modal" data-target="#infoModal" class="btn btn-secondary btn-icon-split btn-sm" title="Informações">
                 <span class="icon text-white-50">
@@ -915,6 +921,41 @@
 </div>
 <!-- End of Modal Info -->
 
+<!-- Modal Info -->
+<div class="modal fade" id="printModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <form class="form-group needs-validation" method="post" novalidate target="_blank">
+        @csrf
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header pl-4 pb-1 pt-4">
+                    <h5 class="modal-title text-gray-800 font-weight-bold">O que pretende imprimir?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close-button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                    <div class="modal-body text-gray-800 pl-4 pr-5">
+                            <label for="produto">Escolha um produto para <b>imprimir a sua informação financeira</b> referente ao estudante <b>{{$client->nome.' '.$client->apelido}}</b> <sup class="text-danger small">&#10033;</sup></label>
+                            <select id="produto" class="custom-select" name="produto" required>
+                                <option disabled selected hidden>Escolha um produto...</option>
+                                @foreach ($produtos as $produto)
+                                    <option value="{{$produto->descricao}}">{{$produto->descricao}}</option>
+                                @endforeach
+                                <option value="todos">Todos</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Oops, parece que algo não está bem...
+                            </div>
+                    </div>
+                    <div class="modal-footer mt-3">
+                        <a data-dismiss="modal" class="mr-4 font-weight-bold" id="close-option">Fechar</a>
+                        <button id="submitPrint" type="submit" class="btn btn-primary font-weight-bold mr-2">Imprimir ficha financeira</button>
+                    </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- End of Modal Info -->
+
 <!-- Modal for create new document -->
 <form class="form-group needs-validation" id="Form-Documento-Pessoal" action="{{route('documento-pessoal.createFromClient', $client)}}" method="post" novalidate>
     @csrf
@@ -1061,6 +1102,16 @@
             }
             $(".needs-validation").addClass("was-validated");
         });
+
+        $('#printModal').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget);
+            var modal = $(this);
+            modal.find("form").attr('action', '/clientes/imprimir-ficha-financeiro/' + button.data('slug'));
+        });
+
+        $("#submitPrint").click(function(){
+            $('#printModal').modal('hide');
+        })
     });
 </script>
 @endsection
