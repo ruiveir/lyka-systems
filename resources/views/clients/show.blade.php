@@ -11,9 +11,11 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
     <!-- Page Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h4 mb-0 text-gray-800">Visualização do(a) estudante {{$client->nome.' '.$client->apelido}}</h1>
-        <div>
+    <div class="row d-sm-flex align-items-top justify-content-between mb-4">
+        <div class="col-md-6">
+            <h1 class="h4 mb-0 text-gray-800">Visualização do(a) estudante {{$client->nome.' '.$client->apelido}}</h1>
+        </div>
+        <div class="col-md-6 text-right">
             <a href="{{route('clients.edit', $client)}}" class="btn btn-success btn-icon-split btn-sm" title="Editar cliente">
                 <span class="icon text-white-50">
                     <i class="fas fa-pencil-alt"></i>
