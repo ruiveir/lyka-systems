@@ -937,10 +937,11 @@
                             <label for="produto">Escolha um produto para <b>imprimir a sua informação financeira</b> referente ao estudante <b>{{$client->nome.' '.$client->apelido}}</b> <sup class="text-danger small">&#10033;</sup></label>
                             <select id="produto" class="custom-select" name="produto" required>
                                 <option disabled selected hidden>Escolha um produto...</option>
-                                @foreach ($produtos as $produto)
-                                    <option value="{{$produto->descricao}}">{{$produto->descricao}}</option>
-                                @endforeach
-                                <option value="todos">Todos</option>
+                                @if ($produtos)
+                                    @foreach ($produtos as $produto)
+                                        <option value="{{$produto->descricao}}">{{$produto->descricao}}</option>
+                                    @endforeach
+                                @endif
                             </select>
                             <div class="invalid-feedback">
                                 Oops, parece que algo não está bem...
