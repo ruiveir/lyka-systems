@@ -22,12 +22,14 @@
                 </span>
                 <span class="text">Editar estudante</span>
             </a>
-            <a href="#" data-toggle="modal" data-target="#printModal" data-slug="{{$client->slug}}" class="btn btn-primary btn-icon-split btn-sm" title="Imprimir ficha financeira">
-                <span class="icon text-white-50">
-                    <i class="fas fa-print"></i>
-                </span>
-                <span class="text">Imprimir ficha financeira</span>
-            </a>
+            @if ($produtos)
+                <a href="#" data-toggle="modal" data-target="#printModal" data-slug="{{$client->slug}}" class="btn btn-primary btn-icon-split btn-sm" title="Imprimir ficha financeira">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-print"></i>
+                    </span>
+                    <span class="text">Imprimir ficha financeira</span>
+                </a>
+            @endif
             <a href="#" data-toggle="modal" data-target="#infoModal" class="btn btn-secondary btn-icon-split btn-sm" title="Informações">
                 <span class="icon text-white-50">
                     <i class="fas fa-info-circle"></i>
