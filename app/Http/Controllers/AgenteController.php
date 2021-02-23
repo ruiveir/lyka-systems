@@ -175,9 +175,10 @@ class AgenteController extends Controller
             $currentdate = new DateTime();
 
             $produtos = Produto::where('idAgente', $agent->idAgente)->orWhere('idSubAgente', $agent->idAgente)->get();
-            $responsabilidades = Responsabilidade::where('idAgente', $agent->idAgente)->where('valorAgente', '!=', NULL)->get();
+            $responsabilidadesAgentes = Responsabilidade::where('idAgente', $agent->idAgente)->where('valorAgente', '!=', NULL)->get();
+            $responsabilidadesSubAgentes = Responsabilidade::where('idSubAgente', $agent->idAgente)->where('valorSubAgente', '!=', NULL)->get();
 
-            return view('agents.show',compact('currentdate' ,'responsabilidades' ,'produtos','agent','listagents','mainAgent','telefone2','IBAN','clients','comissoes'));
+            return view('agents.show',compact('currentdate', 'responsabilidadesSubAgentes', 'responsabilidadesAgentes' ,'produtos','agent','listagents','mainAgent','telefone2','IBAN','clients','comissoes'));
         }else{
             abort(403);
         }
