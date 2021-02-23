@@ -131,6 +131,24 @@
             $("#idAgenteAssociado").addClass("invalid");
             $("#agent-type-tab").removeClass("border-danger text-danger");
         });
+
+        var options = [
+            {"option": document.getElementById("agent-type-tab")},
+            {"option": document.getElementById("personal-tab")},
+            {"option": document.getElementById("documents-tab")},
+            {"option": document.getElementById("contacts-tab")},
+            {"option": document.getElementById("financas-tab")}
+        ]
+
+        $("#agent-type-tab, #personal-tab, #documents-tab, #contacts-tab, #financas-tab").click(function(){
+            for (var i = 0; i < options.length; i++) {
+                if(this.id === options[i].option.id){
+                    $(this).removeClass("bg-white").addClass("bg-primary text-white");
+                }else{
+                    $(options[i].option).removeClass("bg-primary text-white").addClass("bg-white");
+                }
+            }
+        });
     });
 </script>
 @endsection

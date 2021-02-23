@@ -31,9 +31,9 @@
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             @if (isset($university))
-                <h6 class="m-0 font-weight-bold text-primary">Visualização do contacto do(a) {{$contact->nome}} associado a universidade {{$university->nome}}</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Visualização do contacto do(a) "{{$contact->nome}}" associado a universidade "{{$university->nome}}".</h6>
             @else
-                <h6 class="m-0 font-weight-bold text-primary">Visualização do contacto do(a) {{$contact->nome}}</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Visualização do contacto do(a) "{{$contact->nome}}".</h6>
             @endif
         </div>
         <div class="card-body">

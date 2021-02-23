@@ -56,5 +56,5 @@
 </div>
 
 @if(isset($university))
-    <input disabled hidden type="text" name="idUniversidade" value="{{$university->idUniversidade}}">
+    <input hidden type="text" name="idUniversidade" value="{{$university->idUniversidade}}">
 @endif

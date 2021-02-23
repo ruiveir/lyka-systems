@@ -77,6 +77,21 @@
             }
             $(".needs-validation").addClass("was-validated");
         });
+
+        var options = [
+            {"option": document.getElementById("infos-tab")},
+            {"option": document.getElementById("observacoes-tab")}
+        ]
+
+        $("#infos-tab, #observacoes-tab").click(function(){
+            for (var i = 0; i < options.length; i++) {
+                if(this.id === options[i].option.id){
+                    $(this).removeClass("bg-white").addClass("bg-primary text-white");
+                }else{
+                    $(options[i].option).removeClass("bg-primary text-white").addClass("bg-white");
+                }
+            }
+        });
     });
 </script>
 @endsection

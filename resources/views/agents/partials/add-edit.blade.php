@@ -1,6 +1,6 @@
 <div class="row nav nav-fill w-100 text-center mx-auto p-3">
     <!-- Secção para o TIPO DE AGENTE -->
-    <a class="nav-item nav-link border p-3 m-1 bg-white rounded shadow-sm active" id="agent-type-tab" data-toggle="tab" href="#agent_type" role="tab" aria-controls="agent_type" aria-selected="false">
+    <a class="nav-item nav-link border p-3 m-1 bg-primary text-white rounded shadow-sm" id="agent-type-tab" data-toggle="tab" href="#agent_type" role="tab" aria-controls="agent_type" aria-selected="false">
         <div class="col">
             <i class="fas fa-user-tie mr-2"></i>
             <span>Tipo de Agente</span>
@@ -8,7 +8,7 @@
     </a>
 
     <!-- Secção para o DADOS PESSOAIS -->
-    <a class="nav-item nav-link border p-3 m-1 bg-white rounded shadow-sm " id="personal-tab" data-toggle="tab" href="#personal" role="tab" aria-controls="personal" aria-selected="false">
+    <a class="nav-item nav-link border p-3 m-1 bg-white rounded shadow-sm" id="personal-tab" data-toggle="tab" href="#personal" role="tab" aria-controls="personal" aria-selected="false">
         <div class="col">
             <i class="fas fa-user-edit mr-2"></i>
             <span>Dados pessoais</span>
@@ -39,7 +39,6 @@
         </div>
     </a>
 </div>
-
 
 <div class="bg-white shadow-sm mb-4 p-4 border" style="margin-top:-30px">
     <div class="tab-content p-2 mt-3" id="myTabContent">
