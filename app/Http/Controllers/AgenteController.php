@@ -126,29 +126,17 @@ class AgenteController extends Controller
             (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null &&
             (Auth()->user()->idAgente == $agent->idAgenteAssociado||Auth()->user()->idAgente == $agent->idAgente))){
 
-            /* Só os administradores podem ver os perfis dos agentes */
-            /* Cada agente só pode ver o seu perfil *//*
-            if(Auth::user()->tipo == "agente" && Auth::user()->idAgente != $agent->idAgente){
-                abor(403);
-            }/** */
-
             /* Lista de sub-agentes do $agente */
-            $listagents = Agente::
-            where('idAgenteAssociado', '=',$agent->idAgente)
-            ->get();
+            $listagents = Agente::where('idAgenteAssociado', $agent->idAgente)->get();
 
             if ($listagents->isEmpty()) {
-                $listagents=null;
+                $listagents = null;
             }
 
-
-    /*       caso seja um sub-agente, obtem o agente que o adicionou */
-            if($agent->tipo=="Subagente"){
-                $mainAgent=Agente::
-                where('idAgente', '=',$agent->idAgenteAssociado)
-                ->first();
+            if($agent->tipo == "Subagente"){
+                $mainAgent = Agente::where('idAgente', $agent->idAgenteAssociado)->first();
             }else{
-                $mainAgent=null;
+                $mainAgent = null;
             }
 
             $telefone2 = $agent->telefone2;

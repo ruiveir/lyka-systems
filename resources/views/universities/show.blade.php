@@ -188,7 +188,6 @@
                                         <th style="max-width:50px; min-width:50px;">Opções</th>
                                     </tr>
                                 </thead>
-
                                 <tbody>
                                     @foreach ($clients as $client)
                                     <tr class="font-weight-normal">
