@@ -131,52 +131,41 @@
 
             <div class="border shadow-sm mb-4 p-4" style="margin-top:-30px">
                 <div class="tab-content p-2 mt-3" id="myTabContent">
-                    {{-- Eventos --}}
                     <div class="tab-pane fade show active" id="eventos" role="tabpanel" aria-labelledby="eventos-tab">
-                        @if($eventos!=null)
-                        <div class="row mx-auto pt-0" style="max-height:1000px; overflow:auto ">
-                            @foreach ($eventos as $agenda)
-                            <div>
-                                <div class="col border rounded bg-light shadow-sm  m-2 mt-4 p-3" style="min-width: 320px; max-width: 320px; height:auto; max-height:240px; color:black !important">
-                                    <div class="row p-0 m-0" style="margin-top:-30px!important">
-                                        <div class="col text-right p-0">
-                                            @if (Auth::user()->tipo == "admin")
-                                                <form method="POST" role="form" id="#" action="{{route('agenda.destroy',$agenda)}}" class="d-inline-block form_university_event" data="{{$agenda->titulo}}">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="delete_event_btn shadow-sm text-center btn_list_opt btn_delete mr-2" title="Eliminar Evento" data-toggle="modal" data-target="#exampleModal">
-                                                        <i class="fas fa-trash-alt"></i>
-                                                    </button>
-                                                </form>
-                                            @endif
-                                        </div>
-                                    </div>
-
-                                    <div class="mt-2"><i class="fas fa-square mr-2" title="{{$agenda->titulo}}" style="color:{{$agenda->cor}}"></i>Evento:
-                                        <strong>{{ \Illuminate\Support\Str::limit($agenda->titulo, 50, $end=' (...)') }}</strong>
-                                    </div>
-
-                                    <div class="mt-3">
-                                        {{ \Illuminate\Support\Str::limit($agenda->descricao, 70, $end=' (...)') }}
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col border-right ">
-                                            <div class="mt-3">
-                                                Inicio:<br><strong>{{ date('d-M-y', strtotime($agenda->dataInicio)) }}</strong>
+                        @if($eventos)
+                            <div class="row mx-auto pt-0">
+                                @foreach ($eventos as $agenda)
+                                    <div>
+                                        <div class="col border rounded bg-light shadow-sm m-2 p-3 text-gray-900" style="min-width: 320px; max-width: 320px; height:auto; max-height:240px;">
+                                            <div class="mt-2"><i class="fas fa-square mr-2" title="{{$agenda->titulo}}" style="color:{{$agenda->cor}}"></i>Evento:
+                                                <strong>{{\Illuminate\Support\Str::limit($agenda->titulo, 50, $end='...')}}</strong>
                                             </div>
-                                        </div>
 
-                                        <div class="col">
                                             <div class="mt-3">
-                                                Fim:<br><strong>{{ date('d-M-y', strtotime($agenda->dataFim)) }}</strong>
+                                                {{\Illuminate\Support\Str::limit($agenda->descricao, 70, $end='...')}}
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col border-right">
+                                                    <div class="mt-3">
+                                                        Início:<br><strong>{{date('d/m/Y', strtotime($agenda->data_inicio))}}</strong>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col">
+                                                    <div class="mt-3">
+                                                        @if ($agenda->data_fim)
+                                                            Fim:<br><strong>{{date('d/m/Y', strtotime($agenda->data_fim))}}</strong>
+                                                        @else
+                                                            Fim:<br><strong>N/A</strong>
+                                                        @endif
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                @endforeach
                             </div>
-                            @endforeach
-                        </div>
                         @else
                             <div class="border rounded bg-light p-3">
                                 <div class="text-muted"><small>(sem dados para apresentar)</small></div>
