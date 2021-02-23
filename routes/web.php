@@ -74,7 +74,6 @@ Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
     ]);
 
     /* Agentes */
-    Route::get('/agentes/print/{agent}', 'AgenteController@print')->name('agents.print');
     Route::resource('/agentes', 'AgenteController')->parameters([
         'agentes' => 'agent'
     ])->names([

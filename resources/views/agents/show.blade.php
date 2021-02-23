@@ -1,6 +1,9 @@
 @extends('layout.master')
 <!-- Page Title -->
 @section('title', 'Visualizar agente')
+@section('style-links')
+    <link href="{{asset("/css/clientes.css")}}" rel="stylesheet">
+@endsection
 <!-- Page Content -->
 @section('content')
 <div class="container-fluid">
@@ -374,18 +377,97 @@
                                     @endif
                                 </div>
                             </div>
-                            <br>
+                        </div>
+                        <div class="col">
                             <div class="mb-2 font-weight-bold">Total de comissões:</div>
                                 <div class="border rounded bg-light p-3">
                                     <div>
                                         @if($comissoes)
-                                            <div class="text-success">{{$comissoes}}€</div>
+                                            <div class="text-success">{{number_format((float) $comissoes, 2, ',', '').'€'}}</div>
                                         @else
                                             <div class="text-muted"><small>(sem dados para apresentar)</small></div>
                                         @endif
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="table-responsive mt-5">
+                            <table id="tableFinancas" class="display table table-bordered table-striped" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>Tipo</th>
+                                        <th>Produto</th>
+                                        <th>Fase</th>
+                                        <th>Valor</th>
+                                        <th class="text-truncate" style="max-width:60px; min-width:60px;" title="Data de vencimento">Data de vencimento</th>
+                                        <th style="max-width:50px; min-width:50px;">Estado</th>
+                                        <th style="max-width:80px; min-width:80px;">Opções</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($produtos as $produto)
+                                        @foreach ($produto->fase as $fase)
+                                            <tr>
+                                                <td class="tooltip-td" data-toggle="tooltip" data-placement="top" title="Cobrança sujeita ao cliente {{$produto->cliente->nome.' '.$produto->cliente->apelido}}.">Cobrança</td>
+                                                <td title="{{$produto->descricao}}">{{$produto->descricao}}</td>
+                                                <td title="{{$fase->descricao}}">{{$fase->descricao}}</td>
+                                                <td>{{number_format((float) $fase->valorFase, 2, ',', '').'€'}}</td>
+                                                <td>{{date('d/m/Y', strtotime($fase->dataVencimento))}}</td>
+                                                @if ($fase->verificacaoPago && $fase->estado == "Pago")
+                                                    <td class="font-weight-bold text-success">Pago</td>
+                                                @elseif (!$fase->verificacaoPago && $fase->estado == "Dívida")
+                                                    <td class="font-weight-bold text-danger">Vencido</td>
+                                                @else
+                                                    <td class="font-weight-bold">Pendente</td>
+                                                @endif
+                                                <td class="text-center align-middle">
+                                                @if (count($fase->docTransacao))
+                                                    <button class="btn btn-sm btn-outline-dark text-gray-900" title="Editar" disabled><i class="fas fa-check"></i></button>
+                                                    <a href="{{route("charges.show", [$fase->produto, $fase, $fase->docTransacao[0]])}}" class="btn btn-sm btn-outline-primary" title="Ver em detalhe"><i class="far fa-eye"></i></a>
+                                                    <a href="{{route("charges.edit", [$fase->produto, $fase, $fase->docTransacao[0]])}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                                @else
+                                                    <a href="{{route("charges.create", [$fase->produto, $fase])}}" class="btn btn-sm btn-outline-success" title="Registar"><i class="fas fa-check"></i></i></a>
+                                                    <button class="btn btn-sm btn-outline-dark text-gray-900" title="Ver em detalhe" disabled><i class="far fa-eye"></i></button>
+                                                    <button class="btn btn-sm btn-outline-dark text-gray-900" title="Editar" disabled><i class="fas fa-pencil-alt"></i></button>
+                                                @endif
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @endforeach
+
+                                    @if ($responsabilidades)
+                                        @foreach ($responsabilidades as $responsabilidade)
+                                            <tr>
+                                                <td class="tooltip-td" data-toggle="tooltip" data-placement="top" title="Pagamento afeto ao cliente {{$responsabilidade->cliente->nome.' '.$responsabilidade->cliente->apelido}}.">Pagamento</td>
+                                                <td title="{{$responsabilidade->fase->produto->descricao}}">{{$responsabilidade->fase->produto->descricao}}</td>
+                                                <td title="{{$responsabilidade->fase->descricao}}">{{$responsabilidade->fase->descricao}}</td>
+                                                <td>{{number_format((float) $responsabilidade->valorAgente, 2, ',', '').'€'}}</td>
+                                                <td>{{date('d/m/Y', strtotime($responsabilidade->dataVencimentoAgente))}}</td>
+                                                <td class="@if(!$responsabilidade->verificacaoPagoAgente && $responsabilidade->dataVencimentoAgente < $currentdate) text-danger font-weight-bold @elseif ($responsabilidade->verificacaoPagoAgente) text-success font-weight-bold @else font-weight-bold text-gray @endif">
+                                                @if (!$responsabilidade->verificacaoPagoAgente && $responsabilidade->dataVencimentoAgente < $currentdate)
+                                                    Vencido
+                                                @elseif (!$responsabilidade->verificacaoPagoAgente && $responsabilidade->dataVencimentoAgente > $currentdate)
+                                                    Pendente
+                                                @elseif ($responsabilidade->verificacaoPagoAgente)
+                                                    Pago
+                                                @endif
+                                                </td>
+                                                <td class="text-center align-middle">
+                                                    @if($responsabilidade->pagoResponsabilidade && $responsabilidade->verificacaoPagoAgente)
+                                                        <button class="btn btn-sm btn-outline-dark text-gray-900" disabled><i class="fas fa-check"></i></button>
+                                                        <a href="{{route('payments.showagente', [$responsabilidade->agente, $responsabilidade->fase, $responsabilidade, $responsabilidade->pagoResponsabilidade])}}" class="btn btn-sm btn-outline-primary" title="Visualizar"><i class="far fa-eye"></i></a>
+                                                        <a href="{{route('payments.editagente', [$responsabilidade->agente, $responsabilidade->fase, $responsabilidade, $responsabilidade->pagoResponsabilidade])}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                                    @else
+                                                        <a href="{{route('payments.agente', [$responsabilidade->agente, $responsabilidade->fase, $responsabilidade])}}" class="btn btn-sm btn-outline-success" title="Registar"><i class="fas fa-check"></i></a>
+                                                        <button class="btn btn-sm btn-outline-dark text-gray-900" disabled><i class="far fa-eye"></i></button>
+                                                        <button class="btn btn-sm btn-outline-dark text-gray-900" disabled><i class="fas fa-pencil-alt"></i></button>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -418,7 +500,13 @@
 <!-- End of Modal Info -->
 <!-- Begin of Scripts -->
 @section('scripts')
+<script src="//cdn.datatables.net/plug-ins/1.10.11/sorting/date-eu.js" type="text/javascript"></script>
 <script>
+    function strtrunc(str, max, add){
+        add = add || '...';
+        return (typeof str === 'string' && str.length > max ? str.substring(0, max) + add : str);
+    };
+
     $(document).ready(function() {
         $('#tableClientes').DataTable({
             "language": {
@@ -472,6 +560,48 @@
                 }
             },
             "order": [0, 'asc']
+        });
+
+        $('#tableFinancas').DataTable({
+            "language": {
+                "sEmptyTable": "Não foi encontrado nenhum registo",
+                "sLoadingRecords": "A carregar...",
+                "sProcessing": "A processar...",
+                "sLengthMenu": "Mostrar _MENU_ registos",
+                "sZeroRecords": "Não foram encontrados resultados",
+                "sInfo": "Mostrando _END_ de _TOTAL_ registos",
+                "sInfoEmpty": "Mostrando de 0 de 0 registos",
+                "sInfoFiltered": "(filtrado de _MAX_ registos no total)",
+                "sInfoPostFix": "",
+                "sSearch": "Procurar:",
+                "sUrl": "",
+                "oPaginate": {
+                    "sFirst": "Primeiro",
+                    "sPrevious": "Anterior",
+                    "sNext": "Seguinte",
+                    "sLast": "Último"
+                },
+                "oAria": {
+                    "sSortAscending": ": Ordenar colunas de forma ascendente",
+                    "sSortDescending": ": Ordenar colunas de forma descendente"
+                }
+            },
+            "order": [[5, 'desc'], [4, 'asc']],
+            "columnDefs": [
+                {
+                    "targets": 4,
+                    "type": "date-eu"
+                },
+                {
+                   'targets': [1, 2],
+                   'render': function(data, type, full, meta){
+                      if(type === 'display'){
+                         data = strtrunc(data, 12);
+                      }
+                      return data;
+                  }
+              }
+            ]
         });
 
         var options = [

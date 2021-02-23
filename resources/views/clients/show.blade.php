@@ -1,11 +1,9 @@
 @extends('layout.master')
 <!-- Page Title -->
 @section('title', 'Visualizar estudante')
-
 @section('style-links')
     <link href="{{asset("/css/clientes.css")}}" rel="stylesheet">
 @endsection
-
 <!-- Page Content -->
 @section('content')
 <!-- Begin Page Content -->
