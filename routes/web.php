@@ -74,6 +74,7 @@ Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
     ]);
 
     /* Agentes */
+    Route::post('/agentes/imprimir-ficha-financeiro/{agente}', 'AgenteController@printFinanceiro');
     Route::resource('/agentes', 'AgenteController')->parameters([
         'agentes' => 'agent'
     ])->names([

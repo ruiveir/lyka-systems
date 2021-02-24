@@ -2,8 +2,10 @@
 namespace App\Http\Controllers;
 
 use DateTime;
+use PDF;
 
 use App\User;
+use App\Fase;
 use App\Agente;
 use App\Cliente;
 use App\Produto;
@@ -286,6 +288,55 @@ class AgenteController extends Controller
             return redirect()->route('agents.index')->with('success', 'Agente eliminado com sucesso!');
         }else{
             abort(403);
+        }
+    }
+
+
+    public function printFinanceiro(Request $request, Agente $agente)
+    {
+        switch ($request->infoPrint) {
+            case 'todos':
+                $produto = Produto::where("idProduto", $request->produto)->first();
+                $fases = Fase::where("idProduto", $request->produto)->get();
+                $responsabilidades = [];
+                $currentdate = new DateTime();
+
+                foreach ($fases as $fase) {
+                    if ($fase->responsabilidade->valorAgente != NULL && $fase->responsabilidade->idAgente == $agente->idAgente) {
+                        array_push($responsabilidades, $fase->responsabilidade);
+                    }
+                }
+
+                $pdf = PDF::loadView('agents.print-financas', ['produto' => $produto, 'agente' => $agente, 'fases' => $fases, 'responsabilidades' => $responsabilidades, 'currentdate' => $currentdate])->setPaper('a4', 'portrait');
+                return $pdf->stream('Pagamentos e Cobranças - '.$agente->nome.' '.$agente->apelido.'.pdf');
+                break;
+
+            case 'cobrancas':
+                $produto = Produto::where("idProduto", $request->produto)->first();
+                $fases = Fase::where("idProduto", $request->produto)->get();
+                $pdf = PDF::loadView('agents.print-cobrancas', ['produto' => $produto, 'agente' => $agente, 'fases' => $fases])->setPaper('a4', 'portrait');
+                return $pdf->stream('Cobranças - '.$agente->nome.' '.$agente->apelido.'.pdf');
+                break;
+
+            case 'pagamentos':
+                $produto = Produto::where("idProduto", $request->produto)->first();
+                $fases = Fase::where("idProduto", $request->produto)->get();
+                $responsabilidades = [];
+                $currentdate = new DateTime();
+
+                foreach ($fases as $fase) {
+                    if ($fase->responsabilidade->valorAgente != NULL && $fase->responsabilidade->idAgente == $agente->idAgente) {
+                        array_push($responsabilidades, $fase->responsabilidade);
+                    }
+                }
+
+                $pdf = PDF::loadView('agents.print-financas', ['produto' => $produto, 'agente' => $agente, 'responsabilidades' => $responsabilidades, 'currentdate' => $currentdate])->setPaper('a4', 'portrait');
+                return $pdf->stream('Pagamentos - '.$agente->nome.' '.$agente->apelido.'.pdf');
+                break;
+
+            default:
+                dd("nok");
+                break;
         }
     }
 }

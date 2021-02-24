@@ -27,6 +27,12 @@
                     <span class="text">Editar sub-agente</span>
                 @endif
             </a>
+            <a href="#" data-toggle="modal" data-target="#printModal" data-slug="{{$agent->slug}}" class="btn btn-primary btn-icon-split btn-sm" title="Imprimir ficha financeira">
+                <span class="icon text-white-50">
+                    <i class="fas fa-print"></i>
+                </span>
+                <span class="text">Imprimir ficha financeira</span>
+            </a>
             <a href="#" data-toggle="modal" data-target="#infoModal" class="btn btn-secondary btn-icon-split btn-sm" title="Informações">
                 <span class="icon text-white-50">
                     <i class="fas fa-info-circle"></i>
@@ -508,7 +514,6 @@
     </div>
 </div>
 
-
 <!-- Modal Info -->
 <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -530,6 +535,55 @@
     </div>
 </div>
 <!-- End of Modal Info -->
+
+<!-- Modal Info -->
+<div class="modal fade" id="printModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    @if ($clients)
+        @foreach ($clients as $client)
+            <option hidden disabled class="clients-options" value="{{$client->idCliente}}">{{$client->nome.' '.$client->apelido}}</option>
+            @if ($client->produto)
+                @foreach ($client->produto as $produto)
+                    @if ($produto->idAgente == $agent->idAgente)
+                        <option hidden disabled class="produtos-options" value="{{$produto->idProduto}}">{{$produto->descricao}}</option>
+                    @endif
+                @endforeach
+            @endif
+        @endforeach
+    @endif
+    <form id="formPrintModal" class="form-group needs-validation" method="post" novalidate target="_blank">
+        @csrf
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header pl-4 pb-1 pt-4">
+                    <h5 class="modal-title text-gray-800 font-weight-bold">O que pretende imprimir?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close-button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                    <div class="modal-body text-gray-800 pl-4 pr-5">
+                        <div id="div-with-select">
+                            <label for="infoPrint">Escolha na seleção abaixo a informação financeira que pretende imprimir referente ao agente <b>{{$agent->nome.' '.$agent->apelido}}</b> <sup class="text-danger small">&#10033;</sup></label>
+                            <select id="infoPrint" class="custom-select" name="infoPrint" required>
+                                <option disabled selected hidden>Escolha uma informação...</option>
+                                <option value="cobrancas">Cobranças</option>
+                                <option value="pagamentos">Pagamentos</option>
+                                <option value="todos">Pagamentos & Cobranças</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Oops, parece que algo não está bem...
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer mt-3">
+                        <a data-dismiss="modal" class="mr-4 font-weight-bold" id="close-option">Fechar</a>
+                        <button id="submitPrint" type="submit" class="btn btn-primary font-weight-bold mr-2">Imprimir ficha financeira</button>
+                    </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- End of Modal Info -->
+
 <!-- Begin of Scripts -->
 @section('scripts')
 <script src="//cdn.datatables.net/plug-ins/1.10.11/sorting/date-eu.js" type="text/javascript"></script>
@@ -669,15 +723,75 @@
             $(".needs-validation").addClass("was-validated");
         });
 
+        $("#infoPrint").change(function() {
+            $("#formPrintModal").removeClass("was-validated");
+            value = $("#infoPrint").find(":selected").val();
+            switch (value) {
+                case "cobrancas":
+                    $(".custom-inputs").remove();
+                    input = "<div class='mt-3 custom-inputs'><label for='name'>Nome do estudante <sup class='text-danger small'>&#10033;</sup></label><select type='text' class='form-control custom-select' id='name' name='name' required></select><div class='invalid-feedback'>Oops, parece que algo não está bem...</div></div><div class='mt-3 custom-inputs'><label for='produto'>Produto <sup class='text-danger small'>&#10033;</sup></label><select type='text' class='form-control custom-select' id='produto' name='produto' required></select><div class='invalid-feedback'>Oops, parece que algo não está bem...</div></div>";
+                    $("#div-with-select").after(input);
+
+                    optionsNameSelected = "<option disabled selected hidden>Escolha um estudante...</option>";
+                    $("#name").append(optionsNameSelected);
+
+                    optionsProdutosSelected = "<option disabled selected hidden>Escolha um produto...</option>";
+                    $("#produto").append(optionsProdutosSelected);
+
+                    cloneCliente = $(".clients-options").clone().appendTo("#name");
+                    cloneCliente.removeAttr("hidden disabled");
+
+                    cloneProduto = $(".produtos-options").clone().appendTo("#produto");
+                    cloneProduto.removeAttr("hidden disabled");
+                    break;
+
+                case "pagamentos":
+                    $(".custom-inputs").remove();
+                    input = "<div class='mt-3 custom-inputs'><label for='name'>Nome do estudante <sup class='text-danger small'>&#10033;</sup></label><select type='text' class='form-control custom-select' id='name' name='name' required></select><div class='invalid-feedback'>Oops, parece que algo não está bem...</div></div><div class='mt-3 custom-inputs'><label for='surname'>Produto <sup class='text-danger small'>&#10033;</sup></label><select type='text' class='form-control custom-select' id='produto' name='produto' required></select><div class='invalid-feedback'>Oops, parece que algo não está bem...</div></div>";
+                    $("#div-with-select").after(input);
+
+                    optionsNameSelected = "<option disabled selected hidden>Escolha um estudante...</option>";
+                    $("#name").append(optionsNameSelected);
+
+                    optionsProdutosSelected = "<option disabled selected hidden>Escolha um produto...</option>";
+                    $("#produto").append(optionsProdutosSelected);
+
+                    cloneCliente = $(".clients-options").clone().appendTo("#name");
+                    cloneCliente.removeAttr("hidden disabled");
+
+                    cloneProduto = $(".produtos-options").clone().appendTo("#produto");
+                    cloneProduto.removeAttr("hidden disabled");
+                    break;
+
+                case "todos":
+                    $(".custom-inputs").remove();
+                    input = "<div class='mt-3 custom-inputs'><label for='name'>Nome do estudante <sup class='text-danger small'>&#10033;</sup></label><select type='text' class='form-control custom-select' id='name' name='name' required></select><div class='invalid-feedback'>Oops, parece que algo não está bem...</div></div><div class='mt-3 custom-inputs'><label for='surname'>Produto <sup class='text-danger small'>&#10033;</sup></label><select type='text' class='form-control custom-select' id='produto' name='produto' required></select><div class='invalid-feedback'>Oops, parece que algo não está bem...</div></div>";
+                    $("#div-with-select").after(input);
+
+                    optionsNameSelected = "<option disabled selected hidden>Escolha um estudante...</option>";
+                    $("#name").append(optionsNameSelected);
+
+                    optionsProdutosSelected = "<option disabled selected hidden>Escolha um produto...</option>";
+                    $("#produto").append(optionsProdutosSelected);
+
+                    cloneCliente = $(".clients-options").clone().appendTo("#name");
+                    cloneCliente.removeAttr("hidden disabled");
+
+                    cloneProduto = $(".produtos-options").clone().appendTo("#produto");
+                    cloneProduto.removeAttr("hidden disabled");
+                    break;
+
+                default:
+                    $(".custom-inputs").remove();
+                    break;
+            }
+        });
+
         $('#printModal').on('show.bs.modal', function(event) {
             var button = $(event.relatedTarget);
             var modal = $(this);
-            modal.find("form").attr('action', '/clientes/imprimir-ficha-financeiro/' + button.data('slug'));
+            modal.find("form").attr('action', '/agentes/imprimir-ficha-financeiro/' + button.data('slug'));
         });
-
-        $("#submitPrint").click(function(){
-            $('#printModal').modal('hide');
-        })
     });
 </script>
 @endsection
