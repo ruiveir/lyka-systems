@@ -541,9 +541,9 @@
     @if ($clients)
         @foreach ($clients as $client)
             <option hidden disabled class="clients-options" value="{{$client->idCliente}}">{{$client->nome.' '.$client->apelido}}</option>
-            @if ($client->produto)
+            @if ($client->produto && $client->deleted_at == NULL)
                 @foreach ($client->produto as $produto)
-                    @if ($produto->idAgente == $agent->idAgente)
+                    @if ($produto->idAgente == $agent->idAgente && $produto->deleted_at == NULL)
                         <option hidden disabled class="produtos-options" value="{{$produto->idProduto}}">{{$produto->descricao}}</option>
                     @endif
                 @endforeach
