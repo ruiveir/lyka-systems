@@ -795,6 +795,9 @@
                             }
                             selectedOption = "<option disabled selected hidden>Escolha um produto...</option>";
                             select.empty().append(htmlOptions.join('')).prepend(selectedOption);
+                        }else {
+                            selectedOption = "<option disabled selected hidden>Escolha um produto...</option>";
+                            select.empty().prepend(selectedOption);
                         }
                     },
                     error: function() {
