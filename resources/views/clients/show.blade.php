@@ -710,7 +710,7 @@
                                     @endif
                                     @if ($responsabilidades)
                                         @foreach ($responsabilidades as $responsabilidade)
-                                            @if ($responsabilidade->valorCliente != null)
+                                            @if ($responsabilidade->valorCliente != null && $responsabilidade->valorCliente != 0)
                                             <tr>
                                                 <td class="tooltip-td" data-toggle="tooltip" data-placement="top" title="Pagamento sujeito ao cliente.">Pagamento</td>
                                                 <td title="{{$responsabilidade->fase->produto->descricao}}">{{$responsabilidade->fase->produto->descricao}}</td>
@@ -740,7 +740,7 @@
                                             </tr>
                                             @endif
 
-                                            @if ($responsabilidade->valorAgente != null)
+                                            @if ($responsabilidade->valorAgente != null && $responsabilidade->valorAgente != 0)
                                             <tr>
                                                 <td class="tooltip-td" data-toggle="tooltip" data-placement="top" title="Pagamento sujeito ao agente {{$responsabilidade->agente->nome.' '.$responsabilidade->agente->apelido}}.">Pagamento</td>
                                                 <td title="{{$responsabilidade->fase->produto->descricao}}">{{$responsabilidade->fase->produto->descricao}}</td>
@@ -770,7 +770,7 @@
                                             </tr>
                                             @endif
 
-                                            @if ($responsabilidade->valorSubAgente != null)
+                                            @if ($responsabilidade->valorSubAgente != null && $responsabilidade->valorSubAgente != 0)
                                             <tr>
                                                 <td class="tooltip-td" data-toggle="tooltip" data-placement="top" title="Pagamento sujeito ao sub-agente {{$responsabilidade->subAgente->nome.' '.$responsabilidade->subAgente->apelido}}.">Pagamento</td>
                                                 <td title="{{$responsabilidade->fase->produto->descricao}}">{{$responsabilidade->fase->produto->descricao}}</td>
@@ -800,7 +800,7 @@
                                             </tr>
                                             @endif
 
-                                            @if ($responsabilidade->valorUniversidade1 != null)
+                                            @if ($responsabilidade->valorUniversidade1 != null && $responsabilidade->valorUniversidade1 != 0)
                                             <tr>
                                                 <td class="tooltip-td" data-toggle="tooltip" data-placement="top" title="Pagamento sujeito a universidade {{$responsabilidade->universidade1->nome}}.">Pagamento</td>
                                                 <td title="{{$responsabilidade->fase->produto->descricao}}">{{$responsabilidade->fase->produto->descricao}}</td>
@@ -830,7 +830,7 @@
                                             </tr>
                                             @endif
 
-                                            @if ($responsabilidade->valorUniversidade2 != null)
+                                            @if ($responsabilidade->valorUniversidade2 != null && $responsabilidade->valorUniversidade2 != 0)
                                             <tr>
                                                 <td class="tooltip-td" data-toggle="tooltip" data-placement="top" title="Pagamento sujeito a universidade {{$responsabilidade->universidade2->nome}}.">Pagamento</td>
                                                 <td title="{{$responsabilidade->fase->produto->descricao}}">{{$responsabilidade->fase->produto->descricao}}</td>
@@ -859,35 +859,37 @@
                                                 </td>
                                             </tr>
                                             @endif
-                                            @foreach ($responsabilidade->relacao as $relacao)
-                                            <tr>
-                                                <td class="tooltip-td" data-toggle="tooltip" data-placement="top" title="Pagamento sujeito ao fornecedor {{$relacao->fornecedor->nome}}.">Pagamento</td>
-                                                <td title="{{$relacao->responsabilidade->fase->produto->descricao}}">{{$relacao->responsabilidade->fase->produto->descricao}}</td>
-                                                <td title="{{$relacao->responsabilidade->fase->descricao}}">{{$relacao->responsabilidade->fase->descricao}}</td>
-                                                <td>{{number_format((float) $relacao->valor, 2, ',', '').'€'}}</td>
-                                                <td>{{date('d/m/Y', strtotime($relacao->dataVencimento))}}</td>
-                                                <td class="@if($relacao->verificacaoPago == false && $relacao->estado == "Dívida") text-danger font-weight-bold @elseif ($relacao->verificacaoPago == true) text-success font-weight-bold @else font-weight-bold text-gray @endif">
-                                                @if ($relacao->verificacaoPago == false && $relacao->estado == "Dívida")
-                                                    Vencido
-                                                @elseif ($relacao->verificacaoPago == false && $relacao->estado == "Pendente")
-                                                    Pendente
-                                                @elseif ($relacao->verificacaoPago == true && $relacao->estado == "Pago")
-                                                    Pago
-                                                @endif
-                                                </td>
-                                                <td class="text-center align-middle">
-                                                    @if($responsabilidade->pagoResponsabilidade && $relacao->verificacaoPago)
-                                                        <button class="btn btn-sm btn-outline-dark text-gray-900" disabled><i class="fas fa-check"></i></button>
-                                                        <a href="{{route('payments.showfornecedor', [$relacao->fornecedor, $relacao->responsabilidade->fase, $relacao, $responsabilidade->pagoResponsabilidade])}}" class="btn btn-sm btn-outline-primary" title="Visualizar"><i class="far fa-eye"></i></a>
-                                                        <a href="{{route('payments.editfornecedor', [$relacao->fornecedor, $relacao->responsabilidade->fase, $relacao, $responsabilidade->pagoResponsabilidade])}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
-                                                    @else
-                                                        <a href="{{route('payments.fornecedor', [$relacao->fornecedor, $relacao->responsabilidade->fase, $relacao])}}" class="btn btn-sm btn-outline-success" title="Registar"><i class="fas fa-check"></i></a>
-                                                        <button class="btn btn-sm btn-outline-dark text-gray-900" disabled><i class="far fa-eye"></i></button>
-                                                        <button class="btn btn-sm btn-outline-dark text-gray-900" disabled><i class="fas fa-pencil-alt"></i></button>
+                                            @if ($responsabilidade->relacao)
+                                                @foreach ($responsabilidade->relacao as $relacao)
+                                                <tr>
+                                                    <td class="tooltip-td" data-toggle="tooltip" data-placement="top" title="Pagamento sujeito ao fornecedor {{$relacao->fornecedor->nome}}.">Pagamento</td>
+                                                    <td title="{{$relacao->responsabilidade->fase->produto->descricao}}">{{$relacao->responsabilidade->fase->produto->descricao}}</td>
+                                                    <td title="{{$relacao->responsabilidade->fase->descricao}}">{{$relacao->responsabilidade->fase->descricao}}</td>
+                                                    <td>{{number_format((float) $relacao->valor, 2, ',', '').'€'}}</td>
+                                                    <td>{{date('d/m/Y', strtotime($relacao->dataVencimento))}}</td>
+                                                    <td class="@if($relacao->verificacaoPago == false && $relacao->estado == "Dívida") text-danger font-weight-bold @elseif ($relacao->verificacaoPago == true) text-success font-weight-bold @else font-weight-bold text-gray @endif">
+                                                    @if ($relacao->verificacaoPago == false && $relacao->estado == "Dívida")
+                                                        Vencido
+                                                    @elseif ($relacao->verificacaoPago == false && $relacao->estado == "Pendente")
+                                                        Pendente
+                                                    @elseif ($relacao->verificacaoPago == true && $relacao->estado == "Pago")
+                                                        Pago
                                                     @endif
-                                                </td>
-                                            </tr>
-                                            @endforeach
+                                                    </td>
+                                                    <td class="text-center align-middle">
+                                                        @if($responsabilidade->pagoResponsabilidade && $relacao->verificacaoPago)
+                                                            <button class="btn btn-sm btn-outline-dark text-gray-900" disabled><i class="fas fa-check"></i></button>
+                                                            <a href="{{route('payments.showfornecedor', [$relacao->fornecedor, $relacao->responsabilidade->fase, $relacao, $responsabilidade->pagoResponsabilidade])}}" class="btn btn-sm btn-outline-primary" title="Visualizar"><i class="far fa-eye"></i></a>
+                                                            <a href="{{route('payments.editfornecedor', [$relacao->fornecedor, $relacao->responsabilidade->fase, $relacao, $responsabilidade->pagoResponsabilidade])}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                                        @else
+                                                            <a href="{{route('payments.fornecedor', [$relacao->fornecedor, $relacao->responsabilidade->fase, $relacao])}}" class="btn btn-sm btn-outline-success" title="Registar"><i class="fas fa-check"></i></a>
+                                                            <button class="btn btn-sm btn-outline-dark text-gray-900" disabled><i class="far fa-eye"></i></button>
+                                                            <button class="btn btn-sm btn-outline-dark text-gray-900" disabled><i class="fas fa-pencil-alt"></i></button>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                                @endforeach
+                                            @endif
                                         @endforeach
                                     @endif
                                 </tbody>
