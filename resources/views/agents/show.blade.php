@@ -557,7 +557,6 @@
                         <div id="div-with-select">
                             <label for="infoPrint">Escolha na seleção abaixo a informação financeira que pretende imprimir referente ao agente <b>{{$agent->nome.' '.$agent->apelido}}</b> <sup class="text-danger small">&#10033;</sup></label>
                             <select id="infoPrint" class="custom-select" name="infoPrint" required>
-                                <option disabled selected hidden>Escolha uma informação...</option>
                                 <option value="cobrancas">Cobranças</option>
                                 <option value="pagamentos">Pagamentos</option>
                                 <option value="todos">Pagamentos & Cobranças</option>
@@ -794,7 +793,8 @@
                                   html = '<option value="' + data[item].idProduto + '">' + data[item].descricao + '</option>';
                                   htmlOptions[htmlOptions.length] = html;
                             }
-                            select.empty().append(htmlOptions.join(''));
+                            selectedOption = "<option disabled selected hidden>Escolha um produto...</option>";
+                            select.empty().append(htmlOptions.join('')).prepend(selectedOption);
                         }
                     },
                     error: function() {
@@ -805,6 +805,10 @@
         });
 
         $('#printModal').on('show.bs.modal', function(event) {
+            $("#formPrintModal").removeClass("was-validated");
+            $("#infoPrint").prepend("<option disabled selected hidden>Escolha uma informação...</option>");
+            $(".custom-inputs").remove();
+
             var button = $(event.relatedTarget);
             var modal = $(this);
             modal.find("form").attr('action', '/agentes/imprimir-ficha-financeiro/' + button.data('slug'));
