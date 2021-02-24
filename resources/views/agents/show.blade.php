@@ -794,7 +794,7 @@
                                   html = '<option value="' + data[item].idProduto + '">' + data[item].descricao + '</option>';
                                   htmlOptions[htmlOptions.length] = html;
                             }
-                            select.append(htmlOptions.join(''));
+                            select.empty().append(htmlOptions.join(''));
                         }
                     },
                     error: function() {
