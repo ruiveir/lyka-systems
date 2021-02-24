@@ -314,7 +314,7 @@ class AgenteController extends Controller
             case 'cobrancas':
                 $produto = Produto::where("idProduto", $request->produto)->first();
                 $fases = Fase::where("idProduto", $request->produto)->get();
-                $pdf = PDF::loadView('agents.print-cobrancas', ['produto' => $produto, 'agente' => $agente, 'fases' => $fases])->setPaper('a4', 'portrait');
+                $pdf = PDF::loadView('agents.print-financas', ['produto' => $produto, 'agente' => $agente, 'fases' => $fases])->setPaper('a4', 'portrait');
                 return $pdf->stream('Cobranças - '.$agente->nome.' '.$agente->apelido.'.pdf');
                 break;
 
@@ -338,5 +338,12 @@ class AgenteController extends Controller
                 dd("nok");
                 break;
         }
+    }
+
+    public function procuraProduto(Request $request, Agente $agente)
+    {
+        $cliente = $request->input('user');
+        $produtos = Produto::where("idCliente", $cliente)->where("idAgente", $agente->idAgente)->where("deleted_at", NULL)->get();
+        return response()->json($produtos);
     }
 }

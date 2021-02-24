@@ -541,13 +541,6 @@
     @if ($clients)
         @foreach ($clients as $client)
             <option hidden disabled class="clients-options" value="{{$client->idCliente}}">{{$client->nome.' '.$client->apelido}}</option>
-            @if ($client->produto && $client->deleted_at == NULL)
-                @foreach ($client->produto as $produto)
-                    @if ($produto->idAgente == $agent->idAgente && $produto->deleted_at == NULL)
-                        <option hidden disabled class="produtos-options" value="{{$produto->idProduto}}">{{$produto->descricao}}</option>
-                    @endif
-                @endforeach
-            @endif
         @endforeach
     @endif
     <form id="formPrintModal" class="form-group needs-validation" method="post" novalidate target="_blank">
@@ -740,9 +733,6 @@
 
                     cloneCliente = $(".clients-options").clone().appendTo("#name");
                     cloneCliente.removeAttr("hidden disabled");
-
-                    cloneProduto = $(".produtos-options").clone().appendTo("#produto");
-                    cloneProduto.removeAttr("hidden disabled");
                     break;
 
                 case "pagamentos":
@@ -758,9 +748,6 @@
 
                     cloneCliente = $(".clients-options").clone().appendTo("#name");
                     cloneCliente.removeAttr("hidden disabled");
-
-                    cloneProduto = $(".produtos-options").clone().appendTo("#produto");
-                    cloneProduto.removeAttr("hidden disabled");
                     break;
 
                 case "todos":
@@ -776,15 +763,45 @@
 
                     cloneCliente = $(".clients-options").clone().appendTo("#name");
                     cloneCliente.removeAttr("hidden disabled");
-
-                    cloneProduto = $(".produtos-options").clone().appendTo("#produto");
-                    cloneProduto.removeAttr("hidden disabled");
                     break;
 
                 default:
                     $(".custom-inputs").remove();
                     break;
             }
+
+            $("#name").change(function() {
+                select = $("#produto");
+                info = {
+                    user: $("#name").find(":selected").val()
+                };
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': "{{csrf_token()}}"
+                    }
+                });
+
+                $.ajax({
+                    type: "post",
+                    url: "{{route('agente.procuraProduto', $agent)}}",
+                    context: this,
+                    data: info,
+                    success: function(data) {
+                        var htmlOptions = [];
+                        if(data.length){
+                            for(item in data) {
+                                  html = '<option value="' + data[item].idProduto + '">' + data[item].descricao + '</option>';
+                                  htmlOptions[htmlOptions.length] = html;
+                            }
+                            select.append(htmlOptions.join(''));
+                        }
+                    },
+                    error: function() {
+                        alert("NOK");
+                    }
+                });
+            });
         });
 
         $('#printModal').on('show.bs.modal', function(event) {
