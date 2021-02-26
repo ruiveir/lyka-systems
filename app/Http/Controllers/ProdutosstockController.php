@@ -22,7 +22,6 @@ class ProdutosstockController extends Controller
 
     public function create()
     {
-
         $anosAcademicos = null;
         $anoAtual =  date("Y");
 

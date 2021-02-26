@@ -59,8 +59,8 @@ Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
     /* Estudantes */
     Route::get('/clientes/pesquisa', 'ClientController@searchIndex')->name('clients.searchIndex');
     Route::post('/clientes/resultados','ClientController@searchResults')->name('clients.searchResults');
-    Route::get('/clientes/print/{client}', 'ClientController@print')->name('clients.print');
-    Route::get('/clientes/sendActivationEmail/{client}', 'ClientController@sendActivationEmail')->name('clients.sendActivationEmail');
+    // Route::get('/clientes/sendActivationEmail/{client}', 'ClientController@sendActivationEmail')->name('clients.sendActivationEmail');
+    Route::post('/clientes/imprimir-ficha-financeiro/{client}', 'ClientController@printFinanceiro');
     Route::resource('/clientes', 'ClientController')->parameters([
         'clientes' => 'client'
     ])->names([
@@ -74,7 +74,8 @@ Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
     ]);
 
     /* Agentes */
-    Route::get('/agentes/print/{agent}', 'AgenteController@print')->name('agents.print');
+    Route::post('/agentes/imprimir-ficha-financeiro/{agente}', 'AgenteController@printFinanceiro');
+    Route::post('/agentes/procura-produto/{agente}', 'AgenteController@procuraProduto')->name('agente.procuraProduto');
     Route::resource('/agentes', 'AgenteController')->parameters([
         'agentes' => 'agent'
     ])->names([
@@ -137,6 +138,7 @@ Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
         Route::get('/pagamentos/fornecedor/{fornecedor}/fase/{fase}/{relacao}/{pagoResponsabilidade}/editar', 'PaymentController@editfornecedor')->name('payments.editfornecedor');
         Route::get('/pagamentos/fornecedor/{fornecedor}/fase/{fase}/{relacao}/{pagoResponsabilidade}', 'PaymentController@showfornecedor')->name('payments.showfornecedor');
 
+    Route::delete('/pagamentos/{pagoResponsabilidade}/anular', 'PaymentController@destroy')->name('payments.destroy');
     Route::post('/pagamentos/{responsabilidade}/registar', 'PaymentController@store')->name('payments.store');
     Route::post('/pagamentos/{responsabilidade}/{pagoResponsabilidade}/atualizar', 'PaymentController@update')->name('payments.update');
     Route::get('/pagamentos/nota-pagamento/{pagoresponsabilidade}/transferir', 'PaymentController@download')->name('payments.download');
@@ -197,11 +199,11 @@ Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
     Route::get('/documento-pessoal/criar-na-fase/{fase}/{docnecessario}', 'DocPessoalController@create')->name('documento-pessoal.create');
     Route::post('/documento-pessoal/store-na-fase/{fase}/{docnecessario}', 'DocPessoalController@store')->name('documento-pessoal.store');
     Route::get('/documento-pessoal/{documento}/show', 'DocPessoalController@show')->name('documento-pessoal.show');
-    Route::get('/documento-pessoal/{documento}/editar', 'DocPessoalController@edit')->name('documento-pessoal.edit');
+    Route::get('/documento-pessoal/{documento}/{client}/editar', 'DocPessoalController@edit')->name('documento-pessoal.edit');
     Route::put('/documento-pessoal/{documento}/update', 'DocPessoalController@update')->name('documento-pessoal.update');
     Route::get('/documento-pessoal/{documento}/verifica', 'DocPessoalController@verify')->name('documento-pessoal.verify');
     Route::put('/documento-pessoal/{documento}/verify', 'DocPessoalController@verifica')->name('documento-pessoal.verifica');
-    Route::resource('/documento-pessoal', 'DocPessoalController')->only(['destroy']);
+    Route::delete('/documento-pessoal/{documento}/apagar', 'DocPessoalController@destroy')->name('documento-pessola.destroy');
 
     /* Documentos Academicos */
     Route::post('/documento-academico/criar/{client}', 'DocAcademicoController@createFromClient')->name('documento-academico.createFromClient');
@@ -210,11 +212,11 @@ Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
     Route::get('/documento-academico/criar-na-fase/{fase}/{docnecessario}', 'DocAcademicoController@create')->name('documento-academico.create');
     Route::post('/documento-academico/store-na-fase/{fase}/{docnecessario}', 'DocAcademicoController@store')->name('documento-academico.store');
     Route::get('/documento-academico/{documento}/show', 'DocAcademicoController@show')->name('documento-academico.show');
-    Route::get('/documento-academico/{documento}/editar', 'DocAcademicoController@edit')->name('documento-academico.edit');
+    Route::get('/documento-academico/{documento}/{client}/editar', 'DocAcademicoController@edit')->name('documento-academico.edit');
     Route::put('/documento-academico/{documento}/update', 'DocAcademicoController@update')->name('documento-academico.update');
     Route::get('/documento-academico/{documento}/verifica', 'DocAcademicoController@verify')->name('documento-academico.verify');
     Route::put('/documento-academico/{documento}/verify', 'DocAcademicoController@verifica')->name('documento-academico.verifica');
-    Route::resource('/documento-academico', 'DocAcademicoController')->only(['destroy']);
+    Route::delete('/documento-academico/{documento}/apagar', 'DocAcademicoController@destroy')->name('documento-academico.destroy');
 
     /* Listagem */
     Route::resource('/listagem', 'ListagemController')->only(['index']);

@@ -62,9 +62,9 @@ class UniversityController extends Controller
             }
 
             $clients = Cliente::distinct('cliente.idCliente')
-            ->join('produto', 'produto.idCliente', '=', 'cliente.idCliente')
-            ->where('produto.idUniversidade1', '=',$university->idUniversidade )
-            ->orWhere('produto.idUniversidade2', '=',$university->idUniversidade)
+            ->join('produto', 'produto.idCliente', 'cliente.idCliente')
+            ->where('produto.idUniversidade1', $university->idUniversidade )
+            ->orWhere('produto.idUniversidade2', $university->idUniversidade)
             ->select('cliente.*')
             ->get();
 
@@ -72,7 +72,7 @@ class UniversityController extends Controller
                 $clients = null;
             }
 
-            $contacts = Contacto::where('idUniversidade', '=', $university->idUniversidade)->get();
+            $contacts = Contacto::where('idUniversidade', $university->idUniversidade)->get();
 
             if ($contacts->isEmpty()) {
                 $contacts = null;

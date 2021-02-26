@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Nota de pagamento - Lyka Systems</title>
-    <link href="{{asset('/vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{public_path('/vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
 </head>
 
@@ -128,7 +128,7 @@
     <br>
     <div class="header row">
         <div class="col-md-6">
-            <img src="{{asset('/media/logo.png')}}" alt="Logótipo - Estudar Portugal">
+            <img src="{{public_path('/media/logo.png')}}" alt="Logótipo - Estudar Portugal">
         </div>
         <div class="col-md-6">
             <div class="text-right" id="text-beneficiario">

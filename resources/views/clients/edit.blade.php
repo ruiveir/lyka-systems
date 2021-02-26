@@ -92,7 +92,7 @@
         });
 
         $("#removePhoto").click(function(){
-            $("#fotografia").val(" ");
+            $("#deletePhoto").val("ok");
             $("#labelPhoto").text("Escolher fotografia...");
         });
 

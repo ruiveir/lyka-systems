@@ -12,6 +12,8 @@
             <option {{old('tipoProduto',$produtostock->tipoProduto)=='Curso Indiomas'?"selected":""}} value="Curso Indiomas">Curso Indiomas</option>
             <option {{old('tipoProduto',$produtostock->tipoProduto)=='Erasmus'?"selected":""}} value="Erasmus">Erasmus</option>
             <option {{old('tipoProduto',$produtostock->tipoProduto)=='Pré-Universitário'?"selected":""}} value="Pré-Universitário">Pré-Universitário</option>
+            <option {{old('tipoProduto',$produtostock->tipoProduto)=='Serviços Estudar Portugal'?"selected":""}} value="Serviços Estudar Portugal">Serviços Estudar Portugal</option>
+            <option {{old('tipoProduto',$produtostock->tipoProduto)=='Seguro'?"selected":""}} value="Seguro">Seguro</option>
         </select>
         <div class="invalid-feedback">
             Oops, parece que algo não está bem...

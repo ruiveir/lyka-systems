@@ -1,5 +1,5 @@
 <div class="card-header py-3">
-    <h6 class="m-0 font-weight-bold text-primary">Formulário de edição do pagamento sobre a fase {{$fase->descricao}} da universidade {{$fase->produto->universidade1->nome}}.</h6>
+    <h6 class="m-0 font-weight-bold text-primary text-truncate" title="Formulário de edição do pagamento sobre a fase {{$fase->descricao}} da universidade {{$fase->produto->universidade1->nome}}.">Formulário de edição do pagamento sobre a fase "{{$fase->descricao}}" da universidade {{$fase->produto->universidade1->nome}}.</h6>
 </div>
 <div class="card-body">
     <form method="POST" class="form-group needs-validation" id="editar-pagamento-form" novalidate>
@@ -22,11 +22,13 @@
                 <div class="col-md-6 mb-3">
                     <label for="comprovativoPagamentoUni1" class="text-gray-900">Comprovativo de pagamento</label>
                     <div class="custom-file mb-3">
-                        <input type="file" class="custom-file-input" name="comprovativoPagamentoUni1" id="comprovativoPagamentoUni1">
-                        <small class="form-text text-muted">O comprovativo não deve ultrupassar 2MB.</small>
                         @if($pagoResponsabilidade->comprovativoPagamento)
-                            <label class="custom-file-label" for="comprovativoPagamento" data-browse="Escolher">{{old("comprovativoPagamento", $pagoResponsabilidade->comprovativoPagamento)}}</label>
+                            <input type="file" class="custom-file-input" name="comprovativoPagamentoUni1" id="comprovativoPagamentoUni1" title="{{old("comprovativoPagamento", $pagoResponsabilidade->comprovativoPagamento)}}">
+                            <small class="form-text text-muted">O comprovativo não deve ultrupassar 2MB.</small>
+                            <label class="custom-file-label text-truncate" for="comprovativoPagamento" data-browse="Escolher">{{old("comprovativoPagamento", $pagoResponsabilidade->comprovativoPagamento)}}</label>
                         @else
+                            <input type="file" class="custom-file-input" name="comprovativoPagamentoUni1" id="comprovativoPagamentoUni1">
+                            <small class="form-text text-muted">O comprovativo não deve ultrupassar 2MB.</small>
                             <label class="custom-file-label" for="comprovativoPagamento" data-browse="Escolher">Escolher um comprovativo...</label>
                         @endif
                     </div>

@@ -1,17 +1,24 @@
 <?php
 namespace App\Http\Controllers;
 
+use DateTime;
+use PDF;
+
 use App\User;
+use App\Fase;
 use App\Agente;
 use App\Cliente;
 use App\Produto;
 use App\Responsabilidade;
+
 use Illuminate\Http\Request;
 use App\Jobs\SendWelcomeEmail;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Requests\StoreAgenteRequest;
@@ -126,103 +133,60 @@ class AgenteController extends Controller
             (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null &&
             (Auth()->user()->idAgente == $agent->idAgenteAssociado||Auth()->user()->idAgente == $agent->idAgente))){
 
-            /* Só os administradores podem ver os perfis dos agentes */
-            /* Cada agente só pode ver o seu perfil *//*
-            if(Auth::user()->tipo == "agente" && Auth::user()->idAgente != $agent->idAgente){
-                abor(403);
-            }/** */
-
-            /* Lista de sub-agentes do $agente */
-            $listagents = Agente::
-            where('idAgenteAssociado', '=',$agent->idAgente)
-            ->get();
+            $listagents = Agente::where('idAgenteAssociado', $agent->idAgente)->get();
 
             if ($listagents->isEmpty()) {
-                $listagents=null;
+                $listagents = null;
             }
 
-
-    /*       caso seja um sub-agente, obtem o agente que o adicionou */
-            if($agent->tipo=="Subagente"){
-                $mainAgent=Agente::
-                where('idAgente', '=',$agent->idAgenteAssociado)
-                ->first();
-            }else{
-                $mainAgent=null;
+            if($agent->tipo == "Subagente"){
+                $mainAgent = Agente::where('idAgente', $agent->idAgenteAssociado)->first();
+            }else {
+                $mainAgent = null;
             }
 
             $telefone2 = $agent->telefone2;
             $IBAN = $agent->IBAN;
 
-
-            /* lista de alunos do agente Através de produtos  */
-        $clients = Cliente::
-            selectRaw("cliente.*")
-            ->join('produto', 'cliente.idCliente', '=', 'produto.idCliente')
-            ->where('produto.idAgente', '=', $agent->idAgente)
-            ->orWhere('produto.idSubAgente', '=', $agent->idAgente)
+            $clients = Cliente::selectRaw("cliente.*")
+            ->join('produto', 'cliente.idCliente', 'produto.idCliente')
+            ->where('produto.idAgente', $agent->idAgente)
+            ->orWhere('produto.idSubAgente', $agent->idAgente)
             ->groupBy('cliente.idCliente')
             ->orderBy('cliente.idCliente','asc')
             ->get();
 
 
             if ($clients->isEmpty()) {
-            /* lista de alunos do agente associação na ficha de cliente  */
-            $clients = Cliente::
-            where('idAgente', '=', $agent->idAgente)
-            ->get();
+                $clients = Cliente::where('idAgente', $agent->idAgente)->get();
             }
 
             if ($clients->isEmpty()) {
-                $clients=null;
+                $clients = null;
             }
 
-
-            /* Valor total das comissões */
-
-            /* Caso seja do tipo Agente */
-            if ($agent->tipo=="Agente"){
-                $comissoes = Responsabilidade::
-                where('idAgente', '=', $agent->idAgente)
+            if ($agent->tipo=="Agente") {
+                $comissoes = Responsabilidade::where('idAgente', $agent->idAgente)
                 ->sum('valorAgente');
 
-            }elseif($agent->tipo=="Subagente"){
-                $comissoes = Responsabilidade::
-                where('idSubAgente', '=', $agent->idAgente)
+            }elseif ($agent->tipo=="Subagente") {
+                $comissoes = Responsabilidade::where('idSubAgente', $agent->idAgente)
                 ->sum('valorSubAgente');
             }
 
-            return view('agents.show',compact("agent" ,'listagents','mainAgent','telefone2','IBAN','clients','comissoes'));
+            $currentdate = new DateTime();
+
+            $produtos = Produto::where('idAgente', $agent->idAgente)->orWhere('idSubAgente', $agent->idAgente)->get();
+            $responsabilidadesAgentes = Responsabilidade::where('idAgente', $agent->idAgente)->where('valorAgente', '!=', NULL)->get();
+            $responsabilidadesSubAgentes = Responsabilidade::where('idSubAgente', $agent->idAgente)->where('valorSubAgente', '!=', NULL)->get();
+
+            return view('agents.show',compact('currentdate', 'responsabilidadesSubAgentes', 'responsabilidadesAgentes' ,'produtos','agent','listagents','mainAgent','telefone2','IBAN','clients','comissoes'));
         }else{
             abort(403);
         }
 
     }
 
-
-   /**
-    * Prepares document for printing the specified agent.
-    *
-    * @param  \App\Agente  $agent
-    * @return \Illuminate\Http\Response
-    */
-    public function print(Agente $agent)
-    {
-        if ((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
-            (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null &&
-            (Auth()->user()->idAgente == $agent->idAgenteAssociado||Auth()->user()->idAgente == $agent->idAgente))){
-            return view('agents.print',compact("agent"));
-        }else{
-            abor(403);
-        }
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Agente  $agent
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Agente $agent)
     {
         if (Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
@@ -238,35 +202,17 @@ class AgenteController extends Controller
         }
     }
 
-
-
-
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Agente  $agent
-     * @return \Illuminate\Http\Response
-     */
     public function update(UpdateAgenteRequest $request, Agente $agent)
     {
         if (Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
-
             $fields = $request->validated();
-
             $agent->fill($fields);
 
-            /* Definição de exeçao */
             if($agent->tipo == "Agente"){
                 $agent->exepcao = false;
             }
 
-            /* Registo antigo: para verificar se existem ficheiros para apagar/substituir */
-            $oldfile=Agente::
-            where('idAgente', '=',$agent->idAgente)
-            ->first();
-
+            $oldfile = Agente::where('idAgente', $agent->idAgente)->first();
 
             /* Fotografia */
             if ($request->hasFile('fotografia')) {
@@ -282,10 +228,6 @@ class AgenteController extends Controller
                 Storage::disk('public')->putFileAs('agent-documents/'.$agent->idAgente.'/', $photo, $profileImg);
                 $agent->fotografia = $profileImg;
             }
-
-
-
-
 
             /* Documento de identificação */
             if ($request->hasFile('img_doc')) {
@@ -327,16 +269,8 @@ class AgenteController extends Controller
     public function destroy(Agente $agent)
     {
         if (Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
-
-            /* "Apaga" dos agentes */
             $agent->delete();
-
-
-            /* Apaga subagentes se o seu agente for apagado */
-            $subagents =Agente::where('idAgenteAssociado', $agent->idAgente)
-            ->get();
-
-            /* apaga a lista de subagentes do agente que esta a ser apagado */
+            $subagents = Agente::where('idAgenteAssociado', $agent->idAgente)->get();
             if (!$subagents->isEmpty()) {
                 foreach ($subagents as $subagent) {
                     $subagent->deleted_at = $agent->deleted_at;
@@ -344,23 +278,72 @@ class AgenteController extends Controller
                 }
             }
 
-            /* "Apaga" dos utilizadores */
             $utilizador = User::where('idAgente', $agent->idAgente)->first()->update(['deleted_at' => $agent->deleted_at]);
-
-            /* "Apaga" dos utilizadores os subagentes que tiveram o seu agente apagado */
-
-            /* apaga a lista de subagentes do agente que esta a ser apagado */
             if (!$subagents->isEmpty()) {
                 foreach ($subagents as $subagent) {
                     $subagent->deleted_at = $agent->deleted_at;
                     $subagent->save();
                 }
             }
-
-
-            return redirect()->route('agents.index')->with('success', 'Agente eliminado com sucesso');
+            return redirect()->route('agents.index')->with('success', 'Agente eliminado com sucesso!');
         }else{
             abort(403);
         }
+    }
+
+
+    public function printFinanceiro(Request $request, Agente $agente)
+    {
+        switch ($request->infoPrint) {
+            case 'todos':
+                $produto = Produto::where("idProduto", $request->produto)->first();
+                $fases = Fase::where("idProduto", $request->produto)->get();
+                $responsabilidades = [];
+                $currentdate = new DateTime();
+
+                foreach ($fases as $fase) {
+                    if ($fase->responsabilidade->valorAgente != NULL && $fase->responsabilidade->idAgente == $agente->idAgente) {
+                        array_push($responsabilidades, $fase->responsabilidade);
+                    }
+                }
+
+                $pdf = PDF::loadView('agents.print-financas', ['produto' => $produto, 'agente' => $agente, 'fases' => $fases, 'responsabilidades' => $responsabilidades, 'currentdate' => $currentdate])->setPaper('a4', 'portrait');
+                return $pdf->stream('Pagamentos e Cobranças - '.$agente->nome.' '.$agente->apelido.'.pdf');
+                break;
+
+            case 'cobrancas':
+                $produto = Produto::where("idProduto", $request->produto)->first();
+                $fases = Fase::where("idProduto", $request->produto)->get();
+                $pdf = PDF::loadView('agents.print-financas', ['produto' => $produto, 'agente' => $agente, 'fases' => $fases])->setPaper('a4', 'portrait');
+                return $pdf->stream('Cobranças - '.$agente->nome.' '.$agente->apelido.'.pdf');
+                break;
+
+            case 'pagamentos':
+                $produto = Produto::where("idProduto", $request->produto)->first();
+                $fases = Fase::where("idProduto", $request->produto)->get();
+                $responsabilidades = [];
+                $currentdate = new DateTime();
+
+                foreach ($fases as $fase) {
+                    if ($fase->responsabilidade->valorAgente != NULL && $fase->responsabilidade->idAgente == $agente->idAgente) {
+                        array_push($responsabilidades, $fase->responsabilidade);
+                    }
+                }
+
+                $pdf = PDF::loadView('agents.print-financas', ['produto' => $produto, 'agente' => $agente, 'responsabilidades' => $responsabilidades, 'currentdate' => $currentdate])->setPaper('a4', 'portrait');
+                return $pdf->stream('Pagamentos - '.$agente->nome.' '.$agente->apelido.'.pdf');
+                break;
+
+            default:
+                dd("nok");
+                break;
+        }
+    }
+
+    public function procuraProduto(Request $request, Agente $agente)
+    {
+        $cliente = $request->input('user');
+        $produtos = Produto::where("idCliente", $cliente)->where("idAgente", $agente->idAgente)->where("deleted_at", NULL)->get();
+        return response()->json($produtos);
     }
 }

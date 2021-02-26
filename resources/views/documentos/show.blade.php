@@ -10,26 +10,31 @@
         <h1 class="h4 mb-0 text-gray-800">Visualização de um documento</h1>
         <div>
             @if($tipoPAT == 'Pessoal')
-            <a href="{{route('documento-pessoal.edit', $documento)}}" class="btn btn-success btn-icon-split btn-sm" title="Editar">
-                <span class="icon text-white-50">
-                    <i class="fas fa-pencil-alt"></i>
-                </span>
-                <span class="text">Editar documento</span>
-            </a>
+                <a href="#" data-toggle="modal" data-target="#deleteModal" data-slug="{{$documento->slug}}" data-tipo="pessoal" class="btn btn-danger btn-icon-split btn-sm" title="Informações">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-trash-alt"></i>
+                    </span>
+                    <span class="text">Eliminar documento</span>
+                </a>
+                <a href="{{route('documento-pessoal.edit', [$documento, $documento->cliente])}}" class="btn btn-success btn-icon-split btn-sm" title="Editar">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-pencil-alt"></i>
+                    </span>
+                    <span class="text">Editar documento</span>
+                </a>
             @elseif($tipoPAT == 'Academico')
-            <a href="{{route('documento-academico.edit', $documento)}}" class="btn btn-success btn-icon-split btn-sm" title="Editar">
-                <span class="icon text-white-50">
-                    <i class="fas fa-pencil-alt"></i>
-                </span>
-                <span class="text">Editar documento</span>
-            </a>
-            @else
-            <a href="{{route('documento-transacao.edit', $documento)}}" class="btn btn-success btn-icon-split btn-sm" title="Editar">
-                <span class="icon text-white-50">
-                    <i class="fas fa-pencil-alt"></i>
-                </span>
-                <span class="text">Editar documento</span>
-            </a>
+                <a href="#" data-toggle="modal" data-target="#deleteModal" data-slug="{{$documento->slug}}" data-tipo="academico" class="btn btn-danger btn-icon-split btn-sm" title="Informações">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-trash-alt"></i>
+                    </span>
+                    <span class="text">Eliminar documento</span>
+                </a>
+                <a href="{{route('documento-academico.edit', [$documento, $documento->cliente])}}" class="btn btn-success btn-icon-split btn-sm" title="Editar">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-pencil-alt"></i>
+                    </span>
+                    <span class="text">Editar documento</span>
+                </a>
             @endif
             <a href="#" data-toggle="modal" data-target="#infoModal" class="btn btn-secondary btn-icon-split btn-sm" title="Informações">
                 <span class="icon text-white-50">
@@ -47,9 +52,9 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
-                    <p class="text-gray-800"><b>Documento:</b> <a
-                            onclick="window.open('{{url('/storage/client-documents/'.$documento->idCliente .'/'. $documento->imagem)}}', '', 'width=620,height=450,toolbar=no,location=no,menubar=no,copyhistory=no,status=no,directories=no,scrollbars=yes,resizable=yes'); return false;"
-                            href="{{url('/storage/client-documents/'.$documento->idCliente .'/'. $documento->imagem)}}" id="yui_3_17_2_1_1589215110643_49"> documento.pdf </a>
+                    <p class="text-gray-800"><b>Documento:</b>
+                        <a class="text-truncate" onclick="window.open('{{url('/storage/client-documents/'.$documento->idCliente .'/'. $documento->imagem)}}', '', 'width=620,height=450,toolbar=no,location=no,menubar=no,copyhistory=no,status=no,directories=no,scrollbars=yes,resizable=yes'); return false;"
+                            href="{{url('/storage/client-documents/'.$documento->idCliente .'/'. $documento->imagem)}}"> {{$documento->imagem}} </a>
                     </p>
                 </div>
                 @if(strtolower($tipo) == "passaport")
@@ -83,6 +88,13 @@
             <div class="col-md-6">
                 <p class="text-gray-800"><b>Nome do documento:</b> {{$documento->nome}}</p>
             </div>
+            @foreach($infoKeys as $key)
+                <div class="col-md-6">
+                    <p class="text-gray-800"><b>{{$key}}:</b>
+                        @if ($infoDoc[$key] != null) {{$infoDoc[$key]}}
+                        @else N/A @endif</p>
+                </div>
+            @endforeach
         </div>
         @else
         <div class="col-md-6">
@@ -125,5 +137,51 @@
     </div>
 </div>
 <!-- End of Modal Info -->
+
+<!-- Modal for delete admin -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header pl-4 pb-1 pt-4">
+                <h5 class="modal-title text-gray-800 font-weight-bold">Pretende eliminar o documento?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close-button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-gray-800 pl-4 pr-5">
+                Ao apagar o registo do documento, <b>irá eliminar o mesmo para todo o sempre!</b> Pense duas vezes antes de proceder com a ação.
+            </div>
+            <div class="modal-footer mt-3">
+                <form method="post">
+                    @csrf
+                    @method('DELETE')
+                    <a data-dismiss="modal" class="mr-4 font-weight-bold" id="close-option">Cancelar</a>
+                    <button type="submit" class="btn btn-danger font-weight-bold mr-2">Eliminar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Modal for delete report -->
+
+
+<!-- Begin of Scripts -->
+@section('scripts')
+<script>
+    $(document).ready(function() {
+        // Modal for DELETE
+        $('#deleteModal').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget);
+            var modal = $(this);
+            if (button.data('tipo') == "pessoal") {
+                modal.find("form").attr('action', '/documento-pessoal/'+ button.data('slug') +'/apagar');
+            }else {
+                modal.find("form").attr('action', '/documento-academico/'+ button.data('slug') +'/apagar');
+            }
+        });
+    });
+</script>
+@endsection
+
 @endsection
 <!-- End of Page Content -->

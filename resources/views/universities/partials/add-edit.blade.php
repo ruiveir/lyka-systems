@@ -1,5 +1,5 @@
 <div class="row nav nav-fill w-100 text-center mx-auto p-3 ">
-    <a class="nav-item nav-link active border p-3 m-1 bg-white rounded shadow-sm name_link" id="infos-tab" data-toggle="tab" href="#infos" role="tab" aria-controls="infos-tab" aria-selected="true">
+    <a class="nav-item nav-link active border p-3 m-1 bg-primary text-white rounded shadow-sm name_link" id="infos-tab" data-toggle="tab" href="#infos" role="tab" aria-controls="infos-tab" aria-selected="true">
         <div class="col">
             <i class="fas fa-university mr-2"></i>Informações
         </div>
