@@ -41,6 +41,11 @@ class StoreClientRequest extends FormRequest
             'nivEstudoAtual' => 'nullable',
             'nomeInstituicaoOrigem' => 'nullable',
             'cidadeInstituicaoOrigem' => 'nullable',
+            'universidade1' => 'nullable',
+            'universidade2' => 'nullable',
+            'curso1' => 'nullable',
+            'curso2' => 'nullable',
+            'curso3' => 'nullable',
             'obsAcademicas' => 'nullable',
 
             'telefone1' => 'nullable',
