@@ -70,6 +70,18 @@ class ProdutosstockController extends Controller
 
     public function destroy(ProdutoStock $produtostock)
     {
+        $fasesStock = $produtostock->faseStock;
+        if($fasesStock){
+            foreach($fasesStock as $fasestock){
+                $documentsStock = $fasestock->docStock;
+                if($documentsStock){
+                    foreach($documentsStock as $docstock){
+                        $docstock->delete();
+                    }
+                }
+                $fasestock->delete();
+            }
+        }
         $produtostock->delete();
         return redirect()->route('produtostock.index')->with('success', 'Produto eliminado com sucesso!');
     }

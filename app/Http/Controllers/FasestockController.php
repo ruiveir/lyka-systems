@@ -43,6 +43,12 @@ class FasestockController extends Controller
 
     public function destroy(FaseStock $fasestock)
     {
+        $documentsStock = $fasestock->docStock;
+        if($documentsStock){
+            foreach($documentsStock as $docstock){
+                $docstock->delete();
+            }
+        }
         $fasestock->delete();
         return redirect()->back()->with('success', 'Fase stock eliminada com sucesso');
     }
