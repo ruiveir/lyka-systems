@@ -392,6 +392,57 @@
                         <div class="row mt-2 pl-2">
                             <div class="col">
                                 {{-- Informações Escolares --}}
+                                <div class="mb-2 font-weight-bold">Universidades:</div>
+                                <div class="border rounded bg-light p-3">
+                                    <div>
+                                        <span>Principal:</span>
+                                        @if ($client->universidade1)
+                                            <span class="font-weight-bold">{{$client->universidade1}}</span>
+                                        @else
+                                            <span class="font-weight-bold">N/A</span>
+                                        @endif
+                                    </div>
+                                    <br>
+                                    <div>
+                                        <span>Secundária:</span>
+                                        @if ($client->universidade2)
+                                            <span class="font-weight-bold">{{$client->universidade2}}</span>
+                                        @else
+                                            <span class="font-weight-bold">N/A</span>
+                                        @endif
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="mb-2 font-weight-bold">Cursos:</div>
+                                <div class="border rounded bg-light p-3">
+                                    <div>
+                                        <span>Curso #1:</span>
+                                        @if ($client->curso1)
+                                            <span class="font-weight-bold">{{$client->curso1}}</span>
+                                        @else
+                                            <span class="font-weight-bold">N/A</span>
+                                        @endif
+                                    </div>
+                                    <br>
+                                    <div>
+                                        <span>Curso #2:</span>
+                                        @if ($client->curso2)
+                                            <span class="font-weight-bold">{{$client->curso2}}</span>
+                                        @else
+                                            <span class="font-weight-bold">N/A</span>
+                                        @endif
+                                    </div>
+                                    <br>
+                                    <div>
+                                        <span>Curso #3:</span>
+                                        @if ($client->curso3)
+                                            <span class="font-weight-bold">{{$client->curso3}}</span>
+                                        @else
+                                            <span class="font-weight-bold">N/A</span>
+                                        @endif
+                                    </div>
+                                </div>
+                                <br>
                                 <div class="mb-2 font-weight-bold">Nível de estudos:</div>
                                 <div class="border rounded bg-light p-3">
                                     @if($client->nivEstudoAtual)
@@ -434,7 +485,7 @@
 
                             {{-- DOCUMENTOS Académicos --}}
                             <div class="col" style="min-width:250px">
-                                <div class=" mb-2">Ficheiros:</div>
+                                <div class="font-weight-bold mb-2">Ficheiros:</div>
                                 @if ($documentosAcademicos)
                                     <ul class="border rounded bg-light pl-3" style="list-style-type:none;margin:0px;padding:0">
                                         @foreach ($documentosAcademicos as $docAcademico)

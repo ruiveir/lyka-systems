@@ -58,8 +58,9 @@
                         <tr>
                             <th>Referência</th>
                             <th>Nome</th>
-                            <th>Telefone</th>
                             <th>País</th>
+                            <th>Universidade #1</th>
+                            <th>Curso #1</th>
                             <th style="max-width:100px; min-width:100px;">Estado</th>
                             <th style="max-width:100px; min-width:100px;">Opções</th>
                         </tr>
@@ -71,8 +72,9 @@
                                     <tr>
                                         <td>{{$client->refCliente}}</td>
                                         <td>{{$client->nome.' '.$client->apelido}}</td>
-                                        <td>@if($client->telefone1 != null){{$client->telefone1}} @else N/A @endif</td>
                                         <td>{{$client->paisNaturalidade}}</td>
+                                        <td>@if($client->universidade1 != null){{$client->universidade1}} @else - @endif</td>
+                                        <td>@if($client->curso1 != null){{$client->curso1}} @else - @endif</td>
                                         <td class="font-weight-bold @if($client->estado == "Ativo") text-success @else text-primary @endif">@if($client->estado == "Ativo") Ativo @else Proponente @endif</td>
                                         <td class="text-center align-middle">
                                             <a href="{{route("clients.show", $client)}}" class="btn btn-sm btn-outline-primary" title="Ficha completa"><i class="far fa-eye"></i></a>

@@ -18,7 +18,8 @@ class Cliente extends Model
         'paisNaturalidade','morada','cidade','moradaResidencia','nomePai','telefonePai',
         'emailPai','nomeMae','telefoneMae','emailMae','fotografia','NIF','IBAN',
         'nivEstudoAtual','nomeInstituicaoOrigem','cidadeInstituicaoOrigem',
-        'num_docOficial','validade_docOficial','numPassaporte','estado','editavel','obsPessoais','obsFinanceiras','obsAcademicas','obsAgente','refCliente'
+        'num_docOficial','validade_docOficial','numPassaporte','estado','editavel','obsPessoais','obsFinanceiras','obsAcademicas','obsAgente',
+        'refCliente','universidade1','universidade2','curso1','curso2','curso3'
     ];
 
     public function user(){

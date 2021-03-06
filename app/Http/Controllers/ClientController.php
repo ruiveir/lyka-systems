@@ -477,7 +477,6 @@ class ClientController extends Controller
                 $doc_id->idFase = null;
                 $doc_id->info = json_encode($infoDocId);
                 $doc_id->dataValidade = $request->validade_docOficial;
-                $doc_id->create_at == date("Y-m-d", $t);
                 $doc_id->save();
             }else {
                 $doc_id->idCliente = $client->idCliente;
@@ -485,7 +484,6 @@ class ClientController extends Controller
                 $doc_id->idFase = null;
                 $doc_id->info = json_encode($infoDocId);
                 $doc_id->dataValidade = $request->validade_docOficial;
-                $doc_id->updated_at == date("Y-m-d", $t);
                 $doc_id->save();
             }
 
@@ -507,7 +505,6 @@ class ClientController extends Controller
                 $doc_id->imagem = $nome_imgDocOff;
                 /* Guarda documento de identificação Pessoal */
                 $doc_id->imagem = $nome_imgDocOff;
-                $doc_id->create_at == date("Y-m-d", $t);
 
                 /* Se for o admin a inserir o ficheiro, é marcado como valido */
                 if (Auth::user()->tipo == "admin") {
@@ -538,7 +535,6 @@ class ClientController extends Controller
                 $passaporte->idFase = null;
                 $passaporte->info = json_encode($infoPassaporte);
                 $passaporte->dataValidade = $request->validade_docOficial;
-                $passaporte->create_at == date("Y-m-d", $t);
                 $passaporte->save();
             } else {
                 $passaporte->idCliente = $client->idCliente;
@@ -546,7 +542,6 @@ class ClientController extends Controller
                 $passaporte->idFase = null;
                 $passaporte->info = json_encode($infoPassaporte);
                 $passaporte->dataValidade = $request->dataValidPP;
-                $passaporte->updated_at == date("Y-m-d", $t);
                 $passaporte->save();
             }
 
@@ -567,7 +562,6 @@ class ClientController extends Controller
 
                 /* Guarda o passaporte */
                 $passaporte->imagem = $nome_imgPassaporte;
-                $passaporte->create_at == date("Y-m-d", $t);
 
                 /* Se for o admin a inserir o ficheiro, é marcado como valido */
                 if (Auth::user()->tipo == "admin") {
