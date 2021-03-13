@@ -340,10 +340,22 @@ class AgenteController extends Controller
         }
     }
 
-    public function procuraProduto(Request $request, Agente $agente)
+    /*public function procuraCliente(Request $request, Agente $agente)
     {
         $cliente = $request->input('user');
         $produtos = Produto::where("idCliente", $cliente)->where("idAgente", $agente->idAgente)->where("deleted_at", NULL)->get();
+        return response()->json($produtos);
+    }*/
+
+    public function procuraProduto(Request $request, Agente $agente)
+    {
+        $cliente = $request->input('user');
+        if($cliente == 0){
+            $produtos = Produto::groupBy("idProduto")->get()->all();
+            //$produtos = Produto::where("idCliente", $cliente)->where("idAgente", $agente->idAgente)->where("deleted_at", NULL)->get();
+        }else{
+            $produtos = Produto::where("idCliente", $cliente)->where("idAgente", $agente->idAgente)->where("deleted_at", NULL)->get();
+        }
         return response()->json($produtos);
     }
 }

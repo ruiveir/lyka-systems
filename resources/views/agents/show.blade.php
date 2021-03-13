@@ -539,6 +539,7 @@
 <!-- Modal Info -->
 <div class="modal fade" id="printModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     @if ($clients)
+        <option hidden disabled class="clients-options" value="0">Todos</option>
         @foreach ($clients as $client)
             <option hidden disabled class="clients-options" value="{{$client->idCliente}}">{{$client->nome.' '.$client->apelido}}</option>
         @endforeach
@@ -715,7 +716,73 @@
             $(".needs-validation").addClass("was-validated");
         });
 
-        $("#infoPrint").change(function() {
+        //Está a adicionar a opção todos, o que funciona, mais ou menos
+        //não se fez o código para obter os produtos que estão a ser utilizados pelos estudantes, mas mostra todos os produtos existentes
+        /*$("#infoPrint").change(function() {
+            $("#formPrintModal").removeClass("was-validated");
+            value = $("#infoPrint").find(":selected").val();
+            switch (value) {
+                case "cobrancas":
+                case "pagamentos":
+                case "todos":
+                    $(".custom-inputs").remove();
+                    input = "<div class='mt-3 custom-inputs'><label for='name'>Nome do estudante <sup class='text-danger small'>&#10033;</sup></label><select type='text' class='form-control custom-select' id='name' name='name' required></select><div class='invalid-feedback'>Oops, parece que algo não está bem...</div></div><div class='mt-3 custom-inputs'><label for='produto'>Produto <sup class='text-danger small'>&#10033;</sup></label><select type='text' class='form-control custom-select' id='produto' name='produto' required></select><div class='invalid-feedback'>Oops, parece que algo não está bem...</div></div>";
+                    $("#div-with-select").after(input);
+
+                    optionsNameSelected = "<option disabled selected hidden>Escolha um estudante...</option>";
+                    $("#name").append(optionsNameSelected);
+
+                    optionsProdutosSelected = "<option disabled selected hidden>Escolha um produto...</option>";
+                    $("#produto").append(optionsProdutosSelected);
+
+                    cloneCliente = $(".clients-options").clone().appendTo("#name");
+                    cloneCliente.removeAttr("hidden disabled");
+                    break;
+
+                default:
+                    $(".custom-inputs").remove();
+                    break;
+            }
+
+            $("#name").change(function() {
+                select = $("#produto");
+                info = {
+                    user: $("#name").find(":selected").val()
+                };
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': "{{csrf_token()}}"
+                    }
+                });
+
+                $.ajax({
+                    type: "post",
+                    url: "{{route('agente.procuraProduto', $agent)}}",
+                    context: this,
+                    data: info,
+                    success: function(data) {
+                        var htmlOptions = [];
+                    
+                        if(data.length){
+                            for(item in data) {
+                                  html = '<option value="' + data[item].idProduto + '">' + data[item].descricao + '</option>';
+                                  htmlOptions[htmlOptions.length] = html;
+                            }
+                            selectedOption = "<option disabled selected hidden>Escolha um produto...</option>";
+                            select.empty().append(htmlOptions.join('')).prepend(selectedOption);
+                        }else {
+                            selectedOption = "<option disabled selected hidden>Escolha um produto...</option>";
+                            select.empty().prepend(selectedOption);
+                        }
+                    },
+                    error: function() {
+                        alert("NOK");
+                    }
+                });
+            });
+        });
+        /**/$("#infoPrint").change(function() {
             $("#formPrintModal").removeClass("was-validated");
             value = $("#infoPrint").find(":selected").val();
             switch (value) {
@@ -805,7 +872,7 @@
                     }
                 });
             });
-        });
+        });/**/
 
         $('#printModal').on('show.bs.modal', function(event) {
             $("#formPrintModal").removeClass("was-validated");
