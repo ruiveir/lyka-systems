@@ -59,7 +59,7 @@
                             <th>Referência</th>
                             <th>Nome</th>
                             <th>País</th>
-                            <th>Universidade #1</th>
+                            <th class="text-truncate">Universidade #1</th>
                             <th>Curso #1</th>
                             <th style="max-width:100px; min-width:100px;">Estado</th>
                             <th style="max-width:100px; min-width:100px;">Opções</th>
