@@ -45,11 +45,6 @@ class Universidade extends Model
         return $this->hasMany("App\Responsabilidade", "idUniversidade1", "idUniversidade")->withTrashed();
     }
 
-    public function responsabilidade2()
-    {
-        return $this->hasMany("App\Responsabilidade", "idUniversidade2", "idUniversidade")->withTrashed();
-    }
-
     public function contacto()
     {
         return $this->hasMany("App\Contacto", "idUniversidade", "idUniversidade");

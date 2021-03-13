@@ -79,39 +79,6 @@
                                     @endforeach
                                     @endIf
                         </div>
-                        @if($produto->idSubAgente)
-                            <div class="col-md-6 mb-3">
-                                <label class="text-gray-900" for="subagente">Sub-agente</label>
-                                <select id="subagente" name="subagente" class="form-control custom-select" readonly>
-                                    @foreach($SubAgentes as $subagente)
-                                    @if($subagente->idAgente == $produto->idSubAgente)
-                                        <option {{old('idSubAgente',$produto->idSubAgente)}} value="{{$subagente->idAgente}}" selected>{{$subagente->nome.' '.$subagente->apelido.' -> '.$subagente->email}}</option>
-                                    @endif
-                                    @endforeach
-                                </select>
-                            </div>
-                            @else
-                            <div class="col-md-6 mb-3">
-                                <label class="text-gray-900" for="subagente">Sub-agente</label>
-                                <select id="subagente" name="subagente" class="form-control custom-select" onchange="AlteraInputSubAgente($(this))">
-                                    <option value="" selected></option>
-                                    @foreach($SubAgentes as $subagente)
-                                    @if($subagente->idAgente == $produto->idSubAgente)
-                                        <option {{old('idSubAgente',$produto->idSubAgente)}} value="{{$subagente->idAgente}}" selected>{{$subagente->nome.' '.$subagente->apelido.' -> '.$subagente->email}}</option>
-                                        @else
-                                        <option hidden selected value="">Escolha um sub-agente...</option>
-                                        <option {{old('idSubAgente',$produto->idSubAgente)}} value="{{$subagente->idAgente}}">{{$subagente->nome.' '.$subagente->apelido.' -> '.$subagente->email}}</option>
-                                        @endif
-                                        @endforeach
-                                </select>
-                                <div class="invalid-feedback">
-                                    Oops, parece que algo não está bem...
-                                </div><br>
-                            </div>
-                            @endif
-                    </div>
-
-                    <div class="form-row mb-3">
                         <div class="col-md-6 mb-3">
                             <label class="text-gray-900" for="uni1">Universidade principal <sup class="text-danger small">&#10033;</sup></label>
                             @if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)
@@ -138,33 +105,6 @@
                                     @endforeach
                                     @endIf
 
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="text-gray-900" for="uni2">Universidade secundária</label>
-                            @if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)
-                                <select id="uni2" name="uni2" class="form-control custom-select">
-                                    <option value="" selected></option>
-                                    @foreach($Universidades as $uni)
-                                    @if($uni->idUniversidade == $produto->idUniversidade2)
-                                        <option {{old('idUniversidade2',$produto->idUniversidade2)}} value="{{$uni->idUniversidade}}" selected>{{$uni->nome.' -> '.$uni->email}}</option>
-                                        @else
-                                        <option {{old('idUniversidade2',$produto->idUniversidade2)}} value="{{$uni->idUniversidade}}">{{$uni->nome.' -> '.$uni->email}}</option>
-                                        <option hidden selected value="">Escolha uma universidade secundária...</option>
-                                        @endif
-                                        @endforeach
-                                </select>
-                                <div class="invalid-feedback">
-                                    Oops, parece que algo não está bem...
-                                </div>
-                                @else
-                                @foreach($Universidades as $uni)
-                                @if($uni->idUniversidade == $produto->idUniversidade2)
-                                    <input type="text" class="form-control" name="universidade2" id="universidade2" value="{{$uni->nome.' -> '.$uni->email}}" placeholder="" maxlength="20" readonly><br>
-                                    @else
-                                    <input type="text" class="form-control" name="universidade2" id="universidade2" value="" placeholder="" maxlength="20" readonly><br>
-                                    @endif
-                                    @endforeach
-                                    @endIf
                         </div>
                     </div>
 

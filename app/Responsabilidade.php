@@ -14,28 +14,20 @@ class Responsabilidade extends Model
     protected $fillable = [
         'valorCliente',
         'valorAgente',
-        'valorSubAgente',
         'valorUniversidade1',
-        'valorUniversidade2',
         'verificacaoPagoCliente',
         'verificacaoPagoAgente',
-        'verificacaoPagoSubAgente',
         'verificacaoPagoUni1',
-        'verificacaoPagoUni2',
         '$idAgente',
-        '$idSubAgente',
         '$idCliente',
         '$idUniversidade1',
-        '$idUniversidade2',
         '$idFase'
     ];
 
     protected $dates = [
         'dataVencimentoCliente',
         'dataVencimentoAgente',
-        'dataVencimentoSubAgente',
-        'dataVencimentoUni1',
-        'dataVencimentoUni2'
+        'dataVencimentoUni1'
     ];
 
     public function cliente(){
@@ -46,16 +38,8 @@ class Responsabilidade extends Model
         return $this->belongsTo("App\Agente","idAgente","idAgente")->withTrashed();
     }
 
-    public function subAgente(){
-        return $this->belongsTo("App\Agente","idSubAgente","idAgente")->withTrashed();
-    }
-
     public function universidade1(){
         return $this->belongsTo("App\Universidade","idUniversidade1","idUniversidade")->withTrashed();
-    }
-
-    public function universidade2(){
-        return $this->belongsTo("App\Universidade","idUniversidade2","idUniversidade")->withTrashed();
     }
 
     public function fase(){

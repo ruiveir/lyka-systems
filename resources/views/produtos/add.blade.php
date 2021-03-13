@@ -64,18 +64,6 @@
                             </div>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label class="text-gray-900" for="subagente">Sub-agente</label>
-                            <select id="subagente" name="subagente" class="form-control custom-select">
-                                <option hidden selected value="">Escolha um sub-agente...</option>
-                                @foreach($SubAgentes as $subagente)
-                                <option {{old('idSubAgente',$produto->idSubAgente)}} value="{{$subagente->idAgente}}">{{$subagente->nome.' '.$subagente->apelido.' ('.$subagente->email.')'}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-row mb-3">
-                        <div class="col-md-6 mb-3">
                             <label class="text-gray-900" for="uni1">Universidade principal <sup class="text-danger small">&#10033;</sup></label>
                             <select id="uni1" name="uni1" class="form-control custom-select" required>
                                 <option hidden disabled selected>Escolha um universidade...</option>
@@ -86,15 +74,6 @@
                             <div class="invalid-feedback">
                                 Oops, parece que algo não está bem...
                             </div>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="text-gray-900" for="uni2">Universidade secundária</label>
-                            <select id="uni2" name="uni2" class="form-control custom-select">
-                                <option hidden selected value="">Escolha um universidade...</option>
-                                @foreach($Universidades as $uni)
-                                <option {{old('idUniversidade2',$produto->idUniversidade2)}} value="{{$uni->idUniversidade}}">{{$uni->nome.' ('.$uni->email.')'}}</option>
-                                @endforeach
-                            </select>
                         </div>
                     </div>
 
@@ -207,28 +186,6 @@
 
                                     <div class="form-row mb-3">
                                         <div class="col-md-6 mb-3">
-                                            <label class="text-gray-900" for="resp-subagente-fase{{$fase->idFase}}">Valor a pagar ao sub-agente</label>
-                                            <div class="input-group">
-                                                <input type="number" class="form-control" name="resp-subagente-fase{{$fase->idFase}}" id="resp-subagente-fase{{$fase->idFase}}"
-                                                    value="{{old('valorSubAgente',$Responsabilidades[$num-1]->valorSubAgente)}}" placeholder="Inserir um valor...">
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text">€</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label class="text-gray-900" for="resp-data-subagente-fase{{$num}}">Data de vencimento (Sub-agente)</label>
-                                            <div class="input-group">
-                                                <input type="date" class="form-control" name="resp-data-subagente-fase{{$num}}" id="resp-data-subagente-fase{{$num}}">
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-row mb-3">
-                                        <div class="col-md-6 mb-3">
                                             <label class="text-gray-900" for="resp-uni1-fase{{$num}}">Valor a pagar á universidade principal</label>
                                             <div class="input-group">
                                                 <input type="number" class="form-control" name="resp-uni1-fase{{$num}}" id="resp-uni1-fase{{$num}}" value="{{old('valorUniversidade1',$Responsabilidades[$num-1]->valorUniversidade1)}}"
@@ -242,28 +199,6 @@
                                             <label class="text-gray-900" for="resp-data-uni1-fase{{$num}}">Data de vencimento (Universidade principal)</label>
                                             <div class="input-group">
                                                 <input type="date" class="form-control" name="resp-data-uni1-fase{{$num}}" id="resp-data-uni1-fase{{$num}}">
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-row mb-3">
-                                        <div class="col-md-6 mb-3">
-                                            <label class="text-gray-900" for="resp-uni2-fase{{$num}}">Valor a pagar á universidade secundária</label>
-                                            <div class="input-group">
-                                                <input type="number" class="form-control" name="resp-uni2-fase{{$num}}" id="resp-uni2-fase{{$num}}" value="{{old('valorUniversidade2',$Responsabilidades[$num-1]->valorUniversidade2)}}"
-                                                    placeholder="Inserir um valor...">
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text">€</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label class="text-gray-900" for="resp-data-uni2-fase{{$num}}">Data de vencimento (Universidade secundária)</label>
-                                            <div class="input-group">
-                                                <input type="date" class="form-control" name="resp-data-uni2-fase{{$num}}" id="resp-data-uni2-fase{{$num}}">
                                                 <div class="input-group-append">
                                                     <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
                                                 </div>
