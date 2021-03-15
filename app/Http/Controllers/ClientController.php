@@ -15,6 +15,7 @@ use App\DocNecessario;
 use App\Responsabilidade;
 use App\Produto;
 use App\Fase;
+use App\ClienteObservacoes;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -30,38 +31,6 @@ use App\Jobs\SendWelcomeEmail;
 
 class ClientController extends Controller
 {
-    // public function sendActivationEmail(Cliente $client){
-    //     $user = User::where('idCliente', $client->idCliente)->first();
-    //     if(!$user) {
-    //         $user = new User;
-    //         $user->idCliente = $client->idCliente;
-    //         $user->email = $client->email;
-    //         $user->tipo = "cliente";
-    //         $password = random_str(64);
-    //         $user->password = Hash::make($password);
-    //         $user->auth_key = strtoupper(random_str(5));
-    //         $user->estado = true;
-    //         $user->slug = post_slug($client->nome.' '.$client->apelido);
-    //         $user->idAdmin = null;
-    //         $user->idAgente = null;
-    //         $user->save();
-    //
-    //         /* Envia o e-mail para ativação */
-    //         $name = $client->nome.' '.$client->apelido;
-    //         $email = $client->email;
-    //         $auth_key = $user->auth_key;
-    //         dispatch(new SendWelcomeEmail($email, $name, $auth_key));
-    //
-    //         if ($client->email == ""){
-    //             return back()->with('success', 'É necessário inserir um e-mail válido!');
-    //         }
-    //         return back()->with('success', 'E-mail de ativação enviado com sucesso!');
-    //     }else {
-    //
-    //         return back()->with('success', 'A conta para este utilizador já existe');
-    //     }
-    // }
-
     public function index()
     {
         if ((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null) || (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null)) {
@@ -326,13 +295,14 @@ class ClientController extends Controller
                 return $fasesPagas;
             }
 
+            $observacoesCliente = ClienteObservacoes::where("idCliente", $client->idCliente)->get();
             $responsabilidades = Responsabilidade::where("idCliente", $client->idCliente)->get();
             $currentdate = new DateTime();
             $fasesDivida = fasesDivida($client);
             $fasesPendentes = fasesPendentes($client);
             $fasesPagas = fasesPagas($client);
 
-            return view('clients.show', compact("currentdate", "responsabilidades", "client", "fasesDivida", "fasesPendentes", "fasesPagas", "agente", "subAgente", "produtos", "totalprodutos", "passaporteData", 'documentosPessoais', 'documentosAcademicos', 'novosDocumentos'));
+            return view('clients.show', compact("observacoesCliente", "currentdate", "responsabilidades", "client", "fasesDivida", "fasesPendentes", "fasesPagas", "agente", "subAgente", "produtos", "totalprodutos", "passaporteData", 'documentosPessoais', 'documentosAcademicos', 'novosDocumentos'));
         } else {
             abort(403);
         }
@@ -673,5 +643,29 @@ class ClientController extends Controller
         $currentdate = new DateTime();
         $pdf = PDF::loadView('clients.print', ['produto' => $produto, 'fases' => $fasesCobrancas, 'cliente' => $client, 'responsabilidades' => $responsabilidades, 'currentdate' => $currentdate])->setPaper('a4', 'portrait');
         return $pdf->stream();
+    }
+
+    public function storeObservacoes(Request $request, Cliente $client)
+    {
+        $obsCliente = new ClienteObservacoes;
+        $obsCliente->idCliente = $client->idCliente;
+        $obsCliente->titulo = $request->titulo;
+        $obsCliente->texto = $request->texto;
+        $obsCliente->save();
+        return redirect()->route('clients.show', $client)->with('success', 'Observação adicionada com sucesso!');
+    }
+
+    public function deleteObservacoes(Request $request, ClienteObservacoes $obsCliente, Cliente $client)
+    {
+        $obsCliente->delete();
+        return redirect()->route('clients.show', $client)->with('success', 'Observação eliminada com sucesso!');
+    }
+
+    public function editObservacoes(Request $request, ClienteObservacoes $obsCliente, Cliente $client)
+    {
+        $obsCliente->titulo = $request->titulo;
+        $obsCliente->texto = $request->texto;
+        $obsCliente->save();
+        return redirect()->route('clients.show', $client)->with('success', 'Observação editada com sucesso!');
     }
 }

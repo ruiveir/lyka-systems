@@ -9,7 +9,9 @@ class AddBoolExame extends Migration
     public function up()
     {
         Schema::table('cliente', function (Blueprint $table) {
-            $table->boolean('exame')->after('nivEstudoAtual')->nullable();
+            if (!Schema::hasColumn('cliente', 'exame')) {
+                $table->boolean('exame')->after('nivEstudoAtual')->nullable();
+            }
         });
     }
 

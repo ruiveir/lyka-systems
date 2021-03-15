@@ -61,6 +61,10 @@ Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
     Route::post('/clientes/resultados','ClientController@searchResults')->name('clients.searchResults');
     // Route::get('/clientes/sendActivationEmail/{client}', 'ClientController@sendActivationEmail')->name('clients.sendActivationEmail');
     Route::post('/clientes/imprimir-ficha-financeiro/{client}', 'ClientController@printFinanceiro');
+    Route::post('/clientes/observacoes-pessoais/{client}', 'ClientController@storeObservacoes')->name('clients.observacoes');
+    Route::put('/clientes/observacoes-pessoais/{obsCliente}/{client}/editar', 'ClientController@editObservacoes');
+    Route::delete('/clientes/observacoes-pessoais/{obsCliente}/{client}/apagar', 'ClientController@deleteObservacoes');
+    // Route::post('/clientes/observacoes-pessoais/{client}', 'ClientController@storeObservacoes')->name('clients.observacoes');
     Route::resource('/clientes', 'ClientController')->parameters([
         'clientes' => 'client'
     ])->names([
