@@ -266,6 +266,22 @@
                         {{-- DADOS DE Passaporte --}}
                         <div class="row mt-2 pl-2 ">
                             <div class="col mr-3 ">
+                                <div class="mb-2 font-weight-bold">Exame:</div>
+                                <div class="border rounded bg-light p-3">
+                                    {{-- CC IDENTIFICAÇÃO --}}
+                                    @if ($client->exame)
+                                        <div>
+                                            @if ($client->exame == true)
+                                                <span class="text-gray-900 font-weight-bold">Sim</span>
+                                            @else
+                                                <span class="text-gray-900 font-weight-bold">Não</span>
+                                            @endif
+                                        </div>
+                                    @else
+                                        <div class="text-muted"><small>(sem dados para apresentar)</small></div>
+                                    @endif
+                                </div>
+                                <br>
                                 <div class="mb-2 font-weight-bold">Documento de identificação pessoal:</div>
                                 <div class="border rounded bg-light p-3">
                                     {{-- CC IDENTIFICAÇÃO --}}
@@ -296,7 +312,7 @@
                                         @endif
                                     </div>
                                 </div>
-                                <br><br>
+                                <br>
                                 <div class="mb-2 font-weight-bold">Passaporte:</div>
                                 <div class="border rounded bg-light p-3">
                                     @if (isset($passaporteData) && $passaporteData != null)

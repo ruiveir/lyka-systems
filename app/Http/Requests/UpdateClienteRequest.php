@@ -40,6 +40,7 @@ class UpdateClienteRequest extends FormRequest
             'img_Passaporte'=> 'nullable',
 
             'nivEstudoAtual' => 'nullable',
+            'exame' => 'nullable',
             'nomeInstituicaoOrigem' => 'nullable',
             'cidadeInstituicaoOrigem' => 'nullable',
             'universidade1' => 'nullable',

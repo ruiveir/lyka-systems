@@ -288,11 +288,19 @@
                 </div>
             </div>
             <div class="form-row mb-3">
-                <div class="col-md-6 mb-3">
+                <div class="col-md-4 mb-3">
+                    <label for="exame" class="text-gray-900">Exame</label>
+                    <select class="custom-select" id="exame" name="exame">
+                        <option selected hidden>Selecione uma opção...</option>
+                        <option {{old('exame', $client->exame) == 1 ? "selected" : ""}} value="1">Sim</option>
+                        <option {{old('exame', $client->exame) == 0 ? "selected" : ""}} value="0">Não</option>
+                    </select>
+                </div>
+                <div class="col-md-4 mb-3">
                     <label for="universidade1" class="text-gray-900">Universidade Principal</label>
                     <input class="form-control" type="text" list="institutos" name="universidade1" id="universidade1" placeholder="Inserir uma universidade..." value="{{old('universidade1', $client->universidade1)}}">
                 </div>
-                <div class="col-md-6 mb-3">
+                <div class="col-md-4 mb-3">
                     <label for="universidade2" class="text-gray-900">Universidade Secundária</label>
                     <input class="form-control" type="text" list="cidadeInstituicao" name="universidade2" id="universidade2" placeholder="Inserir uma universidade..." value="{{old('universidade2', $client->universidade2)}}">
                 </div>

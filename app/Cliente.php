@@ -19,7 +19,7 @@ class Cliente extends Model
         'emailPai','nomeMae','telefoneMae','emailMae','fotografia','NIF','IBAN',
         'nivEstudoAtual','nomeInstituicaoOrigem','cidadeInstituicaoOrigem',
         'num_docOficial','validade_docOficial','numPassaporte','estado','editavel','obsPessoais','obsFinanceiras','obsAcademicas','obsAgente',
-        'refCliente','universidade1','universidade2','curso1','curso2','curso3'
+        'refCliente','universidade1','universidade2','curso1','curso2','curso3','exame'
     ];
 
     public function user(){
