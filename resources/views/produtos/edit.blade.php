@@ -251,7 +251,7 @@
                                         <div class="col-md-6 mb-3">
                                             <label class="text-gray-900" for="resp-agente-fase{{$fase->idFase}}">Valor a pagar ao agente</label>
                                             <div class="input-group">
-                                                <input type="number" class="form-control" placeholder="Insira um valor..." name="resp-agente-fase{{$fase->idFase}}" id="resp-agente-fase{{$fase->idFase}}">
+                                                <input type="number" class="form-control" placeholder="Insira um valor..." value="{{$responsabilidade->valorAgente}}" name="resp-agente-fase{{$fase->idFase}}" id="resp-agente-fase{{$fase->idFase}}">
                                                 <div class="input-group-append">
                                                     <span class="input-group-text">€</span>
                                                 </div>
@@ -261,7 +261,8 @@
                                         <div class="col-md-6 mb-3">
                                             <label class="text-gray-900" for="resp-data-agente-fase{{$fase->idFase}}">Data de vencimento (Agente)</label>
                                             <div class="input-group">
-                                                <input type="date" class="form-control" name="resp-data-agente-fase{{$fase->idFase}}" id="resp-data-agente-fase{{$fase->idFase}}">
+                                                <input type="date" class="form-control" name="resp-data-agente-fase{{$fase->idFase}}" id="resp-data-agente-fase{{$fase->idFase}}" @if($responsabilidade->dataVencimentoAgente)
+                                                value="{{date('Y-m-d', strtotime($responsabilidade->dataVencimentoAgente))}}" @endif>
                                                 <div class="input-group-append">
                                                     <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
                                                 </div>
@@ -293,9 +294,9 @@
                                 <div class="form-row mb-3">
                                     @if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)
                                         <div class="col-md-6 mb-3">
-                                            <label class="text-gray-900" for="resp-uni1-fase{{$fase->idFase}}">Valor a pagar á universidade principal</label>
+                                            <label class="text-gray-900" for="resp-uni1-fase{{$fase->idFase}}">Valor a pagar à universidade principal</label>
                                             <div class="input-group">
-                                                <input type="number" class="form-control" placeholder="Insira um valor..." name="resp-uni1-fase{{$fase->idFase}}" id="resp-uni1-fase{{$fase->idFase}}">
+                                                <input type="number" class="form-control" placeholder="Insira um valor..." name="resp-uni1-fase{{$fase->idFase}}" id="resp-uni1-fase{{$fase->idFase}}" value="{{$responsabilidade->valorUniversidade1}}">
                                                 <div class="input-group-append">
                                                     <span class="input-group-text">€</span>
                                                 </div>
@@ -305,7 +306,8 @@
                                         <div class="col-md-6 mb-3">
                                             <label class="text-gray-900" for="resp-data-uni1-fase{{$fase->idFase}}">Data de vencimento (Universidade principal)</label>
                                             <div class="input-group">
-                                                <input type="date" class="form-control" name="resp-data-uni1-fase{{$fase->idFase}}" id="resp-data-uni1-fase{{$fase->idFase}}">
+                                                <input type="date" class="form-control" name="resp-data-uni1-fase{{$fase->idFase}}" id="resp-data-uni1-fase{{$fase->idFase}}" @if($responsabilidade->dataVencimentoUni1)
+                                                value="{{date('Y-m-d', strtotime($responsabilidade->dataVencimentoUni1))}}" @endif>
                                                 <div class="input-group-append">
                                                     <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
                                                 </div>
@@ -433,7 +435,7 @@
                                                 <div class="col-md-4 mb-3">
                                                     <label class="text-gray-900" id="label3" for="data-fornecedor{{$numF}}-fase{{$fase->idFase}}">Data de vencimento (Fornecedor #{{$numF}})</label>
                                                     <div class="input-group">
-                                                        <input type="date" class="form-control" name="data-fornecedor{{$numF}}-fase{{$fase->idFase}}" id="data-fornecedor{{$numF}}-fase{{$fase->idFase}}">
+                                                        <input type="date" class="form-control" name="data-fornecedor{{$numF}}-fase{{$fase->idFase}}" id="data-fornecedor{{$numF}}-fase{{$fase->idFase}}" value="{{date('Y-m-d', strtotime($relacao->dataVencimento))}}">
                                                         <div class="input-group-append">
                                                             <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
                                                         </div>
