@@ -12,15 +12,9 @@
     @elseif (isset($agente))
     <!-- Registar pagamento AGENTE -->
     @include('payments.partials.show.show-agente')
-    @elseif (isset($subagente))
-    <!-- Registar pagamento SUBAGENTE -->
-    @include('payments.partials.show.show-subagente')
     @elseif (isset($universidade1))
     <!-- Registar pagamento UNIVERSIDADE1 -->
     @include('payments.partials.show.show-uniprincipal')
-    @elseif (isset($universidade2))
-    <!-- Registar pagamento UNIVERSIDADE2 -->
-    @include('payments.partials.show.show-unisecundaria')
     @elseif (isset($fornecedor))
     <!-- Registar pagamento FORNECEDOR -->
     @include('payments.partials.show.show-fornecedor')

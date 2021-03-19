@@ -24,15 +24,9 @@
         @elseif (isset($agente))
         <!-- Registar pagamento AGENTE -->
         @include('payments.partials.create.add-agente')
-        @elseif (isset($subagente))
-        <!-- Registar pagamento SUBAGENTE -->
-        @include('payments.partials.create.add-subagente')
         @elseif (isset($universidade1))
         <!-- Registar pagamento UNIVERSIDADE1 -->
         @include('payments.partials.create.add-uniprincipal')
-        @elseif (isset($universidade2))
-        <!-- Registar pagamento UNIVERSIDADE2 -->
-        @include('payments.partials.create.add-unisecundaria')
         @elseif (isset($fornecedor))
         <!-- Registar pagamento FORNECEDOR -->
         @include('payments.partials.create.add-fornecedor')

@@ -122,20 +122,10 @@ Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
         Route::get('/pagamentos/agente/{agente}/fase/{fase}/{responsabilidade}/{pagoResponsabilidade}/editar', 'PaymentController@editagente')->name('payments.editagente');
         Route::get('/pagamentos/agente/{agente}/fase/{fase}/{responsabilidade}/{pagoResponsabilidade}', 'PaymentController@showagente')->name('payments.showagente');
 
-        // Registar/Editar/Visualizar pagamento SUBAGENTE
-        Route::get('/pagamentos/subagente/{subagente}/fase/{fase}/{responsabilidade}', 'PaymentController@createsubagente')->name('payments.subagente');
-        Route::get('/pagamentos/subagente/{subagente}/fase/{fase}/{responsabilidade}/{pagoResponsabilidade}/editar', 'PaymentController@editsubagente')->name('payments.editsubagente');
-        Route::get('/pagamentos/subagente/{subagente}/fase/{fase}/{responsabilidade}/{pagoResponsabilidade}', 'PaymentController@showsubagente')->name('payments.showsubagente');
-
         // Registar/Editar/Visualizar pagamento UNIVERSIDADE PRINCIPAL
         Route::get('/pagamentos/universidade-principal/{universidade1}/fase/{fase}/{responsabilidade}', 'PaymentController@createuni1')->name('payments.uni1');
         Route::get('/pagamentos/universidade-principal/{universidade1}/fase/{fase}/{responsabilidade}/{pagoResponsabilidade}/editar', 'PaymentController@edituni1')->name('payments.edituni1');
         Route::get('/pagamentos/universidade-principal/{universidade1}/fase/{fase}/{responsabilidade}/{pagoResponsabilidade}', 'PaymentController@showuni1')->name('payments.showuni1');
-
-        // Registar/Editar/Visualizar pagamento UNIVERSIDADE SECUNDÁRIA
-        Route::get('/pagamentos/universidade-secundaria/{universidade2}/fase/{fase}/{responsabilidade}', 'PaymentController@createuni2')->name('payments.uni2');
-        Route::get('/pagamentos/universidade-secundaria/{universidade2}/fase/{fase}/{responsabilidade}/{pagoResponsabilidade}/editar', 'PaymentController@edituni2')->name('payments.edituni2');
-        Route::get('/pagamentos/universidade-secundaria/{universidade2}/fase/{fase}/{responsabilidade}/{pagoResponsabilidade}', 'PaymentController@showuni2')->name('payments.showuni2');
 
         // Registar/Editar/Visualizar pagamento FORNECEDOR
         Route::get('/pagamentos/fornecedor/{fornecedor}/fase/{fase}/{relacao}', 'PaymentController@createfornecedor')->name('payments.fornecedor');

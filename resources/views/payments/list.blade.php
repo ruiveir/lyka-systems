@@ -115,37 +115,6 @@
                         @endif
                         <!-- End of payments for AGENTS -->
 
-                        <!-- Begin of payments for SUGAGENTS -->
-                        @if ($responsabilidade->valorSubAgente != null && $responsabilidade->subAgente)
-                        <tr>
-                            <td>{{$responsabilidade->subAgente->nome.' '.$responsabilidade->subAgente->apelido}}</td>
-                            <td>Subagente</td>
-                            <td>{{number_format((float) $responsabilidade->valorSubAgente, 2, ',', '').'€'}}</td>
-                            <td>{{date('d/m/Y', strtotime($responsabilidade->dataVencimentoSubAgente))}}</td>
-                            <td class="@if($responsabilidade->verificacaoPagoSubAgente == false && $responsabilidade->dataVencimentoSubAgente < $currentdate) text-danger font-weight-bold @elseif ($responsabilidade->verificacaoPagoSubAgente == true) text-success font-weight-bold @else text-gray @endif">
-                            @if ($responsabilidade->verificacaoPagoSubAgente == false && $responsabilidade->dataVencimentoSubAgente < $currentdate)
-                                Vencido
-                            @elseif ($responsabilidade->verificacaoPagoSubAgente == false && $responsabilidade->dataVencimentoSubAgente > $currentdate)
-                                Pendente
-                            @elseif ($responsabilidade->verificacaoPagoSubAgente == true)
-                                Pago
-                            @endif
-                            </td>
-                            <td class="text-center align-middle">
-                                @if($responsabilidade->pagoResponsabilidade && $responsabilidade->verificacaoPagoSubAgente)
-                                    <button class="btn btn-sm btn-outline-dark text-gray-900" disabled><i class="fas fa-check"></i></button>
-                                    <a href="{{route('payments.showsubagente', [$responsabilidade->subAgente, $responsabilidade->fase, $responsabilidade, $responsabilidade->pagoResponsabilidade])}}" class="btn btn-sm btn-outline-primary" title="Visualizar"><i class="far fa-eye"></i></a>
-                                    <a href="{{route('payments.editsubagente', [$responsabilidade->subAgente, $responsabilidade->fase, $responsabilidade, $responsabilidade->pagoResponsabilidade])}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
-                                @else
-                                    <a href="{{route('payments.subagente', [$responsabilidade->subAgente, $responsabilidade->fase, $responsabilidade])}}" class="btn btn-sm btn-outline-success" title="Registar"><i class="fas fa-check"></i></a>
-                                    <button class="btn btn-sm btn-outline-dark text-gray-900" disabled><i class="far fa-eye"></i></button>
-                                    <button class="btn btn-sm btn-outline-dark text-gray-900" disabled><i class="fas fa-pencil-alt"></i></button>
-                                @endif
-                            </td>
-                        </tr>
-                        @endif
-                        <!-- End of payments for SUGAGENTS -->
-
                         <!-- Begin of payments for UNI1 -->
                         @if ($responsabilidade->valorUniversidade1 != null)
                         <tr>
@@ -176,37 +145,6 @@
                         </tr>
                         @endif
                         <!-- End of payments for UNI1 -->
-
-                        <!-- Begin of payments for UNI2 -->
-                        @if ($responsabilidade->valorUniversidade2 != null && $responsabilidade->universidade2)
-                        <tr>
-                            <td>{{$responsabilidade->universidade2->nome.' '.$responsabilidade->universidade2->apelido}}</td>
-                            <td>Universidade</td>
-                            <td>{{number_format((float) $responsabilidade->valorUniversidade2, 2, ',', '').'€'}}</td>
-                            <td>{{date('d/m/Y', strtotime($responsabilidade->dataVencimentoUni2))}}</td>
-                            <td class="@if($responsabilidade->verificacaoPagoUni2 == false && $responsabilidade->dataVencimentoUni2 < $currentdate) text-danger font-weight-bold @elseif ($responsabilidade->verificacaoPagoUni2 == true) text-success font-weight-bold @else text-gray @endif">
-                            @if ($responsabilidade->verificacaoPagoUni2 == false && $responsabilidade->dataVencimentoUni2 < $currentdate)
-                                Vencido
-                            @elseif ($responsabilidade->verificacaoPagoUni2 == false && $responsabilidade->dataVencimentoUni2 > $currentdate)
-                                Pendente
-                            @elseif ($responsabilidade->verificacaoPagoUni2 == true)
-                                Pago
-                            @endif
-                            </td>
-                            <td class="text-center align-middle">
-                                @if($responsabilidade->pagoResponsabilidade && $responsabilidade->verificacaoPagoUni2)
-                                    <button class="btn btn-sm btn-outline-dark text-gray-900" disabled><i class="fas fa-check"></i></button>
-                                    <a href="{{route('payments.showuni2', [$responsabilidade->universidade2, $responsabilidade->fase, $responsabilidade, $responsabilidade->pagoResponsabilidade])}}" class="btn btn-sm btn-outline-primary" title="Visualizar"><i class="far fa-eye"></i></a>
-                                    <a href="{{route('payments.edituni2', [$responsabilidade->universidade2, $responsabilidade->fase, $responsabilidade, $responsabilidade->pagoResponsabilidade])}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
-                                @else
-                                    <a href="{{route('payments.uni2', [$responsabilidade->universidade2, $responsabilidade->fase, $responsabilidade])}}" class="btn btn-sm btn-outline-success" title="Registar"><i class="fas fa-check"></i></a>
-                                    <button class="btn btn-sm btn-outline-dark text-gray-900" disabled><i class="far fa-eye"></i></button>
-                                    <button class="btn btn-sm btn-outline-dark text-gray-900" disabled><i class="fas fa-pencil-alt"></i></button>
-                                @endif
-                            </td>
-                        </tr>
-                        @endif
-                        <!-- End of payments for UNI2 -->
 
                         <!-- Begin of payments for PROVIDER -->
                         @foreach ($responsabilidade->relacao as $relacao)
