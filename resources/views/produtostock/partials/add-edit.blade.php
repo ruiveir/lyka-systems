@@ -15,6 +15,9 @@
             <option {{old('tipoProduto',$produtostock->tipoProduto)=='Serviços Estudar Portugal'?"selected":""}} value="Serviços Estudar Portugal">Serviços Estudar Portugal</option>
             <option {{old('tipoProduto',$produtostock->tipoProduto)=='Seguro'?"selected":""}} value="Seguro">Seguro</option>
             <option {{old('tipoProduto',$produtostock->tipoProduto)=='Exames'?"selected":""}} value="Exames">Exames</option>
+            <option {{old('tipoProduto',$produtostock->tipoProduto)=='Pré+Exame+Licenciatura'?"selected":""}} value="Pré+Exame+Licenciatura">Pré+Exame+Licenciatura</option>
+            <option {{old('tipoProduto',$produtostock->tipoProduto)=='Pré+Licenciatura'?"selected":""}} value="Pré+Licenciatura">Pré+Licenciatura</option>
+            <option {{old('tipoProduto',$produtostock->tipoProduto)=='Exame+Licenciatura'?"selected":""}} value="Exame+Licenciatura">Exame+Licenciatura</option>
         </select>
         <div class="invalid-feedback">
             Oops, parece que algo não está bem...

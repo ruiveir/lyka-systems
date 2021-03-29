@@ -13,7 +13,7 @@ class StoreProdutosstockRequest extends FormRequest
     {
         return [
             'descricao' => 'required|max:255',
-            'tipoProduto' => 'required|in:Licenciatura,Mestrado,Doutoramento,Curso de Verão,Estágio Profissional,Transferência de Curso,Curso Indiomas,Erasmus,Pré-Universitário,Seguro,Serviços Estudar Portugal,Exames',
+            'tipoProduto' => 'required|in:Licenciatura,Mestrado,Doutoramento,Curso de Verão,Estágio Profissional,Transferência de Curso,Curso Indiomas,Erasmus,Pré-Universitário,Seguro,Serviços Estudar Portugal,Exames,Pré+Exame+Licenciatura,Pré+Licenciatura,Exame+Licenciatura',
             'anoAcademico' => 'required|max:255',
         ];
     }

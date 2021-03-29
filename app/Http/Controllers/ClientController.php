@@ -98,7 +98,9 @@ class ClientController extends Controller
             $client->save();
 
             $strpadIdCliente = str_pad($client->idCliente, 3, "0", STR_PAD_LEFT);
-            $refClient = strtoupper($client->refCliente.'.'.$strpadIdCliente);
+            $clientePerCountry = Cliente::where("paisNaturalidade", $client->paisNaturalidade)->count();
+            $clientePerCountry = str_pad($clientePerCountry++, 3, "0", STR_PAD_LEFT);;
+            $refClient = strtoupper($strpadIdCliente.'.'.$client->refCliente.'.'.$clientePerCountry);
             $client->refCliente = $refClient;
 
             if ($requestClient->hasFile('fotografia')) {

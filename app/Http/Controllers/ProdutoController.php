@@ -74,17 +74,6 @@ class ProdutoController extends Controller
     {
         if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null){
             $fields = $request->all();
-            //dd($fields);
-
-            /*if(!$fields['anoAcademico']){
-                return redirect()->back()->withErrors(['required' => 'Ano académico é obrigatório']);
-            }
-            if(!$fields['agente']){
-                return redirect()->back()->withErrors(['required' => 'Agente é obrigatório']);
-            }
-            if(!$fields['uni1']){
-                return redirect()->back()->withErrors(['required' => 'Universidade principal é obrigatório']);
-            }*/
 
             $produto = new Produto;
             $produto->tipo = $fields['tipo'];
@@ -92,9 +81,7 @@ class ProdutoController extends Controller
             $produto->anoAcademico = $fields['anoAcademico'];
             $produto->idCliente = $fields['idCliente'];
             $produto->idAgente = $fields['agente'];
-            $produto->idSubAgente = $fields['subagente'];
             $produto->idUniversidade1 = $fields['uni1'];
-            $produto->idUniversidade2 = $fields['uni2'];
             $produto->valorTotal = 0;
             $produto->valorTotalAgente = 0;
 
@@ -103,8 +90,6 @@ class ProdutoController extends Controller
 
             $valorProduto = 0;
             $valorTAgente = 0;
-            $valorTSubAgente = 0;
-
             $fasesStock = $produtoStock->faseStock;
 
             for($i=1;$i<=count($fasesStock->toArray());$i++){
@@ -149,41 +134,20 @@ class ProdutoController extends Controller
                     }else{
                         $responsabilidade->dataVencimentoAgente = null;
                     }
-                    if($fields['resp-data-subagente-fase'.$i]){
-                        $responsabilidade->dataVencimentoSubAgente = date("Y-m-d",strtotime($fields['resp-data-subagente-fase'.$i]));
-                    }else{
-                        $responsabilidade->dataVencimentoSubAgente = null;
-                    }
-                    $responsabilidade->valorSubAgente = null;
-                    $responsabilidade->dataVencimentoSubAgente = null;
                     $responsabilidade->valorUniversidade1 = $fields['resp-uni1-fase'.$i];
                     if($fields['resp-data-uni1-fase'.$i]){
                         $responsabilidade->dataVencimentoUni1 = date("Y-m-d",strtotime($fields['resp-data-uni1-fase'.$i]));
                     }else{
                         $responsabilidade->dataVencimentoUni1 = null;
                     }
-                    if($produto->idUniversidade2){
-                        $responsabilidade->valorUniversidade2 = $fields['resp-uni2-fase'.$i];
-                        if($fields['resp-data-uni2-fase'.$i]){
-                            $responsabilidade->dataVencimentoUni2 = date("Y-m-d",strtotime($fields['resp-data-uni2-fase'.$i]));
-                        }else{
-                            $responsabilidade->dataVencimentoUni2 = null;
-                        }
-                    }else{
-                        $responsabilidade->valorUniversidade2 = null;
-                        $responsabilidade->dataVencimentoUni2 = null;
-                    }
+
                     $responsabilidade->verificacaoPagoCliente = false;
                     $responsabilidade->verificacaoPagoAgente = false;
-                    $responsabilidade->verificacaoPagoSubAgente = false;
                     $responsabilidade->verificacaoPagoUni1 = false;
-                    $responsabilidade->verificacaoPagoUni2 = false;
 
                     $responsabilidade->idCliente = $produto->idCliente;
                     $responsabilidade->idAgente = $produto->idAgente;
-                    $responsabilidade->idSubAgente = $produto->idSubAgente;
                     $responsabilidade->idUniversidade1 = $produto->idUniversidade1;
-                    $responsabilidade->idUniversidade2 = $produto->idUniversidade2;
 
                     $produto->save();
 
@@ -230,18 +194,14 @@ class ProdutoController extends Controller
 
                     $valorProduto = $valorProduto + $fase->valorFase;
                     $valorTAgente = $valorTAgente + $responsabilidade->valorAgente;
-                    $valorTSubAgente = $valorTSubAgente + $responsabilidade->valorSubAgente;
                 }
             }
 
             $produto->valorTotal = $valorProduto;
             $produto->valorTotalAgente = $valorTAgente;
-            if($produto->idSubAgente){
-                $produto->valorTotalSubAgente = $valorTSubAgente;
-            }
             $produto->save();
 
-            return redirect()->route('clients.show',$produto->cliente)->with('success', 'Produto criada com sucesso');
+            return redirect()->route('clients.show',$produto->cliente)->with('success', 'Produto criado com sucesso!');
         }else{
             abort(403);
         }
