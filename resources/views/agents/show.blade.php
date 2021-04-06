@@ -473,7 +473,7 @@
                                         @endforeach
                                     @endif
 
-                                    @if ($responsabilidadesSubAgentes && $agent->tipo == "Subagente")
+{{--                                     @if ($responsabilidadesSubAgentes && $agent->tipo == "Subagente")
                                         @foreach ($responsabilidadesSubAgentes as $responsabilidade)
                                             <tr>
                                                 <td class="tooltip-td" data-toggle="tooltip" data-placement="top" title="Pagamento afeto ao cliente {{$responsabilidade->cliente->nome.' '.$responsabilidade->cliente->apelido}}.">Pagamento</td>
@@ -503,7 +503,7 @@
                                                 </td>
                                             </tr>
                                         @endforeach
-                                    @endif
+                                    @endif --}}
                                 </tbody>
                             </table>
                         </div>

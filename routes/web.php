@@ -186,6 +186,13 @@ Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
     Route::post('/produtos/store/{produtoStock}', 'ProdutoController@store')->name('produtos.store');
     Route::resource('/produtos', 'ProdutoController')->only(['destroy','update','show','edit']);
 
+
+    /* Tipos de produto */
+    Route::resource('/tiposprodutos', 'TiposProdutoController');
+
+
+
+
     /* Documentos Pessoais */
     Route::post('/documento-pessoal/criar/{client}', 'DocPessoalController@createFromClient')->name('documento-pessoal.createFromClient');
     Route::post('/documento-pessoal/store/{client}/{docnome}', 'DocPessoalController@storeFromClient')->name('documento-pessoal.storeFromClient');

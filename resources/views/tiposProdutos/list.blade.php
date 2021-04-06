@@ -7,20 +7,13 @@
 <div class="container-fluid">
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h4 mb-0 text-gray-800">Stock de produtos</h1>
+        <h1 class="h4 mb-0 text-gray-800">Tipos de produtos</h1>
         <div>
-            <a href="{{route('produtostock.create')}}" class="btn btn-primary btn-icon-split btn-sm" title="Adicionar">
+            <a href="{{route('tiposprodutos.create')}}" class="btn btn-primary btn-icon-split btn-sm" title="Adicionar">
                 <span class="icon text-white-50">
                     <i class="fas fa-plus"></i>
                 </span>
-                <span class="text">Adicionar produto</span>
-            </a>
-
-            <a href="{{route('tiposprodutos.index')}}" class="btn btn-primary btn-icon-split btn-sm" title="Tipos de produto">
-                <span class="icon text-white-50">
-                    <i class="fas fa-list"></i>
-                </span>
-                <span class="text">Tipos de produto</span>
+                <span class="text">Adicionar tipo de produto</span>
             </a>
 
             <a href="#" data-toggle="modal" data-target="#infoModal" class="btn btn-secondary btn-icon-split btn-sm" title="Informações">
@@ -34,7 +27,7 @@
     <!-- Approach -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Listagem de stocks de produtos</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Listagem de tipos de produtos</h6>
         </div>
         <div class="card-body">
             <div class="table-responsive p-1">
@@ -42,23 +35,17 @@
                     <thead>
                         <tr>
                             <th>Descrição</th>
-                            <th>Tipo</th>
-                            <th>Ano académico</th>
-                            <th>Número de fases</th>
                             <th style="max-width:100px; min-width:100px;">Opções</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($produtoStocks as $produtoStock)
+                        @foreach ($tiposProduto as $tipoProduto)
                         <tr>
-                            <td>{{$produtoStock->descricao}}</td>
-                            <td>{{$produtoStock->tipoProduto}}</td>
-                            <td>{{$produtoStock->anoAcademico}}</td>
-                            <td>{{$produtoStock->faseStock->count()}}</td>
+                            <td>{{$tipoProduto->designacao}}</td>
+ 
                             <td class="text-center align-middle">
-                                <a href="{{route("produtostock.show", $produtoStock)}}" class="btn btn-sm btn-outline-primary" title="Ficha completa"><i class="far fa-eye"></i></a>
-                                <a href="{{route("produtostock.edit", $produtoStock)}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
-                                <button data-toggle="modal" data-target="#deleteModal" data-slug="{{$produtoStock->slug}}" class="btn btn-sm btn-outline-danger" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+                                <a href="{{route("tiposprodutos.edit", $tipoProduto)}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                <button data-toggle="modal" data-target="#deleteModal" data-slug="{{$tipoProduto->slug}}" class="btn btn-sm btn-outline-danger" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
                             </td>
                         </tr>
                         @endforeach
@@ -81,7 +68,7 @@
                 </button>
             </div>
             <div class="modal-body text-gray-800 pl-4 pr-5">
-                Nesta secção encontra-se a listagem dos stocks de produtos da Estudar Portugal. Pode acrescentar mais clicando no botão <b>Adicionar produto</b>.
+                Nesta secção encontra-se a listagem dos tipos de produtos da Estudar Portugal. Pode acrescentar mais clicando no botão <b>Adicionar tipo de produto</b>.
             </div>
             <div class="modal-footer mt-3">
                 <a data-dismiss="modal" class="mr-4 font-weight-bold" id="close-option">Fechar</a>
@@ -97,13 +84,13 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header pl-4 pb-1 pt-4">
-                <h5 class="modal-title text-gray-800 font-weight-bold">Pretende eliminar o produto?</h5>
+                <h5 class="modal-title text-gray-800 font-weight-bold">Pretende eliminar o tipo produto?</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close-button">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body text-gray-800 pl-4 pr-5">
-                Ao apagar o registo do produto, <b>irá eliminar o mesmo para todo o sempre!</b> Pense duas vezes antes de proceder com a ação.
+                <b>Pense duas vezes antes de proceder com a ação.</b>
             </div>
             <div class="modal-footer mt-3">
                 <form method="post">
