@@ -21,12 +21,11 @@
             <h6 class="m-0 font-weight-bold text-primary">Formulário de edição de tipo de produto</h6>
         </div>
         <div class="card-body">
-            <form class="form-group needs-validation" action="" method="POST" novalidate>
+            <form class="form-group needs-validation" action="{{route('tiposproduto.update', $tipoProduto)}}" method="POST" novalidate>
                 @csrf
                 @method("PUT")
                 <div class="container-fluid">
                     @include('tiposprodutos.partials.add-edit')
-                    {{$tipoProduto}}
                     <div class="text-right mt-3" id="groupBtn">
                         <span class="mr-4 font-weight-bold" onclick="window.history.back();" id="cancelBtn" style="cursor:pointer;">Cancelar</span>
                         <button type="submit" name="button" class="btn btn-primary text-white font-weight-bold" id="submitbtn">Alterar tipo de produto</button>

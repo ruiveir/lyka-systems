@@ -9,7 +9,7 @@
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h4 mb-0 text-gray-800">Tipos de produtos</h1>
         <div>
-            <a href="{{route('tiposprodutos.create')}}" class="btn btn-primary btn-icon-split btn-sm" title="Adicionar">
+            <a href="{{route('tiposproduto.create')}}" class="btn btn-primary btn-icon-split btn-sm" title="Adicionar">
                 <span class="icon text-white-50">
                     <i class="fas fa-plus"></i>
                 </span>
@@ -47,7 +47,7 @@
                             <td style="width: 150px">{{ date('d-M-Y', strtotime($tipoProduto->created_at)) }}</td>
  
                             <td class="text-center align-middle" style="width: 100px">
-                                <a href="{{route("tiposprodutos.edit", $tipoProduto)}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                <a href="{{route("tiposproduto.edit", $tipoProduto)}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
                                 <button data-toggle="modal" data-target="#deleteModal" data-slug="{{$tipoProduto->slug}}" class="btn btn-sm btn-outline-danger" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
                             </td>
 
@@ -144,7 +144,7 @@
         $('#deleteModal').on('show.bs.modal', function(event) {
             var button = $(event.relatedTarget);
             var modal = $(this);
-            modal.find("form").attr('action', '/tiposprodutos/' + button.data('slug')+'/destroy');
+            modal.find("form").attr('action', '/tiposproduto/' + button.data('slug'));
             
         });
     });

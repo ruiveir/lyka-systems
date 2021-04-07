@@ -21,7 +21,7 @@
             <h6 class="m-0 font-weight-bold text-primary">Formulário de criação de tipo de produto</h6>
         </div>
         <div class="card-body">
-            <form class="form-group needs-validation" action="{{route('tiposprodutos.store')}}" method="POST" novalidate>
+            <form class="form-group needs-validation" action="{{route('tiposproduto.store')}}" method="POST" novalidate>
                 @csrf
                 <div class="container-fluid">
                     @include('tiposprodutos.partials.add-edit')

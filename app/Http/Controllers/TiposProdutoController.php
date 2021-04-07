@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 use App\Http\Requests\StoreTipoProdutoRequest;
-/* use App\Http\Requests\UpdateTipoProdutoRequest; */
+use App\Http\Requests\UpdateTipoProdutoRequest;
 
 class TiposProdutoController extends Controller
 {
@@ -52,7 +52,7 @@ class TiposProdutoController extends Controller
 
         $tipoProduto->save();
 
-        return redirect()->route('tiposprodutos.index')->with('success', 'Tipo de produto criado com sucesso!');
+        return redirect()->route('tiposproduto.index')->with('success', 'Tipo de produto criado com sucesso!');
 
     }
 
@@ -75,6 +75,7 @@ class TiposProdutoController extends Controller
      */
     public function edit(TipoProduto $tipoProduto)
     {
+        /* dd($tipoProduto); */
         return view('tiposProdutos.edit',compact('tipoProduto'));
     }
 
@@ -85,9 +86,12 @@ class TiposProdutoController extends Controller
      * @param  \App\TipoProduto  $tipoProduto
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, TipoProduto $tipoProduto)
+    public function update(UpdateTipoProdutoRequest $request, TipoProduto $tipoProduto)
     {
-        //
+        $fields = $request->validated();
+        $tipoProduto->fill($fields);
+        $tipoProduto->save();
+        return redirect()->route('tiposproduto.index')->with('success', 'Tipo de produto editado com sucesso!');
     }
 
     /**
@@ -98,12 +102,10 @@ class TiposProdutoController extends Controller
      */
     public function destroy(TipoProduto $tipoProduto)
     {
-
-        dd($tipoProduto);
         if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
             /* "Apaga" o registo */
             $tipoProduto->delete();
-            return redirect()->route('tiposprodutos.index')->with('success', 'Tipo de produto eliminado com sucesso!');
+            return redirect()->route('tiposproduto.index')->with('success', 'Tipo de produto eliminado com sucesso!');
         }else{
             abort(403);
         }
