@@ -12,7 +12,7 @@ class TipoProduto extends Model
 {
     use HasSlug;
 
-    protected $table = 'tiposProduto';
+    protected $table = 'tipos_produto';
 
     protected $primaryKey = 'tipoProduto_id';
 

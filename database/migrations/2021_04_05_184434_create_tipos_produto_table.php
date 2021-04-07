@@ -13,7 +13,7 @@ class CreateTiposProdutoTable extends Migration
      */
     public function up()
     {
-        Schema::create('tiposProduto', function (Blueprint $table) {
+        Schema::create('tipos_produto', function (Blueprint $table) {
             $table->charset = 'utf8mb4';
             $table->collation = 'utf8mb4_general_ci';
 
