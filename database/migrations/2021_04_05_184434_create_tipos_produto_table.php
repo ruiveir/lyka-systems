@@ -20,7 +20,7 @@ class CreateTiposProdutoTable extends Migration
             $table->bigIncrements('tipoProduto_id');
             $table->string('designacao',255);
             $table->string('slug')->nullable();
-
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -27,7 +27,7 @@
     <!-- Approach -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Listagem de tipos de produtos</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Listagem de tipos de produto</h6>
         </div>
         <div class="card-body">
             <div class="table-responsive p-1">
@@ -35,6 +35,7 @@
                     <thead>
                         <tr>
                             <th>Descrição</th>
+                            <th style="width: 150px">Data de Criação</th>
                             <th style="max-width:100px; min-width:100px;">Opções</th>
                         </tr>
                     </thead>
@@ -42,11 +43,14 @@
                         @foreach ($tiposProduto as $tipoProduto)
                         <tr>
                             <td>{{$tipoProduto->designacao}}</td>
+
+                            <td style="width: 150px">{{ date('d-M-Y', strtotime($tipoProduto->created_at)) }}</td>
  
-                            <td class="text-center align-middle">
+                            <td class="text-center align-middle" style="width: 100px">
                                 <a href="{{route("tiposprodutos.edit", $tipoProduto)}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
                                 <button data-toggle="modal" data-target="#deleteModal" data-slug="{{$tipoProduto->slug}}" class="btn btn-sm btn-outline-danger" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
                             </td>
+
                         </tr>
                         @endforeach
                     </tbody>
@@ -131,7 +135,8 @@
                 "oAria": {
                     "sSortAscending": ": Ordenar colunas de forma ascendente",
                     "sSortDescending": ": Ordenar colunas de forma descendente"
-                }
+                },
+
             }
         });
 
@@ -139,7 +144,8 @@
         $('#deleteModal').on('show.bs.modal', function(event) {
             var button = $(event.relatedTarget);
             var modal = $(this);
-            modal.find("form").attr('action', '/produtostock/' + button.data('slug'));
+            modal.find("form").attr('action', '/tiposprodutos/' + button.data('slug')+'/destroy');
+            
         });
     });
 </script>
