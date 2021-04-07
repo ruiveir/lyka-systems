@@ -30,8 +30,8 @@ class TiposProdutoController extends Controller
      */
     public function create()
     {
-        $tipoProduto = new TipoProduto;
-        return view('tiposProdutos.add',compact('tipoProduto'));
+        $tiposproduto = new TipoProduto;
+        return view('tiposProdutos.add',compact('tiposproduto'));
     }
 
     /**
@@ -73,10 +73,10 @@ class TiposProdutoController extends Controller
      * @param  \App\TipoProduto  $tipoProduto
      * @return \Illuminate\Http\Response
      */
-    public function edit(TipoProduto $tipoProduto)
+    public function edit(TipoProduto $tiposproduto)
     {
         /* dd($tipoProduto); */
-        return view('tiposProdutos.edit',compact('tipoProduto'));
+        return view('tiposProdutos.edit',compact('tiposproduto'));
     }
 
     /**
@@ -86,11 +86,11 @@ class TiposProdutoController extends Controller
      * @param  \App\TipoProduto  $tipoProduto
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateTipoProdutoRequest $request, TipoProduto $tipoProduto)
+    public function update(UpdateTipoProdutoRequest $request, TipoProduto $tiposproduto)
     {
         $fields = $request->validated();
-        $tipoProduto->fill($fields);
-        $tipoProduto->save();
+        $tiposproduto->fill($fields);
+        $tiposproduto->save();
         return redirect()->route('tiposproduto.index')->with('success', 'Tipo de produto editado com sucesso!');
     }
 
@@ -100,11 +100,11 @@ class TiposProdutoController extends Controller
      * @param  \App\TipoProduto  $tipoProduto
      * @return \Illuminate\Http\Response
      */
-    public function destroy(TipoProduto $tipoProduto)
+    public function destroy(TipoProduto $tiposproduto)
     {
         if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
             /* "Apaga" o registo */
-            $tipoProduto->delete();
+            $tiposproduto->delete();
             return redirect()->route('tiposproduto.index')->with('success', 'Tipo de produto eliminado com sucesso!');
         }else{
             abort(403);

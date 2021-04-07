@@ -21,7 +21,7 @@
             <h6 class="m-0 font-weight-bold text-primary">Formulário de edição de tipo de produto</h6>
         </div>
         <div class="card-body">
-            <form class="form-group needs-validation" action="{{route('tiposproduto.update', $tipoProduto)}}" method="POST" novalidate>
+            <form class="form-group needs-validation" action="{{route('tiposproduto.update', $tiposproduto)}}" method="POST" novalidate>
                 @csrf
                 @method("PUT")
                 <div class="container-fluid">

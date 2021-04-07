@@ -40,15 +40,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($tiposProduto as $tipoProduto)
+                        @foreach ($tiposProduto as $tiposproduto)
                         <tr>
-                            <td>{{$tipoProduto->designacao}}</td>
+                            <td>{{$tiposproduto->designacao}}</td>
 
-                            <td style="width: 150px">{{ date('d-M-Y', strtotime($tipoProduto->created_at)) }}</td>
+                            <td style="width: 150px">{{ date('d-M-Y', strtotime($tiposproduto->created_at)) }}</td>
  
                             <td class="text-center align-middle" style="width: 100px">
-                                <a href="{{route("tiposproduto.edit", $tipoProduto)}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
-                                <button data-toggle="modal" data-target="#deleteModal" data-slug="{{$tipoProduto->slug}}" class="btn btn-sm btn-outline-danger" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+                                <a href="{{route("tiposproduto.edit", $tiposproduto)}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
+                                <button data-toggle="modal" data-target="#deleteModal" data-slug="{{$tiposproduto->slug}}" class="btn btn-sm btn-outline-danger" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
                             </td>
 
                         </tr>
