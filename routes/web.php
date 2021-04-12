@@ -188,7 +188,7 @@ Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
 
 
     /* Tipos de produto */
-    Route::resource('/tiposprodutos', 'TiposProdutoController');
+    Route::resource('/tiposproduto', 'TiposProdutoController');
 
 
 

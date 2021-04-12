@@ -16,7 +16,7 @@
                 <span class="text">Adicionar produto</span>
             </a>
 
-            <a href="{{route('tiposprodutos.index')}}" class="btn btn-primary btn-icon-split btn-sm" title="Tipos de produto">
+            <a href="{{route('tiposproduto.index')}}" class="btn btn-primary btn-icon-split btn-sm" title="Tipos de produto">
                 <span class="icon text-white-50">
                     <i class="fas fa-list"></i>
                 </span>

@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\TipoProduto;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+use App\Http\Requests\StoreTipoProdutoRequest;
+use App\Http\Requests\UpdateTipoProdutoRequest;
 
 class TiposProdutoController extends Controller
 {
@@ -26,7 +30,8 @@ class TiposProdutoController extends Controller
      */
     public function create()
     {
-        //
+        $tiposproduto = new TipoProduto;
+        return view('tiposProdutos.add',compact('tiposproduto'));
     }
 
     /**
@@ -35,9 +40,20 @@ class TiposProdutoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreTipoProdutoRequest $request)
     {
-        //
+        /* obtem os dados para criar o tipo de produto */
+        $tipoProduto = new TipoProduto;
+        $fields = $request->validated();
+
+        $tipoProduto->fill($fields);
+
+        $tipoProduto->designacao;
+
+        $tipoProduto->save();
+
+        return redirect()->route('tiposproduto.index')->with('success', 'Tipo de produto criado com sucesso!');
+
     }
 
     /**
@@ -57,9 +73,10 @@ class TiposProdutoController extends Controller
      * @param  \App\TipoProduto  $tipoProduto
      * @return \Illuminate\Http\Response
      */
-    public function edit(TipoProduto $tipoProduto)
+    public function edit(TipoProduto $tiposproduto)
     {
-        //
+        /* dd($tipoProduto); */
+        return view('tiposProdutos.edit',compact('tiposproduto'));
     }
 
     /**
@@ -69,9 +86,12 @@ class TiposProdutoController extends Controller
      * @param  \App\TipoProduto  $tipoProduto
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, TipoProduto $tipoProduto)
+    public function update(UpdateTipoProdutoRequest $request, TipoProduto $tiposproduto)
     {
-        //
+        $fields = $request->validated();
+        $tiposproduto->fill($fields);
+        $tiposproduto->save();
+        return redirect()->route('tiposproduto.index')->with('success', 'Tipo de produto editado com sucesso!');
     }
 
     /**
@@ -80,8 +100,14 @@ class TiposProdutoController extends Controller
      * @param  \App\TipoProduto  $tipoProduto
      * @return \Illuminate\Http\Response
      */
-    public function destroy(TipoProduto $tipoProduto)
+    public function destroy(TipoProduto $tiposproduto)
     {
-        //
+        if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null && Auth()->user()->admin->superAdmin){
+            /* "Apaga" o registo */
+            $tiposproduto->delete();
+            return redirect()->route('tiposproduto.index')->with('success', 'Tipo de produto eliminado com sucesso!');
+        }else{
+            abort(403);
+        }
     }
 }

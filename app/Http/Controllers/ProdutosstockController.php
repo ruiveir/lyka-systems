@@ -3,6 +3,8 @@ namespace App\Http\Controllers;
 
 use App\FaseStock;
 use App\ProdutoStock;
+use App\TipoProduto;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreProdutosstockRequest;
@@ -30,7 +32,8 @@ class ProdutosstockController extends Controller
         }
 
         $produtostock = new ProdutoStock();
-        return view('produtostock.add', compact('produtostock','anosAcademicos'));
+        $tiposproduto = TipoProduto::all();
+        return view('produtostock.add', compact('produtostock','anosAcademicos','tiposproduto'));
     }
 
     public function store(StoreProdutosstockRequest $requestProduto)
@@ -51,7 +54,9 @@ class ProdutosstockController extends Controller
             $anosAcademicos[] = ($anoAtual-1+$i)."/".($anoAtual+$i);
         }
 
-        return view('produtostock.edit', compact('produtostock', 'anosAcademicos'));
+        $tiposproduto = TipoProduto::all();
+
+        return view('produtostock.edit', compact('produtostock', 'anosAcademicos','tiposproduto'));
     }
 
     public function update(StoreProdutosstockRequest $request, ProdutoStock $produtostock)

@@ -2,22 +2,13 @@
     <div class="col-12 mb-3">
         <label for="tipoProduto" class="text-gray-900">Tipo de produto <sup class="text-danger small">&#10033;</sup> </label>
         <select type="text" class="form-control custom-select" name="tipoProduto" id="tipoProduto" required>
+            
             <option disabled selected hidden>Escolha um tipo de produto...</option>
-            <option {{old('tipoProduto',$produtostock->tipoProduto)=='Licenciatura'?"selected":""}} value="Licenciatura">Licenciatura</option>
-            <option {{old('tipoProduto',$produtostock->tipoProduto)=='Mestrado'?"selected":""}} value="Mestrado">Mestrado</option>
-            <option {{old('tipoProduto',$produtostock->tipoProduto)=='Doutoramento'?"selected":""}} value="Doutoramento">Doutoramento</option>
-            <option {{old('tipoProduto',$produtostock->tipoProduto)=='Curso de Verão'?"selected":""}} value="Curso de Verão">Curso de Verão</option>
-            <option {{old('tipoProduto',$produtostock->tipoProduto)=='Estágio Profissional'?"selected":""}} value="Estágio Profissional">Estágio Profissional</option>
-            <option {{old('tipoProduto',$produtostock->tipoProduto)=='Transferência de Curso'?"selected":""}} value="Transferência de Curso">Transferência de Curso</option>
-            <option {{old('tipoProduto',$produtostock->tipoProduto)=='Curso Indiomas'?"selected":""}} value="Curso Indiomas">Curso Indiomas</option>
-            <option {{old('tipoProduto',$produtostock->tipoProduto)=='Erasmus'?"selected":""}} value="Erasmus">Erasmus</option>
-            <option {{old('tipoProduto',$produtostock->tipoProduto)=='Pré-Universitário'?"selected":""}} value="Pré-Universitário">Pré-Universitário</option>
-            <option {{old('tipoProduto',$produtostock->tipoProduto)=='Serviços Estudar Portugal'?"selected":""}} value="Serviços Estudar Portugal">Serviços Estudar Portugal</option>
-            <option {{old('tipoProduto',$produtostock->tipoProduto)=='Seguro'?"selected":""}} value="Seguro">Seguro</option>
-            <option {{old('tipoProduto',$produtostock->tipoProduto)=='Exames'?"selected":""}} value="Exames">Exames</option>
-            <option {{old('tipoProduto',$produtostock->tipoProduto)=='Pré+Exame+Licenciatura'?"selected":""}} value="Pré+Exame+Licenciatura">Pré+Exame+Licenciatura</option>
-            <option {{old('tipoProduto',$produtostock->tipoProduto)=='Pré+Licenciatura'?"selected":""}} value="Pré+Licenciatura">Pré+Licenciatura</option>
-            <option {{old('tipoProduto',$produtostock->tipoProduto)=='Exame+Licenciatura'?"selected":""}} value="Exame+Licenciatura">Exame+Licenciatura</option>
+
+            @foreach ($tiposproduto as $tipoproduto)
+                <option @if ( $produtostock->tipoProduto == $tipoproduto->designacao) selected @endif value="{{$tipoproduto->designacao}}">{{$tipoproduto->designacao}}</option>
+            @endforeach
+            
         </select>
         <div class="invalid-feedback">
             Oops, parece que algo não está bem...
