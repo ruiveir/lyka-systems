@@ -13,14 +13,14 @@ class CreateTiposProdutoTable extends Migration
      */
     public function up()
     {
-        Schema::create('tiposProduto', function (Blueprint $table) {
+        Schema::create('tiposproduto', function (Blueprint $table) {
             $table->charset = 'utf8mb4';
             $table->collation = 'utf8mb4_general_ci';
 
             $table->bigIncrements('tipoProduto_id');
             $table->string('designacao',255);
             $table->string('slug')->nullable();
-
+            $table->softDeletes();
             $table->timestamps();
         });
     }
