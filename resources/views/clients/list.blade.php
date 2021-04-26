@@ -53,16 +53,16 @@
         </div>
         <div class="card-body">
             <div class="table-responsive p-1">
-                <table class="table table-bordered table-striped" id="table" width="100%">
+                <table class="table table-sm table-bordered table-striped" id="table" width="100%">
                     <thead>
                         <tr>
-                            <th>Referência</th>
-                            <th>Nome</th>
-                            <th>País</th>
-                            <th class="text-truncate">Universidade #1</th>
-                            <th>Curso #1</th>
-                            <th style="max-width:100px; min-width:100px;">Estado</th>
-                            <th style="max-width:100px; min-width:100px;">Opções</th>
+                            <th class="align-middle">Referência</th>
+                            <th class="align-middle">Nome</th>
+                            <th class="align-middle">País</th>
+                            <th class="text-truncate align-middle">Universidade #1</th>
+                            <th class="align-middle">Curso #1</th>
+                            <th class="align-middle" style="max-width:100px; min-width:100px;">Estado</th>
+                            <th class="align-middle" style="max-width:100px; min-width:100px;">Opções</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -70,12 +70,12 @@
                             @foreach ($clients as $client)
                                 @if ($client->estado == "Ativo" || $client->estado == "Proponente")
                                     <tr>
-                                        <td>{{$client->refCliente}}</td>
-                                        <td>{{$client->nome.' '.$client->apelido}}</td>
-                                        <td>{{$client->paisNaturalidade}}</td>
-                                        <td>@if($client->universidade1 != null){{$client->universidade1}} @else - @endif</td>
-                                        <td>@if($client->curso1 != null){{$client->curso1}} @else - @endif</td>
-                                        <td class="font-weight-bold @if($client->estado == "Ativo") text-success @else text-primary @endif">@if($client->estado == "Ativo") Ativo @else Proponente @endif</td>
+                                        <td class="align-middle">{{$client->refCliente}}</td>
+                                        <td class="align-middle">{{$client->nome.' '.$client->apelido}}</td>
+                                        <td class="align-middle">{{$client->paisNaturalidade}}</td>
+                                        <td class="align-middle">@if($client->universidade1 != null){{$client->universidade1}} @else - @endif</td>
+                                        <td class="align-middle">@if($client->curso1 != null){{$client->curso1}} @else - @endif</td>
+                                        <td class="align-middle font-weight-bold @if($client->estado == "Ativo") text-success @else text-primary @endif">@if($client->estado == "Ativo") Ativo @else Proponente @endif</td>
                                         <td class="text-center align-middle">
                                             <a href="{{route("clients.show", $client)}}" class="btn btn-sm btn-outline-primary" title="Ficha completa"><i class="far fa-eye"></i></a>
                                             @if(Auth::user()->tipo == "admin" || Auth::user()->tipo == "agente" && $client->editavel == 1)
@@ -154,6 +154,7 @@
 <script>
     $(document).ready(function() {
         $('#table').DataTable({
+            
             "language": {
                 "sEmptyTable": "Não foi encontrado nenhum registo",
                 "sLoadingRecords": "A carregar...",
@@ -177,7 +178,8 @@
                     "sSortDescending": ": Ordenar colunas de forma descendente"
                 }
             },
-            "order": [1, 'asc']
+            "order": [1, 'asc'],
+            "pageLength": 50
         });
 
         // Modal for DELETE

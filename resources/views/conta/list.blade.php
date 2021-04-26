@@ -33,20 +33,20 @@
                 <table class="table table-bordered table-striped" id="table" width="100%">
                     <thead>
                         <tr>
-                            <th>Descrição</th>
-                            <th>Instituição</th>
-                            <th style="max-width:350px; min-width:350px;">IBAN</th>
-                            <th>Contacto</th>
-                            <th style="max-width:100px; min-width:100px;">Opções</th>
+                            <th class="align-middle">Descrição</th>
+                            <th class="align-middle">Instituição</th>
+                            <th class="align-middle"style="max-width:350px; min-width:350px;">IBAN</th>
+                            <th class="align-middle">Contacto</th>
+                            <th class="align-middle" style="max-width:100px; min-width:100px;">Opções</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($contas as $conta)
                         <tr>
-                            <td>{{$conta->descricao}}</td>
-                            <td>{{$conta->instituicao}}</td>
-                            <td>{{$conta->IBAN}}</td>
-                            <td>{{$conta->contacto}}</td>
+                            <td class="align-middle">{{$conta->descricao}}</td>
+                            <td class="align-middle">{{$conta->instituicao}}</td>
+                            <td class="align-middle">{{$conta->IBAN}}</td>
+                            <td class="align-middle">{{$conta->contacto}}</td>
                             <td class="text-center align-middle">
                                 <a href="{{route("conta.show", $conta)}}" class="btn btn-sm btn-outline-primary" title="Ficha completa"><i class="far fa-eye"></i></a>
                                 <a href="{{route("conta.edit", $conta)}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
@@ -115,6 +115,7 @@
 <script>
     $(document).ready(function() {
         $('#table').DataTable({
+            "pageLength": 50,
             "language": {
                 "sEmptyTable": "Não foi encontrado nenhum registo",
                 "sLoadingRecords": "A carregar...",

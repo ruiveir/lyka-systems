@@ -32,13 +32,13 @@
         </div>
         <div class="card-body">
             <div class="table-responsive p-1">
-                <table class="table table-bordered table-striped" id="table" width="100%">
+                <table class="table table-sm table-bordered table-striped" id="table" width="100%">
                     <thead>
                         <tr>
-                            <th>Nome</th>
-                            <th>Tipo</th>
-                            <th>E-Mail</th>
-                            <th>País</th>
+                            <th class="align-middle">Nome</th>
+                            <th class="align-middle">Tipo</th>
+                            <th class="align-middle">E-Mail</th>
+                            <th class="align-middle">País</th>
                             <th style="max-width:100px; min-width:100px;">Estado</th>
                             <th style="max-width:100px; min-width:100px;">Opções</th>
                         </tr>
@@ -46,11 +46,11 @@
                     <tbody>
                         @foreach ($agents as $agent)
                         <tr>
-                            <td>{{$agent->nome.' '.$agent->apelido}}</td>
-                            <td>{{$agent->tipo}}</td>
-                            <td>{{$agent->email}}</td>
-                            <td>{{$agent->pais}}</td>
-                            <td class="@if($agent->user && $agent->user->estado) text-success font-weight-bold @else text-danger font-weight-bold @endif">@if($agent->user && $agent->user->estado) Ativo @else Inativo @endif</td>
+                            <td class="align-middle">{{$agent->nome.' '.$agent->apelido}}</td>
+                            <td class="align-middle">{{$agent->tipo}}</td>
+                            <td class="align-middle">{{$agent->email}}</td>
+                            <td class="align-middle">{{$agent->pais}}</td>
+                            <td class="align-middle @if($agent->user && $agent->user->estado) text-success font-weight-bold @else text-danger font-weight-bold @endif">@if($agent->user && $agent->user->estado) Ativo @else Inativo @endif</td>
                             <td class="text-center align-middle">
                                 <a href="{{route("agents.show", $agent)}}" class="btn btn-sm btn-outline-primary" title="Ficha completa"><i class="far fa-eye"></i></a>
                                 <a href="{{route("agents.edit", $agent)}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>
@@ -142,7 +142,8 @@
                     "sSortDescending": ": Ordenar colunas de forma descendente"
                 }
             },
-            "order": [0, 'asc']
+            "order": [0, 'asc'],
+            "pageLength": 50
         });
 
         // Modal for DELETE

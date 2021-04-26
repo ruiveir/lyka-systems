@@ -24,23 +24,23 @@
         </div>
         <div class="card-body">
             <div class="table-responsive p-1">
-                <table class="table table-bordered table-striped" id="table" width="100%">
+                <table class="table table-sm table-bordered table-striped" id="table" width="100%">
                     <thead>
                         <tr>
-                            <th>Descrição da fase</th>
-                            <th>Valor total</th>
-                            <th>Data de vencimento</th>
-                            <th style="max-width:100px; min-width:100px;">Estado</th>
-                            <th style="max-width:90px; min-width:90px;">Opções</th>
+                            <th class="align-middle">Descrição da fase</th>
+                            <th class="align-middle">Valor total</th>
+                            <th class="align-middle">Data de vencimento</th>
+                            <th class="align-middle" style="max-width:100px; min-width:100px;">Estado</th>
+                            <th class="align-middle" style="max-width:90px; min-width:90px;">Opções</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($fases as $fase)
                         <tr>
-                            <td class="text-truncated" title="{{$fase->descricao}}">{{$fase->descricao}}</td>
-                            <td>{{str_replace('.', ',', $fase->valorFase)}}€</td>
-                            <td>{{date('d/m/Y', strtotime($fase->dataVencimento))}}</td>
-                            <td>
+                            <td class="align-middle text-truncated" title="{{$fase->descricao}}">{{$fase->descricao}}</td>
+                            <td class="align-middle">{{str_replace('.', ',', $fase->valorFase)}}€</td>
+                            <td class="align-middle">{{date('d/m/Y', strtotime($fase->dataVencimento))}}</td>
+                            <td class="align-middle">
                             @php
                                 switch ($fase->estado) {
                                     case 'Pendente':
@@ -140,6 +140,7 @@
                 }
             },
             "order": [[2, 'asc'], [3, 'desc']],
+            "pageLength": 50,
             'columnDefs': [
                 {
                     "targets": 2,

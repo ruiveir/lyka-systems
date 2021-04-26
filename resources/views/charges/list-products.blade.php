@@ -39,23 +39,23 @@
         </div>
         <div class="card-body">
             <div class="table-responsive p-1">
-                <table class="table table-bordered table-striped" id="table" width="100%">
+                <table class="table table-sm table-bordered table-striped" id="table" width="100%">
                     <thead>
                         <tr>
-                            <th>Nome</th>
-                            <th>Descrição (Num. Fases)</th>
-                            <th>Valor total</th>
-                            <th style="max-width:130px; min-width:130px;">Estado</th>
-                            <th style="max-width:70px; min-width:70px;">Opções</th>
+                            <th class="align-middle">Nome</th>
+                            <th class="align-middle">Descrição (Num. Fases)</th>
+                            <th class="align-middle">Valor total</th>
+                            <th class="align-middle" style="max-width:130px; min-width:130px;">Estado</th>
+                            <th class="align-middle" style="max-width:70px; min-width:70px;">Opções</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($products as $product)
                         <tr>
-                            <td>{{$product->cliente->nome.' '.$product->cliente->apelido}}</td>
-                            <td>{{$product->descricao.' ('.$product->fase->count().')'}}</td>
-                            <td>{{str_replace('.', ',', $product->valorTotal).'€'}}</td>
-                            <td>
+                            <td class="align-middle">{{$product->cliente->nome.' '.$product->cliente->apelido}}</td>
+                            <td class="align-middle">{{$product->descricao.' ('.$product->fase->count().')'}}</td>
+                            <td class="align-middle">{{str_replace('.', ',', $product->valorTotal).'€'}}</td>
+                            <td class="align-middle">
                             @php
                                 switch ($product->estado) {
                                     case 'Pendente':
@@ -116,6 +116,7 @@
 <script>
     $(document).ready(function() {
         $('#table').DataTable({
+            "pageLength": 50,
             "language": {
                 "sEmptyTable": "Não foi encontrado nenhum registo",
                 "sLoadingRecords": "A carregar...",

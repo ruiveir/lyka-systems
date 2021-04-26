@@ -30,22 +30,22 @@
         </div>
         <div class="card-body">
             <div class="table-responsive p-1">
-                <table class="table table-bordered table-striped" id="table" width="100%">
+                <table class="table table-sm table-bordered table-striped" id="table" width="100%">
                     <thead>
                         <tr>
-                            <th>Nome</th>
-                            <th>E-mail</th>
-                            <th>Telefone</th>
-                            <th style="max-width:100px; min-width:100px;">Opções</th>
+                            <th class="align-middle">Nome</th>
+                            <th class="align-middle">E-mail</th>
+                            <th class="align-middle">Telefone</th>
+                            <th class="align-middle" style="max-width:100px; min-width:100px;">Opções</th>
                         </tr>
                     </thead>
                     <tbody>
                         @if (isset($universities))
                             @foreach ($universities as $university)
                                 <tr>
-                                    <td>{{$university->nome}}</td>
-                                    <td>{{$university->email}}</td>
-                                    <td>{{$university->telefone}}</td>
+                                    <td class="align-middle">{{$university->nome}}</td>
+                                    <td class="align-middle">{{$university->email}}</td>
+                                    <td class="align-middle">{{$university->telefone}}</td>
                                     <td class="text-center align-middle">
                                         <a href="{{route("universities.show", $university)}}" class="btn btn-sm btn-outline-primary" title="Visualizar"><i class="far fa-eye"></i></a>
                                         <a href="{{route("universities.edit", $university)}}" class="btn btn-sm btn-outline-warning" title="Editar"><i class="fas fa-pencil-alt"></i></a>

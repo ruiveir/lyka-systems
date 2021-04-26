@@ -40,15 +40,15 @@
         <div class="card-body">
             <div class="table-responsive p-1">
                 @if($responsabilidades)
-                <table class="table table-bordered table-striped" id="table" width="100%">
+                <table class="table table-sm table-bordered table-striped" id="table" width="100%">
                     <thead>
                         <tr>
-                            <th>Nome</th>
-                            <th>Tipo</th>
-                            <th>Valor</th>
-                            <th>Data de Vencimento</th>
-                            <th>Estado</th>
-                            <th style="max-width:100px; min-width:100px;">Opções</th>
+                            <th class="align-middle">Nome</th>
+                            <th class="align-middle">Tipo</th>
+                            <th class="align-middle">Valor</th>
+                            <th class="align-middle">Data de Vencimento</th>
+                            <th class="align-middle">Estado</th>
+                            <th class="align-middle" style="max-width:100px; min-width:100px;">Opções</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -56,11 +56,11 @@
                         <!-- Begin of payments for CLIENTS -->
                         @if ($responsabilidade->valorCliente != null)
                         <tr>
-                            <td>{{$responsabilidade->cliente->nome.' '.$responsabilidade->cliente->apelido}}</td>
-                            <td>Estudante</td>
-                            <td>{{number_format((float) $responsabilidade->valorCliente, 2, ',', '').'€'}}</td>
-                            <td>{{date('d/m/Y', strtotime($responsabilidade->dataVencimentoCliente))}}</td>
-                            <td class="@if(!$responsabilidade->verificacaoPagoCliente && $responsabilidade->dataVencimentoCliente < $currentdate) text-danger font-weight-bold @elseif ($responsabilidade->verificacaoPagoCliente) text-success font-weight-bold @else font-weight-bold text-gray @endif">
+                            <td class="align-middle">{{$responsabilidade->cliente->nome.' '.$responsabilidade->cliente->apelido}}</td>
+                            <td class="align-middle">Estudante</td>
+                            <td class="align-middle">{{number_format((float) $responsabilidade->valorCliente, 2, ',', '').'€'}}</td>
+                            <td class="align-middle">{{date('d/m/Y', strtotime($responsabilidade->dataVencimentoCliente))}}</td>
+                            <td class="align-middle @if(!$responsabilidade->verificacaoPagoCliente && $responsabilidade->dataVencimentoCliente < $currentdate) text-danger font-weight-bold @elseif ($responsabilidade->verificacaoPagoCliente) text-success font-weight-bold @else font-weight-bold text-gray @endif">
                             @if (!$responsabilidade->verificacaoPagoCliente && $responsabilidade->dataVencimentoCliente < $currentdate)
                                 Vencido
                             @elseif (!$responsabilidade->verificacaoPagoCliente && $responsabilidade->dataVencimentoCliente > $currentdate)
@@ -87,11 +87,11 @@
                         <!-- Begin of payments for AGENTS -->
                         @if ($responsabilidade->valorAgente != null)
                         <tr>
-                            <td>{{$responsabilidade->agente->nome.' '.$responsabilidade->agente->apelido}}</td>
-                            <td>Agente</td>
-                            <td>{{number_format((float) $responsabilidade->valorAgente, 2, ',', '').'€'}}</td>
-                            <td>{{date('d/m/Y', strtotime($responsabilidade->dataVencimentoAgente))}}</td>
-                            <td class="@if($responsabilidade->verificacaoPagoAgente == false && $responsabilidade->dataVencimentoAgente < $currentdate) text-danger font-weight-bold @elseif ($responsabilidade->verificacaoPagoAgente == true) text-success font-weight-bold @else text-gray @endif">
+                            <td class="align-middle">{{$responsabilidade->agente->nome.' '.$responsabilidade->agente->apelido}}</td>
+                            <td class="align-middle">Agente</td>
+                            <td class="align-middle">{{number_format((float) $responsabilidade->valorAgente, 2, ',', '').'€'}}</td>
+                            <td class="align-middle">{{date('d/m/Y', strtotime($responsabilidade->dataVencimentoAgente))}}</td>
+                            <td class="align-middle @if($responsabilidade->verificacaoPagoAgente == false && $responsabilidade->dataVencimentoAgente < $currentdate) text-danger font-weight-bold @elseif ($responsabilidade->verificacaoPagoAgente == true) text-success font-weight-bold @else text-gray @endif">
                             @if ($responsabilidade->verificacaoPagoAgente == false && $responsabilidade->dataVencimentoAgente < $currentdate)
                                 Vencido
                             @elseif ($responsabilidade->verificacaoPagoAgente == false && $responsabilidade->dataVencimentoAgente > $currentdate)
@@ -118,11 +118,11 @@
                         <!-- Begin of payments for UNI1 -->
                         @if ($responsabilidade->valorUniversidade1 != null)
                         <tr>
-                            <td>{{$responsabilidade->universidade1->nome.' '.$responsabilidade->universidade1->apelido}}</td>
-                            <td>Universidade</td>
-                            <td>{{number_format((float) $responsabilidade->valorUniversidade1, 2, ',', '').'€'}}</td>
-                            <td>{{date('d/m/Y', strtotime($responsabilidade->dataVencimentoUni1))}}</td>
-                            <td class="@if($responsabilidade->verificacaoPagoUni1 == false && $responsabilidade->dataVencimentoUni1 < $currentdate) text-danger font-weight-bold @elseif ($responsabilidade->verificacaoPagoUni1 == true) text-success font-weight-bold @else text-gray @endif">
+                            <td class="align-middle">{{$responsabilidade->universidade1->nome.' '.$responsabilidade->universidade1->apelido}}</td>
+                            <td class="align-middle">Universidade</td>
+                            <td class="align-middle">{{number_format((float) $responsabilidade->valorUniversidade1, 2, ',', '').'€'}}</td>
+                            <td class="align-middle">{{date('d/m/Y', strtotime($responsabilidade->dataVencimentoUni1))}}</td>
+                            <td class="align-middle @if($responsabilidade->verificacaoPagoUni1 == false && $responsabilidade->dataVencimentoUni1 < $currentdate) text-danger font-weight-bold @elseif ($responsabilidade->verificacaoPagoUni1 == true) text-success font-weight-bold @else text-gray @endif">
                             @if ($responsabilidade->verificacaoPagoUni1 == false && $responsabilidade->dataVencimentoUni1 < $currentdate)
                                 Vencido
                             @elseif ($responsabilidade->verificacaoPagoUni1 == false && $responsabilidade->dataVencimentoUni1 > $currentdate)
@@ -149,11 +149,11 @@
                         <!-- Begin of payments for PROVIDER -->
                         @foreach ($responsabilidade->relacao as $relacao)
                         <tr>
-                            <td>{{$relacao->fornecedor->nome}}</td>
-                            <td>Fornecedor</td>
-                            <td>{{number_format((float) $relacao->valor, 2, ',', '').'€'}}</td>
-                            <td>{{date('d/m/Y', strtotime($relacao->dataVencimento))}}</td>
-                            <td class="@if($relacao->verificacaoPago == false && $relacao->estado == "Dívida") text-danger font-weight-bold @elseif ($relacao->verificacaoPago == true) text-success font-weight-bold @else text-gray @endif">
+                            <td class="align-middle">{{$relacao->fornecedor->nome}}</td>
+                            <td class="align-middle">Fornecedor</td>
+                            <td class="align-middle">{{number_format((float) $relacao->valor, 2, ',', '').'€'}}</td>
+                            <td class="align-middle">{{date('d/m/Y', strtotime($relacao->dataVencimento))}}</td>
+                            <td class="align-middle @if($relacao->verificacaoPago == false && $relacao->estado == "Dívida") text-danger font-weight-bold @elseif ($relacao->verificacaoPago == true) text-success font-weight-bold @else text-gray @endif">
                             @if ($relacao->verificacaoPago == false && $relacao->estado == "Dívida")
                                 Vencido
                             @elseif ($relacao->verificacaoPago == false && $relacao->estado == "Pendente")
@@ -239,6 +239,7 @@
             },
             "order": [ 3, 'asc' ],
             "columnDefs" : [{"targets":3, "type":"date-eu"}],
+            "pageLength": 50
         });
     });
 </script>

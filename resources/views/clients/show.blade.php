@@ -974,7 +974,7 @@
         <div class="modal-content">
             <div class="modal-header pl-4 pb-1 pt-4">
                 <h5 class="modal-title text-gray-800 font-weight-bold">Para que serve?</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close-button">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -982,7 +982,7 @@
                 Ao preencher o formulário irá criar um novo estudante. Os campos com o asterisco de cor vermelha são de preenchimento obrigatório.
             </div>
             <div class="modal-footer mt-3">
-                <a data-dismiss="modal" class="mr-4 font-weight-bold" id="close-option">Fechar</a>
+                <a data-dismiss="modal" class="mr-4 font-weight-bold">Fechar</a>
                 <button type="button" data-dismiss="modal" class="btn btn-primary font-weight-bold mr-2">Entendido!</button>
             </div>
         </div>
@@ -1017,7 +1017,7 @@
                     </div>
                 </div>
                 <div class="modal-footer mt-3">
-                    <a data-dismiss="modal" class="mr-4 font-weight-bold" id="close-option">Fechar</a>
+                    <a data-dismiss="modal" class="mr-4 font-weight-bold" >Fechar</a>
                     <button id="submitPrint" type="submit" class="btn btn-primary font-weight-bold mr-2">Imprimir ficha financeira</button>
                 </div>
             </div>
@@ -1034,7 +1034,7 @@
             <div class="modal-content">
                 <div class="modal-header pl-4 pb-1 pt-4">
                     <h5 class="modal-title text-gray-800 font-weight-bold">Quer adicionar um novo documento?</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close-button">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -1048,7 +1048,7 @@
                     </div>
                 </div>
                 <div class="modal-footer mt-3">
-                    <a data-dismiss="modal" class="mr-4 font-weight-bold" id="close-option">Fechar</a>
+                    <a data-dismiss="modal" class="mr-4 font-weight-bold">Fechar</a>
                     <button type="submit" class="btn btn-primary font-weight-bold mr-2">Adicionar documento</button>
                 </div>
             </div>
@@ -1064,7 +1064,7 @@
             <div class="modal-content">
                 <div class="modal-header pl-4 pb-1 pt-4">
                     <h5 class="modal-title text-gray-800 font-weight-bold">Quer adicionar um novo documento?</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close-button">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -1078,7 +1078,7 @@
                     </div>
                 </div>
                 <div class="modal-footer mt-3">
-                    <a data-dismiss="modal" class="mr-4 font-weight-bold" id="close-option">Fechar</a>
+                    <a data-dismiss="modal" class="mr-4 font-weight-bold">Fechar</a>
                     <button type="submit" class="btn btn-primary font-weight-bold mr-2">Adicionar documento</button>
                 </div>
             </div>
@@ -1094,28 +1094,28 @@
             <div class="modal-content">
                 <div class="modal-header pl-4 pb-1 pt-4">
                     <h5 class="modal-title text-gray-800 font-weight-bold">Quer adicionar uma observação?</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close-button">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body text-gray-800 pl-4 pr-5">
                     <div class="form-row p-2">
                         <label for="titulo" class="text-gray-900">Título da observação <sup class="text-danger small">&#10033;</sup></label>
-                        <input class="form-control" id="titulo" name="titulo" placeholder="Insira um título..." required>
+                        <input class="form-control" {{-- id="titulo" --}} name="titulo" placeholder="Insira um título..." required>
                         <div class="invalid-feedback">
                             Oops, parece que algo não está bem...
                         </div>
                     </div>
                     <div class="form-row p-2">
                         <label for="texto" class="text-gray-900">Texto da observação <sup class="text-danger small">&#10033;</sup></label>
-                        <textarea class="form-control" id="texto" name="texto" placeholder="Insira uma observação..." required></textarea>
+                        <textarea class="form-control" {{-- id="texto" --}} name="texto" placeholder="Insira uma observação..." required></textarea>
                         <div class="invalid-feedback">
                             Oops, parece que algo não está bem...
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer mt-3">
-                    <a data-dismiss="modal" class="mr-4 font-weight-bold" id="close-option">Fechar</a>
+                    <a data-dismiss="modal" class="mr-4 font-weight-bold">Fechar</a>
                     <button type="submit" class="btn btn-primary font-weight-bold mr-2">Adicionar observação</button>
                 </div>
             </div>
@@ -1132,28 +1132,28 @@
             <div class="modal-content">
                 <div class="modal-header pl-4 pb-1 pt-4">
                     <h5 class="modal-title text-gray-800 font-weight-bold">Quer editar a observação?</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close-button">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body text-gray-800 pl-4 pr-5">
                     <div class="form-row p-2">
                         <label for="titulo" class="text-gray-900">Título da observação <sup class="text-danger small">&#10033;</sup></label>
-                        <input class="form-control" id="titulo" name="titulo" placeholder="Insira um título..." required>
+                        <input class="form-control" {{-- id="titulo" --}} name="titulo" placeholder="Insira um título..." required>
                         <div class="invalid-feedback">
                             Oops, parece que algo não está bem...
                         </div>
                     </div>
                     <div class="form-row p-2">
                         <label for="texto" class="text-gray-900">Texto da observação <sup class="text-danger small">&#10033;</sup></label>
-                        <textarea class="form-control" id="texto" name="texto" placeholder="Insira uma observação..." required></textarea>
+                        <textarea class="form-control" {{-- id="texto" --}} name="texto" placeholder="Insira uma observação..." required></textarea>
                         <div class="invalid-feedback">
                             Oops, parece que algo não está bem...
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer mt-3">
-                    <a data-dismiss="modal" class="mr-4 font-weight-bold" id="close-option">Fechar</a>
+                    <a data-dismiss="modal" class="mr-4 font-weight-bold">Fechar</a>
                     <button type="submit" class="btn btn-primary font-weight-bold mr-2">Editar observação</button>
                 </div>
             </div>
@@ -1167,7 +1167,7 @@
         <div class="modal-content">
             <div class="modal-header pl-4 pb-1 pt-4">
                 <h5 class="modal-title text-gray-800 font-weight-bold">Quer eliminar esta observação?</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close-button">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -1178,7 +1178,7 @@
                 <form class="form-group needs-validation m-0" method="post" novalidate>
                     @csrf
                     @method('DELETE')
-                    <a data-dismiss="modal" class="mr-4 font-weight-bold" id="close-option">Fechar</a>
+                    <a data-dismiss="modal" class="mr-4 font-weight-bold">Fechar</a>
                     <button type="submit" class="btn btn-danger font-weight-bold mr-2">Eliminar</button>
                 </form>
             </div>
