@@ -42,7 +42,7 @@
                             <td>{{$produtoStock->anoAcademico}}</td>
                             <td>{{$produtoStock->faseStock->count()}}</td>
                             <td class="text-center align-middle">
-                                <a href="{{route('produtos.create', [$client, $produtoStock])}}" class="btn btn-sm btn-outline-success" title="Selecionar"><i class="fas fa-check"></i></a>
+                                <a href="{{route('produtos.create', [$client, $produtoStock])}}" class="btn btn-sm  {{ $produtoStock->faseStock->count() == 0 ? 'disabled btn-outline-secondary' : 'btn-outline-success'}}" title="Selecionar"><i class="fas fa-check"></i></a>
                             </td>
                         </tr>
                         @endforeach
