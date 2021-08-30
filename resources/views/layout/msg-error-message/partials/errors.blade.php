@@ -12,10 +12,4 @@
 <script src="{{asset('/vendor/jquery/jquery.min.js')}}"></script>
 <script src="{{asset('/vendor/jquery-easing/jquery.easing.min.js')}}"></script>
 
-<script>
-    $(document).ready(function() {
-        $("#error-alert").fadeTo(7500, 500).slideUp(500, function() {
-            $("#error-alert").slideUp(500);
-        });
-    });
-</script>
+<script src="{{asset('/js/msg-error-message/errors.js')}}"></script>

@@ -134,8 +134,7 @@
 </div>
 
 @section('scripts')
-    <script type="text/javascript">
-    </script>
+	<script src="{{asset('/js/documentos/verify.js')}}"></script>
 @endsection
 
 @endsection

@@ -1,4 +1,6 @@
 const mix = require('laravel-mix');
+const fs = require('fs');
+const path = require('path');
 
 /*
  |--------------------------------------------------------------------------
@@ -11,5 +13,19 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
-   .sass('resources/sass/app.scss', 'public/css');
+function addJs(source, target) {
+    for (let inode of fs.readdirSync(source)) {
+        let stats = fs.statSync(path.join(source, inode));
+
+        if (stats.isFile()) {
+            if (/\.min\.js$/i.exec(inode) ||/\.map$/i.exec(inode) )
+                mix.copy(path.join(source, inode), path.join(target, inode));
+            else if (/\.js$/i.exec(inode))
+                mix.js(path.join(source, inode), path.join(target, inode));
+        } else {
+            addJs(path.join(source, inode), path.join(target, inode));
+        }
+    }
+}
+
+addJs('resources/js', 'public/js');
