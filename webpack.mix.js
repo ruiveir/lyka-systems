@@ -29,3 +29,9 @@ function addJs(source, target) {
 }
 
 addJs('resources/js', 'public/js');
+
+mix.sass('resources/sass/style.scss', 'public/css');
+mix.sass('resources/sass/produtos.scss', 'public/css');
+mix.sass('resources/sass/modal.scss', 'public/css');
+mix.sass('resources/sass/dashboard.scss', 'public/css');
+mix.sass('resources/sass/clientes.scss', 'public/css');

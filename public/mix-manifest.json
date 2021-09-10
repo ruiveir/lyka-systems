@@ -1,5 +1,10 @@
 {
     "/js/admin/add.js": "/js/admin/add.js",
+    "/css/style.css": "/css/style.css",
+    "/css/produtos.css": "/css/produtos.css",
+    "/css/modal.css": "/css/modal.css",
+    "/css/dashboard.css": "/css/dashboard.css",
+    "/css/clientes.css": "/css/clientes.css",
     "/js/admin/edit.js": "/js/admin/edit.js",
     "/js/admin/list.js": "/js/admin/list.js",
     "/js/agenda/list.js": "/js/agenda/list.js",
