@@ -78,7 +78,7 @@
     'normal' => $rootDir . '/lib/fonts/DejaVuSerif',
   ),
   'lato' => array(
-    'normal' => $fontDir . '/lato-normal_9178cb98816a1df7c0d5aede3da9b5cd',
-    'bold' => $fontDir . '/lato-bold_ba5be9002c4f5b9358156c9351c37615',
+    'normal' => $fontDir . '/lato-normal_74ff5cee88f1fe435fef13fd8d255d28',
+    'bold' => $fontDir . '/lato-bold_8297c6567077ba29f107792a3a0184b4',
   ),
 ) ?>
