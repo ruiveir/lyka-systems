@@ -138,7 +138,7 @@ class PaymentController extends Controller
             }
         }
 
-        // Pesquisa de SUBAGENTES
+        /*/ Pesquisa de SUBAGENTES
         if ($idSubagente != null) {
             if ($idSubagente == 'todos') {
                 $responsabilidades = Responsabilidade::select()->with(["subAgente", "fase"]);
@@ -158,6 +158,7 @@ class PaymentController extends Controller
                 }
             }
         }
+        */
 
         // Pesquisa de UNIVERSIDADE PRINCIPAL
         if ($idUniversidade != null) {
@@ -180,7 +181,7 @@ class PaymentController extends Controller
             }
         }
 
-        // Pesquisa de UNIVERSIDADE SECUNDÁRIA
+        /*/ Pesquisa de UNIVERSIDADE SECUNDÁRIA
         if ($idUniversidadeSec != null) {
             if ($idUniversidadeSec == 'todos') {
                 $responsabilidades = Responsabilidade::select()->with(["universidade2", "fase"]);
@@ -200,6 +201,7 @@ class PaymentController extends Controller
                 }
             }
         }
+        */
 
         // Pesquisa de FORNECEDORES
         if ($idFornecedor != null) {
@@ -272,7 +274,7 @@ class PaymentController extends Controller
     // Os requests estão isolados por o tipo de categoria de pagamento (Cliente, Agente, ...)
     public function store(Request $request, Responsabilidade $responsabilidade)
     {
-        $responsabilidade = Responsabilidade::where('idResponsabilidade', $responsabilidade->idResponsabilidade)->with(["cliente", "agente", "subAgente", "universidade1", "universidade2", "fase"])->first();
+        $responsabilidade = Responsabilidade::where('idResponsabilidade', $responsabilidade->idResponsabilidade)->with(["cliente", "agente", "universidade1", "fase"])->first();
         // Campos de CLIENTE
         $valorCliente = ($request->input('valorPagoCliente') != null ? $request->input('valorPagoCliente') : null);
         $comprovativoCliente = ($request->file('comprovativoPagamentoCliente') != null ? $request->file('comprovativoPagamentoCliente') : null);

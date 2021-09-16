@@ -151,11 +151,10 @@ class AgenteController extends Controller
             $clients = Cliente::selectRaw("cliente.*")
             ->join('produto', 'cliente.idCliente', 'produto.idCliente')
             ->where('produto.idAgente', $agent->idAgente)
-/*             ->orWhere('produto.idSubAgente', $agent->idAgente) */
+            // ->orWhere('produto.idSubAgente', $agent->idAgente)
             ->groupBy('cliente.idCliente')
             ->orderBy('cliente.idCliente','asc')
             ->get();
-
 
             if ($clients->isEmpty()) {
                 $clients = Cliente::where('idAgente', $agent->idAgente)->get();
@@ -165,20 +164,19 @@ class AgenteController extends Controller
                 $clients = null;
             }
 
-            if ($agent->tipo=="Agente") {
-                $comissoes = Responsabilidade::where('idAgente', $agent->idAgente)
-                ->sum('valorAgente');
-
-            }/* elseif ($agent->tipo=="Subagente") {
+            $comissoes = Responsabilidade::where('idAgente', $agent->idAgente)->sum('valorAgente');
+            /*
+            elseif ($agent->tipo=="Subagente") {
                 $comissoes = Responsabilidade::where('idSubAgente', $agent->idAgente)
                 ->sum('valorSubAgente');
-            } */
+            }
+            */
 
             $currentdate = new DateTime();
 
             $produtos = Produto::where('idAgente', $agent->idAgente)/* ->orWhere('idSubAgente', $agent->idAgente) */->get();
             $responsabilidadesAgentes = Responsabilidade::where('idAgente', $agent->idAgente)->where('valorAgente', '!=', NULL)->get();
-            /* $responsabilidadesSubAgentes = Responsabilidade::where('idSubAgente', $agent->idAgente)->where('valorSubAgente', '!=', NULL)->get(); */
+            // $responsabilidadesSubAgentes = Responsabilidade::where('idSubAgente', $agent->idAgente)->where('valorSubAgente', '!=', NULL)->get();
 
             return view('agents.show',compact('currentdate'/* , 'responsabilidadesSubAgentes' */, 'responsabilidadesAgentes' ,'produtos','agent','listagents','mainAgent','telefone2','IBAN','clients','comissoes'));
         }else{

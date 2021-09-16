@@ -18,9 +18,11 @@ class Responsabilidade extends Model
         'verificacaoPagoCliente',
         'verificacaoPagoAgente',
         'verificacaoPagoUni1',
+        'verificacaoPagoUni2',
         '$idAgente',
         '$idCliente',
         '$idUniversidade1',
+        '$idUniversidade2',
         '$idFase'
     ];
 
@@ -40,6 +42,10 @@ class Responsabilidade extends Model
 
     public function universidade1(){
         return $this->belongsTo("App\Universidade","idUniversidade1","idUniversidade")->withTrashed();
+    }
+
+    public function universidade2(){
+        return $this->belongsTo("App\Universidade","idUniversidade2","idUniversidade")->withTrashed();
     }
 
     public function fase(){

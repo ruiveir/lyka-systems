@@ -299,13 +299,13 @@ class ProdutoController extends Controller
                 $fases = $produto->fase;
                 foreach($fases as $fase){
                     $responsabilidade = $fase->responsabilidade;
-                    $responsabilidade->valorSubAgente = 0;
+                    //$responsabilidade->valorSubAgente = 0;
                     $responsabilidade->save();
                 }
             }
             if(!$permissao){
                 $produto->idUniversidade1 = $fields['uni1'];
-                $produto->idUniversidade2 = $fields['uni2'];
+                $produto->idUniversidade2 = in_array('uni2', $fields) ? $fields['uni2'] : null;
             }
 
             $valorProduto = 0;
@@ -350,7 +350,7 @@ class ProdutoController extends Controller
                     }
                     $responsabilidade->verificacaoPagoCliente = false;
 
-                    $valorTotalAgeSubAge = $responsabilidade->valorAgente + $responsabilidade->valorSubAgente;
+                    $valorTotalAgeSubAge = $responsabilidade->valorAgente;
                     $novoValorAgente = null;
 
                     $responsabilidade->valorAgente = $fields['resp-agente-fase'.$fase->idFase];
@@ -361,6 +361,7 @@ class ProdutoController extends Controller
                     }
                     $responsabilidade->verificacaoPagoAgente = false;
                 }
+                /*
                 if(array_key_exists('resp-subagente-fase'.$fase->idFase, $fields)){
                     if($produto->idSubAgente && $responsabilidade->valorSubAgente != $fields['resp-subagente-fase'.$fase->idFase]){
                         $novoValorAgente = $valorTotalAgeSubAge-$fields['resp-subagente-fase'.$fase->idFase];
@@ -381,6 +382,7 @@ class ProdutoController extends Controller
                         $responsabilidade->dataVencimentoSubAgente = null;
                     }
                 }
+                */
 
                 if(!$permissao){
                     if($responsabilidade->valorUniversidade1 != $fields['resp-uni1-fase'.$fase->idFase]){
@@ -393,6 +395,7 @@ class ProdutoController extends Controller
                         $responsabilidade->verificacaoPagoUni1 = false;
                     }
 
+                    /*
                     if($produto->idUniversidade2 && $responsabilidade->valorUniversidade2 = $fields['resp-uni2-fase'.$fase->idFase]){
                         $responsabilidade->valorUniversidade2 = $fields['resp-uni2-fase'.$fase->idFase];
                         if($fields['resp-data-uni2-fase'.$fase->idFase]){
@@ -402,12 +405,13 @@ class ProdutoController extends Controller
                         }
                         $responsabilidade->verificacaoPagoUni2 = false;
                     }
+                    */
                     $responsabilidade->idCliente = $produto->idCliente;
                     $responsabilidade->idAgente = $produto->idAgente;
                     $responsabilidade->idUniversidade1 = $produto->idUniversidade1;
-                    $responsabilidade->idUniversidade2 = $produto->idUniversidade2;
+                    //$responsabilidade->idUniversidade2 = $produto->idUniversidade2;
                 }
-                $responsabilidade->idSubAgente = $produto->idSubAgente;
+                //$responsabilidade->idSubAgente = $produto->idSubAgente;
 
 
                 $responsabilidade->save();

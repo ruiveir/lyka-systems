@@ -10,4 +10,5 @@
 
 sudo DEBIAN_FRONTEND=noninteractive apt update
 sudo DEBIAN_FRONTEND=noninteractive apt install -y php7.4-curl php7.4-cli php7.4-common php7.4-json php7.4-mbstring php7.4-mysql php7.4-zip p7zip-full php7.4-xml
-sudo DEBIAN_FRONTEND=noninteractive service php7.4-fpm restart
+sudo DEBIAN_FRONTEND=noninteractive systemctl enable php7.4-fpm
+sudo DEBIAN_FRONTEND=noninteractive systemctl start php7.4-fpm
