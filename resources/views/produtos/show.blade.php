@@ -22,13 +22,14 @@
 			@if((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)||
 				(Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null &&
 				(Auth()->user()->agente->tipo == "Agente" || Auth()->user()->agente->exepcao)))
-			<a href="{{route('produtos.edit',$produto)}}" class="btn btn-success btn-icon-split btn-sm" title="Editar">
-				<span class="icon text-white-50">
-					<i class="fas fa-pencil-alt"></i>
-				</span>
-				<span class="text">Editar produto</span>
-			</a>
+				<a href="{{route('produtos.edit',$produto)}}" class="btn btn-success btn-icon-split btn-sm" title="Editar">
+					<span class="icon text-white-50">
+						<i class="fas fa-pencil-alt"></i>
+					</span>
+					<span class="text">Editar produto</span>
+				</a>
 			@endif
+			
 			@if(Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null)
 				<button data-toggle="modal" data-target="#deleteModal" data-slug="{{$produto->slug}}" class="btn btn-danger btn-icon-split btn-sm" title="Eliminar">
 					<span class="icon text-white-50">

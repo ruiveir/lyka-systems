@@ -91,13 +91,13 @@
   !*** ./resources/js/produtos/edit.js ***!
   \***************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-var clones = $('#clonar').clone();
-$(".clones").remove();
-$("#formulario-produto").css("display", "none");
-$("#formulario-fases").css("display", "none");
+var utils = __webpack_require__(/*! ../utils.js */ "./resources/js/utils.js");
+
 $(function () {
+  $("#formulario-produto").css("display", "none");
+  $("#formulario-fases").css("display", "none");
   $(".needs-validation").on('submit', function (event) {
     if (event.target.checkValidity() === false) {
       event.preventDefault();
@@ -111,31 +111,43 @@ $(function () {
 
     $(".needs-validation").addClass("was-validated");
   });
+  $('#add-fase-button').on('click', onAddNewFase);
+  $('#myTabContent').on('click', '.fornecedor-add-button', onAddFornecedor);
+  $('#myTabContent').on('click', '.fornecedor-del-button', onRemoverFornecedor);
+  $('#cancel-button').on('click', function () {
+    return window.history.back();
+  });
 });
 
-function addFornecedor(idFase, closest) {
-  console.log(idFase);
-  var numF = parseInt(closest.find('.numF').first().text());
-  var clone = clones.clone();
-  closest.find('.numF').first().text(numF + 1);
-  clone.attr('id', 'div-fornecedor' + numF + '-fase' + idFase);
-  $('#label1', clone).text("Fornecedor #" + numF + ":");
-  $('#label1', clone).attr('for', 'fornecedor' + numF + '-fase' + idFase);
-  $('select', clone).attr('id', 'fornecedor' + numF + '-fase' + idFase);
-  $('select', clone).attr('name', 'fornecedor' + numF + '-fase' + idFase);
-  $('#label2', clone).attr('for', 'valor-fornecedor' + numF + '-fase' + idFase);
-  $('#valor-fornecedor-fase', clone).attr('name', 'valor-fornecedor' + numF + '-fase' + idFase);
-  $('#valor-fornecedor-fase', clone).attr('id', 'valor-fornecedor' + numF + '-fase' + idFase);
-  $('#label3', clone).text('Data de vencimento (Fornecedor #' + numF + ")");
-  $('#label3', clone).attr('for', 'data-fornecedor' + numF + '-fase' + idFase);
-  $('#data-fornecedor-fase' + idFase, clone).attr('name', 'data-fornecedor' + numF + '-fase' + idFase);
-  $('#data-fornecedor-fase' + idFase, clone).attr('id', 'data-fornecedor' + numF + '-fase' + idFase);
-  $('#button', clone).attr('onclick', 'removerFornecedor(' + numF + ',' + idFase + ',$(this).closest("#div-fornecedor' + numF + '-fase' + idFase + '"))');
-  $('#a_button', clone).text('Remover fornecedor ' + numF);
-  closest.find('.fornecedor').first().append(clone);
-}
+function onAddNewFase(event) {
+  numFase++;
+  var newTab = utils.template('#template-fase-tab', {
+    numFase: numFase
+  });
+  var newTabContent = utils.template('#template-fase', {
+    numFase: numFase
+  });
+  $('#myTab').append(newTab);
+  $('#myTabContent').append(newTabContent);
+} //addFornecedor({{$num}},$(this).closest('.list-fornecedores'));
 
-function removerFornecedor(numF, idFase, fornecedor) {
+
+function onAddFornecedor(event) {
+  numFornecedor++;
+  var numFase = $(event.currentTarget).closest('.tab-pane').data('num');
+  console.log(numFase, numFornecedor);
+  var content = utils.template('#template-fornecedor', {
+    numFase: numFase,
+    numFornecedor: numFornecedor
+  });
+  $('.fornecedor:visible').append(content);
+} //removerFornecedor({{$numF}},{{$fase->idFase}},$(this).closest('#div-fornecedor{{$numF}}-fase{{$fase->idFase}}'));
+
+
+function onRemoverFornecedor(event) {
+  var numF = 1;
+  var idFase = 1;
+  var fornecedor = 1;
   $('#fornecedor' + numF + '-fase' + idFase).val($('#fornecedor' + numF + '-fase' + idFase + ' > option:first').val());
   $("#fornecedor" + numF + "-fase" + idFase).attr("required", false);
   $("#valor-fornecedor" + numF + "-fase" + idFase).attr("required", false);
@@ -172,6 +184,26 @@ function adicionaValorSubAgente(valorAgente, formulario, valorTotal) {
     }
   }
 }
+
+/***/ }),
+
+/***/ "./resources/js/utils.js":
+/*!*******************************!*\
+  !*** ./resources/js/utils.js ***!
+  \*******************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+exports.template = function (queryString, parameters) {
+  var template = $(queryString).html();
+
+  for (var _i = 0, _Object$keys = Object.keys(parameters); _i < _Object$keys.length; _i++) {
+    var key = _Object$keys[_i];
+    template = template.replace(new RegExp('\\$\\{' + key + '\\}', 'g'), parameters[key]);
+  }
+
+  return $(template);
+};
 
 /***/ }),
 

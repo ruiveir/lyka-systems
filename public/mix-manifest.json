@@ -77,6 +77,7 @@
     "/js/payments/list.js": "/js/payments/list.js",
     "/js/produtos/add.js": "/js/produtos/add.js",
     "/js/produtos/edit.js": "/js/produtos/edit.js",
+    "/js/produtos/show.js": "/js/produtos/show.js",
     "/js/produtostock/add.js": "/js/produtostock/add.js",
     "/js/produtostock/edit.js": "/js/produtostock/edit.js",
     "/js/produtostock/list.js": "/js/produtostock/list.js",
