@@ -93,6 +93,7 @@
     "/js/universities/edit.js": "/js/universities/edit.js",
     "/js/universities/list.js": "/js/universities/list.js",
     "/js/universities/show.js": "/js/universities/show.js",
+    "/js/utils.js": "/js/utils.js",
     "/js/jquery-key-restrictions.min.js": "/js/jquery-key-restrictions.min.js",
     "/js/sb-admin-2.min.js": "/js/sb-admin-2.min.js"
 }

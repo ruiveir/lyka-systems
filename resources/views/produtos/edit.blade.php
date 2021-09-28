@@ -258,9 +258,14 @@ $numFornecedor = 0;
 									<?php
 									$numFornecedor++;
 									?>
-									<div class="form-row mb-3" id="div-fase{{$numFase}}-fornecedor{{$numFornecedor}}">
+									<div class="form-row mb-3 align-items-end fornecedor-entry">
 										<div class="col-md-4 mb-3">
-											<label class="text-gray-900" for="fase[{{$numFase}}][fornecedor][{{ $numFornecedor }}][idFornecedor]">Fornecedor #{{$numFornecedor}}</label>
+											<label class="text-gray-900" for="fase[{{$numFase}}][fornecedor][{{ $numFornecedor }}][idFornecedor]">Fornecedor</label>
+
+											<div class="invalid-feedback">
+												Oops, parece que algo não está bem...
+											</div>
+
 											<select name="fase[{{$numFase}}][fornecedor][{{ $numFornecedor }}][idFornecedor]" class="form-control custom-select" {{ $isAdmin ? "required" : "readonly" }}>
 												<option value="" selected></option>
 												@foreach($Fornecedores as $fornecedor)
@@ -274,24 +279,23 @@ $numFornecedor = 0;
 												@endif
 												@endforeach
 											</select>
-											<div class="invalid-feedback">
-												Oops, parece que algo não está bem...
-											</div><br>
 										</div>
-										<div class="col-md-4 mb-3">
+										<div class="col-md-3 mb-3">
 											<label class="text-gray-900" for="fase[{{$numFase}}][fornecedor][{{ $numFornecedor }}][valor]">Valor a pagar <sup class="text-danger small">&#10033;</sup></label>
 											<div class="input-group">
 												<input type="number" class="form-control" name="fase[{{$numFase}}][fornecedor][{{ $numFornecedor }}][valor]" value="{{old('valor',$relacao->valor)}}" placeholder="Insira um valor...">
-												<div class="input-group-append">
-													<span class="input-group-text">€</span>
-												</div>
+
 												<div class="invalid-feedback">
 													Oops, parece que algo não está bem...
 												</div>
+
+												<div class="input-group-append">
+													<span class="input-group-text">€</span>
+												</div>
 											</div>
 										</div>
-										<div class="col-md-4 mb-3">
-											<label class="text-gray-900" for="fase[{{$numFase}}][fornecedor][{{ $numFornecedor }}][data]">Data de vencimento (Fornecedor #{{$numFornecedor}})</label>
+										<div class="col-md-3 mb-3">
+											<label class="text-gray-900" for="fase[{{$numFase}}][fornecedor][{{ $numFornecedor }}][data]">Data de vencimento</label>
 											<div class="input-group">
 												<input type="date" class="form-control" name="fase[{{$numFase}}][fornecedor][{{ $numFornecedor }}][data]" value="{{date('Y-m-d', strtotime($relacao->dataVencimento))}}">
 												<div class="input-group-append">
@@ -299,35 +303,35 @@ $numFornecedor = 0;
 												</div>
 											</div>
 										</div>
-									</div>
-									<div class="text-right mt-3 mb-5">
-										<button type="button" class="btn btn-danger btn-icon-split btn-sm fornecedor-del-button" title="Adicionar fornecedor">
-											<span class="icon text-white-50">
-												<i class="fas fa-trash-alt"></i>
-											</span>
-											<span class="text">Adicionar fornecedor</span>
-										</button>
+										<div class="col-md-2 mb-3">
+											<button type="button" class="btn btn-danger btn-icon-split fornecedor-del-button" title="Adicionar fornecedor">
+												<span class="icon text-white-50">
+													<i class="fas fa-trash-alt"></i>
+												</span>
+												<span class="text">Adicionar fornecedor</span>
+											</button>
+										</div>
 									</div>
 									@endforeach
 									@endif
 								</div>
-								@if($isAdmin)
-								<div>
-									<button type="button" class="btn btn-primary btn-icon-split btn-sm fornecedor-add-button" title="Adicionar fornecedor">
-										<span class="icon text-white-50">
-											<i class="fas fa-plus"></i>
-										</span>
-										<span class="text">Adicionar fornecedor</span>
-									</button>
-								</div>
-								@endif
 							</div>
 						</div>
 						@endforeach
 					</div>
-					<div class="form-group text-right">
-						<div class="text-right mt-3" id="groupBtn">
-							<button type="button" class="mr-4 font-weight-bold" id="cancel-button">Cancelar</button>
+					<div class="form-row">
+						<div class="text-left col-md-6">
+							@if($isAdmin)
+							<button type="button" class="btn btn-primary btn-icon-split" id="fornecedor-add-button" title="Adicionar fornecedor">
+								<span class="icon text-white-50">
+									<i class="fas fa-plus"></i>
+								</span>
+								<span class="text">Adicionar fornecedor</span>
+							</button>
+							@endif
+						</div>
+						<div class="text-right col-md-6">
+							<button type="button" class="btn btn-secondary mr-4 font-weight-bold" id="cancel-button">Cancelar</button>
 							<button type="submit" name="button" class="btn btn-primary text-white font-weight-bold" id="submitbtn">Guardar produto</button>
 						</div>
 					</div>
@@ -374,7 +378,10 @@ $numFornecedor = 0;
 		<div class="form-row mb-3">
 			<div class="col-md-4 mb-3">
 				<label class="text-gray-900" for="fase[${numFase}][descricao]">Descrição da fase</label>
-				<input type="text" class="form-control" name="fase[${numFase}][descricao]" placeholder="descricao" maxlength="20" readonly>
+				<input type="text" class="form-control" name="fase[${numFase}][descricao]" placeholder="descricao" maxlength="20" required>
+				<div class="invalid-feedback">
+					Oops, parece que algo não está bem...
+				</div>
 			</div>
 
 			<div class="col-md-4 mb-3">
@@ -481,48 +488,34 @@ $numFornecedor = 0;
 				<p class="text-gray-900 h5"><b>Fornecedores</b></p>
 			</div>
 			<div class="fornecedor"></div>
-			@if($isAdmin)
-			<div>
-				<button type="button" class="btn btn-primary btn-icon-split btn-sm fornecedor-add-button" title="Adicionar fornecedor">
-					<span class="icon text-white-50">
-						<i class="fas fa-plus"></i>
-					</span>
-					<span class="text">Adicionar fornecedor</span>
-				</button>
-			</div>
-			@endif
 		</div>
 	</div>
 </template>
 
 <template id="template-fornecedor">
-	<div class="form-row mb-3" id="div-fase${numFase}-fornecedor${numFornecedor}">
+	<div class="form-row align-items-end mb-3 fornecedor-entry">
 		<div class="col-md-4 mb-3">
-			<label class="text-gray-900" for="fase[${numFase}][fornecedor][${numFornecedor}][idFornecedor]">Fornecedor #${numFornecedor}</label>
+			<label class="text-gray-900" for="fase[${numFase}][fornecedor][${numFornecedor}][idFornecedor]">Fornecedor</label>
+
 			<select name="fase[${numFase}][fornecedor][${numFornecedor}][idFornecedor]" class="form-control custom-select" {{ $isAdmin ? "required" : "readonly" }}>
 				<option value="" selected></option>
 				@foreach($Fornecedores as $fornecedor)
 				<option {{old('idFornecedor',$relacao->idFornecedor)}} value="{{$fornecedor->idFornecedor}}">{{$fornecedor->nome.' -> '.$fornecedor->descricao}}</option>
 				@endforeach
 			</select>
-			<div class="invalid-feedback">
-				Oops, parece que algo não está bem...
-			</div><br>
 		</div>
-		<div class="col-md-4 mb-3">
+		<div class="col-md-3 mb-3">
 			<label class="text-gray-900" for="fase[${numFase}][fornecedor][${numFornecedor}][valor]">Valor a pagar <sup class="text-danger small">&#10033;</sup></label>
+
 			<div class="input-group">
 				<input type="number" class="form-control" name="fase[${numFase}][fornecedor][${numFornecedor}][valor]" value="{{old('valor',$relacao->valor)}}" placeholder="Insira um valor...">
 				<div class="input-group-append">
 					<span class="input-group-text">€</span>
 				</div>
-				<div class="invalid-feedback">
-					Oops, parece que algo não está bem...
-				</div>
 			</div>
 		</div>
-		<div class="col-md-4 mb-3">
-			<label class="text-gray-900" for="fase[${numFase}][fornecedor][${numFornecedor}][data]">Data de vencimento (Fornecedor #${numFornecedor})</label>
+		<div class="col-md-3 mb-3">
+			<label class="text-gray-900" for="fase[${numFase}][fornecedor][${numFornecedor}][data]">Data de vencimento</label>
 			<div class="input-group">
 				<input type="date" class="form-control" name="fase[${numFase}][fornecedor][${numFornecedor}][data]" value="{{date('Y-m-d', strtotime($relacao->dataVencimento))}}">
 				<div class="input-group-append">
@@ -530,14 +523,14 @@ $numFornecedor = 0;
 				</div>
 			</div>
 		</div>
-	</div>
-	<div class="text-right mt-3 mb-5">
-		<button type="button" class="btn btn-danger btn-icon-split btn-sm fornecedor-del-button" title="Adicionar fornecedor">
-			<span class="icon text-white-50">
-				<i class="fas fa-trash-alt"></i>
-			</span>
-			<span class="text">Adicionar fornecedor</span>
-		</button>
+		<div class="col-md-2 mb-3">
+			<button type="button" class="btn btn-danger btn-icon-split fornecedor-del-button" title="Remover fornecedor">
+				<span class="icon text-white-50">
+					<i class="fas fa-trash-alt"></i>
+				</span>
+				<span class="text">Remover fornecedor</span>
+			</button>
+		</div>
 	</div>
 </template>
 <!-- End of Templates -->

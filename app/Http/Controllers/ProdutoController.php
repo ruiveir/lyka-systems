@@ -14,7 +14,11 @@ use App\ProdutoStock;
 use App\RelFornResp;
 use App\Responsabilidade;
 use App\Universidade;
+use Illuminate\Support\Facades\DB;
 use DateTime;
+use Error;
+use Facade\FlareClient\Http\Response;
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 class ProdutoController extends Controller
 {
@@ -265,297 +269,163 @@ class ProdutoController extends Controller
 	public function update(UpdateProdutoRequest $request, Produto $produto)
 	{
 		$produts = null;
-		$permissao = false;
+		$isAdmin = Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null;
 		if (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null && Auth()->user()->agente->tipo == 'Agente') {
 			$produts = Produto::whereRaw('idAgente = ' . Auth()->user()->idAgente . ' and idCliente = ' . $produto->cliente->idCliente)->get();
 		} elseif (Auth()->user()->tipo == 'agente' && Auth()->user()->idAgente != null && Auth()->user()->agente->tipo == 'Subagente') {
 			$produts = Produto::whereRaw('idSubAgente = ' . Auth()->user()->idAgente . ' and idCliente = ' . $produto->cliente->idCliente)->get();
 		}
-		if ($produts) {
-			$permissao = true;
-		}
+		$permissao = !!$produts;
 
-		if ((Auth()->user()->tipo == 'admin' && Auth()->user()->idAdmin != null) || $permissao) {
-			$fases = $produto->fase;
+		if ($isAdmin || $permissao) {
 			$fields = $request->all();
-			/*if(!$fields['anoAcademico']){
-				return redirect()->back()->withErrors(['required' => 'Ano académico é obrigatório']);
-			}
-			if(!$fields['agente']){
-				return redirect()->back()->withErrors(['required' => 'Agente é obrigatório']);
-			}
-			if(!$fields['uni1']){
-				return redirect()->back()->withErrors(['required' => 'Universidade principal é obrigatório']);
-			}*/
 
-			if (!$permissao) {
-				$produto->tipo = $fields['tipo'];
-				$produto->descricao = $fields['descricao'];
-				$produto->anoAcademico = $fields['anoAcademico'];
-				$produto->idAgente = $fields['agente'];
-			}
-			if (array_key_exists('subagente', $fields)) {
-				$produto->idSubAgente = $fields['subagente'];
-				$fases = $produto->fase;
-				foreach ($fases as $fase) {
-					$responsabilidade = $fase->responsabilidade;
-					//$responsabilidade->valorSubAgente = 0;
-					$responsabilidade->save();
-				}
-			}
-			if (!$permissao) {
-				$produto->idUniversidade1 = $fields['uni1'];
-				$produto->idUniversidade2 = in_array('uni2', $fields) ? $fields['uni2'] : null;
-			}
-
-			$valorProduto = 0;
-			$valorTAgente = 0;
-			$valorTSubAgente = 0;
-			foreach ($fases as $fase) {
-				/* if(!$fields['data-fase'.$fase->idFase]){
-					 return redirect()->back()->withErrors(['required' => 'Data vencimento da fase '.$fase->idFase.' é obrigatória']);
-				 }
-				 if(!$fields['valor-fase'.$fase->idFase]){
-					 return redirect()->back()->withErrors(['required' => 'Valor da fase '.$fase->idFase.' é obrigatório']);
-				 }
-				 if(!$fields['resp-cliente-fase'.$fase->idFase]){
-					 return redirect()->back()->withErrors(['required' => 'pickpocket do cliente na fase '.$fase->idFase.' é obrigatório']);
-				 }
-				 if(!$fields['resp-agente-fase'.$fase->idFase]){
-					 return redirect()->back()->withErrors(['required' => 'Valor do agente na fase '.$fase->idFase.' é obrigatório']);
-				 }
-				 if(!$fields['resp-uni1-fase'.$fase->idFase]){
-					 return redirect()->back()->withErrors(['required' => 'Valor do agente na fase '.$fase->idFase.' é obrigatório']);
-				 }*/
+			DB::transaction(function () use ($fields, $permissao, $produto) {
+				$currentTime = time();
 
 				if (!$permissao) {
-					$fase->descricao = $fields['descricao-fase' . $fase->idFase];
-					$fase->dataVencimento = date('Y-m-d', strtotime($fields['data-fase' . $fase->idFase]));
-					$fase->valorFase = $fields['valor-fase' . $fase->idFase];
+					$produto->tipo = $fields['tipo'];
+					$produto->descricao = $fields['descricao'];
+					$produto->anoAcademico = $fields['anoAcademico'];
+					$produto->idAgente = $fields['agente'];
 				}
-				$produto->save();
-				$fase->save();
-
-				$responsabilidade = $fase->responsabilidade;
-
+				if (array_key_exists('subagente', $fields)) {
+					$produto->idSubAgente = $fields['subagente'];
+					$fases = $produto->fase;
+					foreach ($fases as $fase) {
+						$responsabilidade = $fase->responsabilidade;
+						//$responsabilidade->valorSubAgente = 0;
+						$responsabilidade->save();
+					}
+				}
 				if (!$permissao) {
-					$relacoes = $responsabilidade->relacao;
-					$valorRelacoes = 0;
-					$responsabilidade->valorCliente = $fields['resp-cliente-fase' . $fase->idFase];
-					if ($fields['resp-data-cliente-fase' . $fase->idFase]) {
-						$responsabilidade->dataVencimentoCliente = date('Y-m-d', strtotime($fields['resp-data-cliente-fase' . $fase->idFase]));
-					} else {
-						$responsabilidade->dataVencimentoCliente = null;
-					}
-					$responsabilidade->verificacaoPagoCliente = false;
-
-					$valorTotalAgeSubAge = $responsabilidade->valorAgente;
-					$novoValorAgente = null;
-
-					$responsabilidade->valorAgente = $fields['resp-agente-fase' . $fase->idFase];
-					if ($fields['resp-data-agente-fase' . $fase->idFase]) {
-						$responsabilidade->dataVencimentoAgente = date('Y-m-d', strtotime($fields['resp-data-agente-fase' . $fase->idFase]));
-					} else {
-						$responsabilidade->dataVencimentoAgente = null;
-					}
-					$responsabilidade->verificacaoPagoAgente = false;
+					$produto->idUniversidade1 = $fields['uni1'];
+					$produto->idUniversidade2 = in_array('uni2', $fields) ? $fields['uni2'] : null;
 				}
-				/*
-				if(array_key_exists('resp-subagente-fase'.$fase->idFase, $fields)){
-					if($produto->idSubAgente && $responsabilidade->valorSubAgente != $fields['resp-subagente-fase'.$fase->idFase]){
-						$novoValorAgente = $valorTotalAgeSubAge-$fields['resp-subagente-fase'.$fase->idFase];
-						if($novoValorAgente == 0){
-							$responsabilidade->valorAgente = 0;
-						}elseif($novoValorAgente<0){
-							$responsabilidade->valorAgente = 0;
-							$responsabilidade->valorSubAgente = $valorTotalAgeSubAge;
-						}else{
-							$responsabilidade->valorAgente = $novoValorAgente;
-							$responsabilidade->valorSubAgente = $fields['resp-subagente-fase'.$fase->idFase];
+
+				$valorProduto = 0;
+				$valorTAgente = 0;
+				$valorTSubAgente = 0;
+				foreach ($fields['fase'] as $faseFields) {
+					$fase = null;
+					if (array_key_exists("idFase", $faseFields)) {
+						$fase = Fase::where([
+							['idFase', $faseFields['idFase']],
+							['idProduto', $produto->idProduto],
+						])->first();
+
+						if (!$fase)
+							throw new Error("Invalid fase");
+
+						if (!$permissao) {
+							$fase->descricao = $faseFields['descricao'];
+							$fase->dataVencimento = date('Y-m-d', strtotime($faseFields['data']));
+							$fase->valorFase = $faseFields['valor'];
 						}
-						$responsabilidade->verificacaoPagoSubAgente = false;
+					} else if (!$permissao) {
+						$fase = new Fase();
+						$fase->idProduto = $produto->idProduto;
+						$fase->descricao = $faseFields['descricao'];
+						$fase->dataVencimento = date('Y-m-d', strtotime($faseFields['data']));
+						$fase->valorFase = $faseFields['valor'];
+						$fase->create_at == date('Y-m-d', $currentTime);
+					} else {
+						throw new Error("Invalid fase");
 					}
-					if($fields['resp-data-subagente-fase'.$fase->idFase]){
-						$responsabilidade->dataVencimentoSubAgente = date("Y-m-d",strtotime($fields['resp-data-subagente-fase'.$fase->idFase]));
-					}else{
-						$responsabilidade->dataVencimentoSubAgente = null;
-					}
-				}
-				*/
 
-				if (!$permissao) {
-					if ($responsabilidade->valorUniversidade1 != $fields['resp-uni1-fase' . $fase->idFase]) {
-						$responsabilidade->valorUniversidade1 = $fields['resp-uni1-fase' . $fase->idFase];
-						if ($fields['resp-data-uni1-fase' . $fase->idFase]) {
-							$responsabilidade->dataVencimentoUni1 = date('Y-m-d', strtotime($fields['resp-data-uni1-fase' . $fase->idFase]));
+					$fase->saveOrFail();
+
+					$responsabilidade = null;
+					if ($fase->responsabilidade) {
+						$responsabilidade = Responsabilidade::where('idFase', $fase->idFase)->first();
+					} else if (!$permissao) {
+						$responsabilidade = new Responsabilidade();
+						$responsabilidade->idFase = $fase->idFase;
+					} else {
+						throw new Error("Invalid Responsabilidade");
+					}
+
+					if (!$permissao) {
+						$responsabilidade->valorCliente = $faseFields['responsabilidadeClienteValor'];
+						if ($faseFields['responsabilidadeClienteData']) {
+							$responsabilidade->dataVencimentoCliente = date('Y-m-d', strtotime($faseFields['responsabilidadeClienteData']));
+						} else {
+							$responsabilidade->dataVencimentoCliente = null;
+						}
+						$responsabilidade->verificacaoPagoCliente = false;
+
+						$responsabilidade->valorAgente = $faseFields['responsabilidadeAgenteValor'];
+						if ($faseFields['responsabilidadeAgenteData']) {
+							$responsabilidade->dataVencimentoAgente = date('Y-m-d', strtotime($faseFields['responsabilidadeAgenteData']));
+						} else {
+							$responsabilidade->dataVencimentoAgente = null;
+						}
+						$responsabilidade->verificacaoPagoAgente = false;
+
+						$responsabilidade->valorUniversidade1 = $faseFields['responsabilidadeAgenteData'];
+						if ($faseFields['responsabilidadeAgenteData']) {
+							$responsabilidade->dataVencimentoUni1 = date('Y-m-d', strtotime($faseFields['responsabilidadeAgenteData']));
 						} else {
 							$responsabilidade->dataVencimentoUni1 = null;
 						}
 						$responsabilidade->verificacaoPagoUni1 = false;
+
+						$responsabilidade->idCliente = $produto->idCliente;
+						$responsabilidade->idAgente = $produto->idAgente;
+						$responsabilidade->idUniversidade1 = $produto->idUniversidade1;
 					}
 
-					/*
-					if($produto->idUniversidade2 && $responsabilidade->valorUniversidade2 = $fields['resp-uni2-fase'.$fase->idFase]){
-						$responsabilidade->valorUniversidade2 = $fields['resp-uni2-fase'.$fase->idFase];
-						if($fields['resp-data-uni2-fase'.$fase->idFase]){
-							$responsabilidade->dataVencimentoUni2 = date("Y-m-d",strtotime($fields['resp-data-uni2-fase'.$fase->idFase]));
-						}else{
-							$responsabilidade->dataVencimentoUni2 = null;
-						}
-						$responsabilidade->verificacaoPagoUni2 = false;
-					}
-					*/
-					$responsabilidade->idCliente = $produto->idCliente;
-					$responsabilidade->idAgente = $produto->idAgente;
-					$responsabilidade->idUniversidade1 = $produto->idUniversidade1;
-					//$responsabilidade->idUniversidade2 = $produto->idUniversidade2;
-				}
-				//$responsabilidade->idSubAgente = $produto->idSubAgente;
+					$responsabilidade->saveOrFail();
 
-				$responsabilidade->save();
+					if (!$permissao) {
+						$newFornecedorIds = [];
+						if (array_key_exists("fornecedor", $faseFields) && isset($faseFields['fornecedor'])) {
+							foreach ($faseFields['fornecedor'] as $fornecedorFields) {
+								$newFornecedorIds[] = $fornecedorFields['idFornecedor'];
 
-				if (!$permissao) {
-					if ($relacoes->toArray()) {
-						foreach ($relacoes as $relacao) {
-							$existe = false;
-							for ($i = 1; $i <= 10000; ++$i) {
-								if (array_key_exists('fornecedor' . $i . '-fase' . $fase->idFase, $fields)) {
-									if ($fields['fornecedor' . $i . '-fase' . $fase->idFase] == $relacao->idFornecedor) {
-										if ($fields['valor-fornecedor' . $i . '-fase' . $fase->idFase]) {
-											$relacao->valor = $fields['valor-fornecedor' . $i . '-fase' . $fase->idFase];
-										} else {
-											$relacao->valor = 0;
-										}
-										if ($fields['data-fornecedor' . $numF . '-fase' . $i]) {
-											$relacao->dataVencimento = date('Y-m-d', strtotime($fields['data-fornecedor' . $numF . '-fase' . $i]));
-										} else {
-											$relacao->dataVencimento = null;
-										}
-										$relacao->save();
-										$existe = true;
-									}
-								} else {
-									break;
-								}
-							}
-							if (!$existe) {
-								$relacao->delete();
-							}
-						}
-					}
+								$relacao = RelFornResp::where([
+									['idResponsabilidade', $responsabilidade->idResponsabilidade],
+									['idFornecedor', $fornecedorFields['idFornecedor']],
+								])->first();
 
-					for ($i = 1; $i <= 10000; ++$i) {
-						if (array_key_exists('fornecedor' . $i . '-fase' . $fase->idFase, $fields)) {
-							if ($fields['fornecedor' . $i . '-fase' . $fase->idFase]) {
-								$existe = false;
-								if ($relacoes->toArray()) {
-									foreach ($relacoes as $relacao) {
-										if ($fields['fornecedor' . $i . '-fase' . $fase->idFase] == $relacao->idFornecedor) {
-											$existe = true;
-											break;
-										}
-									}
-								}
-								if (!$existe) {
+								if (!$relacao) {
 									$relacao = new RelFornResp();
-									$relacao->idFornecedor = $fields['fornecedor' . $i . '-fase' . $fase->idFase];
 									$relacao->idResponsabilidade = $responsabilidade->idResponsabilidade;
-									if ($fields['valor-fornecedor' . $i . '-fase' . $fase->idFase]) {
-										$relacao->valor = $fields['valor-fornecedor' . $i . '-fase' . $fase->idFase];
-									} else {
-										$relacao->valor = 0;
-									}
-									$relacao->save();
-
-									$valorRelacoes = $valorRelacoes + $relacao->valor;
+									$relacao->idFornecedor = $fornecedorFields['idFornecedor'];
+									$relacao->created_at == date('Y-m-d', $currentTime);
+									$relacao->verificacaoPago = false;
 								}
+
+								if (array_key_exists("valor", $fornecedorFields) && $fornecedorFields['valor'] && $fornecedorFields['valor'] > 0) {
+									$relacao->valor = $fornecedorFields['valor'];
+									$relacao->dataVencimento = date('Y-m-d', strtotime($fornecedorFields['data']));
+								} else {
+									$relacao->valor = 0;
+									$relacao->dataVencimento = null;
+								}
+
+								$relacao->updated_at == date('Y-m-d', $currentTime);
+								$relacao->saveOrFail();
 							}
-						} else {
-							break;
 						}
-					}
-				}
-				$valorProduto = $valorProduto + $fase->valorFase;
-				$valorTAgente = $valorTAgente + $responsabilidade->valorAgente;
-				$valorTSubAgente = $valorTSubAgente + $responsabilidade->valorSubAgente;
-			}
 
-			//Add new fases
-			$newFaseIndex = 0;
-			while ($newFaseIndex < 10000) {
-				if (!array_key_exists('descricao-fase-new' . $newFaseIndex, $fields)) {
-					break;
-				}
-
-				$newFase = new Fase();
-				$newFase->descricao = $fields['descricao-fase-new' . $newFaseIndex];
-				$newFase->dataVencimento = date('Y-m-d', strtotime($fields['data-fase-new' . $newFaseIndex]));
-				$newFase->valorFase = $fields['valor-fase-new' . $newFaseIndex];
-				$newFase->save();
-
-				$responsabilidade = new Responsabilidade();
-				$responsabilidade->idFase = $newFase->idFase;
-				$responsabilidade->idCliente = $produto->idCliente;
-				$responsabilidade->idAgente = $produto->idAgente;
-				$responsabilidade->idUniversidade1 = $produto->idUniversidade1;
-
-				$responsabilidade->valorCliente = $fields['resp-cliente-fase-new' . $newFaseIndex];
-				$responsabilidade->verificacaoPagoCliente = false;
-				if ($fields['resp-data-cliente-fase-new' . $newFaseIndex]) {
-					$responsabilidade->dataVencimentoCliente = date('Y-m-d', strtotime($fields['resp-data-cliente-fase-new' . $newFaseIndex]));
-				} else {
-					$responsabilidade->dataVencimentoCliente = null;
-				}
-
-				$responsabilidade->valorAgente = $fields['resp-agente-fase-new' . $newFaseIndex];
-				$responsabilidade->verificacaoPagoAgente = false;
-				if ($fields['resp-data-agente-fase-new' . $newFaseIndex]) {
-					$responsabilidade->dataVencimentoAgente = date('Y-m-d', strtotime($fields['resp-data-agente-fase-new' . $newFaseIndex]));
-				} else {
-					$responsabilidade->dataVencimentoAgente = null;
-				}
-
-				$responsabilidade->valorUniversidade1 = $fields['resp-uni1-fase-new' . $newFaseIndex];
-				$responsabilidade->verificacaoPagoUni1 = false;
-				if ($fields['resp-data-uni1-fase-new' . $newFaseIndex]) {
-					$responsabilidade->dataVencimentoUni1 = date('Y-m-d', strtotime($fields['resp-data-uni1-fase-new' . $newFaseIndex]));
-				} else {
-					$responsabilidade->dataVencimentoUni1 = null;
-				}
-
-				$responsabilidade->save();
-
-				$newFaseFornecedorIndex = 0;
-				while ($newFaseFornecedorIndex < 10000) {
-					if (!array_key_exists('fornecedor' . $newFaseFornecedorIndex . '-fase-new' . $newFaseIndex, $fields)) {
-						break;
+						RelFornResp::where('idResponsabilidade', $responsabilidade->idResponsabilidade)->whereNotIn('idFornecedor', $newFornecedorIds)->delete();
 					}
 
-					$relacao = new RelFornResp();
-					$relacao->idFornecedor = $fields['fornecedor' . $newFaseFornecedorIndex . '-fase-new' . $newFaseIndex];
-					$relacao->idResponsabilidade = $responsabilidade->idResponsabilidade;
-
-					if ($fields['valor-fornecedor' . $newFaseFornecedorIndex . '-fase-new' . $newFaseIndex]) {
-						$relacao->valor = $fields['valor-fornecedor' . $newFaseFornecedorIndex . '-fase-new' . $newFaseIndex];
-					} else {
-						$relacao->valor = 0;
-					}
-					$relacao->save();
-
-					$valorRelacoes = $valorRelacoes + $relacao->valor;
-
-					++$newFaseFornecedorIndex;
+					$valorProduto = $valorProduto + $fase->valorFase;
+					$valorTAgente = $valorTAgente + $responsabilidade->valorAgente;
+					$valorTSubAgente = $valorTSubAgente + $responsabilidade->valorSubAgente;
 				}
 
-				++$newFaseIndex;
-			}
+				$produto->valorTotal = $valorProduto;
+				$produto->valorTotalAgente = $valorTAgente;
 
-			$produto->valorTotal = $valorProduto;
-			$produto->valorTotalAgente = $valorTAgente;
-			if ($produto->idSubAgente) {
-				$produto->valorTotalSubAgente = $valorTSubAgente;
-			}
-			$produto->save();
+				if ($produto->idSubAgente) {
+					$produto->valorTotalSubAgente = $valorTSubAgente;
+				}
+				
+				$produto->saveOrFail();
+			});
 
 			return redirect()->route('clients.show', $produto->cliente)->with('success', 'Dados do produto modificados com sucesso');
 		} else {

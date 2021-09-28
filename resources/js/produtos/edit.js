@@ -19,7 +19,7 @@ $(() => {
 	});
 
 	$('#add-fase-button').on('click', onAddNewFase);
-	$('#myTabContent').on('click', '.fornecedor-add-button', onAddFornecedor);
+	$('#fornecedor-add-button').on('click', onAddFornecedor);
 	$('#myTabContent').on('click', '.fornecedor-del-button', onRemoverFornecedor);
 	$('#cancel-button').on('click', () => window.history.back());
 });
@@ -39,10 +39,7 @@ function onAddNewFase(event) {
 function onAddFornecedor(event) {
 	numFornecedor++;
 
-	let numFase = $(event.currentTarget).closest('.tab-pane').data('num');
-
-	console.log(numFase, numFornecedor);
-
+	let numFase = $('.tab-pane:visible').data('num');
 	let content = utils.template('#template-fornecedor', { numFase, numFornecedor });
 
 	$('.fornecedor:visible').append(content);
@@ -50,14 +47,8 @@ function onAddFornecedor(event) {
 
 //removerFornecedor({{$numF}},{{$fase->idFase}},$(this).closest('#div-fornecedor{{$numF}}-fase{{$fase->idFase}}'));
 function onRemoverFornecedor(event) {
-	let numF = 1;
-	let idFase = 1;
-	let fornecedor = 1;
-
-	$('#fornecedor' + numF + '-fase' + idFase).val($('#fornecedor' + numF + '-fase' + idFase + ' > option:first').val());
-	$("#fornecedor" + numF + "-fase" + idFase).attr("required", false);
-	$("#valor-fornecedor" + numF + "-fase" + idFase).attr("required", false);
-	fornecedor.css("display", "none");
+	console.log($(event.currentTarget).closest('.fornecedor-entry'))
+	$(event.currentTarget).closest('.fornecedor-entry').remove();
 }
 
 function AlteraInputSubAgente(input) {
