@@ -27,7 +27,7 @@ class SendEmailConfirmation extends Mailable
             ->with([
                 'name' => $this->name,
                 'key' => $this->auth_key,
-                'link' => url('/ativacao-conta/' . post_slug($this->name))
+                'link' => 'https://'.config('app.url').'/ativacao-conta/' . post_slug($this->name)
             ]);
     }
 }
