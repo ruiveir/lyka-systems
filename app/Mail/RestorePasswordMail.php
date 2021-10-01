@@ -28,7 +28,7 @@ class RestorePasswordMail extends Mailable
           ->with([
               'name' => $this->name,
               'key' => $this->auth_key,
-              'link' => url('/').'/restaurar-password/'.post_slug($this->name)
+              'link' => url('/restaurar-password/' . post_slug($this->name))
           ]);
     }
 }
