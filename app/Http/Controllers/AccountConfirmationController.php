@@ -1,54 +1,52 @@
 <?php
+
 namespace App\Http\Controllers;
 
-use App\User;
-use App\Agente;
-use App\Cliente;
-use App\Administrador;
-use Illuminate\Http\Request;
 use App\Jobs\RestoreAccount;
 use App\Jobs\RestorePassword;
-use Illuminate\Support\Facades\Hash;
+use App\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AccountConfirmationController extends Controller
 {
     public function index(Request $request, User $user)
     {
-      if ($user->estado == true) {
-          abort(403);
-      }elseif($user->auth_key == null) {
-          return view('auth.account-inactive', compact('user'));
-      }else {
-          return view('auth.activate-account', compact('user'));
-      }
+        if ($user->estado == true) {
+            abort(403);
+        } elseif ($user->auth_key == null) {
+            return view('auth.account-inactive', compact('user'));
+        } else {
+            return view('auth.activate-account', compact('user'));
+        }
     }
 
     public function keyconfirmation(Request $request, User $user)
     {
-      $auth_key = $request->input('code');
+        $auth_key = $request->input('code');
 
-      if ($user->auth_key == $auth_key) {
-          return response()->json('OK', 200);
-      }else {
-          return response()->json('NOK', 500);
-      }
+        if ($user->auth_key == $auth_key) {
+            return response()->json('OK', 200);
+        } else {
+            return response()->json('NOK', 500);
+        }
     }
 
     public function password(Request $request, User $user)
     {
-      $password = $request->input('password');
+        $password = $request->input('password');
 
-      $hashed = Hash::make($password);
-      $user->password = $hashed;
-      $user->estado = true;
-      $user->save();
+        $hashed = Hash::make($password);
+        $user->password = $hashed;
+        $user->estado = true;
+        $user->save();
 
-      if (Auth::check()) {
-          Auth::logout();
-      }
+        if (Auth::check()) {
+            Auth::logout();
+        }
 
-      return response()->json('OK', 200);
+        return response()->json('OK', 200);
     }
 
     public function restore(Request $request, User $user)
@@ -61,15 +59,17 @@ class AccountConfirmationController extends Controller
             $email = $user->email;
             if ($user->tipo == 'admin') {
                 $name = $user->admin->nome.' '.$user->admin->apelido;
-            }elseif ($user->tipo == 'agente') {
+            } elseif ($user->tipo == 'agente') {
                 $name = $user->agente->nome.' '.$user->agente->apelido;
-            }else {
+            } else {
                 $name = $user->cliente->nome.' '.$user->cliente->apelido;
             }
             dispatch(new RestoreAccount($email, $name, $auth_key));
+
             return redirect()->route('confirmation.index', $user);
-        }else {
-            $error = "O e-mail que inseriu não correspodem ao registado no sistema.";
+        } else {
+            $error = 'O e-mail que inseriu não correspodem ao registado no sistema.';
+
             return view('auth.account-inactive', compact('user', 'error'));
         }
     }
@@ -82,7 +82,7 @@ class AccountConfirmationController extends Controller
     public function checkemail(Request $request)
     {
         $email = $request->input('email');
-        $user = User::where('email', $email)->with("admin", "agente", "cliente")->first();
+        $user = User::where('email', $email)->with('admin', 'agente', 'cliente')->first();
         $auth_key = $user->auth_key;
 
         if ($user != null) {
@@ -98,8 +98,9 @@ class AccountConfirmationController extends Controller
                     break;
             }
             dispatch(new RestorePassword($email, $name, $auth_key));
+
             return response()->json('OK', 200);
-        }else {
+        } else {
             return response()->json('NOK', 500);
         }
     }
@@ -107,23 +108,26 @@ class AccountConfirmationController extends Controller
     public function restorepassword(User $user)
     {
         $user = User::where('idUser', $user->idUser)->select('idUser', 'email', 'slug')->first();
+
         return view('auth.restore-password', compact('user'));
     }
 
-    public function checkkey(Request $request, User $user)
+    public function checkkey(Request $request, $user)
     {
+        $user = User::where('idUser', $user)->select('idUser', 'auth_key')->first();
         $code = $request->input('code');
 
         if ($user->auth_key == $code) {
-            return response()->json("OK", 200);
-        }else {
-            return response()->json("NOK", 500);
+            return response()->json('OK', 200);
+        } else {
+            return response()->json('NOK', 500);
         }
     }
 
-    public function newpassword(Request $request, User $user)
+    public function newpassword(Request $request, $user)
     {
-        $password = $request->input("password");
+        $user = User::where('idUser', $user)->select('idUser', 'password', 'estado')->first();
+        $password = $request->input('password');
         $hashed = Hash::make($password);
         $user->password = $hashed;
         $user->estado = true;
@@ -133,7 +137,7 @@ class AccountConfirmationController extends Controller
             Auth::logout();
         }
 
-        return response()->json("OK", 200);
+        return response()->json('OK', 200);
     }
 
     public function checkuser(Request $request)
@@ -142,13 +146,13 @@ class AccountConfirmationController extends Controller
         $email = $request->input('email');
 
         $password = User::where('email', $email)
-        ->where(function($user){
+        ->where(function ($user) {
             $user->where('auth_key', '!=', null)
             ->where('estado', 1);
         })->select('password')->first();
 
         $user = User::where('email', $email)
-        ->where(function($user){
+        ->where(function ($user) {
             $user->where('auth_key', '!=', null)
             ->where('estado', 1);
         })->select('idUser', 'email', 'slug')->first();
@@ -159,7 +163,7 @@ class AccountConfirmationController extends Controller
 
         if ($email == $user->email && $user != null) {
             return response()->json($user, 200);
-        }else {
+        } else {
             return response()->json('NOK', 500);
         }
     }
@@ -175,25 +179,27 @@ class AccountConfirmationController extends Controller
             if (Auth::check()) {
                 Auth::logout();
             }
+
             return response()->json('OK', 200);
-        }else {
+        } else {
             return response()->json('NOK', 500);
         }
     }
 
-    public function loginVerificationView(User $user){
-
+    public function loginVerificationView(User $user)
+    {
         return view('auth.login-verification', compact('user'));
-
     }
 
-    public function loginVerification(Request $request, User $user){
+    public function loginVerification(Request $request, User $user)
+    {
         $code = $request->input('code');
 
         if ($code == $user->login_key) {
             return redirect()->route('dashboard');
-        }else {
-            $error = "O código de autenticação que introduziu é inválido.";
+        } else {
+            $error = 'O código de autenticação que introduziu é inválido.';
+
             return view('auth.login-verification', compact('user', 'error'));
         }
     }

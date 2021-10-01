@@ -2,7 +2,7 @@ const bsCustomFileInput = require('bs-custom-file-input');
 
 $(() => {
 	bsCustomFileInput.init();
-	
+
 	var table = $('#table-contactos').DataTable({
 		"language": {
 			"sEmptyTable": "Não foi encontrado nenhum registo",
